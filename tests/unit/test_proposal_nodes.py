@@ -265,3 +265,12 @@ async def test_host_loaded_memory_reaches_writer_without_becoming_evidence(setup
     assert "__interrupt__" in result
     assert captured[0]["promoted_memory"]["style_preferences"] == ["Avoid the word ‘passionate’."]
     assert [item["id"] for item in captured[0]["evidence"]] == ["e1"]
+
+
+async def test_undated_source_does_not_support_recent_project(setup_nodes):
+    nodes, state, portfolio, _, _ = setup_nodes
+    state["evidence"] = [portfolio.evidence]
+    state["draft"] = ProposalDraft(text="I built a Python API. I recently built a Python API.")
+    result = await nodes.verifier(state)
+    assert result["draft"].text == "I built a Python API."
+    assert "recency" in result["verification"]["removed"][0]["reason"]

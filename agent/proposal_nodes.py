@@ -292,6 +292,7 @@ class ProposalNodes:
                 # citation in the model's explanation or an inferred paraphrase.
                 ids = [item.id for item in evidence if normalized(text) in normalized(item.text)]
             supported = checked.verdict == "supported" and (kind != "experience" or bool(ids))
+            reason = checked.reason
             if supported and kind == "experience":
                 cited = " ".join(item.text for item in evidence if item.id in ids)
                 # A conservative extra check: numerical experience/results must appear
@@ -299,8 +300,15 @@ class ProposalNodes:
                 numbers = re.findall(r"\b\d+(?:[.,]\d+)*%?", text)
                 cited_numbers = set(re.findall(r"\b\d+(?:[.,]\d+)*%?", cited))
                 supported = set(numbers) <= cited_numbers
+                if not supported:
+                    reason = "The cited text does not contain the claimed number."
+                elif re.search(r"\brecent(?:ly)?\b", text, re.I) and not re.search(
+                    r"\brecent(?:ly)?\b", cited, re.I
+                ):
+                    supported = False
+                    reason = "The cited text does not support the claim of recency."
             if not supported:
-                removed.append({"index": index, "reason": checked.reason})
+                removed.append({"index": index, "reason": reason})
                 continue
             kept[section].append(text)
             claims.append(
