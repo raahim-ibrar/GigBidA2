@@ -1,0 +1,55 @@
+[build-system]
+requires = ["setuptools==80.9.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gigbid"
+version = "0.1.0"
+description = "AI-4016 GigBid repository skeleton; integrations are not implemented yet"
+requires-python = ">=3.11,<3.14"
+dependencies = [
+  "fastapi==0.162.0",
+  "uvicorn==0.54.0",
+  "pydantic==2.14.2",
+  "pydantic-settings==2.16.2",
+  "httpx==0.28.1",
+  "langgraph==1.2.19",
+  "langgraph-checkpoint-postgres==3.2.0",
+  "langchain-mcp-adapters==0.3.2",
+  "mcp==1.30.0",
+  "psycopg[binary,pool]==3.3.8",
+  "arq==0.28.0",
+  "PyYAML==6.0.3",
+  "SQLAlchemy==2.1.8",
+  "alembic==1.20.1",
+  "pwdlib[argon2]==0.3.1",
+  "email-validator==2.3.0",
+  "fastembed==0.9.1",
+  "qdrant-client==1.20.0",
+  "pypdf==6.21.4",
+  "rank-bm25==0.2.2",
+  "python-multipart==0.0.33",
+]
+
+[project.optional-dependencies]
+dev = ["pytest==9.2.0", "pytest-asyncio==1.4.1.post1", "ruff==0.17.3"]
+
+[tool.setuptools.packages.find]
+include = ["agent*", "apps*", "mcp_servers*", "rag*", "worker*", "evals*"]
+namespaces = false
+
+[tool.setuptools.package-data]
+agent = ["config.yaml", "prompts/*.md"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests", "mcp_servers"]
+asyncio_mode = "auto"
+addopts = "--import-mode=importlib"
+asyncio_default_fixture_loop_scope = "function"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]

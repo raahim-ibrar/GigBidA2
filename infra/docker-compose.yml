@@ -1,0 +1,104 @@
+name: gigbid
+services:
+  web:
+    build:
+      context: .
+      dockerfile: infra/docker/web.Dockerfile
+    environment:
+      API_INTERNAL_URL: http://api:8000
+      NEXT_PUBLIC_API_URL: http://localhost:8000
+    ports: ["127.0.0.1:3000:3000"]
+    depends_on: [api]
+  api:
+    build:
+      context: .
+      dockerfile: infra/docker/api.Dockerfile
+    environment:
+      WEB_ORIGIN: http://localhost:3000
+      DATABASE_URL: postgresql://gigbid:${POSTGRES_PASSWORD:-gigbid_local_only}@postgres:5432/gigbid
+      REDIS_URL: redis://redis:6379/0
+      QDRANT_URL: http://qdrant:6333
+      MODEL_CACHE_DIR: /app/work/models
+      HF_HOME: /app/work/models/hf
+    volumes: ["model-cache:/app/work/models"]
+    ports: ["127.0.0.1:8000:8000"]
+    depends_on:
+      postgres: {condition: service_healthy}
+      redis: {condition: service_healthy}
+      migrate: {condition: service_completed_successfully}
+  migrate:
+    build:
+      context: .
+      dockerfile: infra/docker/api.Dockerfile
+    command: [".venv/bin/alembic", "upgrade", "head"]
+    environment:
+      DATABASE_URL: postgresql://gigbid:${POSTGRES_PASSWORD:-gigbid_local_only}@postgres:5432/gigbid
+    depends_on:
+      postgres: {condition: service_healthy}
+  worker:
+    build:
+      context: .
+      dockerfile: infra/docker/worker.Dockerfile
+    environment:
+      REDIS_URL: redis://redis:6379/0
+      DATABASE_URL: postgresql://gigbid:${POSTGRES_PASSWORD:-gigbid_local_only}@postgres:5432/gigbid
+      QDRANT_URL: http://qdrant:6333
+      MODEL_CACHE_DIR: /app/work/models
+      HF_HOME: /app/work/models/hf
+    volumes: ["model-cache:/app/work/models"]
+    depends_on:
+      postgres: {condition: service_healthy}
+      redis: {condition: service_healthy}
+      migrate: {condition: service_completed_successfully}
+  postgres:
+    image: postgres:16.6-alpine
+    environment:
+      POSTGRES_USER: gigbid
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-gigbid_local_only}
+      POSTGRES_DB: gigbid
+    ports: ["127.0.0.1:5432:5432"]
+    volumes: ["postgres-data:/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gigbid -d gigbid"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+  redis:
+    image: redis:7.4.1-alpine
+    ports: ["127.0.0.1:6379:6379"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+  qdrant:
+    image: qdrant/qdrant:v1.20.0
+    ports: ["127.0.0.1:6333:6333"]
+    volumes: ["qdrant-data:/qdrant/storage"]
+  ollama:
+    image: ollama/ollama:0.5.7
+    ports: ["127.0.0.1:11434:11434"]
+    volumes: ["ollama-data:/root/.ollama"]
+  # Optional until an instructor-provided image/build context is available.
+  gigsim:
+    profiles: ["gigsim"]
+    image: ${GIGSIM_IMAGE:-gigsim-instructor-image-required}
+    ports: ["127.0.0.1:8080:8080"]
+  # Do not expose HTTP without bearer auth. These stdio containers are scaffold entry points.
+  portfolio-mcp:
+    profiles: ["mcp-stdio"]
+    build: {context: ., dockerfile: infra/docker/portfolio.Dockerfile}
+    stdin_open: true
+  marketplace-mcp:
+    profiles: ["mcp-stdio"]
+    build: {context: ., dockerfile: infra/docker/marketplace.Dockerfile}
+    stdin_open: true
+  workspace-mcp:
+    profiles: ["mcp-stdio"]
+    build: {context: ., dockerfile: infra/docker/workspace.Dockerfile}
+    stdin_open: true
+volumes:
+  model-cache:
+  postgres-data:
+  qdrant-data:
+  ollama-data:
