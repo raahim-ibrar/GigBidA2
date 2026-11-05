@@ -1,5 +1,6 @@
-import { ScaffoldScreen } from "@/components/ScaffoldScreen";
+import { JobDetail } from "@/components/JobDetail";
 
-export default function Page() {
-  return <ScaffoldScreen title="Job detail" description="Understand the opportunity and the evidence behind the recommendation." checklist={["Structured JobSpec and risk report", "Requirement-to-evidence matrix", "Price rationale and bid-or-skip reasoning"]} />;
+export default async function Page({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  return <><p className="eyebrow">Opportunity</p><h1>Job detail</h1><JobDetail id={id} /></>;
 }

@@ -1,5 +1,6 @@
-import { ScaffoldScreen } from "@/components/ScaffoldScreen";
+import { RunWorkspace } from "@/components/RunWorkspace";
 
-export default function Page() {
-  return <ScaffoldScreen title="Proposal studio" description="Review an evidence-grounded proposal before approving it." checklist={["Editable draft with claim evidence on hover", "Inline Critic and Compliance feedback", "Dry-run cost preview and durable approve/edit/reject actions"]} />;
+export default async function Page({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  return <><p className="eyebrow">Human review</p><h1>Proposal studio</h1><RunWorkspace id={id} /></>;
 }

@@ -101,8 +101,8 @@ class WritePreview(Contract):
 
 class ApprovalDecision(Contract):
     action: Literal["approve", "reject", "edit"]
-    reason: str | None = None
-    edited_text: str | None = None
+    reason: str | None = Field(default=None, max_length=1000)
+    edited_text: str | None = Field(default=None, max_length=20000)
 
     @model_validator(mode="after")
     def validate_action(self):

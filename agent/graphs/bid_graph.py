@@ -32,13 +32,13 @@ def decision_route(state):
     return "pricing" if state["decision"].action == "bid" else "stop"
 
 
-def critic_route(state):
+def critic_route(state, limit=2):
     if state["critique"].verdict == "pass":
         return "compliance"
     if state.get("user_edited"):
         # Keep the user's words. A failed critique needs another explicit user edit.
         return "attention"
-    return "revise" if state.get("revisions", 0) < 2 else "attention"
+    return "revise" if state.get("revisions", 0) < limit else "attention"
 
 
 def revise(state):
@@ -53,9 +53,11 @@ def stop(state):
     return {"status": state["decision"].action}
 
 
-def build_bid_graph(*, checkpointer, nodes=None):
+def build_bid_graph(*, checkpointer, nodes=None, max_revisions=2):
     if checkpointer is None:
         raise ValueError("Provide a Postgres checkpointer; tests may use InMemorySaver")
+    if not 0 <= max_revisions <= 2:
+        raise ValueError("Critic revisions must be between zero and two")
     nodes = nodes or {}
     graph = StateGraph(BidState)
     for name in BUSINESS_NODES:
@@ -82,7 +84,7 @@ def build_bid_graph(*, checkpointer, nodes=None):
         graph.add_edge(source, target)
     graph.add_conditional_edges(
         "critic",
-        critic_route,
+        lambda state: critic_route(state, max_revisions),
         {
             "compliance": "compliance",
             "revise": "revise",

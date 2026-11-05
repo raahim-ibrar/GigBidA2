@@ -1,15 +1,21 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Request
 
-from apps.api.auth.dependencies import require_user
+from apps.api.auth.dependencies import CurrentUser
+from apps.api.schemas.proposals import JobView, ManualJob
 
 router = APIRouter(tags=["jobs"])
 
 
-@router.get("/jobs", dependencies=[Depends(require_user)])
-def list_jobs():
-    raise NotImplementedError("Implement the tenant-scoped ranked job inbox")
+@router.get("/jobs", response_model=list[JobView])
+def list_jobs(user: CurrentUser, request: Request):
+    return request.app.state.runs.jobs(user.id)
 
 
-@router.get("/jobs/{job_id}", dependencies=[Depends(require_user)])
-def get_job(job_id: str):
-    raise NotImplementedError("Load JobSpec, risk, fit and evidence for this job")
+@router.post("/jobs", response_model=JobView, status_code=201)
+def create_job(body: ManualJob, user: CurrentUser, request: Request):
+    return request.app.state.runs.create_job(user.id, body)
+
+
+@router.get("/jobs/{job_id}", response_model=JobView)
+def get_job(job_id: str, user: CurrentUser, request: Request):
+    return request.app.state.runs.job(user.id, job_id)

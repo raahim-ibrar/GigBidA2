@@ -41,6 +41,10 @@ def sentences(text: str) -> list[str]:
     return [part.strip() for part in re.split(r"(?<=[.!?])\s+|\n+", text) if part.strip()]
 
 
+def normalized(text):
+    return re.sub(r"\s+", " ", text).strip().casefold()
+
+
 def draft_digest(draft: ProposalDraft) -> str:
     return hashlib.sha256(
         json.dumps(draft.model_dump(), sort_keys=True, ensure_ascii=False).encode()
@@ -230,6 +234,17 @@ class ProposalNodes:
             },
             ProposalDraft,
         )
+        # Recover only punctuation/case differences in an otherwise identical question.
+        # Never guess which unrelated question an answer belongs to.
+        questions = state["job"].screening_questions
+        canonical = {normalized(question).rstrip("?.!"): question for question in questions}
+        if len(canonical) == len(questions):
+            answers = {
+                canonical.get(normalized(key).rstrip("?.!"), key): value
+                for key, value in draft.screening_answers.items()
+            }
+            if len(answers) == len(draft.screening_answers):
+                draft = draft.model_copy(update={"screening_answers": answers})
         # Writer-provided claim labels are untrusted. Rebuild them from the actual text.
         return {
             "draft": draft.model_copy(update={"claims": []}),
@@ -267,13 +282,19 @@ class ProposalNodes:
             checked = by_index[index]
             ids = list(dict.fromkeys(item for item in checked.evidence_ids if item in valid))
             kind = "experience" if EXPERIENCE.search(text) else checked.kind
+            if kind == "experience" and checked.verdict == "supported" and not ids:
+                # Models sometimes omit IDs even for verbatim excerpts. Bind only an
+                # exact normalized substring of an actual source, never a free-text
+                # citation in the model's explanation or an inferred paraphrase.
+                ids = [item.id for item in evidence if normalized(text) in normalized(item.text)]
             supported = checked.verdict == "supported" and (kind != "experience" or bool(ids))
             if supported and kind == "experience":
                 cited = " ".join(item.text for item in evidence if item.id in ids)
                 # A conservative extra check: numerical experience/results must appear
                 # in cited text, even if the probabilistic verifier said 'supported'.
                 numbers = re.findall(r"\b\d+(?:[.,]\d+)*%?", text)
-                supported = all(number in cited for number in numbers)
+                cited_numbers = set(re.findall(r"\b\d+(?:[.,]\d+)*%?", cited))
+                supported = set(numbers) <= cited_numbers
             if not supported:
                 removed.append({"index": index, "reason": checked.reason})
                 continue

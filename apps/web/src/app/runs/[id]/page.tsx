@@ -1,5 +1,6 @@
-import { ScaffoldScreen } from "@/components/ScaffoldScreen";
+import { RunWorkspace } from "@/components/RunWorkspace";
 
-export default function Page() {
-  return <ScaffoldScreen title="Agent run viewer" description="Follow the work each agent performs on a job or conversation." checklist={["SSE node progress with reconnect", "Pending approvals survive page refresh", "Link each run to its full trace"]} />;
+export default async function Page({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  return <><p className="eyebrow">Trace</p><h1>Agent run viewer</h1><RunWorkspace id={id} trace /></>;
 }

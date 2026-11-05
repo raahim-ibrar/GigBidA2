@@ -27,7 +27,12 @@ def test_auth_denies_anonymous_reads_and_approvals(client):
 def test_openapi_exposes_approval_contract(client):
     schema = client.get("/openapi.json").json()
     assert "/api/approvals" in schema["paths"]
-    assert schema["components"]["schemas"]["ApproveRun"]["properties"]["action"]["enum"] == [
+    request = schema["paths"]["/api/approvals"]["post"]["requestBody"]["content"][
+        "application/json"
+    ]["schema"]
+    contract = schema["components"]["schemas"][request["$ref"].split("/")[-1]]
+    assert {"run_id", "version", "draft_digest", "action"} <= set(contract["required"])
+    assert contract["properties"]["action"]["enum"] == [
         "approve",
         "reject",
         "edit",

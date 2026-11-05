@@ -45,6 +45,7 @@ services:
       QDRANT_URL: http://qdrant:6333
       MODEL_CACHE_DIR: /app/work/models
       HF_HOME: /app/work/models/hf
+      OLLAMA_BASE_URL: ${WORKER_OLLAMA_BASE_URL:-http://host.docker.internal:11434}
     volumes: ["model-cache:/app/work/models"]
     depends_on:
       postgres: {condition: service_healthy}
@@ -76,8 +77,9 @@ services:
     ports: ["127.0.0.1:6333:6333"]
     volumes: ["qdrant-data:/qdrant/storage"]
   ollama:
-    image: ollama/ollama:0.5.7
-    ports: ["127.0.0.1:11434:11434"]
+    profiles: ["container-inference"]
+    image: ollama/ollama:0.40.4
+    ports: ["127.0.0.1:11435:11434"]
     volumes: ["ollama-data:/root/.ollama"]
   # Optional until an instructor-provided image/build context is available.
   gigsim:

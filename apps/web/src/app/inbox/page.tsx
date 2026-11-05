@@ -1,5 +1,5 @@
-import { ScaffoldScreen } from "@/components/ScaffoldScreen";
+import { JobInbox } from "@/components/JobInbox";
 
 export default function Page() {
-  return <ScaffoldScreen title="Job inbox" description="Review discovered opportunities and decide which jobs deserve attention." checklist={["Rank by fit with risk badges", "Show recommended action, price and Connects cost", "Filter, skip and open a job"]} />;
+  return <><p className="eyebrow">Opportunities</p><h1>Job inbox</h1><JobInbox /></>;
 }

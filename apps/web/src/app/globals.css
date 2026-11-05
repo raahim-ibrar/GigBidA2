@@ -26,6 +26,12 @@ button:disabled { opacity: .6; cursor: wait; } .text-button { background: none; 
 .source-row strong { overflow-wrap: anywhere; }.source-actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
 .source-status { font-weight: 700; }.source-status.ready { color: #195a56; }.source-status.failed { color: #9a2424; }
 .secondary-button { background: #edf4f1; color: #195a56; }
+.preserve-text { white-space: pre-wrap; overflow-wrap: anywhere; }
+.draft-panel { margin-top: 24px; }.draft-panel label { display: block; margin-top: 24px; margin-bottom: 10px; }
+.draft-panel textarea { margin-bottom: 12px; }.grounded-claim { position: relative; border-bottom: 1px dashed #195a56; cursor: help; }
+.evidence-popover { display: none; position: absolute; left: 0; top: 100%; z-index: 10; width: min(420px, 70vw); max-height: 260px; overflow: auto; background: #182636; color: white; padding: 18px; border-radius: 8px; font-size: 14px; box-shadow: 0 6px 22px #18263633; }
+.grounded-claim:hover .evidence-popover, .grounded-claim:focus .evidence-popover, .grounded-claim:focus-within .evidence-popover { display: block; }
+.run-events { max-height: 400px; overflow-y: auto; }
 @media(max-width: 1000px) { .portfolio-columns { grid-template-columns: 1fr; } .source-row { flex-direction: column; } }
 @media(max-width: 760px) { header { flex-wrap: wrap; padding: 18px; gap: 14px; } .badge { font-size: 11px; }
  .frame { grid-template-columns: 1fr; } nav { flex-direction: row; overflow-x: auto; padding: 10px; border-bottom: 1px solid #dce3e8; }

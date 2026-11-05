@@ -24,52 +24,32 @@
         "title": "Account",
         "type": "object"
       },
-      "ApproveRun": {
+      "BidDecision": {
         "additionalProperties": false,
         "properties": {
           "action": {
             "enum": [
-              "approve",
-              "reject",
-              "edit"
+              "skip",
+              "watch",
+              "bid"
             ],
             "title": "Action",
             "type": "string"
           },
-          "edited_text": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Edited Text"
-          },
-          "reason": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Reason"
-          },
-          "thread_id": {
-            "maxLength": 200,
-            "minLength": 1,
-            "title": "Thread Id",
-            "type": "string"
+          "reasons": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "title": "Reasons",
+            "type": "array"
           }
         },
         "required": [
           "action",
-          "thread_id"
+          "reasons"
         ],
-        "title": "ApproveRun",
+        "title": "BidDecision",
         "type": "object"
       },
       "Body_upload_document_api_portfolio_documents_post": {
@@ -89,6 +69,99 @@
           "metadata"
         ],
         "title": "Body_upload_document_api_portfolio_documents_post",
+        "type": "object"
+      },
+      "Claim": {
+        "additionalProperties": false,
+        "properties": {
+          "evidence_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Evidence Ids",
+            "type": "array"
+          },
+          "kind": {
+            "default": "experience",
+            "enum": [
+              "experience",
+              "non_experience"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          },
+          "text": {
+            "minLength": 1,
+            "title": "Text",
+            "type": "string"
+          },
+          "verdict": {
+            "enum": [
+              "supported",
+              "partly_supported",
+              "unsupported"
+            ],
+            "title": "Verdict",
+            "type": "string"
+          }
+        },
+        "required": [
+          "text",
+          "verdict"
+        ],
+        "title": "Claim",
+        "type": "object"
+      },
+      "ComplianceVerdict": {
+        "additionalProperties": false,
+        "properties": {
+          "allowed": {
+            "title": "Allowed",
+            "type": "boolean"
+          },
+          "reasons": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Reasons",
+            "type": "array"
+          }
+        },
+        "required": [
+          "allowed"
+        ],
+        "title": "ComplianceVerdict",
+        "type": "object"
+      },
+      "CreateRun": {
+        "additionalProperties": false,
+        "properties": {
+          "idempotency_key": {
+            "format": "uuid",
+            "title": "Idempotency Key",
+            "type": "string"
+          },
+          "job_id": {
+            "format": "uuid",
+            "title": "Job Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "job_id"
+        ],
+        "title": "CreateRun",
         "type": "object"
       },
       "Credentials": {
@@ -112,6 +185,31 @@
           "password"
         ],
         "title": "Credentials",
+        "type": "object"
+      },
+      "Critique": {
+        "additionalProperties": false,
+        "properties": {
+          "reasons": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Reasons",
+            "type": "array"
+          },
+          "verdict": {
+            "enum": [
+              "pass",
+              "revise"
+            ],
+            "title": "Verdict",
+            "type": "string"
+          }
+        },
+        "required": [
+          "verdict"
+        ],
+        "title": "Critique",
         "type": "object"
       },
       "DocumentMetadata": {
@@ -271,22 +369,6 @@
         "title": "DocumentView",
         "type": "object"
       },
-      "EditDraft": {
-        "additionalProperties": false,
-        "properties": {
-          "text": {
-            "maxLength": 20000,
-            "minLength": 1,
-            "title": "Text",
-            "type": "string"
-          }
-        },
-        "required": [
-          "text"
-        ],
-        "title": "EditDraft",
-        "type": "object"
-      },
       "EvidenceHit": {
         "additionalProperties": false,
         "properties": {
@@ -426,6 +508,40 @@
         "title": "EvidenceItem",
         "type": "object"
       },
+      "FitReport": {
+        "additionalProperties": false,
+        "properties": {
+          "gaps": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Gaps",
+            "type": "array"
+          },
+          "requirement_evidence": {
+            "additionalProperties": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "title": "Requirement Evidence",
+            "type": "object"
+          },
+          "score": {
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Score",
+            "type": "number"
+          }
+        },
+        "required": [
+          "score",
+          "requirement_evidence"
+        ],
+        "title": "FitReport",
+        "type": "object"
+      },
       "HTTPValidationError": {
         "properties": {
           "detail": {
@@ -437,6 +553,207 @@
           }
         },
         "title": "HTTPValidationError",
+        "type": "object"
+      },
+      "JobSpec": {
+        "additionalProperties": false,
+        "properties": {
+          "billing_type": {
+            "default": "unknown",
+            "enum": [
+              "hourly",
+              "fixed",
+              "unknown"
+            ],
+            "title": "Billing Type",
+            "type": "string"
+          },
+          "budget_max": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Budget Max"
+          },
+          "budget_min": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Budget Min"
+          },
+          "deliverables": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Deliverables",
+            "type": "array"
+          },
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "requirements": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Requirements",
+            "type": "array"
+          },
+          "screening_questions": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Screening Questions",
+            "type": "array"
+          },
+          "timeline": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Timeline"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "job_id",
+          "title",
+          "requirements"
+        ],
+        "title": "JobSpec",
+        "type": "object"
+      },
+      "JobView": {
+        "additionalProperties": false,
+        "properties": {
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "raw": {
+            "additionalProperties": true,
+            "title": "Raw",
+            "type": "object"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "raw",
+          "created_at"
+        ],
+        "title": "JobView",
+        "type": "object"
+      },
+      "LocalDraftView": {
+        "additionalProperties": false,
+        "properties": {
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "draft": {
+            "additionalProperties": true,
+            "title": "Draft",
+            "type": "object"
+          },
+          "run_id": {
+            "title": "Run Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "run_id",
+          "draft",
+          "created_at"
+        ],
+        "title": "LocalDraftView",
+        "type": "object"
+      },
+      "ManualJob": {
+        "additionalProperties": false,
+        "properties": {
+          "billing_type": {
+            "enum": [
+              "hourly",
+              "fixed"
+            ],
+            "title": "Billing Type",
+            "type": "string"
+          },
+          "budget_max": {
+            "exclusiveMinimum": 0.0,
+            "maximum": 1000000.0,
+            "title": "Budget Max",
+            "type": "number"
+          },
+          "budget_min": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "maximum": 1000000.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Budget Min"
+          },
+          "currency": {
+            "const": "USD",
+            "default": "USD",
+            "title": "Currency",
+            "type": "string"
+          },
+          "description": {
+            "maxLength": 12000,
+            "minLength": 1,
+            "title": "Description",
+            "type": "string"
+          },
+          "title": {
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "billing_type",
+          "budget_max"
+        ],
+        "title": "ManualJob",
         "type": "object"
       },
       "PortfolioSearch": {
@@ -479,6 +796,55 @@
           "query"
         ],
         "title": "PortfolioSearch",
+        "type": "object"
+      },
+      "PriceQuote": {
+        "additionalProperties": false,
+        "properties": {
+          "amount": {
+            "exclusiveMinimum": 0.0,
+            "title": "Amount",
+            "type": "number"
+          },
+          "billing_type": {
+            "default": "unknown",
+            "enum": [
+              "hourly",
+              "fixed",
+              "unknown"
+            ],
+            "title": "Billing Type",
+            "type": "string"
+          },
+          "connects": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Connects"
+          },
+          "currency": {
+            "const": "USD",
+            "default": "USD",
+            "title": "Currency",
+            "type": "string"
+          },
+          "rationale": {
+            "minLength": 1,
+            "title": "Rationale",
+            "type": "string"
+          }
+        },
+        "required": [
+          "amount",
+          "rationale"
+        ],
+        "title": "PriceQuote",
         "type": "object"
       },
       "Profile": {
@@ -578,6 +944,207 @@
         "title": "ProfileUpdate",
         "type": "object"
       },
+      "ProposalDraft": {
+        "additionalProperties": false,
+        "properties": {
+          "claims": {
+            "items": {
+              "$ref": "#/components/schemas/Claim"
+            },
+            "title": "Claims",
+            "type": "array"
+          },
+          "screening_answers": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Screening Answers",
+            "type": "object"
+          },
+          "text": {
+            "maxLength": 20000,
+            "minLength": 1,
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "text"
+        ],
+        "title": "ProposalDraft",
+        "type": "object"
+      },
+      "ReviewRun": {
+        "additionalProperties": false,
+        "properties": {
+          "action": {
+            "enum": [
+              "approve",
+              "reject",
+              "edit"
+            ],
+            "title": "Action",
+            "type": "string"
+          },
+          "draft_digest": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Draft Digest",
+            "type": "string"
+          },
+          "edited_text": {
+            "anyOf": [
+              {
+                "maxLength": 20000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Edited Text"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "maxLength": 1000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          },
+          "run_id": {
+            "format": "uuid",
+            "title": "Run Id",
+            "type": "string"
+          },
+          "version": {
+            "minimum": 0.0,
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "action",
+          "run_id",
+          "version",
+          "draft_digest"
+        ],
+        "title": "ReviewRun",
+        "type": "object"
+      },
+      "RiskReport": {
+        "additionalProperties": false,
+        "properties": {
+          "flags": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Flags",
+            "type": "array"
+          },
+          "reasons": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Reasons",
+            "type": "array"
+          },
+          "score": {
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Score",
+            "type": "number"
+          }
+        },
+        "required": [
+          "score"
+        ],
+        "title": "RiskReport",
+        "type": "object"
+      },
+      "RunView": {
+        "additionalProperties": false,
+        "properties": {
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "review": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Review"
+          },
+          "snapshot": {
+            "$ref": "#/components/schemas/SnapshotView"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "steps": {
+            "title": "Steps",
+            "type": "integer"
+          },
+          "tokens": {
+            "title": "Tokens",
+            "type": "integer"
+          },
+          "updated_at": {
+            "format": "date-time",
+            "title": "Updated At",
+            "type": "string"
+          },
+          "version": {
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "job_id",
+          "status",
+          "snapshot",
+          "review",
+          "version",
+          "tokens",
+          "steps",
+          "error",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "RunView",
+        "type": "object"
+      },
       "SearchResult": {
         "additionalProperties": false,
         "properties": {
@@ -630,7 +1197,7 @@
             "type": "array"
           },
           "message": {
-            "default": "Accounts, profiles and portfolio evidence search are working. Proposal agents are next.",
+            "default": "Accounts, portfolios and durable job runs are available. Marketplace connection is pending.",
             "title": "Message",
             "type": "string"
           },
@@ -651,20 +1218,137 @@
         "title": "SkeletonStatus",
         "type": "object"
       },
-      "StartRun": {
-        "additionalProperties": false,
+      "SnapshotView": {
         "properties": {
-          "job_id": {
-            "maxLength": 200,
-            "minLength": 1,
-            "title": "Job Id",
-            "type": "string"
+          "compliance": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ComplianceVerdict"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "critique": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Critique"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "decision": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BidDecision"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "draft": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ProposalDraft"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "events": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Events",
+            "type": "array"
+          },
+          "evidence": {
+            "items": {
+              "$ref": "#/components/schemas/EvidenceItem"
+            },
+            "title": "Evidence",
+            "type": "array"
+          },
+          "fit": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/FitReport"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "job": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/JobSpec"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "preview": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/WritePreview"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "price": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PriceQuote"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "risk": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RiskReport"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Status"
+          },
+          "verification": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Verification"
           }
         },
-        "required": [
-          "job_id"
-        ],
-        "title": "StartRun",
+        "title": "SnapshotView",
         "type": "object"
       },
       "ValidationError": {
@@ -706,6 +1390,44 @@
         ],
         "title": "ValidationError",
         "type": "object"
+      },
+      "WritePreview": {
+        "additionalProperties": false,
+        "properties": {
+          "arguments": {
+            "additionalProperties": true,
+            "title": "Arguments",
+            "type": "object"
+          },
+          "connects_cost": {
+            "minimum": 0.0,
+            "title": "Connects Cost",
+            "type": "integer"
+          },
+          "idempotency_key": {
+            "maxLength": 200,
+            "minLength": 8,
+            "title": "Idempotency Key",
+            "type": "string"
+          },
+          "tool": {
+            "enum": [
+              "submit_proposal",
+              "send_message",
+              "save_local_draft"
+            ],
+            "title": "Tool",
+            "type": "string"
+          }
+        },
+        "required": [
+          "tool",
+          "arguments",
+          "connects_cost",
+          "idempotency_key"
+        ],
+        "title": "WritePreview",
+        "type": "object"
       }
     }
   },
@@ -741,17 +1463,19 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ApproveRun"
+                "$ref": "#/components/schemas/ReviewRun"
               }
             }
           },
           "required": true
         },
         "responses": {
-          "200": {
+          "202": {
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "$ref": "#/components/schemas/RunView"
+                }
               }
             },
             "description": "Successful Response"
@@ -897,13 +1621,58 @@
           "200": {
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/JobView"
+                  },
+                  "title": "Response List Jobs Api Jobs Get",
+                  "type": "array"
+                }
               }
             },
             "description": "Successful Response"
           }
         },
         "summary": "List Jobs",
+        "tags": [
+          "jobs"
+        ]
+      },
+      "post": {
+        "operationId": "create_job_api_jobs_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ManualJob"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create Job",
         "tags": [
           "jobs"
         ]
@@ -927,7 +1696,9 @@
           "200": {
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "$ref": "#/components/schemas/JobView"
+                }
               }
             },
             "description": "Successful Response"
@@ -1252,16 +2023,16 @@
         ]
       }
     },
-    "/api/proposals/{proposal_id}": {
+    "/api/proposals/{run_id}": {
       "get": {
-        "operationId": "get_proposal_api_proposals__proposal_id__get",
+        "operationId": "get_proposal_api_proposals__run_id__get",
         "parameters": [
           {
             "in": "path",
-            "name": "proposal_id",
+            "name": "run_id",
             "required": true,
             "schema": {
-              "title": "Proposal Id",
+              "title": "Run Id",
               "type": "string"
             }
           }
@@ -1270,7 +2041,9 @@
           "200": {
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "$ref": "#/components/schemas/LocalDraftView"
+                }
               }
             },
             "description": "Successful Response"
@@ -1290,35 +2063,40 @@
         "tags": [
           "proposals"
         ]
-      },
-      "patch": {
-        "operationId": "edit_proposal_api_proposals__proposal_id__patch",
+      }
+    },
+    "/api/runs": {
+      "get": {
+        "operationId": "list_runs_api_runs_get",
         "parameters": [
           {
-            "in": "path",
-            "name": "proposal_id",
-            "required": true,
+            "in": "query",
+            "name": "job_id",
+            "required": false,
             "schema": {
-              "title": "Proposal Id",
-              "type": "string"
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Job Id"
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/EditDraft"
-              }
-            }
-          },
-          "required": true
-        },
         "responses": {
           "200": {
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/RunView"
+                  },
+                  "title": "Response List Runs Api Runs Get",
+                  "type": "array"
+                }
               }
             },
             "description": "Successful Response"
@@ -1334,30 +2112,30 @@
             "description": "Validation Error"
           }
         },
-        "summary": "Edit Proposal",
+        "summary": "List Runs",
         "tags": [
-          "proposals"
+          "runs"
         ]
-      }
-    },
-    "/api/runs": {
+      },
       "post": {
         "operationId": "start_run_api_runs_post",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/StartRun"
+                "$ref": "#/components/schemas/CreateRun"
               }
             }
           },
           "required": true
         },
         "responses": {
-          "200": {
+          "202": {
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "$ref": "#/components/schemas/RunView"
+                }
               }
             },
             "description": "Successful Response"
@@ -1379,6 +2157,48 @@
         ]
       }
     },
+    "/api/runs/{run_id}": {
+      "get": {
+        "operationId": "get_run_api_runs__run_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Run",
+        "tags": [
+          "runs"
+        ]
+      }
+    },
     "/api/runs/{run_id}/events": {
       "get": {
         "operationId": "run_events_api_runs__run_id__events_get",
@@ -1390,6 +2210,33 @@
             "schema": {
               "title": "Run Id",
               "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "after",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "After",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "header",
+            "name": "last-event-id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Last-Event-Id"
             }
           }
         ],

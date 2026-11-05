@@ -9,6 +9,8 @@ from arq.connections import RedisSettings
 from sqlalchemy import and_, or_, select
 from sqlalchemy.orm import Session
 
+from agent.run_store import RunStore
+from agent.runtime import process_bid
 from apps.api.database import make_engine
 from apps.api.models import PortfolioDocument, VectorCleanup, utcnow
 from apps.api.settings import Settings
@@ -20,6 +22,7 @@ async def startup(ctx):
     settings = Settings()
     ctx["engine"] = make_engine(settings.database_url)
     ctx["portfolio"] = build_portfolio(ctx["engine"], settings)
+    ctx["settings"] = settings
 
 
 async def shutdown(ctx):
@@ -73,8 +76,13 @@ async def reconcile_portfolio(ctx):
         await ctx["redis"].enqueue_job("cleanup_portfolio", tenant, id, _job_id=f"cleanup:{id}")
 
 
-async def run_bid(ctx, tenant_id: str, job_id: str):
-    raise NotImplementedError("Load Postgres checkpointed graph and process job idempotently")
+async def run_bid(ctx, tenant_id: str, run_id: str):
+    return await process_bid(ctx["engine"], ctx["settings"], tenant_id, run_id)
+
+
+async def reconcile_runs(ctx):
+    for tenant, run_id in await asyncio.to_thread(RunStore(ctx["engine"]).pending):
+        await ctx["redis"].enqueue_job("run_bid", tenant, run_id, _job_id=f"bid:{run_id}")
 
 
 async def run_conversation(ctx, tenant_id: str, conversation_id: str):
@@ -84,7 +92,10 @@ async def run_conversation(ctx, tenant_id: str, conversation_id: str):
 class WorkerSettings:
     handle_signals = os.name != "nt"
     functions = [index_portfolio, cleanup_portfolio, run_bid, run_conversation]
-    cron_jobs = [cron(reconcile_portfolio, second={0, 30}, run_at_startup=True)]
+    cron_jobs = [
+        cron(reconcile_portfolio, second={0, 30}, run_at_startup=True),
+        cron(reconcile_runs, second={10, 40}, run_at_startup=True),
+    ]
     on_startup = startup
     on_shutdown = shutdown
     redis_settings = RedisSettings.from_dsn(os.getenv("REDIS_URL", "redis://127.0.0.1:6379/0"))

@@ -6,6 +6,7 @@ import sys
 import pytest
 
 from agent.mcp_client import build_client
+from agent.portfolio_client import PortfolioMCP
 from apps.api.settings import Settings
 from rag.contracts import DocumentMetadata
 from rag.runtime import build_portfolio
@@ -55,6 +56,8 @@ async def test_standalone_portfolio_mcp_retrieves_real_indexed_evidence(client, 
             )
             assert not result.isError
             assert result.structuredContent["items"][0]["document_id"] == doc.id
+            item = result.structuredContent["items"][0]
+            assert (await PortfolioMCP(session).read(item["id"])).id == item["id"]
     finally:
         service.delete_document(user, doc.id)
         service.cleanup_vectors(user, doc.id)

@@ -6,7 +6,7 @@ Checked on 5 November 2026. These checks establish working behavior, not graded 
 
 - Full Python suite passed with Postgres plus the opt-in real-model tests enabled: 59 tests.
 - Real runtime checks used the CPU BGE embedding model, MiniLM cross-encoder, Qdrant, Redis/Arq and a separate stdio MCP process. Test sources/accounts were development fixtures and were cleaned up.
-- Browser checks passed for account/profile persistence, navigation, and portfolio upload → search → deletion. Five full assignment flows remain explicitly pending.
+- At that milestone, browser checks covered account/profile persistence, navigation and portfolio upload → search → deletion. Later proposal checks are recorded below.
 - TypeScript checks, the frontend production build, Python lint, required-path checks and Compose configuration validation passed.
 - The Linux worker and migration images built successfully and the worker started against the local Postgres/Redis/Qdrant services.
 - A live API upload was indexed by the Docker worker, retrieved through the API and standalone MCP, then deleted. Its development account was removed; the user's account was untouched.
@@ -15,15 +15,25 @@ Run the automated runtime checks with `GIGBID_TEST_DATABASE_URL` pointing to a l
 
 ## Still unverified or unimplemented
 
-No evidence yet establishes proposal-agent quality, claim entailment, durable proposal approval/execution, marketplace interoperability, memory learning, grading-set performance, live Upwork OAuth, production security or public deployment. The instructor's GigSim/corpora/policy/dev labels have not been supplied. No simulated reply/hire rates or research tables have been invented.
+No evidence yet establishes proposal-agent quality, calibrated claim entailment, marketplace interoperability/execution, memory learning, grading-set performance, live Upwork OAuth, production security or public deployment. The instructor's GigSim/corpora/policy/dev labels have not been supplied. No simulated reply/hire rates or research tables have been invented.
 
 ## Proposal-node development checks
 
 - Full Python suite after adding bid business nodes: **76 passed, 1 skipped** with Postgres and real retrieval models enabled. The skipped test requires the separate `GIGBID_REAL_AGENTS=1` flag.
 - That opt-in Ollama smoke passed separately against the configured `qwen3.5:4b` model, returning a valid Analyst handoff with measured input/output token counts. This is an API integration check, not a proposal-quality or model-comparison result.
 - Deterministic proposal tests exercise the implemented nodes, manual-job identity binding, rate floors, rejection of invented evidence IDs, injected-instruction risk flags, sentence checks across cover/screening answers, unsupported numerical claims, stale sources, draft digests, fresh approval after edits and a host-injected local-save fixture.
-- HTTP transport fixtures exercise structured schemas, usage accounting, concurrent reservations, resumed usage limits and bounded fallback. The current budget counter is per runtime instance; database restoration is pending with the worker host.
+- HTTP transport fixtures exercise structured schemas, usage accounting, concurrent reservations, resumed usage limits and bounded fallback. Durable accounting was added in the later worker stage below.
 - The Portfolio MCP reader used by the new nodes passed against the real in-memory MCP protocol and tenant-scoped retrieval service. The full suite also retained its separate real stdio subprocess check.
-- No complete proposal has yet traversed real inference, durable checkpoints, API and browser review. The injected local save in unit tests does not establish transactional or marketplace execution.
+- At this earlier node milestone, local saving was an injected fixture. The later checks below establish actual SQL execution and real inference separately; external marketplace execution remains unverified.
 
 Run the local Analyst smoke with `GIGBID_REAL_AGENTS=1 uv run pytest tests/integration/test_agent_models.py -q` while Ollama and the configured model are available.
+
+## Durable local-proposal stage
+
+- **93 Python tests passed** with isolated Postgres schemas, `GIGBID_REAL_MODELS=1` and `GIGBID_REAL_AGENTS=1`. Coverage includes real standalone MCP evidence re-reads, durable pause/edit/resume, cancelled workers, stale interrupt commands, concurrent-worker exclusion, source invalidation, SQL token/step budgets, competing approvals and recovery after local commit but before checkpoint.
+- **7 Chromium browser tests passed; 1 marketplace-outage flow remains pending.** Proposal tests exercise actual API/Postgres/saver paths with deterministic role/retrieval fixtures. They prove UI/control behavior, not LLM correctness.
+- TypeScript checking and the production build passed with the new inbox, job detail, run list, proposal review/evidence hover and activity screens. Python lint, required paths, Compose config and diff checks passed.
+- Rebuilt Linux worker/migration images started successfully. The worker reached the installed native Ollama through Docker's host endpoint.
+- A disposable live API account uploaded a development source, which the Linux worker indexed. A manual job traversed real Ollama roles and the standalone Portfolio MCP, paused for a Postgres review, then resumed after an API approval and saved a local artifact. Its source vectors, graph checkpoints and account were cleaned up; the user's account was untouched.
+- Real inference exposed omitted citation IDs even for supported exact excerpts. The prompt now requires IDs, and a strict fallback binds only exact normalized source substrings. Uncited paraphrases remain unsupported. Complete numerical tokens are checked rather than matching substrings such as `100` inside `1000`.
+- The live smoke establishes connectivity/recovery mechanics only. Draft completeness, relevance, judge reliability, budgets and latency still need the required measured experiments. No marketplace proposal was submitted.

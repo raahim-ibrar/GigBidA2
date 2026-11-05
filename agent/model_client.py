@@ -31,6 +31,8 @@ class OllamaModels:
         record=None,
         transport=None,
         tokens_used: int = 0,
+        reserve_budget=None,
+        settle_budget=None,
     ):
         self.base_url, self.config = base_url.rstrip("/"), config
         self.record: Callable[[dict], Awaitable[None]] | None = record
@@ -38,6 +40,9 @@ class OllamaModels:
         self.transport = transport
         self._reserved = 0
         self._lock = asyncio.Lock()
+        if (reserve_budget is None) != (settle_budget is None):
+            raise ValueError("Durable reservation and settlement hooks must be supplied together")
+        self.reserve_budget, self.settle_budget = reserve_budget, settle_budget
 
     async def complete(self, role: str, payload: dict, schema: type[T]) -> T:
         body = json.dumps(payload, ensure_ascii=False)
@@ -65,6 +70,8 @@ class OllamaModels:
                     > self.config.budgets.max_tokens_per_thread
                 ):
                     raise BudgetExceeded("The run's token budget has been reached")
+                if self.reserve_budget:
+                    await self.reserve_budget(reserve)
                 self._reserved += reserve
             started = time.monotonic()
             charged = reserve
@@ -125,4 +132,6 @@ class OllamaModels:
                 async with self._lock:
                     self.tokens += charged
                     self._reserved -= reserve
+                    if self.settle_budget:
+                        await self.settle_budget(reserve, charged)
         raise ModelUnavailable("No model is configured")

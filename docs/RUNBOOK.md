@@ -1,6 +1,6 @@
 # Runbook
 
-Stage: account/profile foundation; no public deployment exists.
+Stage: accounts, portfolio retrieval and durable local proposal review; no public deployment exists.
 
 ## Local development
 
@@ -24,7 +24,13 @@ Equivalent modules exist for Marketplace and Workspace. They currently register 
 
 Use `docker compose --project-directory . -f infra/docker-compose.yml up --build` from the repository root. The explicit project directory makes the build context the repository root. Docker Desktop must be running.
 
-Default services: web, API, Arq worker, Postgres, Redis, Qdrant and Ollama. Worker jobs are unimplemented. Ollama starts without downloading models. Default container tags are pinned bootstrap versions; review supported tags and security updates before public deployment.
+Default services: web, API, Arq worker, Postgres, Redis and Qdrant. The worker handles indexing and manual-job proposals. It starts a tenant-bound Portfolio MCP subprocess per run segment and calls native Ollama using `WORKER_OLLAMA_BASE_URL` (default `http://host.docker.internal:11434`). Pull the models in `agent/config.yaml` into native Ollama before running proposals.
+
+For container inference, enable `--profile container-inference`, pull the configured models inside that service and set `WORKER_OLLAMA_BASE_URL=http://ollama:11434`. The host endpoint is `http://localhost:11435`. This optional CPU configuration has not been performance-tested or selected for deployment.
+
+Jobs and review decisions are saved before queueing. Pending-run scans recover queued/running work. Worker ownership uses a Postgres advisory lock and fenced metadata updates. An approved local draft is one SQL transaction with source-revision checks and a unique artifact per run. This does not establish exactly-once external marketplace behavior. See ADR 0003 for crash boundaries and durable token reservations.
+
+Review at `/studio/<run ID>` and follow redacted progress at `/runs/<run ID>`. A run marked `needs_attention` has a saved explanation; correct its evidence/input/services before starting a new run. Existing incomplete runs are not silently restarted with a fresh token budget.
 
 Optional profile `gigsim` requires `GIGSIM_IMAGE` to identify the real supplied simulator image, with its actual configuration added after inspection. The placeholder image name is not a simulator implementation.
 
@@ -34,7 +40,7 @@ Do not run destructive volume resets when investigating failures. Postgres data 
 
 ## Future production acceptance
 
-- Implement auth and seed a reviewer account; share its credentials privately.
+- Complete production auth controls and create a reviewer account; share its credentials privately.
 - Use real secrets and encrypted OAuth tokens, tenant checks and log redaction.
 - Give each run a trace ID across API, worker, graph, MCP and audit.
 - Queue work while the marketplace is down; show the reason and recover without duplicate effects.

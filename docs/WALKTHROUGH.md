@@ -4,16 +4,16 @@ The code will be written with AI assistance. Your job is to understand the decis
 
 ## One job, from start to finish
 
-1. Scout asks the marketplace for jobs. It checks duplicates so a job is not processed twice.
+1. Currently you enter a job manually. It is saved with a source fingerprint, so repeating the same entry does not create another job. Marketplace scouting awaits the supplied connector assets.
 2. Three branches inspect the same raw job concurrently. Analyst extracts requirements; Risk checks scams and client history; Matcher searches the portfolio for evidence. Matcher cannot wait for Analyst output while they are parallel; it derives its own search queries from the post.
 3. Decision uses those results to choose skip, watch or bid. Pricing estimates a bid and checks the configured budget.
 4. Writer creates a proposal from actual portfolio evidence. Verifier checks its claims. Critic asks for improvements, with a maximum of two rewrites.
-5. Compliance checks platform rules. A failed check blocks progress.
-6. The marketplace produces a dry-run preview showing the exact outgoing action and Connects cost.
+5. Local draft checks block contact details, guarantees and other configured risks. Full platform compliance awaits the instructor policy pack.
+6. The current preview says exactly what approval does: save a local draft and spend zero Connects. The actual application cost is unknown, and nothing is sent to a marketplace.
 7. LangGraph pauses at an interrupt. The user reviews, approves, edits or rejects.
-8. A later executor will carry out an approved action using an idempotency key. A repeated delivery must return the prior result, not spend twice.
+8. The local executor rechecks the approval and current source evidence, then saves one artifact in Postgres. Repeating the operation returns that artifact. External submission still needs a tested provider adapter and its own retry/reconciliation behavior.
 
-The graph routing and interrupt mechanism exist. Portfolio uploads, source revisions and evidence retrieval now work, including the real Portfolio MCP server. Proposal agents and external action execution still need implementation. Graph unit tests currently use explicitly labelled fixture nodes to check routing.
+The worker now runs proposal business nodes and stores checkpoints in Postgres. Edits go back through verification and need a new review. Tests use labelled deterministic responses to prove control/recovery behavior; real-model checks are separate and do not establish proposal quality or grading results.
 
 ## What each folder means
 
@@ -37,7 +37,7 @@ The graph routing and interrupt mechanism exist. Portfolio uploads, source revis
 
 **LangGraph:** the workflow engine. Nodes perform work, edges define what follows, and state carries structured results between them.
 
-**Checkpoint:** saved workflow state. Postgres checkpoints will let an approval survive a process restart. The skeleton's unit tests use memory checkpoints, which do not survive restarts.
+**Checkpoint:** saved workflow state. The worker uses Postgres checkpoints so a pending review survives a restart. Unit tests may use memory; separate integration tests use real Postgres and recreate the runtime between run segments.
 
 **Idempotency:** retrying an operation has the same external effect as doing it once. A checkpoint alone does not make marketplace writes idempotent.
 
@@ -47,6 +47,6 @@ The graph routing and interrupt mechanism exist. Portfolio uploads, source revis
 
 ## First things to read in the code
 
-Read `agent/handoffs.py`, then `agent/graphs/bid_graph.py`, then its unit tests. Watch how approval pauses and how reject/edit cannot reach the executor. Next read `agent/marketplace_port.py` and one MCP server to see the tool boundary.
+Read `agent/handoffs.py`, then `agent/graphs/bid_graph.py`, then its unit tests. Watch how approval pauses, rejection stops and edits return through verification. Read `agent/runtime.py` for checkpoint/resume handling and `agent/run_store.py` for the approval/local-save transaction. Next read `agent/marketplace_port.py` and one MCP server to see the tool boundary.
 
 After each implemented feature, explain: what enters, what leaves, where it is stored, which tools it can access, what can fail, and which test proves the important behavior.

@@ -134,3 +134,27 @@ def test_pii_redaction_is_recursive_and_does_not_mutate_input():
     assert masked["nested"][0]["note"] == "[EMAIL] [PHONE]"
     assert masked["nested"][0]["password"] == "[REDACTED]"
     assert original["authorization"] == "Bearer secret"
+
+
+async def test_durable_reservations_remain_charged_when_inference_is_cancelled():
+    charges = []
+
+    async def reserve(amount):
+        charges.append(amount)
+
+    async def settle(reserved, charged):
+        charges.append(charged - reserved)
+
+    async def handler(request):
+        raise asyncio.CancelledError()
+
+    models = OllamaModels(
+        "http://fixture",
+        AgentConfig(),
+        reserve_budget=reserve,
+        settle_budget=settle,
+        transport=httpx.MockTransport(handler),
+    )
+    with pytest.raises(asyncio.CancelledError):
+        await models.complete("risk", {}, RiskReport)
+    assert sum(charges) == models.tokens > 0 and models._reserved == 0

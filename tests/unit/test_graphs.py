@@ -138,3 +138,10 @@ async def test_conversation_has_an_approval_interrupt():
 def test_checkpointer_cannot_be_omitted():
     with pytest.raises(ValueError):
         build_bid_graph(checkpointer=None)
+
+
+async def test_configured_zero_critic_revisions_stops_after_first_draft():
+    nodes, calls = fixtures(critic="revise")
+    graph = build_bid_graph(checkpointer=InMemorySaver(), nodes=nodes, max_revisions=0)
+    result = await graph.ainvoke({"events": []}, config())
+    assert result["status"] == "needs_attention" and calls.count("writer") == 1

@@ -6,6 +6,8 @@ from fastapi.responses import JSONResponse
 from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 
+from agent.proposal_nodes import ReviewRequired
+from agent.run_store import RunConflict, RunNotFound, RunStore
 from apps.api.auth.security import AuthLimiter
 from apps.api.database import make_engine
 from apps.api.routers import (
@@ -22,7 +24,7 @@ from apps.api.routers import (
 from apps.api.schemas.status import SkeletonStatus
 from apps.api.settings import Settings
 from rag.runtime import build_portfolio
-from worker.queue import enqueue_portfolio
+from worker.queue import enqueue_bid, enqueue_portfolio
 
 
 def create_app(
@@ -42,17 +44,23 @@ def create_app(
     app.state.engine = database
     app.state.auth_limiter = AuthLimiter()
     app.state.portfolio = portfolio_service or build_portfolio(database, settings)
+    app.state.runs = RunStore(database)
 
     async def queue(tenant, document, revision):
         return await enqueue_portfolio(settings, tenant, document, revision)
 
     app.state.enqueue_portfolio = enqueue or queue
+
+    async def queue_run(tenant, run_id):
+        return await enqueue_bid(settings, tenant, run_id)
+
+    app.state.enqueue_run = queue_run
     app.add_middleware(
         CORSMiddleware,
         allow_origins=[settings.web_origin],
         allow_credentials=True,
         allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE"],
-        allow_headers=["Content-Type", "Authorization", "X-CSRF-Token"],
+        allow_headers=["Content-Type", "Authorization", "X-CSRF-Token", "Last-Event-ID"],
     )
 
     @app.exception_handler(NotImplementedError)
@@ -62,6 +70,15 @@ def create_app(
     @app.exception_handler(SQLAlchemyError)
     async def database_unavailable(request: Request, exc: SQLAlchemyError):
         return JSONResponse(status_code=503, content={"detail": "Database operation unavailable"})
+
+    @app.exception_handler(RunNotFound)
+    async def run_not_found(request: Request, exc: RunNotFound):
+        return JSONResponse(status_code=404, content={"detail": str(exc)})
+
+    @app.exception_handler(RunConflict)
+    @app.exception_handler(ReviewRequired)
+    async def run_conflict(request: Request, exc):
+        return JSONResponse(status_code=409, content={"detail": str(exc)})
 
     @app.get("/health/live", tags=["health"])
     def liveness() -> dict[str, str]:
@@ -73,6 +90,7 @@ def create_app(
         try:
             with database.connect() as connection:
                 connection.execute(text("SELECT 1 FROM users LIMIT 1"))
+                connection.execute(text("SELECT 1 FROM agent_runs LIMIT 1"))
         except SQLAlchemyError:
             raise HTTPException(503, "Database unavailable or migrations not applied") from None
         return {"status": "ready"}

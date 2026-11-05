@@ -214,3 +214,32 @@ async def test_contact_details_block_local_preview(setup_nodes):
     state["draft"] = ProposalDraft(text="Contact me at someone@example.com")
     verdict = (await nodes.compliance(state))["compliance"]
     assert not verdict.allowed and "contact_email" in verdict.reasons
+
+
+async def test_omitted_ids_can_only_be_recovered_from_exact_source_text(setup_nodes):
+    nodes, state, portfolio, models, _ = setup_nodes
+    state["evidence"] = [portfolio.evidence]
+    state["draft"] = ProposalDraft(text="I built a Python API.")
+    models.reviews = [
+        {
+            "index": 0,
+            "kind": "experience",
+            "verdict": "supported",
+            "evidence_ids": [],
+            "reason": "Source mentioned only in explanation",
+        }
+    ]
+    result = await nodes.verifier(state)
+    assert result["draft"].claims[0].evidence_ids == ["e1"]
+    state["draft"] = ProposalDraft(text="I developed a Python API.")
+    with pytest.raises(GroundingFailure):
+        await nodes.verifier(state)
+
+
+async def test_numeric_guard_requires_complete_numbers_not_substrings(setup_nodes):
+    nodes, state, portfolio, _, _ = setup_nodes
+    portfolio.evidence.text = "I built 1000 APIs."
+    state["evidence"] = [portfolio.evidence]
+    state["draft"] = ProposalDraft(text="I built 100 APIs.")
+    with pytest.raises(GroundingFailure):
+        await nodes.verifier(state)

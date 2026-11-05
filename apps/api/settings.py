@@ -15,6 +15,7 @@ class Settings(BaseSettings):
     cookie_secure: bool = False
     redis_url: str = "redis://127.0.0.1:6379/0"
     qdrant_url: str = "http://127.0.0.1:6333"
+    ollama_base_url: str = "http://127.0.0.1:11434"
     model_cache_dir: Path = Field(
         default_factory=lambda: Path(__file__).resolve().parents[2] / "work/models"
     )

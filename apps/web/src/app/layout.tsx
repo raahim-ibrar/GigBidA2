@@ -4,8 +4,8 @@ import { AccountMenu } from "@/components/AccountMenu";
 import "./globals.css";
 
 export const metadata: Metadata = { title: "GigBid | Freelancer workspace", description: "AI-4016 freelancer copilot" };
-const links = [["/inbox", "Job inbox"], ["/portfolio", "Portfolio"], ["/jobs/example", "Job detail"], ["/studio/example", "Proposal studio"],
-  ["/pipeline", "Pipeline"], ["/messages", "Messages"], ["/runs/example", "Agent runs"],
+const links = [["/inbox", "Job inbox"], ["/portfolio", "Portfolio"],
+  ["/pipeline", "Pipeline"], ["/messages", "Messages"], ["/runs", "Agent runs"],
   ["/analytics", "Analytics"], ["/settings", "Settings"]];
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

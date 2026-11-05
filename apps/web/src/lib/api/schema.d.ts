@@ -116,7 +116,8 @@ export interface paths {
         /** List Jobs */
         get: operations["list_jobs_api_jobs_get"];
         put?: never;
-        post?: never;
+        /** Create Job */
+        post: operations["create_job_api_jobs_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -261,7 +262,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/proposals/{proposal_id}": {
+    "/api/proposals/{run_id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -269,14 +270,13 @@ export interface paths {
             cookie?: never;
         };
         /** Get Proposal */
-        get: operations["get_proposal_api_proposals__proposal_id__get"];
+        get: operations["get_proposal_api_proposals__run_id__get"];
         put?: never;
         post?: never;
         delete?: never;
         options?: never;
         head?: never;
-        /** Edit Proposal */
-        patch: operations["edit_proposal_api_proposals__proposal_id__patch"];
+        patch?: never;
         trace?: never;
     };
     "/api/runs": {
@@ -286,10 +286,28 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get?: never;
+        /** List Runs */
+        get: operations["list_runs_api_runs_get"];
         put?: never;
         /** Start Run */
         post: operations["start_run_api_runs_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/runs/{run_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Run */
+        get: operations["get_run_api_runs__run_id__get"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -377,19 +395,15 @@ export interface components {
             /** Id */
             id: string;
         };
-        /** ApproveRun */
-        ApproveRun: {
+        /** BidDecision */
+        BidDecision: {
             /**
              * Action
              * @enum {string}
              */
-            action: "approve" | "reject" | "edit";
-            /** Edited Text */
-            edited_text?: string | null;
-            /** Reason */
-            reason?: string | null;
-            /** Thread Id */
-            thread_id: string;
+            action: "skip" | "watch" | "bid";
+            /** Reasons */
+            reasons: string[];
         };
         /** Body_upload_document_api_portfolio_documents_post */
         Body_upload_document_api_portfolio_documents_post: {
@@ -397,6 +411,46 @@ export interface components {
             file: string;
             /** Metadata */
             metadata: string;
+        };
+        /** Claim */
+        Claim: {
+            /** Evidence Ids */
+            evidence_ids?: string[];
+            /**
+             * Kind
+             * @default experience
+             * @enum {string}
+             */
+            kind: "experience" | "non_experience";
+            /** Reason */
+            reason?: string | null;
+            /** Text */
+            text: string;
+            /**
+             * Verdict
+             * @enum {string}
+             */
+            verdict: "supported" | "partly_supported" | "unsupported";
+        };
+        /** ComplianceVerdict */
+        ComplianceVerdict: {
+            /** Allowed */
+            allowed: boolean;
+            /** Reasons */
+            reasons?: string[];
+        };
+        /** CreateRun */
+        CreateRun: {
+            /**
+             * Idempotency Key
+             * Format: uuid
+             */
+            idempotency_key?: string;
+            /**
+             * Job Id
+             * Format: uuid
+             */
+            job_id: string;
         };
         /** Credentials */
         Credentials: {
@@ -407,6 +461,16 @@ export interface components {
             email: string;
             /** Password */
             password: string;
+        };
+        /** Critique */
+        Critique: {
+            /** Reasons */
+            reasons?: string[];
+            /**
+             * Verdict
+             * @enum {string}
+             */
+            verdict: "pass" | "revise";
         };
         /** DocumentMetadata */
         DocumentMetadata: {
@@ -458,11 +522,6 @@ export interface components {
              */
             updated_at: string;
         };
-        /** EditDraft */
-        EditDraft: {
-            /** Text */
-            text: string;
-        };
         /** EvidenceHit */
         EvidenceHit: {
             evidence: components["schemas"]["EvidenceItem"];
@@ -496,10 +555,98 @@ export interface components {
             /** Type */
             type: string;
         };
+        /** FitReport */
+        FitReport: {
+            /** Gaps */
+            gaps?: string[];
+            /** Requirement Evidence */
+            requirement_evidence: {
+                [key: string]: string[];
+            };
+            /** Score */
+            score: number;
+        };
         /** HTTPValidationError */
         HTTPValidationError: {
             /** Detail */
             detail?: components["schemas"]["ValidationError"][];
+        };
+        /** JobSpec */
+        JobSpec: {
+            /**
+             * Billing Type
+             * @default unknown
+             * @enum {string}
+             */
+            billing_type: "hourly" | "fixed" | "unknown";
+            /** Budget Max */
+            budget_max?: number | null;
+            /** Budget Min */
+            budget_min?: number | null;
+            /** Deliverables */
+            deliverables?: string[];
+            /** Job Id */
+            job_id: string;
+            /** Requirements */
+            requirements: string[];
+            /** Screening Questions */
+            screening_questions?: string[];
+            /** Timeline */
+            timeline?: string | null;
+            /** Title */
+            title: string;
+        };
+        /** JobView */
+        JobView: {
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Id */
+            id: string;
+            /** Raw */
+            raw: {
+                [key: string]: unknown;
+            };
+            /** Title */
+            title: string;
+        };
+        /** LocalDraftView */
+        LocalDraftView: {
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Draft */
+            draft: {
+                [key: string]: unknown;
+            };
+            /** Run Id */
+            run_id: string;
+        };
+        /** ManualJob */
+        ManualJob: {
+            /**
+             * Billing Type
+             * @enum {string}
+             */
+            billing_type: "hourly" | "fixed";
+            /** Budget Max */
+            budget_max: number;
+            /** Budget Min */
+            budget_min?: number | null;
+            /**
+             * Currency
+             * @default USD
+             * @constant
+             */
+            currency: "USD";
+            /** Description */
+            description: string;
+            /** Title */
+            title: string;
         };
         /** PortfolioSearch */
         PortfolioSearch: {
@@ -520,6 +667,27 @@ export interface components {
              * @enum {string}
              */
             variant: "v0" | "v1" | "v2" | "v3" | "v8";
+        };
+        /** PriceQuote */
+        PriceQuote: {
+            /** Amount */
+            amount: number;
+            /**
+             * Billing Type
+             * @default unknown
+             * @enum {string}
+             */
+            billing_type: "hourly" | "fixed" | "unknown";
+            /** Connects */
+            connects?: number | null;
+            /**
+             * Currency
+             * @default USD
+             * @constant
+             */
+            currency: "USD";
+            /** Rationale */
+            rationale: string;
         };
         /** Profile */
         Profile: {
@@ -553,6 +721,79 @@ export interface components {
             /** Weekly Connects Budget */
             weekly_connects_budget: number;
         };
+        /** ProposalDraft */
+        ProposalDraft: {
+            /** Claims */
+            claims?: components["schemas"]["Claim"][];
+            /** Screening Answers */
+            screening_answers?: {
+                [key: string]: string;
+            };
+            /** Text */
+            text: string;
+        };
+        /** ReviewRun */
+        ReviewRun: {
+            /**
+             * Action
+             * @enum {string}
+             */
+            action: "approve" | "reject" | "edit";
+            /** Draft Digest */
+            draft_digest: string;
+            /** Edited Text */
+            edited_text?: string | null;
+            /** Reason */
+            reason?: string | null;
+            /**
+             * Run Id
+             * Format: uuid
+             */
+            run_id: string;
+            /** Version */
+            version: number;
+        };
+        /** RiskReport */
+        RiskReport: {
+            /** Flags */
+            flags?: string[];
+            /** Reasons */
+            reasons?: string[];
+            /** Score */
+            score: number;
+        };
+        /** RunView */
+        RunView: {
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Error */
+            error: string | null;
+            /** Id */
+            id: string;
+            /** Job Id */
+            job_id: string;
+            /** Review */
+            review: {
+                [key: string]: unknown;
+            } | null;
+            snapshot: components["schemas"]["SnapshotView"];
+            /** Status */
+            status: string;
+            /** Steps */
+            steps: number;
+            /** Tokens */
+            tokens: number;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
+            /** Version */
+            version: number;
+        };
         /** SearchResult */
         SearchResult: {
             /**
@@ -576,7 +817,7 @@ export interface components {
             implemented?: string[];
             /**
              * Message
-             * @default Accounts, profiles and portfolio evidence search are working. Proposal agents are next.
+             * @default Accounts, portfolios and durable job runs are available. Marketplace connection is pending.
              */
             message: string;
             /** Pending */
@@ -588,10 +829,27 @@ export interface components {
              */
             stage: "foundation";
         };
-        /** StartRun */
-        StartRun: {
-            /** Job Id */
-            job_id: string;
+        /** SnapshotView */
+        SnapshotView: {
+            compliance?: components["schemas"]["ComplianceVerdict"] | null;
+            critique?: components["schemas"]["Critique"] | null;
+            decision?: components["schemas"]["BidDecision"] | null;
+            draft?: components["schemas"]["ProposalDraft"] | null;
+            /** Events */
+            events?: string[];
+            /** Evidence */
+            evidence?: components["schemas"]["EvidenceItem"][];
+            fit?: components["schemas"]["FitReport"] | null;
+            job?: components["schemas"]["JobSpec"] | null;
+            preview?: components["schemas"]["WritePreview"] | null;
+            price?: components["schemas"]["PriceQuote"] | null;
+            risk?: components["schemas"]["RiskReport"] | null;
+            /** Status */
+            status?: string | null;
+            /** Verification */
+            verification?: {
+                [key: string]: unknown;
+            } | null;
         };
         /** ValidationError */
         ValidationError: {
@@ -605,6 +863,22 @@ export interface components {
             msg: string;
             /** Error Type */
             type: string;
+        };
+        /** WritePreview */
+        WritePreview: {
+            /** Arguments */
+            arguments: {
+                [key: string]: unknown;
+            };
+            /** Connects Cost */
+            connects_cost: number;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /**
+             * Tool
+             * @enum {string}
+             */
+            tool: "submit_proposal" | "send_message" | "save_local_draft";
         };
     };
     responses: never;
@@ -644,17 +918,17 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["ApproveRun"];
+                "application/json": components["schemas"]["ReviewRun"];
             };
         };
         responses: {
             /** @description Successful Response */
-            200: {
+            202: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["RunView"];
                 };
             };
             /** @description Validation Error */
@@ -787,7 +1061,40 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["JobView"][];
+                };
+            };
+        };
+    };
+    create_job_api_jobs_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ManualJob"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JobView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };
@@ -809,7 +1116,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["JobView"];
                 };
             };
             /** @description Validation Error */
@@ -1073,12 +1380,12 @@ export interface operations {
             };
         };
     };
-    get_proposal_api_proposals__proposal_id__get: {
+    get_proposal_api_proposals__run_id__get: {
         parameters: {
             query?: never;
             header?: never;
             path: {
-                proposal_id: string;
+                run_id: string;
             };
             cookie?: never;
         };
@@ -1090,7 +1397,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["LocalDraftView"];
                 };
             };
             /** @description Validation Error */
@@ -1104,20 +1411,16 @@ export interface operations {
             };
         };
     };
-    edit_proposal_api_proposals__proposal_id__patch: {
+    list_runs_api_runs_get: {
         parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                proposal_id: string;
+            query?: {
+                job_id?: string | null;
             };
+            header?: never;
+            path?: never;
             cookie?: never;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["EditDraft"];
-            };
-        };
+        requestBody?: never;
         responses: {
             /** @description Successful Response */
             200: {
@@ -1125,7 +1428,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["RunView"][];
                 };
             };
             /** @description Validation Error */
@@ -1148,9 +1451,40 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["StartRun"];
+                "application/json": components["schemas"]["CreateRun"];
             };
         };
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RunView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_run_api_runs__run_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
         responses: {
             /** @description Successful Response */
             200: {
@@ -1158,7 +1492,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["RunView"];
                 };
             };
             /** @description Validation Error */
@@ -1174,8 +1508,12 @@ export interface operations {
     };
     run_events_api_runs__run_id__events_get: {
         parameters: {
-            query?: never;
-            header?: never;
+            query?: {
+                after?: number;
+            };
+            header?: {
+                "last-event-id"?: string | null;
+            };
             path: {
                 run_id: string;
             };

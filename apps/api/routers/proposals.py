@@ -1,16 +1,11 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Request
 
-from apps.api.auth.dependencies import require_user
-from apps.api.schemas.requests import EditDraft
+from apps.api.auth.dependencies import CurrentUser
+from apps.api.schemas.proposals import LocalDraftView
 
 router = APIRouter(tags=["proposals"])
 
 
-@router.get("/proposals/{proposal_id}", dependencies=[Depends(require_user)])
-def get_proposal(proposal_id: str):
-    raise NotImplementedError("Load a persisted proposal and its claim evidence")
-
-
-@router.patch("/proposals/{proposal_id}", dependencies=[Depends(require_user)])
-def edit_proposal(proposal_id: str, body: EditDraft):
-    raise NotImplementedError("Diff edits and reverify before creating a new approval")
+@router.get("/proposals/{run_id}", response_model=LocalDraftView)
+def get_proposal(run_id: str, user: CurrentUser, request: Request):
+    return request.app.state.runs.local_draft(user.id, run_id)

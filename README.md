@@ -2,7 +2,7 @@
 
 A freelancer copilot that will find jobs, assess risk and fit, draft evidence-grounded proposals, and pause for human approval before any external write.
 
-**Stage: accounts and portfolio evidence.** Accounts, persistent sessions, profiles, uploads, background indexing, source revisions and evidence retrieval work. The proposal agents and marketplace adapters are still being built. No graded LLM experiments, marketplace outcomes or benchmark results exist yet.
+**Stage: durable local proposal review.** Accounts, portfolio retrieval, manual jobs, proposal agents, Postgres checkpoints, review decisions and approved local drafts are implemented. Marketplace adapters, conversation agents and evaluations remain unfinished. No graded LLM experiments, marketplace outcomes or benchmark results exist yet.
 
 ## Start here
 
@@ -36,9 +36,11 @@ uv run uvicorn apps.api.main:app --reload
 Postgres must be running first. Start only that service with `docker compose --project-directory . -f infra/docker-compose.yml up -d postgres`. Full Compose startup applies migrations automatically before the API starts.
 
 Open the frontend at http://localhost:3000 and API documentation at http://localhost:8000/docs.
-Create an account at `/sign-in`, configure your profile at `/onboarding`, and upload CVs/case studies at `/portfolio`. Other product pages are still route shells. `/health/ready` checks database access and the account migration.
+Create an account at `/sign-in`, configure your profile at `/onboarding`, and upload CVs/case studies at `/portfolio`. Add a manual job at `/inbox`; open its run to review evidence, edit, reject or approve a local draft. `/runs` lists saved runs. Pipeline, messaging and analytics remain unfinished. `/health/ready` checks database access and the account migration.
 
 For portfolio indexing, start `redis`, `qdrant` and `worker` with Compose. The first indexing/search downloads CPU open models into the shared model cache. On Windows, use the Linux Docker worker; Arq's native shutdown uses Unix signals. The browser shows queued/indexing/failed/ready states, and the worker recovers saved queued uploads after a restart.
+
+Proposal agents use native Ollama by default. Pull the candidate models named in `agent/config.yaml`: `qwen3.5:4b`, `qwen3:8b` and the eligible-role fallback `llama3.2:1b`. The Docker worker reaches native Ollama through `WORKER_OLLAMA_BASE_URL`; `localhost` inside the worker points to the worker itself. See the runbook for optional container inference.
 
 ## Checks
 
@@ -53,7 +55,7 @@ npx playwright install chromium
 npm run test:e2e
 ```
 
-Tests cover accounts, password hashing, CSRF, session expiry/revocation, user isolation and profile persistence after restart, plus graph/MCP contracts. Browser tests cover registration, profile setup, sign-out, sign-in and saved settings. Full onboarding with portfolio upload and the other assignment end-to-end flows remain pending. Browser tests use a disposable SQLite database. Python integration tests use Postgres when `GIGBID_TEST_DATABASE_URL` is set, otherwise SQLite.
+Tests cover accounts, tenant isolation, retrieval, graph/MCP contracts, Postgres pause/resume, stale approvals, worker cancellation and idempotent local commits. Browser tests cover account/profile/portfolio flows and local proposal approve/reject/edit/compliance flows. Set `GIGBID_TEST_DATABASE_URL` for disposable Postgres schemas; proposal browser tests require it. SQLite supports the other isolated tests. Role and embedding fixtures in browser tests measure UI/control behavior, not model quality. One marketplace-outage browser flow remains explicitly pending.
 
 Compose configuration:
 
@@ -62,20 +64,20 @@ docker compose --project-directory . -f infra/docker-compose.yml config --quiet
 docker compose --project-directory . -f infra/docker-compose.yml up --build
 ```
 
-Default Compose services are web, API, worker, Postgres, Redis, Qdrant and Ollama. No models are downloaded automatically. GigSim requires an instructor image. MCP HTTP transport stays disabled until bearer authentication exists; the servers currently register tools over stdio. See the runbook before enabling either optional profile.
+Default Compose services are web, API, worker, Postgres, Redis and Qdrant. Ollama is available under the optional `container-inference` profile; its host port is 11435 so it does not conflict with native Ollama on 11434. No inference models are downloaded automatically. GigSim requires an instructor image. MCP HTTP transport stays disabled until bearer authentication exists; agents use the tenant-bound Portfolio server over stdio.
 
 ## What the skeleton contains
 
-- FastAPI liveness/readiness, OpenAPI, real account/profile endpoints and protected feature stubs.
-- Next.js account/profile forms plus TypeScript shells for remaining screens.
+- FastAPI accounts, profiles, portfolio, manual jobs, durable runs, approvals, local drafts and SSE.
+- Next.js account/profile/portfolio forms, inbox, job detail, proposal review and run activity.
 - Generated API types, rather than a handwritten copy of the API schema.
 - Pydantic handoffs and typed graph state.
-- Bid and conversation StateGraph builders with injectable nodes, parallel analysis, bounded Critic routing and an interrupt gate. Default business nodes are unimplemented.
+- Bid StateGraph business nodes with parallel analysis, bounded Critic revisions and edit/reverify interrupts. The worker supplies production dependencies; conversation business nodes remain unimplemented.
 - Three official-SDK MCP server registrations, schemas, resources, prompt template and contract snapshot.
 - A marketplace interface with GigSim and Upwork adapter stubs.
 - PDF/Markdown/text ingestion and implemented V0, V1, V2, V3 and V8 retrieval components. V8 uses a bounded LangGraph retrieve/grade/correct loop.
 - Portfolio source metadata includes persona, type, project, skills, date, industry and proposal outcome; retrieved chunks retain source IDs and PDF pages.
-- Memory, claim verification and graded evaluation entry points still need implementation.
+- Sentence claim verification is implemented; calibration, memory persistence and graded evaluations remain pending.
 - Docker and CI scaffolding, pinned dependencies, and uv/npm lockfiles.
 
 ## Architecture
