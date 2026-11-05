@@ -5,6 +5,7 @@
 | 2026-11-04 | Codex | Repository scaffold, Python contracts and graph builders, MCP registrations, Next.js route shells, Docker/CI scaffolding, documentation and scaffold tests |
 | 2026-11-05 | Codex | Account/profile foundation: SQLAlchemy models, Alembic migration, Argon2 passwords, cookie sessions and CSRF, forms, generated API types, isolation/restart tests and browser account flow |
 | 2026-11-05 | Codex | Portfolio source revisions and ingestion, Qdrant/FastEmbed retrieval variants, background indexing/outbox, tenant-bound MCP, portfolio UI and runtime/browser tests |
+| 2026-11-05 | Codex | Bid business nodes, structured Ollama client, MCP reader capability, sentence verification, fresh approval after edits, token reservations and regression tests; one real Analyst inference smoke |
 
 Files affected: apps/, agent/, rag/, mcp_servers/, worker/, evals/, tests/, scripts/, infra/, .github/, and root configuration/docs. No real proposal, outcome, experiment or result was generated.
 

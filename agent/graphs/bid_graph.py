@@ -3,7 +3,7 @@
 from langgraph.graph import END, START, StateGraph
 from langgraph.types import Send
 
-from agent.graphs.common import approval_gate, approval_route, blocked, missing_node
+from agent.graphs.common import approval_gate, bid_approval_route, blocked, missing_node
 from agent.state import BidState
 
 BUSINESS_NODES = (
@@ -35,6 +35,9 @@ def decision_route(state):
 def critic_route(state):
     if state["critique"].verdict == "pass":
         return "compliance"
+    if state.get("user_edited"):
+        # Keep the user's words. A failed critique needs another explicit user edit.
+        return "attention"
     return "revise" if state.get("revisions", 0) < 2 else "attention"
 
 
@@ -94,7 +97,9 @@ def build_bid_graph(*, checkpointer, nodes=None):
             False: "blocked",
         },
     )
-    graph.add_conditional_edges("approval", approval_route, {"execute": "execute", "stop": END})
+    graph.add_conditional_edges(
+        "approval", bid_approval_route, {"execute": "execute", "edit": "verifier", "stop": END}
+    )
     for name in ("execute", "blocked", "attention", "stop"):
         graph.add_edge(name, END)
     return graph.compile(checkpointer=checkpointer)

@@ -2,7 +2,7 @@
 
 from langgraph.types import interrupt
 
-from agent.handoffs import ApprovalDecision
+from agent.handoffs import ApprovalDecision, ProposalDraft
 
 
 def missing_node(name):
@@ -17,7 +17,10 @@ def approval_gate(state):
     draft = state.get("draft")
     if not compliance or not compliance.allowed or not draft or not state.get("preview"):
         raise ValueError("Approval requires a draft, successful compliance and a dry-run preview")
-    if any(claim.verdict != "supported" for claim in draft.claims):
+    if any(
+        claim.verdict != "supported" or (claim.kind == "experience" and not claim.evidence_ids)
+        for claim in draft.claims
+    ):
         raise ValueError("All claims must be verified before approval")
     answer = ApprovalDecision.model_validate(
         interrupt(
@@ -30,13 +33,27 @@ def approval_gate(state):
             }
         )
     )
-    # Edits cannot reuse the approval for the previous text. Full edit/reverify is future work.
-    status = {"approve": "approved", "reject": "rejected", "edit": "needs_attention"}[answer.action]
-    return {"approval": answer, "status": status}
+    if answer.action == "edit":
+        return {
+            "approval": answer,
+            "status": "editing",
+            "draft": ProposalDraft(
+                text=answer.edited_text,
+                screening_answers=draft.screening_answers,
+            ),
+            "user_edited": True,
+            "compliance": None,
+            "preview": None,
+        }
+    return {"approval": answer, "status": "approved" if answer.action == "approve" else "rejected"}
 
 
 def approval_route(state):
     return "execute" if state["status"] == "approved" else "stop"
+
+
+def bid_approval_route(state):
+    return "edit" if state["status"] == "editing" else approval_route(state)
 
 
 def blocked(state):

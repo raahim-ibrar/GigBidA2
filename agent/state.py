@@ -22,6 +22,10 @@ class BidState(TypedDict, total=False):
     tenant_id: str
     job_id: str
     raw_job: dict
+    run_id: str
+    preferences: dict
+    verification: dict
+    user_edited: bool
     job: JobSpec
     risk: RiskReport
     fit: FitReport

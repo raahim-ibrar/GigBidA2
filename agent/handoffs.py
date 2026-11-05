@@ -33,6 +33,14 @@ class JobSpec(Contract):
     budget_min: float | None = Field(default=None, ge=0)
     budget_max: float | None = Field(default=None, ge=0)
     timeline: str | None = None
+    billing_type: Literal["hourly", "fixed", "unknown"] = "unknown"
+
+    @model_validator(mode="after")
+    def budget_order(self):
+        if self.budget_min is not None and self.budget_max is not None:
+            if self.budget_min > self.budget_max:
+                raise ValueError("The minimum budget cannot exceed the maximum")
+        return self
 
 
 class RiskReport(Contract):
@@ -55,14 +63,17 @@ class BidDecision(Contract):
 class PriceQuote(Contract):
     amount: float = Field(gt=0)
     currency: Literal["USD"] = "USD"
-    connects: int = Field(ge=0)
+    connects: int | None = Field(default=None, ge=0)
     rationale: str = Field(min_length=1)
+    billing_type: Literal["hourly", "fixed", "unknown"] = "unknown"
 
 
 class Claim(Contract):
     text: str = Field(min_length=1)
     evidence_ids: list[str] = Field(default_factory=list)
     verdict: Literal["supported", "partly_supported", "unsupported"]
+    kind: Literal["experience", "non_experience"] = "experience"
+    reason: str | None = None
 
 
 class ProposalDraft(Contract):
@@ -82,7 +93,7 @@ class ComplianceVerdict(Contract):
 
 
 class WritePreview(Contract):
-    tool: Literal["submit_proposal", "send_message"]
+    tool: Literal["submit_proposal", "send_message", "save_local_draft"]
     arguments: dict
     connects_cost: int = Field(ge=0)
     idempotency_key: str = Field(min_length=8, max_length=200)

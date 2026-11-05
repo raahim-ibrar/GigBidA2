@@ -80,8 +80,13 @@ async def test_only_approve_reaches_executor(action):
     payload = {"action": action, "reason": "Not a fit", "edited_text": "An edited fixture"}
     result = await graph.ainvoke(Command(resume=payload), cfg)
     assert ("execute" in calls) == (action == "approve")
-    expected = {"approve": "fixture_executed", "reject": "rejected", "edit": "needs_attention"}
-    assert result["status"] == expected[action]
+    if action == "edit":
+        assert "__interrupt__" in result
+        assert result["draft"].text == "An edited fixture"
+        assert calls.count("verifier") == 2
+        assert calls.count("compliance") == 2
+    else:
+        assert result["status"] == {"approve": "fixture_executed", "reject": "rejected"}[action]
 
 
 @pytest.mark.asyncio

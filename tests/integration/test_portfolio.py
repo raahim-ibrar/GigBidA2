@@ -6,6 +6,7 @@ from mcp.shared.memory import create_connected_server_and_client_session
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from agent.portfolio_client import PortfolioMCP
 from apps.api.models import EvidenceChunk, VectorCleanup
 from mcp_servers.portfolio.factory import create_portfolio_server
 from rag.contracts import DocumentMetadata, PortfolioSearch
@@ -165,6 +166,10 @@ async def test_real_portfolio_tools_work_through_mcp_and_remain_tenant_bound(cli
         assert "Python" in str(skills.structuredContent)
         source = await session.call_tool("get_case_study", {"id": doc["id"]})
         assert not source.isError
+        reader = PortfolioMCP(session)
+        hits = await reader.search("Python", k=5, variant="v0")
+        assert hits[0].document_id == doc["id"]
+        assert (await reader.read(hits[0].id)).text == SOURCE.decode()
     foreign = create_portfolio_server(portfolio, "a-different-tenant")
     async with create_connected_server_and_client_session(foreign) as session:
         result = await session.call_tool("get_case_study", {"id": doc["id"]})

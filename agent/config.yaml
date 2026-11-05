@@ -4,6 +4,10 @@ marketplace: gigsim
 profiles:
   open:
     provider: ollama
+    fallback_model: llama3.2:1b
+    timeout_seconds: 90
+    context_size: 8192
+    output_tokens: 1500
     models:
       scout: qwen3.5:4b
       analyst: qwen3.5:4b
@@ -43,3 +47,5 @@ policy:
   minimum_hourly_rate_usd: 15
   live_scout_interval_minutes: 360
   change_request: null
+  minimum_fit: 0.5
+  maximum_risk: 0.7

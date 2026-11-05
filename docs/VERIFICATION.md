@@ -16,3 +16,14 @@ Run the automated runtime checks with `GIGBID_TEST_DATABASE_URL` pointing to a l
 ## Still unverified or unimplemented
 
 No evidence yet establishes proposal-agent quality, claim entailment, durable proposal approval/execution, marketplace interoperability, memory learning, grading-set performance, live Upwork OAuth, production security or public deployment. The instructor's GigSim/corpora/policy/dev labels have not been supplied. No simulated reply/hire rates or research tables have been invented.
+
+## Proposal-node development checks
+
+- Full Python suite after adding bid business nodes: **76 passed, 1 skipped** with Postgres and real retrieval models enabled. The skipped test requires the separate `GIGBID_REAL_AGENTS=1` flag.
+- That opt-in Ollama smoke passed separately against the configured `qwen3.5:4b` model, returning a valid Analyst handoff with measured input/output token counts. This is an API integration check, not a proposal-quality or model-comparison result.
+- Deterministic proposal tests exercise the implemented nodes, manual-job identity binding, rate floors, rejection of invented evidence IDs, injected-instruction risk flags, sentence checks across cover/screening answers, unsupported numerical claims, stale sources, draft digests, fresh approval after edits and a host-injected local-save fixture.
+- HTTP transport fixtures exercise structured schemas, usage accounting, concurrent reservations, resumed usage limits and bounded fallback. The current budget counter is per runtime instance; database restoration is pending with the worker host.
+- The Portfolio MCP reader used by the new nodes passed against the real in-memory MCP protocol and tenant-scoped retrieval service. The full suite also retained its separate real stdio subprocess check.
+- No complete proposal has yet traversed real inference, durable checkpoints, API and browser review. The injected local save in unit tests does not establish transactional or marketplace execution.
+
+Run the local Analyst smoke with `GIGBID_REAL_AGENTS=1 uv run pytest tests/integration/test_agent_models.py -q` while Ollama and the configured model are available.

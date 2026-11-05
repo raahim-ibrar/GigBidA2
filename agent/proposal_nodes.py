@@ -1,0 +1,375 @@
+"""Evidence-grounded bid nodes. The host supplies inference, MCP and a local executor.
+
+This manual-job path cannot submit to a marketplace. Unknown client history, Connects
+cost and instructor policy are explicit; none are fabricated from a model response.
+"""
+
+import hashlib
+import json
+import re
+from collections.abc import Awaitable, Callable
+from decimal import Decimal
+
+from agent.config import AgentConfig
+from agent.handoffs import (
+    BidDecision,
+    Claim,
+    ComplianceVerdict,
+    Critique,
+    FitReport,
+    JobSpec,
+    PriceQuote,
+    ProposalDraft,
+    RiskReport,
+    WritePreview,
+)
+from agent.portfolio_client import PortfolioReader
+from agent.proposal_contracts import FitAssessment, Verification
+from agent.safety import EMAIL, EXPERIENCE, GUARANTEE, INJECTION, OFF_PLATFORM, PHONE
+
+
+class GroundingFailure(RuntimeError):
+    pass
+
+
+class ReviewRequired(RuntimeError):
+    pass
+
+
+def sentences(text: str) -> list[str]:
+    # Preserve exact wording. Newlines also delimit bullets; decimals stay intact.
+    return [part.strip() for part in re.split(r"(?<=[.!?])\s+|\n+", text) if part.strip()]
+
+
+def draft_digest(draft: ProposalDraft) -> str:
+    return hashlib.sha256(
+        json.dumps(draft.model_dump(), sort_keys=True, ensure_ascii=False).encode()
+    ).hexdigest()
+
+
+class ProposalNodes:
+    def __init__(
+        self,
+        models,
+        portfolio: PortfolioReader,
+        config: AgentConfig,
+        *,
+        execute_local: Callable[[dict], Awaitable[dict]],
+    ):
+        self.models, self.portfolio, self.config = models, portfolio, config
+        self.execute_local = execute_local
+
+    def mapping(self):
+        return {
+            name: getattr(self, name)
+            for name in (
+                "scout",
+                "analyst",
+                "risk",
+                "matcher",
+                "decision",
+                "pricing",
+                "writer",
+                "verifier",
+                "critic",
+                "compliance",
+                "preview",
+                "execute",
+            )
+        }
+
+    async def scout(self, state):
+        raw = state["raw_job"]
+        if raw.get("source") != "manual":
+            raise ReviewRequired(
+                "Connect the supplied marketplace adapter before importing its jobs"
+            )
+        if not raw.get("title", "").strip() or not raw.get("description", "").strip():
+            raise ReviewRequired("A job title and description are required")
+        if len(json.dumps(raw)) > 20000:
+            raise ReviewRequired("Shorten the job post before analysing it")
+        return {"status": "analysing", "events": ["manual_job_loaded"]}
+
+    async def analyst(self, state):
+        job = await self.models.complete("analyst", {"job": state["raw_job"]}, JobSpec)
+        # The model never assigns authoritative identity or budget metadata.
+        raw = state["raw_job"]
+        job = JobSpec.model_validate(
+            {
+                **job.model_dump(),
+                "job_id": state["job_id"],
+                "title": raw["title"],
+                "billing_type": raw.get("billing_type", "unknown"),
+                "budget_min": raw.get("budget_min"),
+                "budget_max": raw.get("budget_max"),
+            }
+        )
+        if not job.requirements or len(job.requirements) > 20:
+            raise ReviewRequired("The job needs between one and twenty clear requirements")
+        return {"job": job, "events": ["job_analysed"]}
+
+    async def risk(self, state):
+        raw = state["raw_job"]
+        report = await self.models.complete(
+            "risk",
+            {"job": raw, "client_history": None, "history_status": "unavailable"},
+            RiskReport,
+        )
+        text = json.dumps(raw)
+        flags = list(report.flags)
+        if INJECTION.search(text):
+            flags.append("prompt_injection")
+        if OFF_PLATFORM.search(text):
+            flags.append("off_platform_or_unpaid_work")
+        hard_flag = any(f in flags for f in ("prompt_injection", "off_platform_or_unpaid_work"))
+        return {
+            "risk": RiskReport(
+                score=max(report.score, 1.0 if hard_flag else 0.0),
+                flags=list(dict.fromkeys(flags)),
+                reasons=[
+                    *report.reasons,
+                    "Client history is unavailable for a manually entered job.",
+                ],
+            ),
+            "events": ["risk_assessed"],
+        }
+
+    async def matcher(self, state):
+        # Runs concurrently with Analyst: it must read the raw post, not Analyst's output.
+        raw = state["raw_job"]
+        query = (raw["title"] + "\n" + raw["description"])[:4000]
+        evidence = await self.portfolio.search(
+            query,
+            k=self.config.retrieval["top_k"],
+            variant=self.config.retrieval["variant"],
+        )
+        return {"evidence": evidence, "events": ["portfolio_retrieved"]}
+
+    async def decision(self, state):
+        # Reconcile only after all parallel branches join. Coverage uses Analyst's final
+        # requirements and only IDs actually returned by this tenant's Portfolio MCP.
+        requirements = list(dict.fromkeys(state["job"].requirements))
+        evidence = state.get("evidence", [])
+        assessment = await self.models.complete(
+            "matcher",
+            {
+                "requirements": requirements,
+                "evidence": [item.model_dump() for item in evidence],
+            },
+            FitAssessment,
+        )
+        valid = {item.id for item in evidence}
+        matrix = {
+            requirement: list(
+                dict.fromkeys(
+                    item
+                    for item in assessment.requirement_evidence.get(requirement, [])
+                    if item in valid
+                )
+            )
+            for requirement in requirements
+        }
+        gaps = [requirement for requirement, ids in matrix.items() if not ids]
+        score = (len(requirements) - len(gaps)) / len(requirements)
+        fit = FitReport(score=score, requirement_evidence=matrix, gaps=gaps)
+        if state["risk"].score >= self.config.policy["maximum_risk"]:
+            decision = BidDecision(
+                action="skip", reasons=["Risk exceeds the configured threshold."]
+            )
+        elif score < self.config.policy["minimum_fit"] or not evidence:
+            decision = BidDecision(action="watch", reasons=["Insufficient portfolio evidence."])
+        else:
+            decision = BidDecision(
+                action="bid",
+                reasons=[
+                    f"Portfolio evidence covers {len(requirements) - len(gaps)}"
+                    f"/{len(requirements)} "
+                    "requirements; local draft review only.",
+                ],
+            )
+        return {"fit": fit, "decision": decision, "events": ["bid_decided"]}
+
+    async def pricing(self, state):
+        job = state["job"]
+        if job.billing_type == "unknown":
+            raise ReviewRequired("Specify whether this job is hourly or fixed price")
+        if job.budget_max is None or job.budget_max <= 0:
+            raise ReviewRequired("Enter the client's budget before requesting a quote")
+        floor = max(
+            Decimal(str(state.get("preferences", {}).get("hourly_floor", 15))),
+            Decimal(str(self.config.policy["minimum_hourly_rate_usd"])),
+        )
+        amount = Decimal(str(job.budget_min or job.budget_max))
+        if job.billing_type == "hourly":
+            amount = max(amount, floor)
+        if amount > Decimal(str(job.budget_max)):
+            raise ReviewRequired("The client's hourly budget is below your minimum rate")
+        return {
+            "price": PriceQuote(
+                amount=float(amount),
+                billing_type=job.billing_type,
+                connects=None,
+                rationale="Provisional quote from the entered client budget"
+                + (" and your hourly rate floor." if job.billing_type == "hourly" else ".")
+                + " Market history and Connects cost are unavailable; "
+                "review scope and price manually.",
+            ),
+            "events": ["price_proposed"],
+        }
+
+    async def writer(self, state):
+        draft = await self.models.complete(
+            "writer",
+            {
+                "job": state["job"].model_dump(),
+                "fit": state["fit"].model_dump(),
+                "evidence": [item.model_dump() for item in state.get("evidence", [])],
+                "quote": state["price"].model_dump(),
+                "critique": state["critique"].model_dump() if state.get("critique") else None,
+                "previous_draft": state["draft"].model_dump() if state.get("draft") else None,
+            },
+            ProposalDraft,
+        )
+        # Writer-provided claim labels are untrusted. Rebuild them from the actual text.
+        return {
+            "draft": draft.model_copy(update={"claims": []}),
+            "status": "drafting",
+            "events": ["draft_written"],
+        }
+
+    async def verifier(self, state):
+        draft = state["draft"]
+        answer_keys = list(draft.screening_answers)
+        sections = [(0, sentences(draft.text))] + [
+            (index + 1, sentences(draft.screening_answers[key]))
+            for index, key in enumerate(answer_keys)
+        ]
+        units = [(section, text) for section, parts in sections for text in parts]
+        if not units or len(units) > 80:
+            raise GroundingFailure("The draft is empty or too long to verify")
+        # Re-read immutable chunks: deleted or superseded sources must fail closed.
+        evidence = [await self.portfolio.read(item.id) for item in state.get("evidence", [])]
+        review = await self.models.complete(
+            "verifier",
+            {
+                "sentences": [{"index": i, "text": text} for i, (_, text) in enumerate(units)],
+                "evidence": [item.model_dump() for item in evidence],
+            },
+            Verification,
+        )
+        by_index = {item.index: item for item in review.claims}
+        if len(by_index) != len(review.claims) or set(by_index) != set(range(len(units))):
+            raise GroundingFailure("The verifier did not assess every draft sentence exactly once")
+        valid = {item.id for item in evidence}
+        kept: dict[int, list[str]] = {key: [] for key, _ in sections}
+        claims, removed = [], []
+        for index, (section, text) in enumerate(units):
+            checked = by_index[index]
+            ids = list(dict.fromkeys(item for item in checked.evidence_ids if item in valid))
+            kind = "experience" if EXPERIENCE.search(text) else checked.kind
+            supported = checked.verdict == "supported" and (kind != "experience" or bool(ids))
+            if supported and kind == "experience":
+                cited = " ".join(item.text for item in evidence if item.id in ids)
+                # A conservative extra check: numerical experience/results must appear
+                # in cited text, even if the probabilistic verifier said 'supported'.
+                numbers = re.findall(r"\b\d+(?:[.,]\d+)*%?", text)
+                supported = all(number in cited for number in numbers)
+            if not supported:
+                removed.append({"index": index, "reason": checked.reason})
+                continue
+            kept[section].append(text)
+            claims.append(
+                Claim(
+                    text=text,
+                    evidence_ids=ids,
+                    kind=kind,
+                    verdict="supported",
+                    reason=checked.reason,
+                )
+            )
+        if not kept[0]:
+            raise GroundingFailure(
+                "No verified cover text remains; add portfolio evidence or revise"
+            )
+        # Do not silently return blank answers to screening questions.
+        if any(not kept[index + 1] for index in range(len(answer_keys))):
+            raise GroundingFailure(
+                "A screening answer has no supported text; revise it before review"
+            )
+        verified = ProposalDraft(
+            text="\n".join(kept[0]),
+            claims=claims,
+            screening_answers={
+                key: "\n".join(kept[index + 1]) for index, key in enumerate(answer_keys)
+            },
+        )
+        return {
+            "draft": verified,
+            "evidence": evidence,
+            "verification": {"removed": removed, "assessed_sentences": len(units)},
+            "events": ["claims_verified"],
+        }
+
+    async def critic(self, state):
+        critique = await self.models.complete(
+            "critic",
+            {
+                "job": state["job"].model_dump(),
+                "draft": state["draft"].model_dump(),
+                "fit": state["fit"].model_dump(),
+                "verification": state["verification"],
+            },
+            Critique,
+        )
+        if set(state["draft"].screening_answers) != set(state["job"].screening_questions):
+            critique = Critique(
+                verdict="revise", reasons=["Answer every screening question exactly."]
+            )
+        return {"critique": critique, "events": ["draft_critiqued"]}
+
+    async def compliance(self, state):
+        draft = state["draft"]
+        text = "\n".join([draft.text, *draft.screening_answers.values()])
+        rules = (
+            (EMAIL, "contact_email"),
+            (PHONE, "contact_phone"),
+            (GUARANTEE, "unsupported_guarantee"),
+            (OFF_PLATFORM, "off_platform_or_unpaid_work"),
+            (INJECTION, "prompt_injection"),
+        )
+        reasons = [reason for pattern, reason in rules if pattern.search(text)]
+        return {
+            "compliance": ComplianceVerdict(allowed=not reasons, reasons=reasons),
+            "events": ["local_draft_rules_checked"],
+        }
+
+    async def preview(self, state):
+        digest = draft_digest(state["draft"])
+        return {
+            "preview": WritePreview(
+                tool="save_local_draft",
+                connects_cost=0,
+                idempotency_key=f"local:{state['run_id']}:{digest}",
+                arguments={
+                    "run_id": state["run_id"],
+                    "draft_digest": digest,
+                    "scope": "local_only",
+                    "marketplace_policy": "not_supplied",
+                },
+            ),
+            "status": "awaiting_approval",
+            "events": ["local_draft_previewed"],
+        }
+
+    async def execute(self, state):
+        preview = state["preview"]
+        if state["approval"].action != "approve" or preview.tool != "save_local_draft":
+            raise ReviewRequired("Only an explicitly approved local draft can be saved")
+        if preview.arguments.get("draft_digest") != draft_digest(state["draft"]):
+            raise ReviewRequired("The draft changed after its preview; request approval again")
+        for item in state.get("evidence", []):
+            await self.portfolio.read(item.id)
+        # Host transaction must recheck ownership, approval and evidence, then perform
+        # an idempotent local save. No provider capability is passed to these nodes.
+        await self.execute_local(state)
+        return {"status": "drafted", "events": ["local_draft_saved"]}
