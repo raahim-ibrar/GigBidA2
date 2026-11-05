@@ -1,4 +1,4 @@
-"""Implement separate tenant-scoped LangGraph store namespaces for style and outcomes."""
+"""Separate logical stores; infrastructure owns persistence, agents receive promoted values."""
 
 
 def memory_namespace(tenant_id: str, kind: str) -> tuple[str, str]:
@@ -7,5 +7,12 @@ def memory_namespace(tenant_id: str, kind: str) -> tuple[str, str]:
     return tenant_id, kind
 
 
-async def promote_memory(*args, **kwargs):
-    raise NotImplementedError("Connect a LangGraph store and enforce promotion_rules first")
+async def promote_memory(
+    service, tenant_id, kind, *, key=None, confirmed=False, category=None, outcome=None
+):
+    import asyncio
+
+    memory_namespace(tenant_id, kind)
+    if kind == "style":
+        return await asyncio.to_thread(service.confirm_style, tenant_id, key, confirmed=confirmed)
+    return await asyncio.to_thread(service.promote_outcome, tenant_id, category, outcome)

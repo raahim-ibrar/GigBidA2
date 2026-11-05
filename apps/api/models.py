@@ -144,3 +144,44 @@ class LocalDraftArtifact(Base):
     draft: Mapped[dict] = mapped_column(JSON)
     idempotency_key: Mapped[str] = mapped_column(String(200), unique=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
+class DraftEdit(Base):
+    __tablename__ = "draft_edits"
+    audit_id: Mapped[int] = mapped_column(
+        ForeignKey("approval_audit.id", ondelete="CASCADE"), primary_key=True
+    )
+    user_id: Mapped[str] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True)
+    run_id: Mapped[str] = mapped_column(ForeignKey("agent_runs.id", ondelete="CASCADE"), index=True)
+    before_text: Mapped[str] = mapped_column(Text)
+    after_text: Mapped[str] = mapped_column(Text)
+    diff: Mapped[str] = mapped_column(Text)
+    patterns: Mapped[list[str]] = mapped_column(JSON)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
+class OutcomeObservation(Base):
+    __tablename__ = "outcome_observations"
+    __table_args__ = (UniqueConstraint("user_id", "event_id", name="uq_outcome_event"),)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    user_id: Mapped[str] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True)
+    run_id: Mapped[str] = mapped_column(ForeignKey("agent_runs.id", ondelete="CASCADE"), index=True)
+    event_id: Mapped[str] = mapped_column(String(200))
+    category: Mapped[str] = mapped_column(String(40))
+    outcome: Mapped[str] = mapped_column(String(20))
+    source: Mapped[str] = mapped_column(String(30))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
+class MemoryRecord(Base):
+    __tablename__ = "memory_records"
+    user_id: Mapped[str] = mapped_column(
+        ForeignKey("users.id", ondelete="CASCADE"), primary_key=True
+    )
+    key: Mapped[str] = mapped_column(String(100), primary_key=True)
+    kind: Mapped[str] = mapped_column(String(20))
+    value: Mapped[dict] = mapped_column(JSON)
+    active: Mapped[bool] = mapped_column(default=True)
+    synced: Mapped[bool] = mapped_column(default=False)
+    version: Mapped[int] = mapped_column(Integer, default=1)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)

@@ -141,6 +141,91 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/memory": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Memory */
+        get: operations["list_memory_api_memory_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/memory/edits": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Draft Edits */
+        get: operations["draft_edits_api_memory_edits_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/memory/style": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Confirm Style */
+        post: operations["confirm_style_api_memory_style_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/memory/style-candidates": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Style Candidates */
+        get: operations["style_candidates_api_memory_style_candidates_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/memory/{kind}/{key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Remove Memory */
+        delete: operations["remove_memory_api_memory__kind___key__delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/messages": {
         parameters: {
             query?: never;
@@ -439,6 +524,19 @@ export interface components {
             /** Reasons */
             reasons?: string[];
         };
+        /** ConfirmStyle */
+        ConfirmStyle: {
+            /**
+             * Confirmed
+             * @constant
+             */
+            confirmed: true;
+            /**
+             * Key
+             * @enum {string}
+             */
+            key: "cut_opening" | "concise" | "avoid_passionate" | "avoid_excited" | "avoid_thrilled";
+        };
         /** CreateRun */
         CreateRun: {
             /**
@@ -521,6 +619,24 @@ export interface components {
              * Format: date-time
              */
             updated_at: string;
+        };
+        /** EditView */
+        EditView: {
+            /** After Text */
+            after_text: string;
+            /** Audit Id */
+            audit_id: number;
+            /** Before Text */
+            before_text: string;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Diff */
+            diff: string;
+            /** Run Id */
+            run_id: string;
         };
         /** EvidenceHit */
         EvidenceHit: {
@@ -648,6 +764,70 @@ export interface components {
             /** Title */
             title: string;
         };
+        /** MemoryContext */
+        MemoryContext: {
+            /** Outcome Patterns */
+            outcome_patterns?: components["schemas"]["MemoryValue"][];
+            /** Style Preferences */
+            style_preferences?: string[];
+        };
+        /** MemoryList */
+        MemoryList: {
+            /** Items */
+            items: components["schemas"]["MemoryView"][];
+            /** Sync Pending */
+            sync_pending: boolean;
+        };
+        /** MemoryValue */
+        MemoryValue: {
+            /** Category */
+            category?: ("ai_ml" | "full_stack" | "data_analyst" | "other") | null;
+            /** Instruction */
+            instruction?: string | null;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "style" | "outcome";
+            /** Observations */
+            observations: number;
+            /** Outcome */
+            outcome?: ("won" | "replied") | null;
+            /** Promotion Rule */
+            promotion_rule: string;
+            proposal_features?: components["schemas"]["OutcomeFeatures"] | null;
+            /** Supporting Run Ids */
+            supporting_run_ids: string[];
+        };
+        /** MemoryView */
+        MemoryView: {
+            /** Key */
+            key: string;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "style" | "outcome";
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
+            value: components["schemas"]["MemoryValue"];
+            /** Version */
+            version: number;
+        };
+        /** OutcomeFeatures */
+        OutcomeFeatures: {
+            /** Artifact Samples */
+            artifact_samples: number;
+            /** Mean Cover Words */
+            mean_cover_words: number;
+            /** Mean Verified Claims */
+            mean_verified_claims: number;
+            /** Question Fraction */
+            question_fraction: number;
+        };
         /** PortfolioSearch */
         PortfolioSearch: {
             /** Filters */
@@ -731,6 +911,11 @@ export interface components {
             };
             /** Text */
             text: string;
+        };
+        /** RemoveMemory */
+        RemoveMemory: {
+            /** Version */
+            version: number;
         };
         /** ReviewRun */
         ReviewRun: {
@@ -841,6 +1026,7 @@ export interface components {
             evidence?: components["schemas"]["EvidenceItem"][];
             fit?: components["schemas"]["FitReport"] | null;
             job?: components["schemas"]["JobSpec"] | null;
+            memory?: components["schemas"]["MemoryContext"] | null;
             preview?: components["schemas"]["WritePreview"] | null;
             price?: components["schemas"]["PriceQuote"] | null;
             risk?: components["schemas"]["RiskReport"] | null;
@@ -850,6 +1036,22 @@ export interface components {
             verification?: {
                 [key: string]: unknown;
             } | null;
+        };
+        /** StyleCandidate */
+        StyleCandidate: {
+            /** Active */
+            active: boolean;
+            /** Eligible */
+            eligible: boolean;
+            /** Instruction */
+            instruction: string;
+            /**
+             * Key
+             * @enum {string}
+             */
+            key: "cut_opening" | "concise" | "avoid_passionate" | "avoid_excited" | "avoid_thrilled";
+            /** Observations */
+            observations: number;
         };
         /** ValidationError */
         ValidationError: {
@@ -1118,6 +1320,133 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["JobView"];
                 };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_memory_api_memory_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MemoryList"];
+                };
+            };
+        };
+    };
+    draft_edits_api_memory_edits_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EditView"][];
+                };
+            };
+        };
+    };
+    confirm_style_api_memory_style_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ConfirmStyle"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MemoryList"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    style_candidates_api_memory_style_candidates_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StyleCandidate"][];
+                };
+            };
+        };
+    };
+    remove_memory_api_memory__kind___key__delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                kind: "style" | "outcome";
+                key: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RemoveMemory"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
             /** @description Validation Error */
             422: {

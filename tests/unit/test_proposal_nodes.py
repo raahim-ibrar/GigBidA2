@@ -243,3 +243,25 @@ async def test_numeric_guard_requires_complete_numbers_not_substrings(setup_node
     state["draft"] = ProposalDraft(text="I built 100 APIs.")
     with pytest.raises(GroundingFailure):
         await nodes.verifier(state)
+
+
+async def test_host_loaded_memory_reaches_writer_without_becoming_evidence(setup_nodes):
+    nodes, state, _, models, _ = setup_nodes
+    captured = []
+
+    async def memory():
+        return {"style_preferences": ["Avoid the word ‘passionate’."], "outcome_patterns": []}
+
+    original = models.complete
+
+    async def complete(role, payload, schema):
+        if role == "writer":
+            captured.append(payload)
+        return await original(role, payload, schema)
+
+    nodes.load_memory, models.complete = memory, complete
+    graph = build_bid_graph(checkpointer=InMemorySaver(), nodes=nodes.mapping())
+    result = await graph.ainvoke(state, {"configurable": {"thread_id": str(uuid4())}})
+    assert "__interrupt__" in result
+    assert captured[0]["promoted_memory"]["style_preferences"] == ["Avoid the word ‘passionate’."]
+    assert [item["id"] for item in captured[0]["evidence"]] == ["e1"]

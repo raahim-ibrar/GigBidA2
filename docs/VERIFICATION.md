@@ -37,3 +37,10 @@ Run the local Analyst smoke with `GIGBID_REAL_AGENTS=1 uv run pytest tests/integ
 - A disposable live API account uploaded a development source, which the Linux worker indexed. A manual job traversed real Ollama roles and the standalone Portfolio MCP, paused for a Postgres review, then resumed after an API approval and saved a local artifact. Its source vectors, graph checkpoints and account were cleaned up; the user's account was untouched.
 - Real inference exposed omitted citation IDs even for supported exact excerpts. The prompt now requires IDs, and a strict fallback binds only exact normalized source substrings. Uncited paraphrases remain unsupported. Complete numerical tokens are checked rather than matching substrings such as `100` inside `1000`.
 - The live smoke establishes connectivity/recovery mechanics only. Draft completeness, relevance, judge reliability, budgets and latency still need the required measured experiments. No marketplace proposal was submitted.
+
+## Persistent memory stage
+
+- On 6 November 2026, all 102 Python tests passed with Postgres, real retrieval models, and the local Ollama smoke enabled. The cold-start regression initialized both LangGraph schemas from four concurrent callers on a disposable schema.
+- Eight Chromium tests passed. The memory flow recorded three edits, confirmed a preference, verified that a later run loaded it, and removed it. The marketplace-outage flow remains pending.
+- Integration tests verified namespace isolation, event deduplication, promotion thresholds, and durable removal during a simulated store outage. Outcome tests used development fixtures for verified provider events. Live outcome ingestion awaits the marketplace adapter.
+- TypeScript, the frontend production build, Python lint, and the required path check passed. The rebuilt worker and migration images started successfully. The local API reported ready and Settings returned HTTP 200.

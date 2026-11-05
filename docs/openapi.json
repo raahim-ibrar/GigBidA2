@@ -144,6 +144,33 @@
         "title": "ComplianceVerdict",
         "type": "object"
       },
+      "ConfirmStyle": {
+        "additionalProperties": false,
+        "properties": {
+          "confirmed": {
+            "const": true,
+            "title": "Confirmed",
+            "type": "boolean"
+          },
+          "key": {
+            "enum": [
+              "cut_opening",
+              "concise",
+              "avoid_passionate",
+              "avoid_excited",
+              "avoid_thrilled"
+            ],
+            "title": "Key",
+            "type": "string"
+          }
+        },
+        "required": [
+          "key",
+          "confirmed"
+        ],
+        "title": "ConfirmStyle",
+        "type": "object"
+      },
       "CreateRun": {
         "additionalProperties": false,
         "properties": {
@@ -367,6 +394,46 @@
           "updated_at"
         ],
         "title": "DocumentView",
+        "type": "object"
+      },
+      "EditView": {
+        "additionalProperties": false,
+        "properties": {
+          "after_text": {
+            "title": "After Text",
+            "type": "string"
+          },
+          "audit_id": {
+            "title": "Audit Id",
+            "type": "integer"
+          },
+          "before_text": {
+            "title": "Before Text",
+            "type": "string"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "diff": {
+            "title": "Diff",
+            "type": "string"
+          },
+          "run_id": {
+            "title": "Run Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "audit_id",
+          "run_id",
+          "before_text",
+          "after_text",
+          "diff",
+          "created_at"
+        ],
+        "title": "EditView",
         "type": "object"
       },
       "EvidenceHit": {
@@ -756,6 +823,211 @@
         "title": "ManualJob",
         "type": "object"
       },
+      "MemoryContext": {
+        "additionalProperties": false,
+        "properties": {
+          "outcome_patterns": {
+            "items": {
+              "$ref": "#/components/schemas/MemoryValue"
+            },
+            "title": "Outcome Patterns",
+            "type": "array"
+          },
+          "style_preferences": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Style Preferences",
+            "type": "array"
+          }
+        },
+        "title": "MemoryContext",
+        "type": "object"
+      },
+      "MemoryList": {
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/MemoryView"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "sync_pending": {
+            "title": "Sync Pending",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "items",
+          "sync_pending"
+        ],
+        "title": "MemoryList",
+        "type": "object"
+      },
+      "MemoryValue": {
+        "additionalProperties": false,
+        "properties": {
+          "category": {
+            "anyOf": [
+              {
+                "enum": [
+                  "ai_ml",
+                  "full_stack",
+                  "data_analyst",
+                  "other"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category"
+          },
+          "instruction": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Instruction"
+          },
+          "kind": {
+            "enum": [
+              "style",
+              "outcome"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "observations": {
+            "minimum": 3.0,
+            "title": "Observations",
+            "type": "integer"
+          },
+          "outcome": {
+            "anyOf": [
+              {
+                "enum": [
+                  "won",
+                  "replied"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Outcome"
+          },
+          "promotion_rule": {
+            "title": "Promotion Rule",
+            "type": "string"
+          },
+          "proposal_features": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/OutcomeFeatures"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "supporting_run_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Supporting Run Ids",
+            "type": "array"
+          }
+        },
+        "required": [
+          "kind",
+          "observations",
+          "supporting_run_ids",
+          "promotion_rule"
+        ],
+        "title": "MemoryValue",
+        "type": "object"
+      },
+      "MemoryView": {
+        "additionalProperties": false,
+        "properties": {
+          "key": {
+            "title": "Key",
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "style",
+              "outcome"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "updated_at": {
+            "format": "date-time",
+            "title": "Updated At",
+            "type": "string"
+          },
+          "value": {
+            "$ref": "#/components/schemas/MemoryValue"
+          },
+          "version": {
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "key",
+          "kind",
+          "version",
+          "value",
+          "updated_at"
+        ],
+        "title": "MemoryView",
+        "type": "object"
+      },
+      "OutcomeFeatures": {
+        "additionalProperties": false,
+        "properties": {
+          "artifact_samples": {
+            "minimum": 3.0,
+            "title": "Artifact Samples",
+            "type": "integer"
+          },
+          "mean_cover_words": {
+            "minimum": 0.0,
+            "title": "Mean Cover Words",
+            "type": "number"
+          },
+          "mean_verified_claims": {
+            "minimum": 0.0,
+            "title": "Mean Verified Claims",
+            "type": "number"
+          },
+          "question_fraction": {
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Question Fraction",
+            "type": "number"
+          }
+        },
+        "required": [
+          "artifact_samples",
+          "mean_cover_words",
+          "mean_verified_claims",
+          "question_fraction"
+        ],
+        "title": "OutcomeFeatures",
+        "type": "object"
+      },
       "PortfolioSearch": {
         "additionalProperties": false,
         "properties": {
@@ -972,6 +1244,21 @@
           "text"
         ],
         "title": "ProposalDraft",
+        "type": "object"
+      },
+      "RemoveMemory": {
+        "additionalProperties": false,
+        "properties": {
+          "version": {
+            "minimum": 1.0,
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "version"
+        ],
+        "title": "RemoveMemory",
         "type": "object"
       },
       "ReviewRun": {
@@ -1294,6 +1581,16 @@
               }
             ]
           },
+          "memory": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/MemoryContext"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "preview": {
             "anyOf": [
               {
@@ -1349,6 +1646,48 @@
           }
         },
         "title": "SnapshotView",
+        "type": "object"
+      },
+      "StyleCandidate": {
+        "additionalProperties": false,
+        "properties": {
+          "active": {
+            "title": "Active",
+            "type": "boolean"
+          },
+          "eligible": {
+            "title": "Eligible",
+            "type": "boolean"
+          },
+          "instruction": {
+            "title": "Instruction",
+            "type": "string"
+          },
+          "key": {
+            "enum": [
+              "cut_opening",
+              "concise",
+              "avoid_passionate",
+              "avoid_excited",
+              "avoid_thrilled"
+            ],
+            "title": "Key",
+            "type": "string"
+          },
+          "observations": {
+            "minimum": 0.0,
+            "title": "Observations",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "key",
+          "instruction",
+          "observations",
+          "eligible",
+          "active"
+        ],
+        "title": "StyleCandidate",
         "type": "object"
       },
       "ValidationError": {
@@ -1717,6 +2056,176 @@
         "summary": "Get Job",
         "tags": [
           "jobs"
+        ]
+      }
+    },
+    "/api/memory": {
+      "get": {
+        "operationId": "list_memory_api_memory_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemoryList"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "List Memory",
+        "tags": [
+          "memory"
+        ]
+      }
+    },
+    "/api/memory/edits": {
+      "get": {
+        "operationId": "draft_edits_api_memory_edits_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/EditView"
+                  },
+                  "title": "Response Draft Edits Api Memory Edits Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Draft Edits",
+        "tags": [
+          "memory"
+        ]
+      }
+    },
+    "/api/memory/style": {
+      "post": {
+        "operationId": "confirm_style_api_memory_style_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfirmStyle"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemoryList"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Confirm Style",
+        "tags": [
+          "memory"
+        ]
+      }
+    },
+    "/api/memory/style-candidates": {
+      "get": {
+        "operationId": "style_candidates_api_memory_style_candidates_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/StyleCandidate"
+                  },
+                  "title": "Response Style Candidates Api Memory Style Candidates Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Style Candidates",
+        "tags": [
+          "memory"
+        ]
+      }
+    },
+    "/api/memory/{kind}/{key}": {
+      "delete": {
+        "operationId": "remove_memory_api_memory__kind___key__delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "kind",
+            "required": true,
+            "schema": {
+              "enum": [
+                "style",
+                "outcome"
+              ],
+              "title": "Kind",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "key",
+            "required": true,
+            "schema": {
+              "title": "Key",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemoveMemory"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Remove Memory",
+        "tags": [
+          "memory"
         ]
       }
     },

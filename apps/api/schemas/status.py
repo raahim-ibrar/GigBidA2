@@ -20,6 +20,7 @@ class SkeletonStatus(BaseModel):
             "Typed handoff contracts",
             "Postgres proposal checkpoints, ID-bound approvals and local draft commits",
             "Durable token/step accounting and persisted event streaming",
+            "Rule-promoted style/outcome LangGraph memory and private edit diffs",
             "MCP registration scaffolds",
         ]
     )
@@ -28,7 +29,7 @@ class SkeletonStatus(BaseModel):
             "Distributed auth rate limiting and production deployment",
             "GigSim and Upwork adapters",
             "GitHub corpus ingestion and measured retrieval selection",
-            "Conversation agents and memory persistence",
+            "Conversation agents and live marketplace outcome ingestion",
             "Provider authorization, idempotency and reconciliation",
             "Measured proposal quality and claim-verifier calibration",
             "Evaluation and deployment",

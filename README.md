@@ -77,7 +77,7 @@ Default Compose services are web, API, worker, Postgres, Redis and Qdrant. Ollam
 - A marketplace interface with GigSim and Upwork adapter stubs.
 - PDF/Markdown/text ingestion and implemented V0, V1, V2, V3 and V8 retrieval components. V8 uses a bounded LangGraph retrieve/grade/correct loop.
 - Portfolio source metadata includes persona, type, project, skills, date, industry and proposal outcome; retrieved chunks retain source IDs and PDF pages.
-- Sentence claim verification is implemented; calibration, memory persistence and graded evaluations remain pending.
+- Sentence claim verification and rule-promoted LangGraph style/outcome memory are implemented. Settings exposes edit history, confirmation and removal. Outcome ingestion still requires the real marketplace adapter; calibration and graded evaluations remain pending.
 - Docker and CI scaffolding, pinned dependencies, and uv/npm lockfiles.
 
 ## Architecture

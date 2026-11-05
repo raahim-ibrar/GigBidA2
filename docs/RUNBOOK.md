@@ -32,6 +32,21 @@ Jobs and review decisions are saved before queueing. Pending-run scans recover q
 
 Review at `/studio/<run ID>` and follow redacted progress at `/runs/<run ID>`. A run marked `needs_attention` has a saved explanation; correct its evidence/input/services before starting a new run. Existing incomplete runs are not silently restarted with a fresh token budget.
 
+Memory controls are in Settings. Style patterns need edits to three distinct drafts
+plus user confirmation. Outcome patterns need three distinct verified provider jobs;
+the internal hook rejects manual sources and is not an HTTP/model tool. No live outcome
+ingestion exists until the marketplace adapter is connected. Promoted values live in
+separate `(tenant, style)` and `(tenant, outcome)` LangGraph namespaces. An SQL ledger
+retains removal tombstones and repairs failed mirror updates. If synchronization fails,
+the UI reports it and new runs use no memory. Memory is a run-start snapshot, so changing
+it affects new runs rather than rewriting an in-progress draft.
+
+LangGraph checkpoint and store schema setup runs at API and worker startup with bounded
+timeouts. Concurrent initializers retry advisory lock acquisition between transactions.
+This keeps waiting initializers and authenticated requests from blocking index creation
+with open snapshots. SQLite tests reconstruct an in-memory mirror from their SQL
+ledger. Integration tests verify persistence with Postgres.
+
 Optional profile `gigsim` requires `GIGSIM_IMAGE` to identify the real supplied simulator image, with its actual configuration added after inspection. The placeholder image name is not a simulator implementation.
 
 Profile `mcp-stdio` contains stdio MCP entry containers for inspection, not a functioning HTTP inter-service network. Complete bearer auth and Streamable HTTP hosting before making these default production services. Full R10/E6 Compose compliance is pending.

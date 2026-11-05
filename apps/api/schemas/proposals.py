@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import UTC, datetime
 from typing import Literal
 from uuid import UUID, uuid4
 
@@ -18,6 +18,7 @@ from agent.handoffs import (
     RiskReport,
     WritePreview,
 )
+from apps.api.schemas.memory import MemoryContext
 
 
 class ManualJob(Contract):
@@ -76,6 +77,7 @@ class SnapshotView(Contract):
     evidence: list[EvidenceItem] = Field(default_factory=list)
     verification: dict | None = None
     events: list[str] = Field(default_factory=list)
+    memory: MemoryContext | None = None
 
 
 class RunView(Contract):
@@ -106,3 +108,9 @@ class LocalDraftView(Contract):
     run_id: str
     draft: dict
     created_at: datetime
+
+    @field_validator("created_at")
+    @classmethod
+    def utc_timestamp(cls, value):
+        # SQLite test reads lose timezone information; stored timestamps are UTC.
+        return value.replace(tzinfo=UTC) if value.tzinfo is None else value.astimezone(UTC)

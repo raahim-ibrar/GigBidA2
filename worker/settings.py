@@ -1,4 +1,4 @@
-"""Durable background indexing; proposal/conversation execution is added in the next layer."""
+"""Durable indexing and proposal execution; conversation processing is still pending."""
 
 import asyncio
 import os
@@ -9,6 +9,7 @@ from arq.connections import RedisSettings
 from sqlalchemy import and_, or_, select
 from sqlalchemy.orm import Session
 
+from agent.memory.service import MemoryService
 from agent.run_store import RunStore
 from agent.runtime import process_bid
 from apps.api.database import make_engine
@@ -23,6 +24,7 @@ async def startup(ctx):
     ctx["engine"] = make_engine(settings.database_url)
     ctx["portfolio"] = build_portfolio(ctx["engine"], settings)
     ctx["settings"] = settings
+    await asyncio.to_thread(MemoryService(ctx["engine"], settings.database_url).ensure)
 
 
 async def shutdown(ctx):

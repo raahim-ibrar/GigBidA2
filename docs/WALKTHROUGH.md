@@ -43,6 +43,14 @@ The worker now runs proposal business nodes and stores checkpoints in Postgres. 
 
 **State, trace and memory:** state is what a current run needs; the trace records what happened; memory stores only deliberately promoted knowledge for later runs.
 
+The current memory rule is deliberately explicit. If the same edit pattern appears in
+three distinct drafts, Settings offers it for confirmation. Only a confirmed pattern
+enters style memory; the complete edit diff stays in private review history. Outcome
+memory has its own namespace and requires verified replies/wins on three distinct
+marketplace jobs. A local draft is never a win or a reply. New runs load a snapshot of
+active memory, and the writer must still ground experience claims in portfolio sources.
+Removing a preference prevents future recall; it leaves earlier review history intact.
+
 **Ablation:** remove one component from your best pipeline and measure what gets worse or stays the same.
 
 ## First things to read in the code

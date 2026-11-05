@@ -10,12 +10,14 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from agent.handoffs import ApprovalDecision, ProposalDraft
+from agent.memory.edits import edit_observation
 from agent.model_client import BudgetExceeded
 from agent.proposal_nodes import ReviewRequired, draft_digest
 from agent.safety import mask_pii
 from apps.api.models import (
     AgentRun,
     ApprovalAudit,
+    DraftEdit,
     EvidenceChunk,
     FreelancerProfile,
     JobRecord,
@@ -200,15 +202,28 @@ class RunStore:
             )
             if decision.action == "approve":
                 self._check_evidence(db, tenant, draft)
-            db.add(
-                ApprovalAudit(
-                    run_id=run_id,
-                    user_id=tenant,
-                    version=run.version,
-                    draft_digest=digest,
-                    decision=decision.model_dump(),
-                )
+            audit = ApprovalAudit(
+                run_id=run_id,
+                user_id=tenant,
+                version=run.version,
+                draft_digest=digest,
+                decision=decision.model_dump(),
             )
+            db.add(audit)
+            if decision.action == "edit":
+                patterns, diff = edit_observation(draft.text, decision.edited_text)
+                db.flush()
+                db.add(
+                    DraftEdit(
+                        audit_id=audit.id,
+                        user_id=tenant,
+                        run_id=run_id,
+                        before_text=draft.text,
+                        after_text=decision.edited_text,
+                        diff=diff,
+                        patterns=patterns,
+                    )
+                )
             run.resume = {
                 "interrupt_id": run.review["interrupt_id"],
                 "decision": decision.model_dump(),

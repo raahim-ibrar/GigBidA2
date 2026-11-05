@@ -15,6 +15,7 @@ from agent import handoffs
 from agent.config import AgentConfig
 from agent.graphs.bid_graph import build_bid_graph
 from agent.mcp_client import build_client
+from agent.memory.service import MemoryService, MemoryUnavailable
 from agent.model_client import BudgetExceeded, ModelUnavailable, OllamaModels
 from agent.portfolio_client import PortfolioMCP
 from agent.proposal_nodes import GroundingFailure, ProposalNodes, ReviewRequired
@@ -63,13 +64,8 @@ async def process_bid(
         try:
             if await asyncio.to_thread(store.recover_local, tenant, run_id, token):
                 return {"status": "drafted"}
-            # Serialize initial schema setup, including concurrent-index migrations.
-            setup_key = lock_key("gigbid:checkpoint-schema")
-            await saver.conn.execute("SELECT pg_advisory_lock(%s)", (setup_key,))
-            try:
-                await saver.setup()
-            finally:
-                await saver.conn.execute("SELECT pg_advisory_unlock(%s)", (setup_key,))
+            # API/worker startup owns schema migrations. Never create concurrent
+            # indexes while another run/request can hold a blocking snapshot.
 
             async def record(metrics):
                 await asyncio.to_thread(store.event, tenant, run_id, token, "model_usage", metrics)
@@ -90,6 +86,29 @@ async def process_bid(
             async def execute(state):
                 result = await asyncio.to_thread(store.save_local, tenant, run_id, token, state)
                 return result.model_dump(mode="json")
+
+            async def memory():
+                try:
+                    service = MemoryService(engine, settings.database_url)
+                    await asyncio.to_thread(service.ensure)
+                    context = await asyncio.to_thread(service.context, tenant)
+                    await asyncio.to_thread(
+                        store.event,
+                        tenant,
+                        run_id,
+                        token,
+                        "memory_loaded",
+                        {
+                            "style_count": len(context["style_preferences"]),
+                            "outcome_count": len(context["outcome_patterns"]),
+                        },
+                    )
+                    return context
+                except MemoryUnavailable:
+                    await asyncio.to_thread(
+                        store.event, tenant, run_id, token, "memory_unavailable", {}
+                    )
+                    return {}
 
             models = models_factory(
                 settings.ollama_base_url,
@@ -120,7 +139,9 @@ async def process_bid(
                     reader = PortfolioMCP(
                         await stack.enter_async_context(client.session("portfolio"))
                     )
-                business = ProposalNodes(models, reader, config, execute_local=execute)
+                business = ProposalNodes(
+                    models, reader, config, execute_local=execute, load_memory=memory
+                )
 
                 def bounded(name, function):
                     async def node(state):

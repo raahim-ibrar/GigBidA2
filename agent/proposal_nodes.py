@@ -59,9 +59,11 @@ class ProposalNodes:
         config: AgentConfig,
         *,
         execute_local: Callable[[dict], Awaitable[dict]],
+        load_memory=None,
     ):
         self.models, self.portfolio, self.config = models, portfolio, config
         self.execute_local = execute_local
+        self.load_memory = load_memory
 
     def mapping(self):
         return {
@@ -92,7 +94,8 @@ class ProposalNodes:
             raise ReviewRequired("A job title and description are required")
         if len(json.dumps(raw)) > 20000:
             raise ReviewRequired("Shorten the job post before analysing it")
-        return {"status": "analysing", "events": ["manual_job_loaded"]}
+        memory = await self.load_memory() if self.load_memory else {}
+        return {"status": "analysing", "memory": memory, "events": ["manual_job_loaded"]}
 
     async def analyst(self, state):
         job = await self.models.complete("analyst", {"job": state["raw_job"]}, JobSpec)
@@ -231,6 +234,7 @@ class ProposalNodes:
                 "quote": state["price"].model_dump(),
                 "critique": state["critique"].model_dump() if state.get("critique") else None,
                 "previous_draft": state["draft"].model_dump() if state.get("draft") else None,
+                "promoted_memory": state.get("memory", {}),
             },
             ProposalDraft,
         )

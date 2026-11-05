@@ -26,6 +26,7 @@ class BidState(TypedDict, total=False):
     preferences: dict
     verification: dict
     user_edited: bool
+    memory: dict
     job: JobSpec
     risk: RiskReport
     fit: FitReport

@@ -65,6 +65,6 @@ export function ProfileForm({ onboarding = false }: { onboarding?: boolean }) {
       {saved && <p role="status">Profile saved.</p>}
       <button type="submit" disabled={busy}>{busy ? "Saving…" : onboarding ? "Save and continue" : "Save profile"}</button>
     </form>
-    <p className="muted">Persona selection saves your preference. Portfolio import and marketplace connection are the next implementation steps.</p>
+    <p className="muted">Profile preferences are saved to your account. Add supporting sources in Portfolio; marketplace connection is pending.</p>
   </section>;
 }

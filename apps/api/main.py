@@ -1,3 +1,4 @@
+import asyncio
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, HTTPException, Request
@@ -6,6 +7,7 @@ from fastapi.responses import JSONResponse
 from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 
+from agent.memory.service import MemoryService, MemoryUnavailable
 from agent.proposal_nodes import ReviewRequired
 from agent.run_store import RunConflict, RunNotFound, RunStore
 from apps.api.auth.security import AuthLimiter
@@ -15,6 +17,7 @@ from apps.api.routers import (
     approvals,
     auth,
     jobs,
+    memory,
     messages,
     portfolio,
     profile,
@@ -35,6 +38,10 @@ def create_app(
 
     @asynccontextmanager
     async def lifespan(app):
+        try:
+            await asyncio.to_thread(app.state.memory.ensure)
+        except MemoryUnavailable:
+            pass  # Accounts still work; memory endpoints expose pending synchronization.
         yield
         if engine is None:
             database.dispose()
@@ -45,6 +52,7 @@ def create_app(
     app.state.auth_limiter = AuthLimiter()
     app.state.portfolio = portfolio_service or build_portfolio(database, settings)
     app.state.runs = RunStore(database)
+    app.state.memory = MemoryService(database, settings.database_url)
 
     async def queue(tenant, document, revision):
         return await enqueue_portfolio(settings, tenant, document, revision)
@@ -99,7 +107,18 @@ def create_app(
     def status():
         return SkeletonStatus()
 
-    for router in (auth, profile, portfolio, jobs, proposals, approvals, messages, runs, analytics):
+    for router in (
+        auth,
+        profile,
+        portfolio,
+        jobs,
+        proposals,
+        approvals,
+        messages,
+        runs,
+        analytics,
+        memory,
+    ):
         app.include_router(router.router, prefix="/api")
     return app
 
