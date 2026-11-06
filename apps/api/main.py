@@ -23,9 +23,11 @@ from apps.api.routers import (
     profile,
     proposals,
     runs,
+    workspace,
 )
 from apps.api.schemas.status import SkeletonStatus
 from apps.api.settings import Settings
+from mcp_servers.workspace.service import WorkspaceService
 from rag.runtime import build_portfolio
 from worker.queue import enqueue_bid, enqueue_portfolio
 
@@ -53,6 +55,7 @@ def create_app(
     app.state.portfolio = portfolio_service or build_portfolio(database, settings)
     app.state.runs = RunStore(database)
     app.state.memory = MemoryService(database, settings.database_url)
+    app.state.workspace = WorkspaceService(database)
 
     async def queue(tenant, document, revision):
         return await enqueue_portfolio(settings, tenant, document, revision)
@@ -118,6 +121,7 @@ def create_app(
         runs,
         analytics,
         memory,
+        workspace,
     ):
         app.include_router(router.router, prefix="/api")
     return app

@@ -132,6 +132,7 @@ class ApprovalAudit(Base):
     version: Mapped[int] = mapped_column(Integer)
     draft_digest: Mapped[str] = mapped_column(String(64))
     decision: Mapped[dict] = mapped_column(JSON)
+    preview: Mapped[dict | None] = mapped_column(JSON, nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
 
 
@@ -185,3 +186,37 @@ class MemoryRecord(Base):
     synced: Mapped[bool] = mapped_column(default=False)
     version: Mapped[int] = mapped_column(Integer, default=1)
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
+class CalendarAvailability(Base):
+    __tablename__ = "calendar_availability"
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=lambda: str(uuid4()))
+    user_id: Mapped[str] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True)
+    start: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    end: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+
+
+class WorkspaceWrite(Base):
+    __tablename__ = "workspace_writes"
+    __table_args__ = (
+        UniqueConstraint("user_id", "tool", "idempotency_key", name="uq_workspace_write"),
+    )
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=lambda: str(uuid4()))
+    user_id: Mapped[str] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True)
+    run_id: Mapped[str] = mapped_column(ForeignKey("agent_runs.id", ondelete="CASCADE"), index=True)
+    approval_id: Mapped[int] = mapped_column(ForeignKey("approval_audit.id", ondelete="CASCADE"))
+    tool: Mapped[str] = mapped_column(String(40))
+    idempotency_key: Mapped[str] = mapped_column(String(200))
+    arguments: Mapped[dict] = mapped_column(JSON)
+    result: Mapped[dict] = mapped_column(JSON)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
+class CalendarHold(Base):
+    __tablename__ = "calendar_holds"
+    id: Mapped[str] = mapped_column(
+        ForeignKey("workspace_writes.id", ondelete="CASCADE"), primary_key=True
+    )
+    user_id: Mapped[str] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True)
+    start: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    end: Mapped[datetime] = mapped_column(DateTime(timezone=True))

@@ -1,6 +1,10 @@
 # Tool inventory
 
-Portfolio tools are implemented against tenant-scoped source storage and retrieval. The trusted stdio host binds `GIGBID_TENANT_ID`; the tool schema cannot select another tenant. Marketplace and Workspace tools remain scaffolded. HTTP MCP refuses to start until bearer auth is implemented. Per-user network rate limiting and audit are still pending. The search tool accepts a Pydantic `request` object, including the configurable retrieval variant.
+Portfolio tools use tenant-scoped source storage and retrieval. Workspace tools use a
+local calendar and email-draft backend, as allowed by A3. The trusted stdio host binds
+`GIGBID_TENANT_ID` and the Workspace executor's `GIGBID_RUN_ID`. Tool arguments cannot
+select another account or run. Marketplace tools remain scaffolded. HTTP transport
+awaits bearer authentication and per-user network rate limiting.
 
 | Tool | Server | Access | readOnly / destructive / idempotent | Current auth |
 | --- | --- | --- | --- | --- |
@@ -16,10 +20,16 @@ Portfolio tools are implemented against tenant-scoped source storage and retriev
 | submit_proposal | Marketplace | write | false / true / false | disabled implementation |
 | send_message | Marketplace | write | false / true / false | disabled implementation |
 | free_calendar_slots | Workspace | read | true / false / true | local stdio |
-| create_interview_hold | Workspace | write | false / true / false | disabled implementation |
-| create_email_draft | Workspace | write | false / true / false | disabled implementation |
+| create_interview_hold | Workspace | write | false / false / true | tenant/run-bound stdio and exact approved preview |
+| create_email_draft | Workspace | write | false / false / true | tenant/run-bound stdio and exact approved preview |
 
-Write annotations deliberately do not claim idempotency yet. Once a durable ledger and upstream retry behavior are implemented and tested, change those annotations and review the resulting schema snapshot. A client-supplied key alone does not make a write idempotent.
+Workspace writes default to dry-run previews. Execution checks the latest human
+decision, saved preview, tool arguments, idempotency key and current run state. One SQL
+transaction records the local effect and its audit receipt. A per-account lock prevents
+overlapping concurrent holds. Calendar availability is declared by the user. The slot
+finder excludes holds and limits queries to 31 days. The reviewed MCP snapshot covers
+the intentional schema and annotation changes. Marketplace write idempotency remains
+pending with its provider integration.
 
 Every write eventually needs an authorization check at the server boundary, preview parity, an idempotency key, tenant-aware replay protection and an append-only audit record. Never expose arbitrary model-selected URLs or raw credentials as tool parameters.
 

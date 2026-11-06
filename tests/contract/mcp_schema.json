@@ -872,7 +872,7 @@
         "idempotentHint": true,
         "readOnlyHint": true
       },
-      "description": "",
+      "description": "Find slots inside declared local availability, excluding this account's holds.",
       "inputSchema": {
         "$defs": {
           "SlotRequest": {
@@ -934,16 +934,21 @@
     },
     {
       "annotations": {
-        "destructiveHint": true,
-        "idempotentHint": false,
+        "destructiveHint": false,
+        "idempotentHint": true,
         "readOnlyHint": false
       },
-      "description": "",
+      "description": "Preview or create one local tentative hold. Execution requires exact human approval.",
       "inputSchema": {
         "$defs": {
           "HoldRequest": {
             "additionalProperties": false,
             "properties": {
+              "dry_run": {
+                "default": true,
+                "title": "Dry Run",
+                "type": "boolean"
+              },
               "idempotency_key": {
                 "maxLength": 200,
                 "minLength": 8,
@@ -1001,11 +1006,11 @@
     },
     {
       "annotations": {
-        "destructiveHint": true,
-        "idempotentHint": false,
+        "destructiveHint": false,
+        "idempotentHint": true,
         "readOnlyHint": false
       },
-      "description": "",
+      "description": "Preview or save an approved local email draft with a durable idempotency key.",
       "inputSchema": {
         "$defs": {
           "EmailDraftRequest": {
@@ -1016,6 +1021,11 @@
                 "minLength": 1,
                 "title": "Body",
                 "type": "string"
+              },
+              "dry_run": {
+                "default": true,
+                "title": "Dry Run",
+                "type": "boolean"
               },
               "idempotency_key": {
                 "maxLength": 200,

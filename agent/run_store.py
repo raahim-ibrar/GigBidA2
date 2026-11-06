@@ -208,6 +208,7 @@ class RunStore:
                 version=run.version,
                 draft_digest=digest,
                 decision=decision.model_dump(),
+                preview=run.review["preview"],
             )
             db.add(audit)
             if decision.action == "edit":

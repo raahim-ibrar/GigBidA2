@@ -15,7 +15,7 @@
 - Postgres checkpoints survive recreated runtimes. Review decisions bind run version, draft digest and interrupt ID. Stale decisions, duplicate workers and unsupported/stale evidence are blocked. Local commits are idempotent and recoverable after execute-checkpoint loss; external writes remain disabled.
 - Token reservations and node-attempt budgets are persisted in SQL. The Ollama client validates structured output, records actual usage and bounds fallback by role. An unknown failed-call reservation remains charged conservatively. Model quality and thresholds have not been calibrated.
 - Run progress uses persisted redacted events and reconnectable SSE. Queue-outage recovery scans saved pending runs; terminal attention states show safe failures rather than fabricated results.
-- Portfolio MCP tools/resources work against the indexed corpus and bind tenant identity at server construction. Marketplace and Workspace implementations remain scaffolded; HTTP MCP is still disabled pending bearer auth.
+- Portfolio MCP tools/resources work against the indexed corpus. Workspace MCP provides user-declared local availability, tentative holds and email drafts with exact approval checks and an idempotent audit ledger. Both servers bind identity at construction. Marketplace remains scaffolded; HTTP MCP awaits bearer auth.
 - Long-term memory uses separate tenant-scoped style/outcome namespaces in the Postgres LangGraph store. Actual draft edits are diffed and saved; a pattern needs three distinct drafts and explicit confirmation before promotion. Outcome memory requires verified provider events on three distinct jobs; the trusted adapter hook is implemented, but no real provider is connected. Settings supports inspection/removal, and new proposal runs load only active promoted values.
 - uv and npm dependency locking, schema export, structural checks and CI entry points exist.
 
@@ -34,7 +34,7 @@
 
 1. Confirm the source of GigSim, persona corpora, policy pack, dev labels and the announced policy update. Creating our own skeleton does not establish that those separate assets are also student-authored.
 2. The manual-job vertical slice now works through real inference, MCP, persistent review and a local artifact. Improve proposal quality with measured development checks; do not mistake a smoke pass for evaluation-backed correctness.
-3. Add conversation flow, Workspace tools, calendars, search schedules and visible retry/dead-letter handling. Memory persistence/promotion is implemented; measured learning and provider-derived observations remain pending.
+3. Add the conversation flow, search schedules and visible retry/dead-letter handling. Workspace tools and calendar Settings are implemented. The Liaison still needs to use them in its conversation graph. Memory learning and provider-derived observations need measurement/integration.
 4. Connect GigSim only after inspecting its supplied schemas. Extend human authorization and durable idempotency to real provider effects with upstream reconciliation.
 5. Complete degraded marketplace mode, production auth/rate limiting, tracing and remaining product screens.
 6. Run the required tool, model, retrieval and orchestration experiments. Store raw results before choosing the shipped configuration. Implement the selected extension.

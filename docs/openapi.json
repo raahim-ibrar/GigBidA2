@@ -24,6 +24,32 @@
         "title": "Account",
         "type": "object"
       },
+      "AvailabilityView": {
+        "additionalProperties": false,
+        "properties": {
+          "end": {
+            "format": "date-time",
+            "title": "End",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "start": {
+            "format": "date-time",
+            "title": "Start",
+            "type": "string"
+          }
+        },
+        "required": [
+          "start",
+          "end",
+          "id"
+        ],
+        "title": "AvailabilityView",
+        "type": "object"
+      },
       "BidDecision": {
         "additionalProperties": false,
         "properties": {
@@ -1505,6 +1531,57 @@
         "title": "SkeletonStatus",
         "type": "object"
       },
+      "SlotList": {
+        "additionalProperties": false,
+        "properties": {
+          "backend": {
+            "const": "local",
+            "default": "local",
+            "title": "Backend",
+            "type": "string"
+          },
+          "slots": {
+            "items": {
+              "$ref": "#/components/schemas/TimeWindow"
+            },
+            "title": "Slots",
+            "type": "array"
+          }
+        },
+        "required": [
+          "slots"
+        ],
+        "title": "SlotList",
+        "type": "object"
+      },
+      "SlotRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "end": {
+            "format": "date-time",
+            "title": "End",
+            "type": "string"
+          },
+          "minutes": {
+            "default": 30,
+            "maximum": 240.0,
+            "minimum": 15.0,
+            "title": "Minutes",
+            "type": "integer"
+          },
+          "start": {
+            "format": "date-time",
+            "title": "Start",
+            "type": "string"
+          }
+        },
+        "required": [
+          "start",
+          "end"
+        ],
+        "title": "SlotRequest",
+        "type": "object"
+      },
       "SnapshotView": {
         "properties": {
           "compliance": {
@@ -1690,6 +1767,27 @@
         "title": "StyleCandidate",
         "type": "object"
       },
+      "TimeWindow": {
+        "additionalProperties": false,
+        "properties": {
+          "end": {
+            "format": "date-time",
+            "title": "End",
+            "type": "string"
+          },
+          "start": {
+            "format": "date-time",
+            "title": "Start",
+            "type": "string"
+          }
+        },
+        "required": [
+          "start",
+          "end"
+        ],
+        "title": "TimeWindow",
+        "type": "object"
+      },
       "ValidationError": {
         "properties": {
           "ctx": {
@@ -1730,6 +1828,42 @@
         "title": "ValidationError",
         "type": "object"
       },
+      "WorkspaceActionView": {
+        "additionalProperties": false,
+        "properties": {
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          },
+          "run_id": {
+            "title": "Run Id",
+            "type": "string"
+          },
+          "tool": {
+            "title": "Tool",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "run_id",
+          "tool",
+          "result",
+          "created_at"
+        ],
+        "title": "WorkspaceActionView",
+        "type": "object"
+      },
       "WritePreview": {
         "additionalProperties": false,
         "properties": {
@@ -1753,7 +1887,9 @@
             "enum": [
               "submit_proposal",
               "send_message",
-              "save_local_draft"
+              "save_local_draft",
+              "create_interview_hold",
+              "create_email_draft"
             ],
             "title": "Tool",
             "type": "string"
@@ -2793,6 +2929,171 @@
         "summary": "Status",
         "tags": [
           "status"
+        ]
+      }
+    },
+    "/api/workspace/actions": {
+      "get": {
+        "operationId": "workspace_actions_api_workspace_actions_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/WorkspaceActionView"
+                  },
+                  "title": "Response Workspace Actions Api Workspace Actions Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Workspace Actions",
+        "tags": [
+          "workspace"
+        ]
+      }
+    },
+    "/api/workspace/availability": {
+      "get": {
+        "operationId": "availability_api_workspace_availability_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/AvailabilityView"
+                  },
+                  "title": "Response Availability Api Workspace Availability Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Availability",
+        "tags": [
+          "workspace"
+        ]
+      },
+      "post": {
+        "operationId": "add_availability_api_workspace_availability_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TimeWindow"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AvailabilityView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Add Availability",
+        "tags": [
+          "workspace"
+        ]
+      }
+    },
+    "/api/workspace/availability/{id}": {
+      "delete": {
+        "operationId": "remove_availability_api_workspace_availability__id__delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Remove Availability",
+        "tags": [
+          "workspace"
+        ]
+      }
+    },
+    "/api/workspace/slots": {
+      "post": {
+        "operationId": "free_slots_api_workspace_slots_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SlotRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SlotList"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Free Slots",
+        "tags": [
+          "workspace"
         ]
       }
     },

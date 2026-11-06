@@ -433,6 +433,75 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/workspace/actions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Workspace Actions */
+        get: operations["workspace_actions_api_workspace_actions_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/workspace/availability": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Availability */
+        get: operations["availability_api_workspace_availability_get"];
+        put?: never;
+        /** Add Availability */
+        post: operations["add_availability_api_workspace_availability_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/workspace/availability/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Remove Availability */
+        delete: operations["remove_availability_api_workspace_availability__id__delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/workspace/slots": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Free Slots */
+        post: operations["free_slots_api_workspace_slots_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/health/live": {
         parameters: {
             query?: never;
@@ -479,6 +548,21 @@ export interface components {
             email: string;
             /** Id */
             id: string;
+        };
+        /** AvailabilityView */
+        AvailabilityView: {
+            /**
+             * End
+             * Format: date-time
+             */
+            end: string;
+            /** Id */
+            id: string;
+            /**
+             * Start
+             * Format: date-time
+             */
+            start: string;
         };
         /** BidDecision */
         BidDecision: {
@@ -1014,6 +1098,35 @@ export interface components {
              */
             stage: "foundation";
         };
+        /** SlotList */
+        SlotList: {
+            /**
+             * Backend
+             * @default local
+             * @constant
+             */
+            backend: "local";
+            /** Slots */
+            slots: components["schemas"]["TimeWindow"][];
+        };
+        /** SlotRequest */
+        SlotRequest: {
+            /**
+             * End
+             * Format: date-time
+             */
+            end: string;
+            /**
+             * Minutes
+             * @default 30
+             */
+            minutes: number;
+            /**
+             * Start
+             * Format: date-time
+             */
+            start: string;
+        };
         /** SnapshotView */
         SnapshotView: {
             compliance?: components["schemas"]["ComplianceVerdict"] | null;
@@ -1053,6 +1166,19 @@ export interface components {
             /** Observations */
             observations: number;
         };
+        /** TimeWindow */
+        TimeWindow: {
+            /**
+             * End
+             * Format: date-time
+             */
+            end: string;
+            /**
+             * Start
+             * Format: date-time
+             */
+            start: string;
+        };
         /** ValidationError */
         ValidationError: {
             /** Context */
@@ -1065,6 +1191,24 @@ export interface components {
             msg: string;
             /** Error Type */
             type: string;
+        };
+        /** WorkspaceActionView */
+        WorkspaceActionView: {
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Id */
+            id: string;
+            /** Result */
+            result: {
+                [key: string]: unknown;
+            };
+            /** Run Id */
+            run_id: string;
+            /** Tool */
+            tool: string;
         };
         /** WritePreview */
         WritePreview: {
@@ -1080,7 +1224,7 @@ export interface components {
              * Tool
              * @enum {string}
              */
-            tool: "submit_proposal" | "send_message" | "save_local_draft";
+            tool: "submit_proposal" | "send_message" | "save_local_draft" | "create_interview_hold" | "create_email_draft";
         };
     };
     responses: never;
@@ -1886,6 +2030,141 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["SkeletonStatus"];
+                };
+            };
+        };
+    };
+    workspace_actions_api_workspace_actions_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WorkspaceActionView"][];
+                };
+            };
+        };
+    };
+    availability_api_workspace_availability_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AvailabilityView"][];
+                };
+            };
+        };
+    };
+    add_availability_api_workspace_availability_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TimeWindow"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AvailabilityView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    remove_availability_api_workspace_availability__id__delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    free_slots_api_workspace_slots_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SlotRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SlotList"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };

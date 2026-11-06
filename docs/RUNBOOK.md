@@ -22,6 +22,14 @@ Equivalent modules exist for Marketplace and Workspace. They currently register 
 
 ## Compose
 
+The Local calendar section in Settings accepts explicit availability windows and can
+find free interview slots. It stores times in UTC and presents them in the device's
+time zone. Workspace MCP provides previews and approved local holds/email drafts.
+An executor session binds its account and run through environment configuration.
+Approval receipts preserve the complete reviewed preview. The backend rechecks slot
+availability inside the commit transaction and returns an earlier result on an
+identical retry. Conversation-agent integration remains the next step.
+
 Use `docker compose --project-directory . -f infra/docker-compose.yml up --build` from the repository root. The explicit project directory makes the build context the repository root. Docker Desktop must be running.
 
 Default services: web, API, Arq worker, Postgres, Redis and Qdrant. The worker handles indexing and manual-job proposals. It starts a tenant-bound Portfolio MCP subprocess per run segment and calls native Ollama using `WORKER_OLLAMA_BASE_URL` (default `http://host.docker.internal:11434`). Pull the models in `agent/config.yaml` into native Ollama before running proposals.

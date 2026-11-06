@@ -44,3 +44,11 @@ Run the local Analyst smoke with `GIGBID_REAL_AGENTS=1 uv run pytest tests/integ
 - Eight Chromium tests passed. The memory flow recorded three edits, confirmed a preference, verified that a later run loaded it, and removed it. The marketplace-outage flow remains pending.
 - Integration tests verified namespace isolation, event deduplication, promotion thresholds, and durable removal during a simulated store outage. Outcome tests used development fixtures for verified provider events. Live outcome ingestion awaits the marketplace adapter.
 - TypeScript, the frontend production build, Python lint, and the required path check passed. The rebuilt worker and migration images started successfully. The local API reported ready and Settings returned HTTP 200.
+
+## Local Workspace stage
+
+- On 6 November 2026, the Python suite passed 106 tests with Postgres. Four opt-in real-model/runtime checks were skipped for this run. Seven Workspace integration cases cover preview parity, unchanged arguments and keys, stale approvals, calendar races, time zones, account isolation, and MCP execution.
+- Nine Chromium tests passed, including availability entry, slot search, persistence after refresh, and removal. The marketplace-outage browser flow remains pending.
+- The intentional Workspace MCP schema changes were reviewed and the snapshot test passed. Both write tools default to dry runs and expose idempotent local execution. The approval audit now preserves the complete reviewed preview, with nullable receipts for older records.
+- TypeScript checking, the frontend production build and Python lint passed. The migration and worker images were rebuilt. Docker services were restarted after their stopped state caused an initial database timeout.
+- Workspace uses the local backend allowed by A3. Client Liaison and conversation-graph integration remain unfinished. No email or marketplace message was sent during these checks.

@@ -93,7 +93,13 @@ class ComplianceVerdict(Contract):
 
 
 class WritePreview(Contract):
-    tool: Literal["submit_proposal", "send_message", "save_local_draft"]
+    tool: Literal[
+        "submit_proposal",
+        "send_message",
+        "save_local_draft",
+        "create_interview_hold",
+        "create_email_draft",
+    ]
     arguments: dict
     connects_cost: int = Field(ge=0)
     idempotency_key: str = Field(min_length=8, max_length=200)

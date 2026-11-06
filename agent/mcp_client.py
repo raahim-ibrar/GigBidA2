@@ -14,7 +14,13 @@ TOOL_ALLOWLISTS = {
     "critic": {"search_evidence", "get_case_study"},
     "compliance": set(),
     "liaison": {"list_messages", "free_calendar_slots"},
-    "approved_executor": {"create_proposal_draft", "submit_proposal", "send_message"},
+    "approved_executor": {
+        "create_proposal_draft",
+        "submit_proposal",
+        "send_message",
+        "create_interview_hold",
+        "create_email_draft",
+    },
 }
 
 
