@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ApiError, getAccount, type Account } from "@/lib/api/accounts";
-import { getRun, reviewRun, type Draft, type Evidence, type Review, type Run } from "@/lib/api/proposals";
+import { getRun, retryRun, reviewRun, type Draft, type Evidence, type Review, type Run } from "@/lib/api/proposals";
 type Progress = { id: number; kind: string; details: Record<string, unknown> };
 
 function ClaimLine({ text, draft, evidence }: { text: string; draft: Draft; evidence: Evidence[] }) {
@@ -43,6 +43,12 @@ export function RunWorkspace({ id, trace = false, onSaved }: { id: string; trace
     try { setRun(await reviewRun({ run_id: id, version: run.version, draft_digest: digest, action, reason: action === "reject" ? reason : null, edited_text: action === "edit" ? edit : null }, account.csrf_token)); }
     catch (err) { setError(err instanceof Error ? err.message : "Decision could not be saved."); } finally { setBusy(false); }
   }
+  async function retry() {
+    if (!run || !account) return; setBusy(true); setError("");
+    try { setRun(await retryRun(id, run.version, account.csrf_token)); }
+    catch (err) { setError(err instanceof Error ? err.message : "Could not retry this run."); }
+    finally { setBusy(false); }
+  }
   if (signIn) return <p className="notice"><Link href="/sign-in">Sign in</Link> to view this run.</p>;
   if (!run) return error ? <p role="alert" className="error">{error}</p> : <p role="status">Loading run…</p>;
   const state = run.snapshot; const draft = state.draft; const evidence = state.evidence ?? []; const ready = run.status === "awaiting_approval";
@@ -50,6 +56,9 @@ export function RunWorkspace({ id, trace = false, onSaved }: { id: string; trace
   return <><div className="source-actions"><Link href={`/jobs/${run.job_id}`}>Job detail</Link><Link href={conversation ? `/messages/${state.conversation_id}` : `/studio/${id}`}>{conversation ? "Conversation" : "Proposal review"}</Link><Link href={`/runs/${id}`}>Run activity</Link></div>
     <p role="status" className="notice">Status: <strong>{run.status.replaceAll("_", " ")}</strong>{active && " · Working in the background; you can leave this page."}</p>
     {error && <p role="alert" className="error">{error}</p>}{run.error && <p role="alert" className="error">{run.error}</p>}{state.job && <h2>{state.job.title}</h2>}
+    {["needs_attention", "failed"].includes(run.status) && <section className="card"><h2>{run.status === "failed" ? "Retries exhausted" : "Run needs attention"}</h2><p>{run.retry_count ?? 0} of 3 retries used. Previous token charges and step counts are preserved.</p>
+      {run.retryable ? <><p>Retry the failed step after restoring the unavailable service. Any earlier approval remains limited to its exact preview.</p><button disabled={busy} onClick={retry}>{busy ? "Queuing retry…" : "Retry failed step"}</button></> : <p>Inspect the error and correct the source inputs. This run cannot be retried from this screen.</p>}
+    </section>}
     <div className="cards"><section className="card"><h2>{conversation ? "Client intent" : "Recommendation"}</h2>{conversation ? <p>{state.intent ?? "Waiting for classification."}</p> : state.decision ? <><strong>{state.decision.action}</strong><ul>{state.decision.reasons.map((text, i) => <li key={i}>{text}</li>)}</ul></> : <p className="muted">Waiting for analysis.</p>}
       {state.risk && <><h3>Risk: {Math.round(state.risk.score * 100)}%</h3><ul>{state.risk.reasons?.map((text, i) => <li key={i}>{text}</li>)}</ul></>}
       {state.price && <p>Provisional quote: ${state.price.amount} {state.price.billing_type === "hourly" ? "per hour" : "total"}. {state.price.rationale}</p>}

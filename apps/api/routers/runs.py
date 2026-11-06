@@ -6,7 +6,7 @@ from starlette.concurrency import run_in_threadpool
 
 from agent.run_store import TERMINAL
 from apps.api.auth.dependencies import CurrentUser
-from apps.api.schemas.proposals import CreateRun, RunView
+from apps.api.schemas.proposals import CreateRun, RetryRun, RunView
 
 router = APIRouter(tags=["runs"])
 
@@ -31,6 +31,14 @@ def list_runs(user: CurrentUser, request: Request, job_id: str | None = None):
 @router.get("/runs/{run_id}", response_model=RunView)
 def get_run(run_id: str, user: CurrentUser, request: Request):
     return request.app.state.runs.run(user.id, run_id)
+
+
+@router.post("/runs/{run_id}/retry", response_model=RunView, status_code=202)
+async def retry_run(run_id: str, body: RetryRun, user: CurrentUser, request: Request):
+    run = await run_in_threadpool(request.app.state.runs.retry, user.id, run_id, body.version)
+    if not await request.app.state.enqueue_run(user.id, run_id):
+        run.error = "Worker queue unavailable; the saved retry will be recovered automatically."
+    return run
 
 
 @router.get("/runs/{run_id}/events")

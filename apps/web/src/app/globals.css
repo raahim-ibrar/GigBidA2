@@ -17,6 +17,7 @@ ul { padding-left: 20px; } code { font-size: 13px; overflow-wrap: anywhere; }
 .form-card { max-width: 600px; } form { display: grid; gap: 12px; }
 label { font-size: 14px; font-weight: 600; margin-top: 8px; }
 input, select, textarea { width: 100%; border: 1px solid #b9c9d2; border-radius: 6px; padding: 12px; font: inherit; background: white; color: #182636; }
+input[type="checkbox"] { width: auto; margin-right: 8px; accent-color: #186d7a; }
 button { cursor: pointer; border: 0; border-radius: 6px; padding: 13px 18px; background: #195a56; color: white; font: inherit; }
 button:disabled { opacity: .6; cursor: wait; } .text-button { background: none; color: #195a56; padding: 8px 0; text-decoration: underline; }
 .error { color: #9a2424; } .account-menu { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; }

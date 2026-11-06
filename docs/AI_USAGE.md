@@ -9,6 +9,8 @@
 | 2026-11-05 | Codex | Postgres proposal runtime, manual-job/run/approval APIs, durable budgets, local artifact/audit transaction, SSE, inbox/review/activity UI, restart/concurrency/browser tests and a real local-model proposal smoke |
 | 2026-11-05 | Codex | Private edit diffs, deterministic style candidates, explicit promotion rules, tenant-scoped LangGraph memory, trusted provider-outcome hook, removal ledger, Settings controls and memory integration tests |
 | 2026-11-06 | Codex | Local Workspace MCP calendar/draft tools, complete approval-preview receipts, idempotent action audit, concurrent hold checks, calendar Settings and browser/integration verification |
+| 2026-11-06 | Codex | Durable manual conversations, Liaison intent/reply nodes, calendar options, fenced new-message intake, reviewed local email drafts, conversation screens and persistence tests |
+| 2026-11-06 | Codex | Bounded explicit checkpoint retries, exhausted-run visibility, saved-search schedule settings and prerequisite worker checks; provider polling remains unavailable |
 
 Files affected: apps/, agent/, rag/, mcp_servers/, worker/, evals/, tests/, scripts/, infra/, .github/, and root configuration/docs. Development drafts were generated from explicitly artificial test sources. No marketplace submissions, grading experiments or outcome data were generated.
 

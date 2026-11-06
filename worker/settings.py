@@ -1,4 +1,4 @@
-"""Durable indexing and proposal execution; conversation processing is still pending."""
+"""Durable indexing, graph execution, reconciliation and search prerequisite checks."""
 
 import asyncio
 import os
@@ -17,6 +17,7 @@ from apps.api.models import PortfolioDocument, VectorCleanup, utcnow
 from apps.api.settings import Settings
 from rag.runtime import build_portfolio
 from rag.service import MissingEvidence
+from worker.search_schedules import check_search_schedules
 
 
 async def startup(ctx):
@@ -97,6 +98,7 @@ class WorkerSettings:
     cron_jobs = [
         cron(reconcile_portfolio, second={0, 30}, run_at_startup=True),
         cron(reconcile_runs, second={10, 40}, run_at_startup=True),
+        cron(check_search_schedules, second=20, run_at_startup=True),
     ]
     on_startup = startup
     on_shutdown = shutdown

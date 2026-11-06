@@ -3,7 +3,7 @@ import { test, expect, type Page } from "@playwright/test";
 test.skip(!process.env.GIGBID_TEST_DATABASE_URL, "Requires disposable Postgres schema and deterministic worker fixtures");
 test.setTimeout(60000);
 
-async function prepare(page: Page) {
+async function prepare(page: Page, retryFixture = false) {
   await page.goto("/sign-in");
   await page.getByRole("button", { name: "Create a new account" }).click();
   await page.getByLabel("Email", { exact: true }).fill(`proposal-${crypto.randomUUID()}@example.org`);
@@ -16,12 +16,23 @@ async function prepare(page: Page) {
   await page.getByRole("button", { name: "Upload evidence" }).click();
   await expect(page.getByTestId("source-status")).toHaveText("ready");
   await page.goto("/inbox");
-  await page.getByLabel("Job title", { exact: true }).fill("Python API development fixture");
+  await page.getByLabel("Job title", { exact: true }).fill(retryFixture ? "Retry once fixture Python API" : "Python API development fixture");
   await page.getByLabel("Job description and screening questions").fill("Build a Python API.");
   await page.getByLabel("Maximum client budget").fill("30");
   await page.getByRole("button", { name: "Analyse and draft" }).click();
-  await expect(page.getByRole("heading", { name: "Verified draft for review" })).toBeVisible({ timeout: 30000 });
+  await expect(page.getByRole("heading", { name: retryFixture ? "Run needs attention" : "Verified draft for review" })).toBeVisible({ timeout: 30000 });
 }
+
+test("recover a model outage from the saved checkpoint through an explicit retry", async ({ page }) => {
+  await prepare(page, true);
+  await expect(page.getByRole("button", { name: "Approve and save local draft" })).toHaveCount(0);
+  await page.reload();
+  await expect(page.getByRole("button", { name: "Retry failed step" })).toBeVisible();
+  await page.getByRole("button", { name: "Retry failed step" }).click();
+  await expect(page.getByRole("heading", { name: "Verified draft for review" })).toBeVisible({ timeout: 15000 });
+  await page.getByRole("button", { name: "Approve and save local draft" }).click();
+  await expect(page.getByRole("heading", { name: "Saved local draft" })).toBeVisible({ timeout: 15000 });
+});
 
 test("approve a verified local draft after a reload and preserve its save", async ({ page }) => {
   await prepare(page); await page.reload();

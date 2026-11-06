@@ -1,7 +1,11 @@
 """Predictable role responses for browser control tests. Never use for quality results."""
 
+from agent.model_client import ModelUnavailable
+
 
 class BrowserModels:
+    outages: set[str] = set()
+
     def __init__(self, *args, **kwargs):
         pass
 
@@ -23,6 +27,10 @@ class BrowserModels:
                 }
             }
         if role == "writer":
+            job = payload["job"]
+            if job["title"].startswith("Retry once fixture") and job["job_id"] not in self.outages:
+                self.outages.add(job["job_id"])
+                raise ModelUnavailable("Deterministic browser model outage; retry to resume.")
             outputs[role] = {"text": "I built a Python API. Could we discuss scope?"}
         if role == "liaison":
             outputs[role] = {

@@ -10,6 +10,7 @@ from langgraph.checkpoint.postgres.aio import AsyncPostgresSaver
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
+from agent.model_client import ModelUnavailable
 from agent.run_store import RunStore
 from agent.runtime import lock_key, process_bid
 from apps.api.models import ApprovalAudit, LocalDraftArtifact
@@ -55,6 +56,7 @@ def durable(client, account_app):
 
     class Models:
         crash_writer = False
+        fail_writer = False
 
         def __init__(self, *args, **kwargs):
             pass
@@ -63,6 +65,8 @@ def durable(client, account_app):
             counts[role] += 1
             if role == "writer" and self.crash_writer:
                 raise asyncio.CancelledError()
+            if role == "writer" and self.fail_writer:
+                raise ModelUnavailable("Development model outage fixture")
             outputs = {
                 "analyst": {"job_id": "fixture", "title": "Fixture", "requirements": ["Python"]},
                 "risk": {"score": 0},
@@ -119,6 +123,19 @@ def durable(client, account_app):
 
     yield store, tenant, run.id, process, review, Models, counts, account_app.state.settings
     service.index.client.close()
+
+
+def test_failed_model_resumes_after_explicit_retry_without_repeating_analysis(durable):
+    store, tenant, id, process, _, models, counts, _ = durable
+    models.fail_writer = True
+    assert execute(process())["status"] == "needs_attention"
+    failed = store.run(tenant, id)
+    assert failed.retryable and failed.review is None
+    store.retry(tenant, id, failed.version)
+    models.fail_writer = False
+    assert execute(process())["status"] == "awaiting_approval"
+    assert counts["analyst"] == 1 and counts["writer"] == 2
+    assert store.run(tenant, id).steps > failed.steps
 
 
 def test_postgres_pause_edit_restart_and_approved_local_commit(durable):

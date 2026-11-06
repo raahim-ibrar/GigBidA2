@@ -63,6 +63,10 @@ class ReviewRun(ApprovalDecision):
     draft_digest: str = Field(pattern=r"^[0-9a-f]{64}$")
 
 
+class RetryRun(Contract):
+    version: int = Field(ge=0)
+
+
 class SnapshotView(Contract):
     model_config = ConfigDict(extra="ignore")
     status: str | None = None
@@ -98,6 +102,8 @@ class RunView(Contract):
     tokens: int
     steps: int
     error: str | None
+    retry_count: int = 0
+    retryable: bool = False
     created_at: datetime
     updated_at: datetime
 

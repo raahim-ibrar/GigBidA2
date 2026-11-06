@@ -24,6 +24,7 @@ from apps.api.routers import (
     profile,
     proposals,
     runs,
+    schedules,
     workspace,
 )
 from apps.api.schemas.status import SkeletonStatus
@@ -31,6 +32,7 @@ from apps.api.settings import Settings
 from mcp_servers.workspace.service import WorkspaceService
 from rag.runtime import build_portfolio
 from worker.queue import enqueue_bid, enqueue_portfolio
+from worker.search_schedules import SearchSchedules
 
 
 def create_app(
@@ -58,6 +60,7 @@ def create_app(
     app.state.memory = MemoryService(database, settings.database_url)
     app.state.workspace = WorkspaceService(database)
     app.state.conversations = ConversationStore(database)
+    app.state.search_schedules = SearchSchedules(database)
 
     async def queue(tenant, document, revision):
         return await enqueue_portfolio(settings, tenant, document, revision)
@@ -121,6 +124,7 @@ def create_app(
         approvals,
         messages,
         runs,
+        schedules,
         analytics,
         memory,
         workspace,

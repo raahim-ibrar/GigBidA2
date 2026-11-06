@@ -11,6 +11,9 @@ export const listJobs = () => apiRequest<Job[]>("/jobs");
 export const getJob = (id: string) => apiRequest<Job>(`/jobs/${encodeURIComponent(id)}`);
 export const listRuns = (job?: string) => apiRequest<Run[]>(`/runs${job ? `?job_id=${encodeURIComponent(job)}` : ""}`);
 export const getRun = (id: string) => apiRequest<Run>(`/runs/${encodeURIComponent(id)}`);
+export const retryRun = (id: string, version: number, csrf: string) => apiRequest<Run>(`/runs/${encodeURIComponent(id)}/retry`, {
+  method: "POST", headers: { "X-CSRF-Token": csrf }, body: JSON.stringify({ version }),
+});
 export const createJob = (body: ManualJob, csrf: string) => apiRequest<Job>("/jobs", {
   method: "POST", headers: { "X-CSRF-Token": csrf }, body: JSON.stringify(body),
 });

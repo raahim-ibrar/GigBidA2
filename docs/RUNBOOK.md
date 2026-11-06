@@ -28,7 +28,9 @@ time zone. Workspace MCP provides previews and approved local holds/email drafts
 An executor session binds its account and run through environment configuration.
 Approval receipts preserve the complete reviewed preview. The backend rechecks slot
 availability inside the commit transaction and returns an earlier result on an
-identical retry. Conversation-agent integration remains the next step.
+identical retry. The manual conversation graph uses Workspace MCP for interview
+options and saves approved email drafts locally. Messages are entered manually;
+nothing is sent to clients.
 
 Use `docker compose --project-directory . -f infra/docker-compose.yml up --build` from the repository root. The explicit project directory makes the build context the repository root. Docker Desktop must be running.
 
@@ -38,7 +40,14 @@ For container inference, enable `--profile container-inference`, pull the config
 
 Jobs and review decisions are saved before queueing. Pending-run scans recover queued/running work. Worker ownership uses a Postgres advisory lock and fenced metadata updates. An approved local draft is one SQL transaction with source-revision checks and a unique artifact per run. This does not establish exactly-once external marketplace behavior. See ADR 0003 for crash boundaries and durable token reservations.
 
-Review at `/studio/<run ID>` and follow redacted progress at `/runs/<run ID>`. A run marked `needs_attention` has a saved explanation; correct its evidence/input/services before starting a new run. Existing incomplete runs are not silently restarted with a fresh token budget.
+Review at `/studio/<run ID>` and follow redacted progress at `/runs/<run ID>`. Recoverable model/connection failures expose **Retry failed step** after the service is restored. At most three retries resume the saved checkpoint, preserving charged tokens, step counts and any exact-preview approval. Evidence, policy and budget failures cannot be bypassed with this control. Exhausted retries remain visible under **Show only runs needing attention**. Queue outages leave the retry durably queued for reconciliation.
+
+The saved-search schedule in Settings uses the queries in the freelancer profile.
+Its enabled state, interval, last check and next check persist in SQL. Worker ticks
+currently check prerequisites only: the marketplace adapter is absent, so the status
+remains **waiting provider** (or **no queries**). This is not live job polling.
+No job discovery or automatic proposal execution occurs from these checks. The full
+provider-backed scheduler must follow the actual GigSim schema and rate limits.
 
 Memory controls are in Settings. Style patterns need edits to three distinct drafts
 plus user confirmation. Outcome patterns need three distinct verified provider jobs;

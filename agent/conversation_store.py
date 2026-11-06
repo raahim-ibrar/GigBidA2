@@ -128,6 +128,7 @@ class ConversationStore(RunStore):
             run.snapshot = self._input(db, tenant, run, conversation, job)
             run.review, run.resume, run.worker_token, run.error = None, None, None, None
             run.status = "queued"
+            run.retryable = False
             run.version += 1
             self._event(db, run, "client_message_added", {"revision": conversation.revision})
             return ConversationView.model_validate(conversation)

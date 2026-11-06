@@ -1,6 +1,8 @@
 import { defineConfig, devices } from "@playwright/test";
 import path from "node:path";
 export default defineConfig({
+  // Each browser starts database-backed graphs against one local development server.
+  workers: 2,
   testDir: "./tests/e2e", reporter: [["html", { open: "never" }]],
   use: { baseURL: "http://127.0.0.1:3000", channel: "chromium", trace: "retain-on-failure" },
   projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],

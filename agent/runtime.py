@@ -263,7 +263,18 @@ async def process_run(
                     "Run unavailable. Check the worker, local models, MCP and portfolio evidence."
                 )
             )
-            await asyncio.to_thread(store.fail, tenant, run_id, token, message)
+            await asyncio.to_thread(
+                store.fail,
+                tenant,
+                run_id,
+                token,
+                message,
+                retryable=bool(leaves)
+                and all(
+                    isinstance(item, (ModelUnavailable, ConnectionError, TimeoutError))
+                    for item in leaves
+                ),
+            )
             return {"status": "needs_attention", "error_types": kinds}
 
 

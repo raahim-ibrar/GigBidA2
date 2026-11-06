@@ -30,6 +30,7 @@ from apps.api.models import (
 from apps.api.schemas.proposals import EventView, JobView, LocalDraftView, RunView
 
 TERMINAL = {"drafted", "rejected", "skip", "watch", "blocked", "needs_attention", "failed"}
+MAX_RETRIES = 3
 
 
 class RunNotFound(LookupError):
@@ -242,6 +243,7 @@ class RunStore:
             if run.status not in {"queued", "running"}:
                 return None
             run.worker_token, run.status, run.error = worker_token, "running", None
+            run.retryable = False
             self._event(db, run, "worker_started")
             return {
                 "snapshot": run.snapshot,
@@ -300,12 +302,40 @@ class RunStore:
             run = self._run(db, tenant, run_id, lock=True, worker_token=token)
             run.worker_token = None
 
-    def fail(self, tenant, run_id, token, message):
+    def fail(self, tenant, run_id, token, message, *, retryable=False):
         with Session(self.engine) as db, db.begin():
             run = self._run(db, tenant, run_id, lock=True, worker_token=token)
-            run.status, run.error = "needs_attention", message[:300]
+            exhausted = retryable and run.retry_count >= MAX_RETRIES
+            run.status, run.error = "failed" if exhausted else "needs_attention", message[:300]
+            run.retryable = retryable and not exhausted
+            run.version += 1
             run.worker_token = None
-            self._event(db, run, "needs_attention", {"message": message[:300]})
+            self._event(
+                db,
+                run,
+                "retries_exhausted" if exhausted else "needs_attention",
+                {"message": message[:300], "retryable": run.retryable},
+            )
+
+    def retry(self, tenant, run_id, version):
+        with Session(self.engine) as db, db.begin():
+            run = self._run(db, tenant, run_id, lock=True)
+            if run.version != version:
+                raise RunConflict("This run changed. Reload before retrying.")
+            if (
+                run.status != "needs_attention"
+                or not run.retryable
+                or run.retry_count >= MAX_RETRIES
+            ):
+                raise RunConflict(
+                    "This run cannot be retried; inspect its error and source inputs."
+                )
+            run.retry_count += 1
+            run.status, run.error, run.retryable = "queued", None, False
+            run.worker_token = None
+            run.version += 1
+            self._event(db, run, "retry_requested", {"attempt": run.retry_count})
+        return self.run(tenant, run_id)
 
     def pending(self):
         with Session(self.engine) as db:
