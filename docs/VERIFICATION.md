@@ -52,3 +52,11 @@ Run the local Analyst smoke with `GIGBID_REAL_AGENTS=1 uv run pytest tests/integ
 - The intentional Workspace MCP schema changes were reviewed and the snapshot test passed. Both write tools default to dry runs and expose idempotent local execution. The approval audit now preserves the complete reviewed preview, with nullable receipts for older records.
 - TypeScript checking, the frontend production build and Python lint passed. The migration and worker images were rebuilt. Docker services were restarted after their stopped state caused an initial database timeout.
 - Workspace uses the local backend allowed by A3. Client Liaison and conversation-graph integration remain unfinished. No email or marketplace message was sent during these checks.
+
+## Manual conversation stage
+
+- On 6 November 2026, 30 targeted Python tests passed against isolated Postgres schemas. These include seven conversation cases plus Workspace, durable bid runtime and graph regressions. Multiple incoming messages reuse one checkpoint thread; new messages fence in-flight work and invalidate pending approvals. Edits require fresh verification and approval. Calendar availability is checked again at commit, and message requests are idempotent and account scoped.
+- Five Chromium tests passed: the new conversation flow and four proposal review regressions. The conversation check exercises manual intake, review, editing, approval, a second message, saved reply history and persistence after reload.
+- Browser and conversation role responses are deterministic development fixtures. These checks establish control flow, persistence and local MCP execution, not Liaison model quality, simulator compatibility or benchmark performance. No email was sent.
+- The Workspace schema snapshot now includes optional calendar slots on email drafts; its contract test and Python lint passed. The worker and migration images were rebuilt and started successfully. The public development database has migration 0006.
+- The frontend production build includes the conversation list/detail screens. Dataset-dependent experiments and provider messaging remain pending. The user requested a stop after this feature.

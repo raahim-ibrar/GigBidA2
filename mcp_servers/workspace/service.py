@@ -7,7 +7,8 @@ from uuid import uuid4
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from agent.run_store import RunConflict, RunNotFound
+from agent.handoffs import ProposalDraft
+from agent.run_store import RunConflict, RunNotFound, RunStore
 from apps.api.models import (
     AgentRun,
     ApprovalAudit,
@@ -63,7 +64,10 @@ class WorkspaceService:
             db.delete(row)
 
     def _owner_lock(self, db, tenant):
-        if db.scalar(select(User.id).where(User.id == tenant).with_for_update()) is None:
+        if (
+            db.scalar(select(User.id).where(User.id == tenant).with_for_update(key_share=True))
+            is None
+        ):
             raise RunNotFound("Account not found")
 
     def _can_hold(self, db, tenant, start, end):
@@ -148,7 +152,7 @@ class WorkspaceService:
         )
 
     def email(self, tenant, run_id, request):
-        arguments = {"subject": request.subject, "body": request.body}
+        arguments = request.arguments()
         if not request.subject.strip() or not request.body.strip():
             raise RunConflict("A subject and body are required")
         if request.dry_run:
@@ -209,6 +213,19 @@ class WorkspaceService:
             if tool == "create_interview_hold":
                 if start < self.clock() or not self._can_hold(db, tenant, start, end):
                     raise RunConflict("The reviewed calendar slot is no longer available")
+            for slot in arguments.get("calendar_slots", []):
+                slot_start, slot_end = (
+                    datetime.fromisoformat(slot["start"]),
+                    datetime.fromisoformat(slot["end"]),
+                )
+                if slot_start < self.clock() or not self._can_hold(
+                    db, tenant, slot_start, slot_end
+                ):
+                    raise RunConflict("The reviewed interview options are no longer available")
+            if run.snapshot.get("draft"):
+                RunStore(self.engine)._check_evidence(
+                    db, tenant, ProposalDraft.model_validate(run.snapshot["draft"])
+                )
             id = str(uuid4())
             result = {
                 "id": id,

@@ -117,3 +117,9 @@ class ApprovalDecision(Contract):
         if self.action == "edit" and not (self.edited_text and self.edited_text.strip()):
             raise ValueError("An edited draft is required")
         return self
+
+
+class LiaisonReply(Contract):
+    intent: Literal["question", "negotiation", "interview", "scam"]
+    draft: ProposalDraft
+    reasons: list[str] = Field(default_factory=list)

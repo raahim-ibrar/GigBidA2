@@ -129,6 +129,7 @@ async def test_default_graph_cannot_pretend_to_process_jobs():
 async def test_conversation_has_an_approval_interrupt():
     nodes, calls = fixtures()
     nodes["liaison"] = nodes["writer"]
+    nodes["intake"] = nodes["scout"]
     graph = build_conversation_graph(checkpointer=InMemorySaver(), nodes=nodes)
     result = await graph.ainvoke({}, config())
     assert "__interrupt__" in result

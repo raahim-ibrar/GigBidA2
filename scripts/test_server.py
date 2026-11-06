@@ -9,13 +9,17 @@ from uuid import uuid4
 import uvicorn
 from alembic import command
 from alembic.config import Config
+from mcp.shared.memory import create_connected_server_and_client_session
 from sqlalchemy.engine import make_url
 from sqlalchemy.schema import CreateSchema, DropSchema
 
 from agent.runtime import process_bid
+from agent.workspace_client import WorkspaceMCP
 from apps.api.database import make_engine
 from apps.api.main import create_app
 from apps.api.settings import Settings
+from mcp_servers.workspace.factory import create_workspace_server
+from mcp_servers.workspace.service import WorkspaceService
 from tests.portfolio_fixtures import portfolio_fixture
 from tests.proposal_fixtures import BrowserModels
 
@@ -66,17 +70,21 @@ if __name__ == "__main__":
                     return service.evidence(tenant, id)
 
             def run():
-                with asyncio.Runner(loop_factory=asyncio.SelectorEventLoop) as runner:
-                    return runner.run(
-                        process_bid(
+                async def process():
+                    server = create_workspace_server(WorkspaceService(engine), tenant, run_id)
+                    async with create_connected_server_and_client_session(server) as session:
+                        return await process_bid(
                             engine,
                             settings,
                             tenant,
                             run_id,
                             models_factory=BrowserModels,
                             portfolio_reader=Reader(),
+                            workspace_reader=WorkspaceMCP(session),
                         )
-                    )
+
+                with asyncio.Runner(loop_factory=asyncio.SelectorEventLoop) as runner:
+                    return runner.run(process())
 
             task = asyncio.create_task(asyncio.to_thread(run))
             tasks.add(task)

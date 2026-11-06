@@ -3,6 +3,7 @@
 from langgraph.types import interrupt
 
 from agent.handoffs import ApprovalDecision, ProposalDraft
+from agent.proposal_nodes import draft_digest
 
 
 def missing_node(name):
@@ -26,6 +27,7 @@ def approval_gate(state):
         interrupt(
             {
                 "draft": draft.model_dump(),
+                "draft_digest": draft_digest(draft),
                 "evidence": [item.model_dump() for item in state.get("evidence", [])],
                 "risk": state["risk"].model_dump() if state.get("risk") else None,
                 "price": state["price"].model_dump() if state.get("price") else None,

@@ -101,6 +101,7 @@ class AgentRun(Base):
     user_id: Mapped[str] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True)
     job_id: Mapped[str] = mapped_column(ForeignKey("jobs.id", ondelete="CASCADE"), index=True)
     request_key: Mapped[str] = mapped_column(String(36))
+    kind: Mapped[str] = mapped_column(String(20), default="bid", server_default="bid")
     status: Mapped[str] = mapped_column(String(30), default="queued", index=True)
     snapshot: Mapped[dict] = mapped_column(JSON, default=dict)
     review: Mapped[dict | None] = mapped_column(JSON, nullable=True)
@@ -220,3 +221,31 @@ class CalendarHold(Base):
     user_id: Mapped[str] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True)
     start: Mapped[datetime] = mapped_column(DateTime(timezone=True))
     end: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+
+
+class ClientConversation(Base):
+    __tablename__ = "client_conversations"
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=lambda: str(uuid4()))
+    user_id: Mapped[str] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True)
+    job_id: Mapped[str] = mapped_column(ForeignKey("jobs.id", ondelete="CASCADE"))
+    run_id: Mapped[str] = mapped_column(
+        ForeignKey("agent_runs.id", ondelete="CASCADE"), unique=True
+    )
+    title: Mapped[str] = mapped_column(String(200))
+    revision: Mapped[int] = mapped_column(Integer, default=1)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
+class ClientMessage(Base):
+    __tablename__ = "client_messages"
+    __table_args__ = (
+        UniqueConstraint("conversation_id", "request_key", name="uq_client_message_request"),
+    )
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=lambda: str(uuid4()))
+    conversation_id: Mapped[str] = mapped_column(
+        ForeignKey("client_conversations.id", ondelete="CASCADE"), index=True
+    )
+    user_id: Mapped[str] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True)
+    request_key: Mapped[str] = mapped_column(String(36))
+    text: Mapped[str] = mapped_column(Text)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)

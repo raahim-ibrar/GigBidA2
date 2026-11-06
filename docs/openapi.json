@@ -24,6 +24,27 @@
         "title": "Account",
         "type": "object"
       },
+      "AddClientMessage": {
+        "additionalProperties": false,
+        "properties": {
+          "idempotency_key": {
+            "format": "uuid",
+            "title": "Idempotency Key",
+            "type": "string"
+          },
+          "text": {
+            "maxLength": 8000,
+            "minLength": 1,
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "text"
+        ],
+        "title": "AddClientMessage",
+        "type": "object"
+      },
       "AvailabilityView": {
         "additionalProperties": false,
         "properties": {
@@ -195,6 +216,80 @@
           "confirmed"
         ],
         "title": "ConfirmStyle",
+        "type": "object"
+      },
+      "ConversationView": {
+        "additionalProperties": false,
+        "properties": {
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "revision": {
+            "title": "Revision",
+            "type": "integer"
+          },
+          "run_id": {
+            "title": "Run Id",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "job_id",
+          "run_id",
+          "title",
+          "revision",
+          "created_at"
+        ],
+        "title": "ConversationView",
+        "type": "object"
+      },
+      "CreateConversation": {
+        "additionalProperties": false,
+        "properties": {
+          "idempotency_key": {
+            "format": "uuid",
+            "title": "Idempotency Key",
+            "type": "string"
+          },
+          "job_id": {
+            "format": "uuid",
+            "title": "Job Id",
+            "type": "string"
+          },
+          "text": {
+            "maxLength": 8000,
+            "minLength": 1,
+            "title": "Text",
+            "type": "string"
+          },
+          "title": {
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "text",
+          "job_id",
+          "title"
+        ],
+        "title": "CreateConversation",
         "type": "object"
       },
       "CreateRun": {
@@ -1020,6 +1115,31 @@
         "title": "MemoryView",
         "type": "object"
       },
+      "MessageView": {
+        "additionalProperties": false,
+        "properties": {
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "text": {
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "text",
+          "created_at"
+        ],
+        "title": "MessageView",
+        "type": "object"
+      },
       "OutcomeFeatures": {
         "additionalProperties": false,
         "properties": {
@@ -1287,6 +1407,31 @@
         "title": "RemoveMemory",
         "type": "object"
       },
+      "ReplyDraftView": {
+        "additionalProperties": false,
+        "properties": {
+          "body": {
+            "title": "Body",
+            "type": "string"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "body",
+          "created_at"
+        ],
+        "title": "ReplyDraftView",
+        "type": "object"
+      },
       "ReviewRun": {
         "additionalProperties": false,
         "properties": {
@@ -1403,6 +1548,15 @@
           },
           "job_id": {
             "title": "Job Id",
+            "type": "string"
+          },
+          "kind": {
+            "default": "bid",
+            "enum": [
+              "bid",
+              "conversation"
+            ],
+            "title": "Kind",
             "type": "string"
           },
           "review": {
@@ -1584,6 +1738,13 @@
       },
       "SnapshotView": {
         "properties": {
+          "calendar_slots": {
+            "items": {
+              "$ref": "#/components/schemas/TimeWindow"
+            },
+            "title": "Calendar Slots",
+            "type": "array"
+          },
           "compliance": {
             "anyOf": [
               {
@@ -1593,6 +1754,28 @@
                 "type": "null"
               }
             ]
+          },
+          "conversation_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Conversation Id"
+          },
+          "conversation_title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Conversation Title"
           },
           "critique": {
             "anyOf": [
@@ -1648,6 +1831,23 @@
               }
             ]
           },
+          "intent": {
+            "anyOf": [
+              {
+                "enum": [
+                  "question",
+                  "negotiation",
+                  "interview",
+                  "scam"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Intent"
+          },
           "job": {
             "anyOf": [
               {
@@ -1697,6 +1897,17 @@
                 "type": "null"
               }
             ]
+          },
+          "source_revision": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Revision"
           },
           "status": {
             "anyOf": [
@@ -2372,13 +2583,242 @@
           "200": {
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ConversationView"
+                  },
+                  "title": "Response List Messages Api Messages Get",
+                  "type": "array"
+                }
               }
             },
             "description": "Successful Response"
           }
         },
         "summary": "List Messages",
+        "tags": [
+          "messages"
+        ]
+      },
+      "post": {
+        "operationId": "create_conversation_api_messages_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateConversation"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConversationView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create Conversation",
+        "tags": [
+          "messages"
+        ]
+      }
+    },
+    "/api/messages/{id}": {
+      "get": {
+        "operationId": "get_conversation_api_messages__id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConversationView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Conversation",
+        "tags": [
+          "messages"
+        ]
+      }
+    },
+    "/api/messages/{id}/drafts": {
+      "get": {
+        "operationId": "local_replies_api_messages__id__drafts_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ReplyDraftView"
+                  },
+                  "title": "Response Local Replies Api Messages  Id  Drafts Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Local Replies",
+        "tags": [
+          "messages"
+        ]
+      }
+    },
+    "/api/messages/{id}/history": {
+      "get": {
+        "operationId": "conversation_messages_api_messages__id__history_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/MessageView"
+                  },
+                  "title": "Response Conversation Messages Api Messages  Id  History Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Conversation Messages",
+        "tags": [
+          "messages"
+        ]
+      },
+      "post": {
+        "operationId": "add_message_api_messages__id__history_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddClientMessage"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConversationView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Add Message",
         "tags": [
           "messages"
         ]

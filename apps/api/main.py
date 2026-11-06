@@ -7,6 +7,7 @@ from fastapi.responses import JSONResponse
 from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 
+from agent.conversation_store import ConversationStore
 from agent.memory.service import MemoryService, MemoryUnavailable
 from agent.proposal_nodes import ReviewRequired
 from agent.run_store import RunConflict, RunNotFound, RunStore
@@ -56,6 +57,7 @@ def create_app(
     app.state.runs = RunStore(database)
     app.state.memory = MemoryService(database, settings.database_url)
     app.state.workspace = WorkspaceService(database)
+    app.state.conversations = ConversationStore(database)
 
     async def queue(tenant, document, revision):
         return await enqueue_portfolio(settings, tenant, document, revision)

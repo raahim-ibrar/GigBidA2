@@ -24,6 +24,7 @@ from apps.api.models import (
     LocalDraftArtifact,
     PortfolioDocument,
     RunEvent,
+    WorkspaceWrite,
     utcnow,
 )
 from apps.api.schemas.proposals import EventView, JobView, LocalDraftView, RunView
@@ -150,7 +151,7 @@ class RunStore:
                     run = db.scalar(existing_query)
                     if run is None:
                         raise
-            if run.job_id != job_id:
+            if run.job_id != job_id or run.kind != "bid":
                 raise RunConflict("This request key was used for a different job")
             return RunView.model_validate(run)
 
@@ -247,6 +248,7 @@ class RunStore:
                 "resume": run.resume,
                 "tokens": run.tokens,
                 "steps": run.steps,
+                "kind": run.kind,
             }
 
     def step(self, tenant, run_id, token, node, max_steps):
@@ -401,10 +403,25 @@ class RunStore:
         """A committed artifact is authoritative even if the final checkpoint failed."""
         with Session(self.engine) as db, db.begin():
             run = self._run(db, tenant, run_id, lock=True, worker_token=token)
-            artifact = db.get(LocalDraftArtifact, run_id)
-            if artifact is None or artifact.user_id != tenant:
-                return False
-            run.snapshot = {**run.snapshot, "draft": artifact.draft, "status": "drafted"}
+            if run.kind == "conversation":
+                preview = run.snapshot.get("preview")
+                if not preview:
+                    return False
+                artifact = db.scalar(
+                    select(WorkspaceWrite).where(
+                        WorkspaceWrite.user_id == tenant,
+                        WorkspaceWrite.run_id == run_id,
+                        WorkspaceWrite.idempotency_key == preview["idempotency_key"],
+                    )
+                )
+                if artifact is None:
+                    return False
+                run.snapshot = {**run.snapshot, "status": "drafted"}
+            else:
+                artifact = db.get(LocalDraftArtifact, run_id)
+                if artifact is None or artifact.user_id != tenant:
+                    return False
+                run.snapshot = {**run.snapshot, "draft": artifact.draft, "status": "drafted"}
             run.status, run.review, run.resume, run.worker_token = "drafted", None, None, None
             run.error = None
             self._event(db, run, "committed_local_write_recovered")

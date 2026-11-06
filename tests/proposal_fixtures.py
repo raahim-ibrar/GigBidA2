@@ -24,6 +24,13 @@ class BrowserModels:
             }
         if role == "writer":
             outputs[role] = {"text": "I built a Python API. Could we discuss scope?"}
+        if role == "liaison":
+            outputs[role] = {
+                "intent": "interview"
+                if "interview" in payload["client_messages"][-1]["text"].lower()
+                else "question",
+                "draft": {"text": "I built a Python API. Could we discuss scope?"},
+            }
         if role == "verifier":
             outputs[role] = {
                 "claims": [

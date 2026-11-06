@@ -12,12 +12,13 @@ function ClaimLine({ text, draft, evidence }: { text: string; draft: Draft; evid
   return <p><span tabIndex={0} className="grounded-claim" aria-label={`${text} Portfolio evidence available.`}>{text}<span className="evidence-popover" role="tooltip">{sources.map(source => <span key={source.id}><strong>{source.source}{source.page ? ` · page ${source.page}` : ""}</strong><br />{source.text}<br /></span>)}</span></span></p>;
 }
 
-export function RunWorkspace({ id, trace = false }: { id: string; trace?: boolean }) {
+export function RunWorkspace({ id, trace = false, onSaved }: { id: string; trace?: boolean; onSaved?: () => Promise<void> }) {
   const [run, setRun] = useState<Run | null>(null); const [account, setAccount] = useState<Account | null>(null);
   const [events, setEvents] = useState<Progress[]>([]); const [error, setError] = useState(""); const [signIn, setSignIn] = useState(false);
   const [edit, setEdit] = useState(""); const [reason, setReason] = useState(""); const [busy, setBusy] = useState(false);
   const cursor = useRef(0); const loaded = !!run; const active = !!run && ["queued", "running"].includes(run.status);
   const refresh = useCallback(async () => { setRun(await getRun(id)); }, [id]);
+  useEffect(() => { if (run?.status === "drafted" && onSaved) void onSaved().catch(err => setError(err.message)); }, [run?.status, onSaved]);
   useEffect(() => { let mounted = true;
     Promise.all([getRun(id), getAccount()]).then(([current, user]) => { if (mounted) { setRun(current); setAccount(user); } })
       .catch(err => { if (mounted) { setError(err.message); setSignIn(err instanceof ApiError && err.status === 401); } }); return () => { mounted = false; };
@@ -34,7 +35,7 @@ export function RunWorkspace({ id, trace = false }: { id: string; trace?: boolea
     return () => { source.close(); if (timer) clearInterval(timer); };
   }, [id, active, loaded, signIn, refresh]);
   async function decide(action: Review["action"]) { if (!run || !account) return;
-    const digest = run.snapshot.preview?.arguments.draft_digest;
+    const digest = run.review?.draft_digest ?? run.snapshot.preview?.arguments.draft_digest;
     if (typeof digest !== "string") { setError("Reload this run to get its current preview."); return; }
     if (action === "reject" && !reason.trim()) { setError("Enter a rejection reason."); return; }
     if (action === "edit" && !edit.trim()) { setError("Enter a draft before requesting verification."); return; }
@@ -45,20 +46,22 @@ export function RunWorkspace({ id, trace = false }: { id: string; trace?: boolea
   if (signIn) return <p className="notice"><Link href="/sign-in">Sign in</Link> to view this run.</p>;
   if (!run) return error ? <p role="alert" className="error">{error}</p> : <p role="status">Loading run…</p>;
   const state = run.snapshot; const draft = state.draft; const evidence = state.evidence ?? []; const ready = run.status === "awaiting_approval";
-  return <><div className="source-actions"><Link href={`/jobs/${run.job_id}`}>Job detail</Link><Link href={`/studio/${id}`}>Proposal review</Link><Link href={`/runs/${id}`}>Run activity</Link></div>
+  const conversation = run.kind === "conversation";
+  return <><div className="source-actions"><Link href={`/jobs/${run.job_id}`}>Job detail</Link><Link href={conversation ? `/messages/${state.conversation_id}` : `/studio/${id}`}>{conversation ? "Conversation" : "Proposal review"}</Link><Link href={`/runs/${id}`}>Run activity</Link></div>
     <p role="status" className="notice">Status: <strong>{run.status.replaceAll("_", " ")}</strong>{active && " · Working in the background; you can leave this page."}</p>
     {error && <p role="alert" className="error">{error}</p>}{run.error && <p role="alert" className="error">{run.error}</p>}{state.job && <h2>{state.job.title}</h2>}
-    <div className="cards"><section className="card"><h2>Recommendation</h2>{state.decision ? <><strong>{state.decision.action}</strong><ul>{state.decision.reasons.map((text, i) => <li key={i}>{text}</li>)}</ul></> : <p className="muted">Waiting for analysis.</p>}
+    <div className="cards"><section className="card"><h2>{conversation ? "Client intent" : "Recommendation"}</h2>{conversation ? <p>{state.intent ?? "Waiting for classification."}</p> : state.decision ? <><strong>{state.decision.action}</strong><ul>{state.decision.reasons.map((text, i) => <li key={i}>{text}</li>)}</ul></> : <p className="muted">Waiting for analysis.</p>}
       {state.risk && <><h3>Risk: {Math.round(state.risk.score * 100)}%</h3><ul>{state.risk.reasons?.map((text, i) => <li key={i}>{text}</li>)}</ul></>}
       {state.price && <p>Provisional quote: ${state.price.amount} {state.price.billing_type === "hourly" ? "per hour" : "total"}. {state.price.rationale}</p>}
-    </section><section className="card"><h2>Requirement evidence</h2>{state.fit ? <><p>Coverage: {Math.round(state.fit.score * 100)}%</p>{Object.entries(state.fit.requirement_evidence).map(([requirement, ids]) => <div key={requirement}><strong>{requirement}</strong>{ids.length ? <ul>{ids.map(sourceId => { const source = evidence.find(item => item.id === sourceId); return <li key={sourceId}>{source?.source ?? "Source unavailable"}<details><summary>Read evidence</summary><p>{source?.text}</p></details></li>; })}</ul> : <p className="muted">No supporting evidence.</p>}</div>)}</> : <p className="muted">Waiting for portfolio matching.</p>}</section></div>
-    {draft && (ready || run.status === "drafted") && <section className="card draft-panel"><h2>{run.status === "drafted" ? "Saved local draft" : "Verified draft for review"}</h2><p className="muted">Hover or focus an underlined claim to inspect its portfolio source.</p>
+    </section><section className="card"><h2>{conversation ? "Reply evidence" : "Requirement evidence"}</h2>{conversation ? <p>{evidence.length} portfolio sources retrieved. Inspect the underlined claims below.</p> : state.fit ? <><p>Coverage: {Math.round(state.fit.score * 100)}%</p>{Object.entries(state.fit.requirement_evidence).map(([requirement, ids]) => <div key={requirement}><strong>{requirement}</strong>{ids.length ? <ul>{ids.map(sourceId => { const source = evidence.find(item => item.id === sourceId); return <li key={sourceId}>{source?.source ?? "Source unavailable"}<details><summary>Read evidence</summary><p>{source?.text}</p></details></li>; })}</ul> : <p className="muted">No supporting evidence.</p>}</div>)}</> : <p className="muted">Waiting for portfolio matching.</p>}</section></div>
+    {draft && (ready || run.status === "drafted") && <section className="card draft-panel"><h2>{run.status === "drafted" ? (conversation ? "Saved local email draft" : "Saved local draft") : (conversation ? "Verified reply for review" : "Verified draft for review")}</h2><p className="muted">Hover or focus an underlined claim to inspect its portfolio source.</p>
       {draft.text.split("\n").map((text, i) => <ClaimLine key={i} text={text} draft={draft} evidence={evidence} />)}
       {Object.entries(draft.screening_answers ?? {}).map(([question, answer]) => <div key={question}><h3>{question}</h3>{answer.split("\n").map((text, i) => <ClaimLine key={i} text={text} draft={draft} evidence={evidence} />)}</div>)}
       {state.critique?.reasons?.length ? <p>Critic: {state.critique.reasons.join(" ")}</p> : null}<p>Local draft checks: {state.compliance?.allowed ? "passed" : "pending"}. Instructor marketplace policy is not supplied.</p>
       {!!state.memory?.style_preferences?.length && <details><summary>Style preferences used in this run</summary><ul>{state.memory.style_preferences.map((text, index) => <li key={index}>{text}</li>)}</ul><p className="muted">These were loaded when this run started. Grounding and approval still apply.</p></details>}
-      {ready && <><h3>Preview</h3><p>Save this draft locally. Connects spent: 0. No application will be sent.</p><button disabled={busy} onClick={() => decide("approve")}>Approve and save local draft</button>
-        <label htmlFor="edited-draft">Edit cover letter</label><textarea id="edited-draft" rows={9} maxLength={20000} value={edit} onChange={event => setEdit(event.target.value)} /><button className="secondary-button" disabled={busy} onClick={() => decide("edit")}>Verify edits and request a new review</button>
+      {conversation && state.preview && <div><h3>Email draft preview</h3><p>Subject: {String(state.preview.arguments.subject)}</p><pre style={{ whiteSpace: "pre-wrap" }}>{String(state.preview.arguments.body)}</pre></div>}
+      {ready && <><h3>Preview</h3><p>{conversation ? "Save this email draft locally. No message will be sent." : "Save this draft locally. Connects spent: 0. No application will be sent."}</p><button disabled={busy} onClick={() => decide("approve")}>{conversation ? "Approve and save email draft" : "Approve and save local draft"}</button>
+        <label htmlFor="edited-draft">{conversation ? "Edit reply" : "Edit cover letter"}</label><textarea id="edited-draft" rows={9} maxLength={20000} value={edit} onChange={event => setEdit(event.target.value)} /><button className="secondary-button" disabled={busy} onClick={() => decide("edit")}>Verify edits and request a new review</button>
         <label htmlFor="rejection-reason">Reason for rejection</label><textarea id="rejection-reason" rows={2} maxLength={1000} value={reason} onChange={event => setReason(event.target.value)} /><button className="secondary-button" disabled={busy} onClick={() => decide("reject")}>Reject draft</button></>}
     </section>}
     {(trace || active) && <section className="card draft-panel"><h2>Run activity</h2><p className="muted">{run.steps} steps · {run.tokens} tokens charged or reserved. Local model costs exclude hardware and electricity.</p><ol className="run-events">{events.map(event => <li key={event.id}>{event.kind.replaceAll("_", " ")}{typeof event.details.node === "string" && ` · ${event.details.node}`}{typeof event.details.role === "string" && ` · ${event.details.role}`}</li>)}</ol></section>}

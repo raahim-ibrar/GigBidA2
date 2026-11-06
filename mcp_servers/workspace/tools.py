@@ -44,6 +44,16 @@ class EmailDraftRequest(Contract):
     body: str = Field(min_length=1, max_length=20000)
     idempotency_key: str = Field(min_length=8, max_length=200)
     dry_run: bool = True
+    calendar_slots: list[TimeWindow] = Field(default_factory=list, max_length=3)
+
+    def arguments(self):
+        result = {"subject": self.subject, "body": self.body}
+        if self.calendar_slots:
+            result["calendar_slots"] = [
+                {"start": slot.start.isoformat(), "end": slot.end.isoformat()}
+                for slot in self.calendar_slots
+            ]
+        return result
 
 
 class WorkspaceResult(Contract):

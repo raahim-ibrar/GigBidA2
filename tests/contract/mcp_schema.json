@@ -1022,6 +1022,14 @@
                 "title": "Body",
                 "type": "string"
               },
+              "calendar_slots": {
+                "items": {
+                  "$ref": "#/$defs/TimeWindow"
+                },
+                "maxItems": 3,
+                "title": "Calendar Slots",
+                "type": "array"
+              },
               "dry_run": {
                 "default": true,
                 "title": "Dry Run",
@@ -1046,6 +1054,27 @@
               "idempotency_key"
             ],
             "title": "EmailDraftRequest",
+            "type": "object"
+          },
+          "TimeWindow": {
+            "additionalProperties": false,
+            "properties": {
+              "end": {
+                "format": "date-time",
+                "title": "End",
+                "type": "string"
+              },
+              "start": {
+                "format": "date-time",
+                "title": "Start",
+                "type": "string"
+              }
+            },
+            "required": [
+              "start",
+              "end"
+            ],
+            "title": "TimeWindow",
             "type": "object"
           }
         },

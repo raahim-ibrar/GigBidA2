@@ -61,7 +61,7 @@ class OllamaModels:
         if reserve > self.config.context_size:
             raise BudgetExceeded("Agent input exceeds the model context; shorten the job or draft")
         candidates = [self.config.models[role]]
-        if self.config.fallback and role not in {"writer", "critic", "verifier"}:
+        if self.config.fallback and role not in {"writer", "critic", "verifier", "liaison"}:
             candidates.append(self.config.fallback)
         for attempt, model in enumerate(candidates):
             async with self._lock:

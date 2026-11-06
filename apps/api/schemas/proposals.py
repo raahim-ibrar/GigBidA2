@@ -19,6 +19,7 @@ from agent.handoffs import (
     WritePreview,
 )
 from apps.api.schemas.memory import MemoryContext
+from mcp_servers.workspace.tools import TimeWindow
 
 
 class ManualJob(Contract):
@@ -78,12 +79,18 @@ class SnapshotView(Contract):
     verification: dict | None = None
     events: list[str] = Field(default_factory=list)
     memory: MemoryContext | None = None
+    conversation_id: str | None = None
+    conversation_title: str | None = None
+    source_revision: int | None = None
+    intent: Literal["question", "negotiation", "interview", "scam"] | None = None
+    calendar_slots: list[TimeWindow] = Field(default_factory=list)
 
 
 class RunView(Contract):
     model_config = ConfigDict(from_attributes=True, extra="forbid")
     id: str
     job_id: str
+    kind: Literal["bid", "conversation"] = "bid"
     status: str
     snapshot: SnapshotView
     review: dict | None

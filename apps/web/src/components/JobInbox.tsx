@@ -42,6 +42,6 @@ export function JobInbox() {
       <label htmlFor="budget-max">Maximum client budget</label><input id="budget-max" name="budget_max" type="number" min="0.01" max="1000000" step="0.01" required />
       <button disabled={busy || !account}>{busy ? "Starting analysis…" : "Analyse and draft"}</button>
     </form></section><section className="card"><h2>Your jobs</h2>{!jobs.length && <p className="muted">No jobs added yet.</p>}
-      {jobs.map(job => { const latest = runs.find(run => run.job_id === job.id); return <article className="evidence-hit" key={job.id}><h3><Link href={`/jobs/${job.id}`}>{job.title}</Link></h3><p className="muted">Manually entered · {latest ? latest.status.replaceAll("_", " ") : "Not analysed"}</p>{latest && <Link href={`/studio/${latest.id}`}>Open proposal run</Link>}</article>; })}
+      {jobs.map(job => { const latest = runs.find(run => run.job_id === job.id && run.kind !== "conversation"); return <article className="evidence-hit" key={job.id}><h3><Link href={`/jobs/${job.id}`}>{job.title}</Link></h3><p className="muted">Manually entered · {latest ? latest.status.replaceAll("_", " ") : "Not analysed"}</p>{latest && <Link href={`/studio/${latest.id}`}>Open proposal run</Link>}</article>; })}
     </section></div></>;
 }

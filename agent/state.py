@@ -44,15 +44,10 @@ class BidState(TypedDict, total=False):
     events: Annotated[list[str], add]
 
 
-class ConversationState(TypedDict, total=False):
-    tenant_id: str
+class ConversationState(BidState, total=False):
     conversation_id: str
+    conversation_title: str
+    source_revision: int
     messages: list[dict]
     intent: Literal["question", "negotiation", "interview", "scam"]
-    draft: ProposalDraft
-    evidence: list[EvidenceItem]
-    compliance: ComplianceVerdict
-    preview: WritePreview
-    approval: ApprovalDecision
-    status: str
-    events: Annotated[list[str], add]
+    calendar_slots: list[dict]

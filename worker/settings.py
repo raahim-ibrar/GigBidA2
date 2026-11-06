@@ -88,7 +88,7 @@ async def reconcile_runs(ctx):
 
 
 async def run_conversation(ctx, tenant_id: str, conversation_id: str):
-    raise NotImplementedError("Load a durable conversation graph and event stream")
+    return await process_bid(ctx["engine"], ctx["settings"], tenant_id, conversation_id)
 
 
 class WorkerSettings:

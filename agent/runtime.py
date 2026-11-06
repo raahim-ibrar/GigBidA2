@@ -13,13 +13,16 @@ from langgraph.types import Command
 
 from agent import handoffs
 from agent.config import AgentConfig
+from agent.conversation_nodes import ConversationNodes
 from agent.graphs.bid_graph import build_bid_graph
+from agent.graphs.conversation_graph import build_conversation_graph
 from agent.mcp_client import build_client
 from agent.memory.service import MemoryService, MemoryUnavailable
 from agent.model_client import BudgetExceeded, ModelUnavailable, OllamaModels
 from agent.portfolio_client import PortfolioMCP
 from agent.proposal_nodes import GroundingFailure, ProposalNodes, ReviewRequired
 from agent.run_store import LostWorkerLease, RunConflict, RunStore
+from agent.workspace_client import WorkspaceMCP
 
 
 def lock_key(value):
@@ -41,8 +44,15 @@ def leaf_errors(error):
     return [error]
 
 
-async def process_bid(
-    engine, settings, tenant, run_id, *, models_factory=OllamaModels, portfolio_reader=None
+async def process_run(
+    engine,
+    settings,
+    tenant,
+    run_id,
+    *,
+    models_factory=OllamaModels,
+    portfolio_reader=None,
+    workspace_reader=None,
 ):
     store, token, config = RunStore(engine), str(uuid4()), AgentConfig()
     dsn = settings.database_url.replace("postgresql+psycopg://", "postgresql://", 1)
@@ -139,9 +149,33 @@ async def process_bid(
                     reader = PortfolioMCP(
                         await stack.enter_async_context(client.session("portfolio"))
                     )
-                business = ProposalNodes(
-                    models, reader, config, execute_local=execute, load_memory=memory
-                )
+                if claimed["kind"] == "conversation":
+                    workspace = workspace_reader
+                    if workspace is None:
+                        workspace_client = build_client(
+                            {
+                                "workspace": {
+                                    "transport": "stdio",
+                                    "command": sys.executable,
+                                    "args": ["-m", "mcp_servers.workspace.server"],
+                                    "env": {
+                                        "GIGBID_TENANT_ID": tenant,
+                                        "GIGBID_RUN_ID": run_id,
+                                        "DATABASE_URL": settings.database_url,
+                                    },
+                                }
+                            }
+                        )
+                        workspace = WorkspaceMCP(
+                            await stack.enter_async_context(workspace_client.session("workspace"))
+                        )
+                    business = ConversationNodes(
+                        models, reader, workspace, config, load_memory=memory
+                    )
+                else:
+                    business = ProposalNodes(
+                        models, reader, config, execute_local=execute, load_memory=memory
+                    )
 
                 def bounded(name, function):
                     async def node(state):
@@ -156,18 +190,27 @@ async def process_bid(
 
                     return node
 
-                graph = build_bid_graph(
-                    checkpointer=saver,
-                    nodes={
-                        name: bounded(name, function)
-                        for name, function in business.mapping().items()
-                    },
-                    max_revisions=config.budgets.max_critic_revisions,
+                bounded_nodes = {
+                    name: bounded(name, function) for name, function in business.mapping().items()
+                }
+                graph = (
+                    build_conversation_graph(checkpointer=saver, nodes=bounded_nodes)
+                    if claimed["kind"] == "conversation"
+                    else build_bid_graph(
+                        checkpointer=saver,
+                        nodes=bounded_nodes,
+                        max_revisions=config.budgets.max_critic_revisions,
+                    )
                 )
                 snapshot = await graph.aget_state(thread)
+                fresh_messages = claimed["kind"] == "conversation" and (
+                    snapshot.values.get("source_revision") != claimed["snapshot"]["source_revision"]
+                )
                 resume = claimed["resume"]
                 pending_ids = {item.id for item in snapshot.interrupts}
-                if resume and resume["interrupt_id"] in pending_ids:
+                if fresh_messages:
+                    graph_input = claimed["snapshot"]
+                elif resume and resume["interrupt_id"] in pending_ids:
                     graph_input = Command(resume={resume["interrupt_id"]: resume["decision"]})
                 elif snapshot.interrupts or (snapshot.values and not snapshot.next):
                     graph_input = None
@@ -175,7 +218,7 @@ async def process_bid(
                     graph_input = None if snapshot.values else claimed["snapshot"]
                 # An already paused/finished checkpoint needs only DB reconciliation.
                 run_graph = not snapshot.values or bool(snapshot.next and not snapshot.interrupts)
-                run_graph = run_graph or isinstance(graph_input, Command)
+                run_graph = run_graph or isinstance(graph_input, Command) or fresh_messages
                 if run_graph:
                     async for state in graph.astream(graph_input, thread, stream_mode="values"):
                         await asyncio.to_thread(store.save, tenant, run_id, token, state)
@@ -202,6 +245,8 @@ async def process_bid(
         except LostWorkerLease:
             return {"status": "superseded"}
         except Exception as error:
+            if any(isinstance(item, LostWorkerLease) for item in leaf_errors(error)):
+                return {"status": "superseded"}
             if await asyncio.to_thread(store.recover_local, tenant, run_id, token):
                 return {"status": "drafted"}
             safe = (BudgetExceeded, ModelUnavailable, GroundingFailure, ReviewRequired, RunConflict)
@@ -220,3 +265,7 @@ async def process_bid(
             )
             await asyncio.to_thread(store.fail, tenant, run_id, token, message)
             return {"status": "needs_attention", "error_types": kinds}
+
+
+# Existing worker jobs and integration callers retain their entry point.
+process_bid = process_run
