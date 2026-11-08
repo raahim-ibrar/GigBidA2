@@ -266,3 +266,17 @@ class SearchSchedule(Base):
     )
     last_checked_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     status: Mapped[str] = mapped_column(String(30), default="paused")
+
+
+class PipelineEvent(Base):
+    __tablename__ = "pipeline_events"
+    __table_args__ = (UniqueConstraint("user_id", "event_id", name="uq_pipeline_provider_event"),)
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=lambda: str(uuid4()))
+    user_id: Mapped[str] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True)
+    run_id: Mapped[str] = mapped_column(ForeignKey("agent_runs.id", ondelete="CASCADE"), index=True)
+    event_id: Mapped[str] = mapped_column(String(200))
+    proposal_id: Mapped[str] = mapped_column(String(200))
+    source: Mapped[str] = mapped_column(String(20))
+    stage: Mapped[str] = mapped_column(String(20))
+    occurred_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    connects_spent: Mapped[int | None] = mapped_column(Integer, nullable=True)

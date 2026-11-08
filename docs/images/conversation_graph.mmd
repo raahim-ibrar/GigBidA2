@@ -1,0 +1,34 @@
+---
+config:
+  flowchart:
+    curve: linear
+---
+graph TD;
+	__start__([<p>__start__</p>]):::first
+	intake(intake)
+	liaison(liaison)
+	verifier(verifier)
+	compliance(compliance)
+	preview(preview)
+	execute(execute)
+	approval(approval)
+	blocked(blocked)
+	__end__([<p>__end__</p>]):::last
+	__start__ --> intake;
+	approval -. &nbsp;stop&nbsp; .-> __end__;
+	approval -.-> execute;
+	approval -. &nbsp;edit&nbsp; .-> verifier;
+	compliance -. &nbsp;False&nbsp; .-> blocked;
+	compliance -. &nbsp;True&nbsp; .-> preview;
+	intake -. &nbsp;True&nbsp; .-> blocked;
+	intake -. &nbsp;False&nbsp; .-> liaison;
+	liaison -. &nbsp;True&nbsp; .-> blocked;
+	liaison -. &nbsp;False&nbsp; .-> verifier;
+	preview --> approval;
+	verifier --> compliance;
+	blocked --> __end__;
+	execute --> __end__;
+	classDef default fill:#f2f0ff,line-height:1.2
+	classDef first fill-opacity:0
+	classDef last fill:#bfb6fc
+

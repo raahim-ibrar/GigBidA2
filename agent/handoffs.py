@@ -106,9 +106,10 @@ class WritePreview(Contract):
 
 
 class ApprovalDecision(Contract):
-    action: Literal["approve", "reject", "edit"]
+    action: Literal["approve", "reject", "edit", "regenerate"]
     reason: str | None = Field(default=None, max_length=1000)
     edited_text: str | None = Field(default=None, max_length=20000)
+    paragraph_index: int | None = Field(default=None, ge=0, le=99)
 
     @model_validator(mode="after")
     def validate_action(self):
@@ -116,6 +117,8 @@ class ApprovalDecision(Contract):
             raise ValueError("A rejection reason is required")
         if self.action == "edit" and not (self.edited_text and self.edited_text.strip()):
             raise ValueError("An edited draft is required")
+        if self.action == "regenerate" and self.paragraph_index is None:
+            raise ValueError("Select a paragraph to regenerate")
         return self
 
 

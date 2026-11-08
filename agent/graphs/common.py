@@ -35,6 +35,14 @@ def approval_gate(state):
             }
         )
     )
+    if answer.action == "regenerate":
+        return {
+            "approval": answer,
+            "status": "regenerating",
+            "compliance": None,
+            "preview": None,
+            "user_edited": True,
+        }
     if answer.action == "edit":
         return {
             "approval": answer,
@@ -55,6 +63,8 @@ def approval_route(state):
 
 
 def bid_approval_route(state):
+    if state["status"] == "regenerating":
+        return "regenerate"
     return "edit" if state["status"] == "editing" else approval_route(state)
 
 

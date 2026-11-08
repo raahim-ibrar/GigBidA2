@@ -31,7 +31,11 @@ class BrowserModels:
             if job["title"].startswith("Retry once fixture") and job["job_id"] not in self.outages:
                 self.outages.add(job["job_id"])
                 raise ModelUnavailable("Deterministic browser model outage; retry to resume.")
-            outputs[role] = {"text": "I built a Python API. Could we discuss scope?"}
+            outputs[role] = {
+                "text": "Could we clarify priorities?"
+                if payload.get("task") == "regenerate_one_paragraph"
+                else "I built a Python API. Could we discuss scope?"
+            }
         if role == "liaison":
             outputs[role] = {
                 "intent": "interview"

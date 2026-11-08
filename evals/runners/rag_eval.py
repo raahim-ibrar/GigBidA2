@@ -1,8 +1,10 @@
-"""rag_eval: real datasets and experiment implementation required."""
+"""Score recorded retrieval rankings against supplied relevant evidence labels."""
+
+from evals.runners.offline import main as score
 
 
 def main():
-    raise NotImplementedError("rag_eval is not implemented; never generate placeholder metrics")
+    score("retrieval")
 
 
 if __name__ == "__main__":

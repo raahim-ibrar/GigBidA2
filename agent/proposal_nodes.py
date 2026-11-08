@@ -10,11 +10,14 @@ import re
 from collections.abc import Awaitable, Callable
 from decimal import Decimal
 
+from pydantic import Field, field_validator
+
 from agent.config import AgentConfig
 from agent.handoffs import (
     BidDecision,
     Claim,
     ComplianceVerdict,
+    Contract,
     Critique,
     FitReport,
     JobSpec,
@@ -51,6 +54,22 @@ def draft_digest(draft: ProposalDraft) -> str:
     ).hexdigest()
 
 
+def paragraph_spans(text):
+    return [match.span() for match in re.finditer(r"\S[\s\S]*?(?=\n[ \t\r]*\n|\Z)", text)]
+
+
+class ParagraphRewrite(Contract):
+    text: str = Field(min_length=1, max_length=5000)
+
+    @field_validator("text")
+    @classmethod
+    def single_paragraph(cls, value):
+        value = value.strip()
+        if not value or re.search(r"\n[ \t\r]*\n", value):
+            raise ValueError("Return exactly one nonblank paragraph")
+        return value
+
+
 class ProposalNodes:
     def __init__(
         self,
@@ -76,6 +95,7 @@ class ProposalNodes:
                 "decision",
                 "pricing",
                 "writer",
+                "regenerate",
                 "verifier",
                 "critic",
                 "compliance",
@@ -224,6 +244,35 @@ class ProposalNodes:
             "events": ["price_proposed"],
         }
 
+    async def regenerate(self, state):
+        draft = state["draft"]
+        spans = paragraph_spans(draft.text)
+        index = state["approval"].paragraph_index
+        if index is None or index >= len(spans):
+            raise ReviewRequired("Selected paragraph is no longer available")
+        start, end = spans[index]
+        replacement = await self.models.complete(
+            "writer",
+            {
+                "task": "regenerate_one_paragraph",
+                "job": state["job"].model_dump(),
+                "verified_draft": draft.text,
+                "selected_paragraph": draft.text[start:end],
+                "portfolio_evidence": [item.model_dump() for item in state.get("evidence", [])],
+                "quote": state["price"].model_dump(),
+            },
+            ParagraphRewrite,
+        )
+        text = draft.text[:start] + replacement.text + draft.text[end:]
+        if len(text) > 20000:
+            raise ReviewRequired("Regenerated cover letter is too long")
+        return {
+            "draft": ProposalDraft(text=text, screening_answers=draft.screening_answers),
+            "user_edited": True,
+            "status": "editing",
+            "events": ["paragraph_regenerated"],
+        }
+
     async def writer(self, state):
         draft = await self.models.complete(
             "writer",
@@ -329,11 +378,19 @@ class ProposalNodes:
             raise GroundingFailure(
                 "A screening answer has no supported text; revise it before review"
             )
+        if removed and state.get("approval") and state["approval"].action == "regenerate":
+            raise GroundingFailure(
+                "Regeneration cannot retain every verified claim; "
+                "inspect the replacement and source evidence"
+            )
         verified = ProposalDraft(
-            text="\n".join(kept[0]),
+            text=draft.text if len(kept[0]) == len(sections[0][1]) else "\n".join(kept[0]),
             claims=claims,
             screening_answers={
-                key: "\n".join(kept[index + 1]) for index, key in enumerate(answer_keys)
+                key: draft.screening_answers[key]
+                if len(kept[index + 1]) == len(sections[index + 1][1])
+                else "\n".join(kept[index + 1])
+                for index, key in enumerate(answer_keys)
             },
         )
         return {

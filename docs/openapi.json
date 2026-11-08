@@ -45,6 +45,115 @@
         "title": "AddClientMessage",
         "type": "object"
       },
+      "AnalyticsView": {
+        "additionalProperties": false,
+        "properties": {
+          "category_rates": {
+            "items": {
+              "$ref": "#/components/schemas/CategoryRate"
+            },
+            "title": "Category Rates",
+            "type": "array"
+          },
+          "charged_or_reserved_tokens": {
+            "title": "Charged Or Reserved Tokens",
+            "type": "integer"
+          },
+          "connects_spent": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Connects Spent"
+          },
+          "days": {
+            "title": "Days",
+            "type": "integer"
+          },
+          "inference_api_usd": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Inference Api Usd"
+          },
+          "local_drafts": {
+            "title": "Local Drafts",
+            "type": "integer"
+          },
+          "measured_model_tokens": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Measured Model Tokens"
+          },
+          "measurements": {
+            "items": {
+              "$ref": "#/components/schemas/RunMeasurement"
+            },
+            "title": "Measurements",
+            "type": "array"
+          },
+          "measurements_truncated": {
+            "title": "Measurements Truncated",
+            "type": "boolean"
+          },
+          "provider_connected": {
+            "default": false,
+            "title": "Provider Connected",
+            "type": "boolean"
+          },
+          "provider_submissions": {
+            "title": "Provider Submissions",
+            "type": "integer"
+          },
+          "rejection_reasons": {
+            "items": {
+              "$ref": "#/components/schemas/RejectionReason"
+            },
+            "title": "Rejection Reasons",
+            "type": "array"
+          },
+          "run_count": {
+            "title": "Run Count",
+            "type": "integer"
+          },
+          "submissions_with_known_spend": {
+            "title": "Submissions With Known Spend",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "days",
+          "run_count",
+          "local_drafts",
+          "charged_or_reserved_tokens",
+          "measured_model_tokens",
+          "inference_api_usd",
+          "connects_spent",
+          "submissions_with_known_spend",
+          "provider_submissions",
+          "category_rates",
+          "rejection_reasons",
+          "measurements",
+          "measurements_truncated"
+        ],
+        "title": "AnalyticsView",
+        "type": "object"
+      },
       "AvailabilityView": {
         "additionalProperties": false,
         "properties": {
@@ -116,6 +225,45 @@
           "metadata"
         ],
         "title": "Body_upload_document_api_portfolio_documents_post",
+        "type": "object"
+      },
+      "CategoryRate": {
+        "additionalProperties": false,
+        "properties": {
+          "category": {
+            "title": "Category",
+            "type": "string"
+          },
+          "hire_rate": {
+            "title": "Hire Rate",
+            "type": "number"
+          },
+          "hired": {
+            "title": "Hired",
+            "type": "integer"
+          },
+          "replied": {
+            "title": "Replied",
+            "type": "integer"
+          },
+          "reply_rate": {
+            "title": "Reply Rate",
+            "type": "number"
+          },
+          "submitted": {
+            "title": "Submitted",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "category",
+          "submitted",
+          "replied",
+          "hired",
+          "reply_rate",
+          "hire_rate"
+        ],
+        "title": "CategoryRate",
         "type": "object"
       },
       "Claim": {
@@ -1174,6 +1322,82 @@
         "title": "OutcomeFeatures",
         "type": "object"
       },
+      "PipelineCard": {
+        "additionalProperties": false,
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "run_id": {
+            "title": "Run Id",
+            "type": "string"
+          },
+          "source": {
+            "title": "Source",
+            "type": "string"
+          },
+          "stage": {
+            "enum": [
+              "drafted",
+              "submitted",
+              "viewed",
+              "replied",
+              "interview",
+              "hired",
+              "lost"
+            ],
+            "title": "Stage",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "updated_at": {
+            "format": "date-time",
+            "title": "Updated At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "run_id",
+          "job_id",
+          "title",
+          "stage",
+          "source",
+          "updated_at"
+        ],
+        "title": "PipelineCard",
+        "type": "object"
+      },
+      "PipelineView": {
+        "additionalProperties": false,
+        "properties": {
+          "cards": {
+            "items": {
+              "$ref": "#/components/schemas/PipelineCard"
+            },
+            "title": "Cards",
+            "type": "array"
+          },
+          "provider_connected": {
+            "default": false,
+            "title": "Provider Connected",
+            "type": "boolean"
+          },
+          "truncated": {
+            "title": "Truncated",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "cards",
+          "truncated"
+        ],
+        "title": "PipelineView",
+        "type": "object"
+      },
       "PortfolioSearch": {
         "additionalProperties": false,
         "properties": {
@@ -1392,6 +1616,25 @@
         "title": "ProposalDraft",
         "type": "object"
       },
+      "RejectionReason": {
+        "additionalProperties": false,
+        "properties": {
+          "count": {
+            "title": "Count",
+            "type": "integer"
+          },
+          "reason": {
+            "title": "Reason",
+            "type": "string"
+          }
+        },
+        "required": [
+          "reason",
+          "count"
+        ],
+        "title": "RejectionReason",
+        "type": "object"
+      },
       "RemoveMemory": {
         "additionalProperties": false,
         "properties": {
@@ -1454,7 +1697,8 @@
             "enum": [
               "approve",
               "reject",
-              "edit"
+              "edit",
+              "regenerate"
             ],
             "title": "Action",
             "type": "string"
@@ -1475,6 +1719,19 @@
               }
             ],
             "title": "Edited Text"
+          },
+          "paragraph_index": {
+            "anyOf": [
+              {
+                "maximum": 99.0,
+                "minimum": 0.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Paragraph Index"
           },
           "reason": {
             "anyOf": [
@@ -1536,6 +1793,88 @@
           "score"
         ],
         "title": "RiskReport",
+        "type": "object"
+      },
+      "RunMeasurement": {
+        "additionalProperties": false,
+        "properties": {
+          "charged_or_reserved_tokens": {
+            "title": "Charged Or Reserved Tokens",
+            "type": "integer"
+          },
+          "inference_api_usd": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Inference Api Usd"
+          },
+          "job_title": {
+            "title": "Job Title",
+            "type": "string"
+          },
+          "kind": {
+            "title": "Kind",
+            "type": "string"
+          },
+          "measured_model_tokens": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Measured Model Tokens"
+          },
+          "measured_worker_seconds": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Measured Worker Seconds"
+          },
+          "model_call_seconds": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model Call Seconds"
+          },
+          "run_id": {
+            "title": "Run Id",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "run_id",
+          "job_title",
+          "kind",
+          "status",
+          "charged_or_reserved_tokens",
+          "measured_model_tokens",
+          "model_call_seconds",
+          "inference_api_usd",
+          "measured_worker_seconds"
+        ],
+        "title": "RunMeasurement",
         "type": "object"
       },
       "RunView": {
@@ -2252,14 +2591,40 @@
     "/api/analytics": {
       "get": {
         "operationId": "analytics_api_analytics_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "days",
+            "required": false,
+            "schema": {
+              "default": 30,
+              "maximum": 365,
+              "minimum": 1,
+              "title": "Days",
+              "type": "integer"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "$ref": "#/components/schemas/AnalyticsView"
+                }
               }
             },
             "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
           }
         },
         "summary": "Analytics",
@@ -2947,6 +3312,27 @@
         "summary": "Add Message",
         "tags": [
           "messages"
+        ]
+      }
+    },
+    "/api/pipeline": {
+      "get": {
+        "operationId": "pipeline_api_pipeline_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PipelineView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Pipeline",
+        "tags": [
+          "analytics"
         ]
       }
     },

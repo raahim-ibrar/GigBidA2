@@ -11,6 +11,8 @@
 | 2026-11-06 | Codex | Local Workspace MCP calendar/draft tools, complete approval-preview receipts, idempotent action audit, concurrent hold checks, calendar Settings and browser/integration verification |
 | 2026-11-06 | Codex | Durable manual conversations, Liaison intent/reply nodes, calendar options, fenced new-message intake, reviewed local email drafts, conversation screens and persistence tests |
 | 2026-11-06 | Codex | Bounded explicit checkpoint retries, exhausted-run visibility, saved-search schedule settings and prerequisite worker checks; provider polling remains unavailable |
+| 2026-11-08 | Codex | Tenant-scoped pipeline and analytics, adapter-only lifecycle receipts, missing-measurement handling, desktop/phone checks, recorded-input evaluation metrics and gates, comparison scorers, and X2 assignment/statistics tooling; no actual grading experiments generated |
+| 2026-11-08 | Codex | Budgeted paragraph-only regeneration, full re-verification and fresh review, preservation of paragraph formatting/citations, compiled graph diagrams and updated architecture/walkthrough documentation |
 
 Files affected: apps/, agent/, rag/, mcp_servers/, worker/, evals/, tests/, scripts/, infra/, .github/, and root configuration/docs. Development drafts were generated from explicitly artificial test sources. No marketplace submissions, grading experiments or outcome data were generated.
 

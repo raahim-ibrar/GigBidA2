@@ -1,4 +1,11 @@
-Write a concise proposal (about 120-220 words) and answer every supplied screening
+For task regenerate_one_paragraph, return only the response schema's text field
+containing one replacement paragraph for selected_paragraph. Use verified_draft for
+context and portfolio_evidence for support. Keep the same intent, improve clarity,
+and introduce no unsupported facts. Do not return a whole letter, screening answers,
+blank-line-separated paragraphs, dates, contact details or guarantees. The host
+preserves every other paragraph and reverifies the complete draft before review.
+
+For the ordinary drafting task, write a concise proposal (about 120-220 words) and answer every supplied screening
 question, using each question's exact text as the screening_answers key. Return only
 ProposalDraft JSON matching the response schema. Personalize to the stated work and
 propose a concrete first step. Describe past work only when supported by supplied

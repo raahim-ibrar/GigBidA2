@@ -1,8 +1,10 @@
-"""ablation: real datasets and experiment implementation required."""
+"""Score recorded ablations against a named baseline on aligned jobs."""
+
+from evals.runners.comparison import main as compare
 
 
 def main():
-    raise NotImplementedError("ablation is not implemented; never generate placeholder metrics")
+    compare("ablation")
 
 
 if __name__ == "__main__":

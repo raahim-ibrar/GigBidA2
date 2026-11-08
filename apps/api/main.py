@@ -12,6 +12,7 @@ from agent.memory.service import MemoryService, MemoryUnavailable
 from agent.proposal_nodes import ReviewRequired
 from agent.run_store import RunConflict, RunNotFound, RunStore
 from apps.api.auth.security import AuthLimiter
+from apps.api.dashboard import Dashboard
 from apps.api.database import make_engine
 from apps.api.routers import (
     analytics,
@@ -61,6 +62,7 @@ def create_app(
     app.state.workspace = WorkspaceService(database)
     app.state.conversations = ConversationStore(database)
     app.state.search_schedules = SearchSchedules(database)
+    app.state.dashboard = Dashboard(database)
 
     async def queue(tenant, document, revision):
         return await enqueue_portfolio(settings, tenant, document, revision)

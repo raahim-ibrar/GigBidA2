@@ -1,10 +1,10 @@
-"""tool_granularity: real datasets and experiment implementation required."""
+"""Score recorded tool conditions on the same fixed tasks."""
+
+from evals.runners.comparison import main as compare
 
 
 def main():
-    raise NotImplementedError(
-        "tool_granularity is not implemented; never generate placeholder metrics"
-    )
+    compare("tool_granularity")
 
 
 if __name__ == "__main__":

@@ -1,10 +1,10 @@
-"""judge_calibration: real datasets and experiment implementation required."""
+"""Compute agreement and Cohen's kappa from paired human/judge labels."""
+
+from evals.runners.offline import main as score
 
 
 def main():
-    raise NotImplementedError(
-        "judge_calibration is not implemented; never generate placeholder metrics"
-    )
+    score("judge_calibration")
 
 
 if __name__ == "__main__":

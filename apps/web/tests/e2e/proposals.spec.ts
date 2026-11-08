@@ -34,6 +34,32 @@ test("recover a model outage from the saved checkpoint through an explicit retry
   await expect(page.getByRole("heading", { name: "Saved local draft" })).toBeVisible({ timeout: 15000 });
 });
 
+test("regenerate a selected paragraph and review it before saving", async ({ page }) => {
+  await prepare(page);
+  await page.getByRole("button", { name: "Regenerate selected paragraph" }).click();
+  await expect(page.getByLabel("Edit cover letter")).toHaveValue("Could we clarify priorities?", { timeout: 15000 });
+  await expect(page.getByRole("heading", { name: "Saved local draft" })).toHaveCount(0);
+  await page.getByRole("button", { name: "Approve and save local draft" }).click();
+  await expect(page.getByRole("heading", { name: "Saved local draft" })).toBeVisible({ timeout: 15000 });
+});
+
+test("approved local proposals populate the pipeline and honest analytics on desktop and phone", async ({ page }, testInfo) => {
+  await prepare(page);
+  await page.getByRole("button", { name: "Approve and save local draft" }).click();
+  await expect(page.getByRole("heading", { name: "Saved local draft" })).toBeVisible({ timeout: 15000 });
+  await page.goto("/pipeline");
+  await expect(page.getByRole("region", { name: "drafted proposals", exact: true }).getByText("Local draft · not submitted")).toBeVisible();
+  await expect(page.getByRole("region", { name: "submitted proposals", exact: true }).getByText("No proposals.")).toBeVisible();
+  await page.goto("/analytics");
+  await expect(page.getByText("No verified submission cohort is available.", { exact: false })).toBeVisible();
+  await expect(page.getByRole("region", { name: "Run measurements" })).toContainText("Python API development fixture");
+  await page.screenshot({ path: testInfo.outputPath("analytics-desktop.png"), fullPage: true });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect(page.getByRole("heading", { name: "Analytics", exact: true })).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  await page.screenshot({ path: testInfo.outputPath("analytics-phone.png"), fullPage: true });
+});
+
 test("approve a verified local draft after a reload and preserve its save", async ({ page }) => {
   await prepare(page); await page.reload();
   await expect(page.getByRole("heading", { name: "Verified draft for review" })).toBeVisible();

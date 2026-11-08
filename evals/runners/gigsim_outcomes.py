@@ -1,10 +1,10 @@
-"""gigsim_outcomes: real datasets and experiment implementation required."""
+"""Aggregate recorded simulator receipts; does not launch a live simulator run."""
+
+from evals.runners.offline import main as score
 
 
 def main():
-    raise NotImplementedError(
-        "gigsim_outcomes is not implemented; never generate placeholder metrics"
-    )
+    score("gigsim_outcomes")
 
 
 if __name__ == "__main__":

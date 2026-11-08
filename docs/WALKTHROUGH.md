@@ -10,10 +10,29 @@ The code will be written with AI assistance. Your job is to understand the decis
 4. Writer creates a proposal from actual portfolio evidence. Verifier checks its claims. Critic asks for improvements, with a maximum of two rewrites.
 5. Local draft checks block contact details, guarantees and other configured risks. Full platform compliance awaits the instructor policy pack.
 6. The current preview says exactly what approval does: save a local draft and spend zero Connects. The actual application cost is unknown, and nothing is sent to a marketplace.
-7. LangGraph pauses at an interrupt. The user reviews, approves, edits or rejects.
+7. LangGraph pauses at an interrupt. The user reviews, approves, edits, regenerates one selected paragraph, or rejects. Regeneration preserves other paragraphs, checks the result again, and requests a new approval.
 8. The local executor rechecks the approval and current source evidence, then saves one artifact in Postgres. Repeating the operation returns that artifact. External submission still needs a tested provider adapter and its own retry/reconciliation behavior.
 
 The worker now runs proposal business nodes and stores checkpoints in Postgres. Edits go back through verification and need a new review. Tests use labelled deterministic responses to prove control/recovery behavior; real-model checks are separate and do not establish proposal quality or grading results.
+
+## What you can try now
+
+1. Upload a real portfolio source, enter a job, then inspect the proposal and evidence.
+2. Edit or regenerate a paragraph. The updated result must be reviewed again before saving.
+3. Open Pipeline: an approved local proposal is a draft, not a submitted application.
+4. Start a conversation under Messages and enter a client's message manually. A new
+   message invalidates the pending reply; approved email drafts stay in history.
+5. Declare availability in Settings. An interview reply can offer actual free slots;
+   the backend checks them again before saving the approved local email draft.
+6. Open Analytics to inspect your own activity. Missing model measurements show
+   “Not measured”; unavailable provider outcomes do not turn into zero-percent results.
+
+The evaluation tools are calculators for observations collected during experiments.
+They compare predictions with gold labels and report measured errors, retrieval
+quality and outcomes. Implementing a calculator is different from having run the
+experiment. The research tables still need the supplied data, real generation runs,
+simulator outcomes and human/judge annotations. [EVALUATION.md](EVALUATION.md) gives
+the input formats and commands without inventing results.
 
 ## What each folder means
 

@@ -1,0 +1,58 @@
+---
+config:
+  flowchart:
+    curve: linear
+---
+graph TD;
+	__start__([<p>__start__</p>]):::first
+	scout(scout)
+	analyst(analyst)
+	risk(risk)
+	matcher(matcher)
+	decision(decision)
+	pricing(pricing)
+	writer(writer)
+	regenerate(regenerate)
+	verifier(verifier)
+	critic(critic)
+	compliance(compliance)
+	preview(preview)
+	execute(execute)
+	approval(approval)
+	revise(revise)
+	attention(attention)
+	stop(stop)
+	blocked(blocked)
+	__end__([<p>__end__</p>]):::last
+	__start__ --> scout;
+	analyst --> decision;
+	approval -. &nbsp;stop&nbsp; .-> __end__;
+	approval -.-> execute;
+	approval -.-> regenerate;
+	approval -. &nbsp;edit&nbsp; .-> verifier;
+	compliance -. &nbsp;False&nbsp; .-> blocked;
+	compliance -. &nbsp;True&nbsp; .-> preview;
+	critic -.-> attention;
+	critic -.-> compliance;
+	critic -.-> revise;
+	decision -.-> pricing;
+	decision -.-> stop;
+	matcher --> decision;
+	preview --> approval;
+	pricing --> writer;
+	regenerate --> verifier;
+	revise --> writer;
+	risk --> decision;
+	scout -.-> analyst;
+	scout -.-> matcher;
+	scout -.-> risk;
+	verifier --> critic;
+	writer --> verifier;
+	attention --> __end__;
+	blocked --> __end__;
+	execute --> __end__;
+	stop --> __end__;
+	classDef default fill:#f2f0ff,line-height:1.2
+	classDef first fill-opacity:0
+	classDef last fill:#bfb6fc
+

@@ -38,6 +38,7 @@ def fixtures(*, action="bid", critic="pass", allowed=True):
         "decision": {"decision": BidDecision(action=action, reasons=["Test fixture"])},
         "pricing": {},
         "writer": {"draft": ProposalDraft(text="Could we discuss your requirements?")},
+        "regenerate": {},
         "verifier": {},
         "critic": {"critique": Critique(verdict=critic)},
         "compliance": {"compliance": ComplianceVerdict(allowed=allowed)},

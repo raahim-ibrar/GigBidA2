@@ -12,7 +12,7 @@ from sqlalchemy.orm import Session
 from agent.handoffs import ApprovalDecision, ProposalDraft
 from agent.memory.edits import edit_observation
 from agent.model_client import BudgetExceeded
-from agent.proposal_nodes import ReviewRequired, draft_digest
+from agent.proposal_nodes import ReviewRequired, draft_digest, paragraph_spans
 from agent.safety import mask_pii
 from apps.api.models import (
     AgentRun,
@@ -193,12 +193,17 @@ class RunStore:
             digest = draft_digest(draft)
             if digest != body.draft_digest:
                 raise RunConflict("The draft changed. Reload its preview before deciding.")
+            if body.action == "regenerate" and (
+                run.kind != "bid" or body.paragraph_index >= len(paragraph_spans(draft.text))
+            ):
+                raise RunConflict("Select an existing proposal paragraph")
             decision = ApprovalDecision.model_validate(
                 body.model_dump(
                     include={
                         "action",
                         "reason",
                         "edited_text",
+                        "paragraph_index",
                     }
                 )
             )

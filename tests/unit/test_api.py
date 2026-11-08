@@ -36,4 +36,5 @@ def test_openapi_exposes_approval_contract(client):
         "approve",
         "reject",
         "edit",
+        "regenerate",
     ]

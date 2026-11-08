@@ -1,10 +1,10 @@
-"""orchestration_compare: real datasets and experiment implementation required."""
+"""Score recorded ReAct, supervisor and hand-built graph conditions."""
+
+from evals.runners.comparison import main as compare
 
 
 def main():
-    raise NotImplementedError(
-        "orchestration_compare is not implemented; never generate placeholder metrics"
-    )
+    compare("orchestration_compare")
 
 
 if __name__ == "__main__":

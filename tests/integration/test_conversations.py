@@ -192,6 +192,8 @@ def test_interview_preview_uses_real_calendar_options(chat):
     assert len(run.snapshot.calendar_slots) == 3
     assert "Interview options (UTC)" in run.snapshot.preview.arguments["body"]
     assert run.snapshot.preview.arguments["calendar_slots"]
+    with pytest.raises(RunConflict, match="proposal paragraph"):
+        review("regenerate", paragraph_index=0)
     review()
     assert execute(process())["status"] == "drafted"
 

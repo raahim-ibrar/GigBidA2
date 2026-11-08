@@ -1,5 +1,5 @@
-import { ScaffoldScreen } from "@/components/ScaffoldScreen";
+import { AnalyticsDashboard } from "@/components/Dashboards";
 
 export default function Page() {
-  return <ScaffoldScreen title="Analytics" description="Measure whether proposals lead to useful outcomes." checklist={["Reply and hire rates by category", "Connects spend versus outcomes", "Real cost, latency and rejection reasons"]} />;
+  return <><h1>Analytics</h1><AnalyticsDashboard /></>;
 }

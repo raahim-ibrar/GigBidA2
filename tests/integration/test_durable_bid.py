@@ -57,6 +57,7 @@ def durable(client, account_app):
     class Models:
         crash_writer = False
         fail_writer = False
+        writer_text = "I built a Python API. Could we discuss scope?"
 
         def __init__(self, *args, **kwargs):
             pass
@@ -71,7 +72,11 @@ def durable(client, account_app):
                 "analyst": {"job_id": "fixture", "title": "Fixture", "requirements": ["Python"]},
                 "risk": {"score": 0},
                 "matcher": {"requirement_evidence": {"Python": [evidence.id]}},
-                "writer": {"text": "I built a Python API. Could we discuss scope?"},
+                "writer": {
+                    "text": "Could we clarify priorities?"
+                    if payload.get("task") == "regenerate_one_paragraph"
+                    else self.writer_text
+                },
                 "critic": {"verdict": "pass"},
             }
             if role == "verifier":
@@ -138,9 +143,32 @@ def test_failed_model_resumes_after_explicit_retry_without_repeating_analysis(du
     assert store.run(tenant, id).steps > failed.steps
 
 
+def test_regenerate_one_paragraph_preserves_the_rest_and_requires_fresh_approval(durable):
+    store, tenant, id, process, review, models, counts, _ = durable
+    models.writer_text = "I built a Python API.\n\nCould we discuss scope?"
+    assert execute(process())["status"] == "awaiting_approval"
+    old = store.run(tenant, id)
+    review("regenerate", paragraph_index=1)
+    assert execute(process())["status"] == "awaiting_approval"
+    new = store.run(tenant, id)
+    assert new.snapshot.draft.text == "I built a Python API.\n\nCould we clarify priorities?"
+    assert old.review["interrupt_id"] != new.review["interrupt_id"]
+    assert counts["writer"] == counts["verifier"] == 2
+    assert counts["analyst"] == 1
+    from agent.run_store import RunConflict, RunNotFound
+
+    with pytest.raises(RunNotFound):
+        store.local_draft(tenant, id)
+    with pytest.raises(RunConflict):
+        review("regenerate", paragraph_index=99)
+    review("approve")
+    assert execute(process())["status"] == "drafted"
+
+
 def test_postgres_pause_edit_restart_and_approved_local_commit(durable):
     store, tenant, id, process, review, _, counts, _ = durable
-    assert execute(process())["status"] == "awaiting_approval"
+    result = execute(process())
+    assert result["status"] == "awaiting_approval", (result, store.run(tenant, id).error)
     first = store.run(tenant, id)
     assert first.review["interrupt_id"]
     review("edit", edited_text="Could we discuss scope?")

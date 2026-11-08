@@ -14,6 +14,7 @@ BUSINESS_NODES = (
     "decision",
     "pricing",
     "writer",
+    "regenerate",
     "verifier",
     "critic",
     "compliance",
@@ -77,6 +78,7 @@ def build_bid_graph(*, checkpointer, nodes=None, max_revisions=2):
     for source, target in (
         ("pricing", "writer"),
         ("writer", "verifier"),
+        ("regenerate", "verifier"),
         ("verifier", "critic"),
         ("revise", "writer"),
         ("preview", "approval"),
@@ -100,7 +102,9 @@ def build_bid_graph(*, checkpointer, nodes=None, max_revisions=2):
         },
     )
     graph.add_conditional_edges(
-        "approval", bid_approval_route, {"execute": "execute", "edit": "verifier", "stop": END}
+        "approval",
+        bid_approval_route,
+        {"execute": "execute", "edit": "verifier", "regenerate": "regenerate", "stop": END},
     )
     for name in ("execute", "blocked", "attention", "stop"):
         graph.add_edge(name, END)

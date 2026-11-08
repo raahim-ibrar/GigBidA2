@@ -296,6 +296,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/pipeline": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Pipeline */
+        get: operations["pipeline_api_pipeline_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/portfolio/documents": {
         parameters: {
             query?: never;
@@ -647,6 +664,40 @@ export interface components {
             /** Text */
             text: string;
         };
+        /** AnalyticsView */
+        AnalyticsView: {
+            /** Category Rates */
+            category_rates: components["schemas"]["CategoryRate"][];
+            /** Charged Or Reserved Tokens */
+            charged_or_reserved_tokens: number;
+            /** Connects Spent */
+            connects_spent: number | null;
+            /** Days */
+            days: number;
+            /** Inference Api Usd */
+            inference_api_usd: number | null;
+            /** Local Drafts */
+            local_drafts: number;
+            /** Measured Model Tokens */
+            measured_model_tokens: number | null;
+            /** Measurements */
+            measurements: components["schemas"]["RunMeasurement"][];
+            /** Measurements Truncated */
+            measurements_truncated: boolean;
+            /**
+             * Provider Connected
+             * @default false
+             */
+            provider_connected: boolean;
+            /** Provider Submissions */
+            provider_submissions: number;
+            /** Rejection Reasons */
+            rejection_reasons: components["schemas"]["RejectionReason"][];
+            /** Run Count */
+            run_count: number;
+            /** Submissions With Known Spend */
+            submissions_with_known_spend: number;
+        };
         /** AvailabilityView */
         AvailabilityView: {
             /**
@@ -678,6 +729,21 @@ export interface components {
             file: string;
             /** Metadata */
             metadata: string;
+        };
+        /** CategoryRate */
+        CategoryRate: {
+            /** Category */
+            category: string;
+            /** Hire Rate */
+            hire_rate: number;
+            /** Hired */
+            hired: number;
+            /** Replied */
+            replied: number;
+            /** Reply Rate */
+            reply_rate: number;
+            /** Submitted */
+            submitted: number;
         };
         /** Claim */
         Claim: {
@@ -1057,6 +1123,39 @@ export interface components {
             /** Question Fraction */
             question_fraction: number;
         };
+        /** PipelineCard */
+        PipelineCard: {
+            /** Job Id */
+            job_id: string;
+            /** Run Id */
+            run_id: string;
+            /** Source */
+            source: string;
+            /**
+             * Stage
+             * @enum {string}
+             */
+            stage: "drafted" | "submitted" | "viewed" | "replied" | "interview" | "hired" | "lost";
+            /** Title */
+            title: string;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
+        };
+        /** PipelineView */
+        PipelineView: {
+            /** Cards */
+            cards: components["schemas"]["PipelineCard"][];
+            /**
+             * Provider Connected
+             * @default false
+             */
+            provider_connected: boolean;
+            /** Truncated */
+            truncated: boolean;
+        };
         /** PortfolioSearch */
         PortfolioSearch: {
             /** Filters */
@@ -1141,6 +1240,13 @@ export interface components {
             /** Text */
             text: string;
         };
+        /** RejectionReason */
+        RejectionReason: {
+            /** Count */
+            count: number;
+            /** Reason */
+            reason: string;
+        };
         /** RemoveMemory */
         RemoveMemory: {
             /** Version */
@@ -1169,11 +1275,13 @@ export interface components {
              * Action
              * @enum {string}
              */
-            action: "approve" | "reject" | "edit";
+            action: "approve" | "reject" | "edit" | "regenerate";
             /** Draft Digest */
             draft_digest: string;
             /** Edited Text */
             edited_text?: string | null;
+            /** Paragraph Index */
+            paragraph_index?: number | null;
             /** Reason */
             reason?: string | null;
             /**
@@ -1192,6 +1300,27 @@ export interface components {
             reasons?: string[];
             /** Score */
             score: number;
+        };
+        /** RunMeasurement */
+        RunMeasurement: {
+            /** Charged Or Reserved Tokens */
+            charged_or_reserved_tokens: number;
+            /** Inference Api Usd */
+            inference_api_usd: number | null;
+            /** Job Title */
+            job_title: string;
+            /** Kind */
+            kind: string;
+            /** Measured Model Tokens */
+            measured_model_tokens: number | null;
+            /** Measured Worker Seconds */
+            measured_worker_seconds: number | null;
+            /** Model Call Seconds */
+            model_call_seconds: number | null;
+            /** Run Id */
+            run_id: string;
+            /** Status */
+            status: string;
         };
         /** RunView */
         RunView: {
@@ -1459,7 +1588,9 @@ export type $defs = Record<string, never>;
 export interface operations {
     analytics_api_analytics_get: {
         parameters: {
-            query?: never;
+            query?: {
+                days?: number;
+            };
             header?: never;
             path?: never;
             cookie?: never;
@@ -1472,7 +1603,16 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["AnalyticsView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };
@@ -2002,6 +2142,26 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    pipeline_api_pipeline_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PipelineView"];
                 };
             };
         };

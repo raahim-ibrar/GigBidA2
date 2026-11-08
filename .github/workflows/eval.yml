@@ -1,5 +1,11 @@
-name: Evaluation (not implemented)
-on: workflow_dispatch
+name: Recorded evaluation bundle
+on:
+  workflow_dispatch:
+    inputs:
+      manifest:
+        description: Path to a committed supplied-data experiment manifest
+        required: true
+        default: evals/datasets/smoke-manifest.json
 jobs:
   eval:
     runs-on: ubuntu-latest
@@ -9,5 +15,11 @@ jobs:
         with: {python-version: '3.13'}
       - run: pip install uv==0.9.6
       - run: uv sync --frozen --extra dev
-      # Intentionally fails until real evaluation exists. No fabricated passing metrics.
-      - run: uv run make eval
+      # Automatic PR experiments await the supplied data and an actual GigSim runner.
+      - name: Score supplied observations and enforce the declared gates
+        env:
+          GIGBID_EVAL_MANIFEST: ${{ inputs.manifest }}
+        run: uv run python -m evals.runners.suite --require-supplied
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: {name: recorded-evaluation-results, path: evals/results/latest}

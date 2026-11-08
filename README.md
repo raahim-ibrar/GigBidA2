@@ -2,7 +2,7 @@
 
 A freelancer copilot that will find jobs, assess risk and fit, draft evidence-grounded proposals, and pause for human approval before any external write.
 
-**Stage: durable local proposal review.** Accounts, portfolio retrieval, manual jobs, proposal agents, Postgres checkpoints, review decisions and approved local drafts are implemented. Marketplace adapters, conversation agents and evaluations remain unfinished. No graded LLM experiments, marketplace outcomes or benchmark results exist yet.
+**Stage: local proposal and conversation workflows.** Accounts, portfolio retrieval, manual jobs, proposal/reply agents, durable review, approved local drafts, calendar options, retry handling, pipeline and activity analytics are implemented. Offline evaluation and A/B analysis tools are ready for recorded inputs. Marketplace adapters, actual research experiments and public deployment remain unfinished. No graded LLM results or real marketplace outcomes are claimed.
 
 ## Start here
 
@@ -10,6 +10,7 @@ A freelancer copilot that will find jobs, assess risk and fit, draft evidence-gr
 - [Implementation status](docs/STATUS.md): what works, what is pending, and the next build order.
 - [Architecture](docs/ARCHITECTURE.md): graphs, ports, tools and persistence boundaries.
 - [Runbook](docs/RUNBOOK.md): local startup and service limitations.
+- [Evaluation guide](docs/EVALUATION.md): validated inputs, metrics, gates and experiment limitations.
 
 ## Local setup
 
@@ -36,7 +37,7 @@ uv run uvicorn apps.api.main:app --reload
 Postgres must be running first. Start only that service with `docker compose --project-directory . -f infra/docker-compose.yml up -d postgres`. Full Compose startup applies migrations automatically before the API starts.
 
 Open the frontend at http://localhost:3000 and API documentation at http://localhost:8000/docs.
-Create an account at `/sign-in`, configure your profile at `/onboarding`, and upload CVs/case studies at `/portfolio`. Add a manual job at `/inbox`; open its run to review evidence, edit, reject or approve a local draft. `/runs` lists saved runs. Pipeline, messaging and analytics remain unfinished. `/health/ready` checks database access and the account migration.
+Create an account at `/sign-in`, configure your profile at `/onboarding`, and upload CVs/case studies at `/portfolio`. Add a manual job at `/inbox`; open its run to review evidence, edit, reject or approve a local draft. `/messages` handles manually entered client conversations and approved local email drafts. `/runs` lists saved runs and recovery controls. `/pipeline` shows local drafts and recorded provider stages; `/analytics` shows actual activity and distinguishes unavailable measurements. `/health/ready` checks database access and core migrations.
 
 For portfolio indexing, start `redis`, `qdrant` and `worker` with Compose. The first indexing/search downloads CPU open models into the shared model cache. On Windows, use the Linux Docker worker; Arq's native shutdown uses Unix signals. The browser shows queued/indexing/failed/ready states, and the worker recovers saved queued uploads after a restart.
 
@@ -69,16 +70,18 @@ Default Compose services are web, API, worker, Postgres, Redis and Qdrant. Ollam
 ## What the skeleton contains
 
 - FastAPI accounts, profiles, portfolio, manual jobs, durable runs, approvals, local drafts and SSE.
-- Next.js account/profile/portfolio forms, inbox, job detail, proposal review and run activity.
+- Next.js account/profile/portfolio forms, inbox, job detail, proposal/reply review, pipeline, analytics and run activity.
 - Generated API types, rather than a handwritten copy of the API schema.
 - Pydantic handoffs and typed graph state.
-- Bid StateGraph business nodes with parallel analysis, bounded Critic revisions and edit/reverify interrupts. The worker supplies production dependencies; conversation business nodes remain unimplemented.
+- Bid and conversation StateGraph business nodes, parallel analysis, bounded Critic revisions, edit/reverify interrupts, durable budgets and bounded explicit checkpoint retries.
 - Three official-SDK MCP server registrations, schemas, resources, prompt template and contract snapshot.
 - A marketplace interface with GigSim and Upwork adapter stubs.
+- Local Workspace MCP tools with approved calendar/draft writes and idempotent audit receipts.
 - PDF/Markdown/text ingestion and implemented V0, V1, V2, V3 and V8 retrieval components. V8 uses a bounded LangGraph retrieve/grade/correct loop.
 - Portfolio source metadata includes persona, type, project, skills, date, industry and proposal outcome; retrieved chunks retain source IDs and PDF pages.
 - Sentence claim verification and rule-promoted LangGraph style/outcome memory are implemented. Settings exposes edit history, confirmation and removal. Outcome ingestion still requires the real marketplace adapter; calibration and graded evaluations remain pending.
 - Docker and CI scaffolding, pinned dependencies, and uv/npm lockfiles.
+- Strict recorded-input scoring for retrieval, decisions, judge calibration, simulator outcomes, tool/orchestration comparisons and ablations; seeded X2 plans and A/B analysis. These do not replace actual experiment execution.
 
 ## Architecture
 

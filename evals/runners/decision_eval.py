@@ -1,10 +1,10 @@
-"""decision_eval: real datasets and experiment implementation required."""
+"""Score recorded decisions, price bands and externally annotated claims."""
+
+from evals.runners.offline import main as score
 
 
 def main():
-    raise NotImplementedError(
-        "decision_eval is not implemented; never generate placeholder metrics"
-    )
+    score("decisions")
 
 
 if __name__ == "__main__":

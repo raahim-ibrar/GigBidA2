@@ -1,6 +1,8 @@
 # Runbook
 
-Stage: accounts, portfolio retrieval and durable local proposal review; no public deployment exists.
+Stage: local proposal/conversation review, Workspace, pipeline and activity analytics;
+no public deployment exists. Evaluation scorers are available for recorded inputs;
+the actual supplied-data experiments remain pending.
 
 ## Local development
 
@@ -9,6 +11,21 @@ Follow the root README for uv, npm and the two terminal commands. Start Postgres
 Use `localhost` consistently for the browser and API during normal development. Sessions use an HttpOnly, SameSite=Lax cookie; mutating authenticated requests also require the session's CSRF token. Production settings require HTTPS and Secure cookies. Passwords use Argon2. Sessions store a SHA-256 digest of a random token, never the raw token. A process-local auth request limit is present; replace it with a proxy-aware Redis limit before public deployment.
 
 Python tests can use Postgres by setting `GIGBID_TEST_DATABASE_URL` to a local test database. Each test creates and removes only its own random schema. Browser tests automatically start a disposable API/database alongside Next.js; they do not use the development database.
+
+Run Python and browser suites sequentially when they share one local Postgres
+instance. Their concurrent cold schema/index initialization has triggered bounded
+setup timeouts even with separate schemas. CI gives each job its own service database.
+The browser suite uses two workers to limit contention on the development server.
+
+Proposal review can regenerate a selected paragraph. This resumes a writer node,
+preserves other paragraphs, verifies the complete result and pauses for another
+approval. Original charges/step budgets persist. Regeneration is not a human style
+edit and cannot promote memory by itself. Pipeline and analytics distinguish saved
+local drafts from trusted provider receipts; manual cards cannot be moved to hired.
+
+Generate the code-derived graph documentation with `make graphs`, or
+`python scripts/render_graphs.py`. See [EVALUATION.md](EVALUATION.md) for validated
+scoring inputs and why `make eval` still needs real experiment files.
 
 On Windows use `npm.cmd` if PowerShell blocks the npm script wrapper. Install uv if absent with `python -m pip install uv==0.9.6`; do not install project dependencies into a shared global environment.
 

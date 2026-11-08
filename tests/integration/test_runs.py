@@ -166,6 +166,7 @@ def test_review_rejects_stale_version_digest_and_duplicate_decisions(client, run
             "action": "approve",
             "reason": None,
             "edited_text": None,
+            "paragraph_index": None,
         },
     }
 
