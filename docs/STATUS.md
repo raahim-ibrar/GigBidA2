@@ -40,6 +40,11 @@
 
 ## Build next, in order
 
+The example v0.1 starter kit has now been inspected. It contains small synthetic
+examples and placeholders, not the actual GigSim implementation, persona corpora or
+evaluation set. See [STARTER_KIT_REVIEW.md](STARTER_KIT_REVIEW.md). Its scaffold has
+not replaced our independently built application.
+
 1. Confirm the source of GigSim, persona corpora, policy pack, dev labels and the announced policy update. Creating our own skeleton does not establish that those separate assets are also student-authored.
 2. The manual-job vertical slice now works through real inference, MCP, persistent review and a local artifact. Improve proposal quality with measured development checks; do not mistake a smoke pass for evaluation-backed correctness.
 3. Complete real scheduled search execution once the marketplace contract is supplied. Scheduling controls and bounded retry/exhausted-run handling are present. The manual conversation flow uses Workspace calendar options and approved local email drafts. Memory learning and provider-derived observations need measurement/integration.
