@@ -55,7 +55,7 @@ class JudgeLabel(Contract):
 class Outcome(Contract):
     id: str = Field(min_length=1)
     event_id: str = Field(min_length=1)
-    source: Literal["gigsim"]
+    source: Literal["gigsim", "student_sim"]
     submitted: bool = Field(strict=True)
     replied: bool = Field(strict=True)
     hired: bool = Field(strict=True)

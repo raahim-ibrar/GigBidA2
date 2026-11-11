@@ -1,0 +1,23 @@
+{
+  "data_origin": "development-control-fixtures",
+  "date_pkt": "2026-11-11",
+  "backend": {
+    "passed": 149,
+    "skipped": 4,
+    "seconds": 151.38,
+    "database": "isolated Postgres schemas"
+  },
+  "browser": {
+    "suite_passed": 14,
+    "additional_targeted_passed": 1,
+    "targeted_seconds": 43.1
+  },
+  "frontend": {
+    "typescript": "passed",
+    "production_build": "passed",
+    "desktop_width": 1440,
+    "mobile_width": 390,
+    "horizontal_overflow": false
+  },
+  "limits": "Control/integration tests are not model quality measurements. Subsequent deployment-proxy edits require renewed browser/build checks."
+}

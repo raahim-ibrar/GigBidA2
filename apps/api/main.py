@@ -14,11 +14,13 @@ from agent.run_store import RunConflict, RunNotFound, RunStore
 from apps.api.auth.security import AuthLimiter
 from apps.api.dashboard import Dashboard
 from apps.api.database import make_engine
+from apps.api.marketplace import MarketplaceAccounts
 from apps.api.routers import (
     analytics,
     approvals,
     auth,
     jobs,
+    marketplace,
     memory,
     messages,
     portfolio,
@@ -30,6 +32,7 @@ from apps.api.routers import (
 )
 from apps.api.schemas.status import SkeletonStatus
 from apps.api.settings import Settings
+from mcp_servers.marketplace.adapters.student_sim import MarketplaceRejected, MarketplaceUnavailable
 from mcp_servers.workspace.service import WorkspaceService
 from rag.runtime import build_portfolio
 from worker.queue import enqueue_bid, enqueue_portfolio
@@ -63,6 +66,7 @@ def create_app(
     app.state.conversations = ConversationStore(database)
     app.state.search_schedules = SearchSchedules(database)
     app.state.dashboard = Dashboard(database)
+    app.state.marketplace = MarketplaceAccounts(database, settings)
 
     async def queue(tenant, document, revision):
         return await enqueue_portfolio(settings, tenant, document, revision)
@@ -98,6 +102,14 @@ def create_app(
     async def run_conflict(request: Request, exc):
         return JSONResponse(status_code=409, content={"detail": str(exc)})
 
+    @app.exception_handler(MarketplaceRejected)
+    async def marketplace_rejected(request: Request, exc):
+        return JSONResponse(status_code=409, content={"detail": str(exc)})
+
+    @app.exception_handler(MarketplaceUnavailable)
+    async def marketplace_unavailable(request: Request, exc):
+        return JSONResponse(status_code=503, content={"detail": str(exc)})
+
     @app.get("/health/live", tags=["health"])
     def liveness() -> dict[str, str]:
         # Process liveness only; this is deliberately not a dependency/readiness check.
@@ -122,6 +134,7 @@ def create_app(
         profile,
         portfolio,
         jobs,
+        marketplace,
         proposals,
         approvals,
         messages,

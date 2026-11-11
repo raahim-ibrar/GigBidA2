@@ -19,7 +19,7 @@ from evals.scoring import decision_scores, rag_scores
 
 
 class Manifest(Contract):
-    data_origin: Literal["supplied", "development"]
+    data_origin: Literal["supplied", "development", "hybrid", "synthetic"]
     gold: str
     predictions: str
     outcomes: str

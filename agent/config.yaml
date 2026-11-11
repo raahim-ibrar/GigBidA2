@@ -25,7 +25,7 @@ profiles:
     provider: null
     models: {}
 retrieval:
-  variant: v0
+  variant: v3
   embedding_model: BAAI/bge-small-en-v1.5
   reranker_model: Xenova/ms-marco-MiniLM-L-6-v2
   top_k: 5

@@ -12,6 +12,7 @@ from apps.api.models import (
     ClientMessage,
     FreelancerProfile,
     JobRecord,
+    MarketplaceWrite,
     User,
     WorkspaceWrite,
 )
@@ -30,7 +31,7 @@ class ConversationStore(RunStore):
             raise RunNotFound("Conversation not found")
         return conversation
 
-    def create(self, tenant, body):
+    def create(self, tenant, body, *, provider_id=None):
         # Request identity belongs to the account and is shared with the run ledger.
         key = str(body.idempotency_key)
         with Session(self.engine) as db, db.begin():
@@ -50,6 +51,7 @@ class ConversationStore(RunStore):
                     conversation is None
                     or conversation.job_id != str(body.job_id)
                     or conversation.title != body.title
+                    or conversation.provider_id != provider_id
                 ):
                     raise RunConflict("This request key belongs to a different operation")
                 first = db.scalar(
@@ -80,6 +82,7 @@ class ConversationStore(RunStore):
                 job_id=job.id,
                 run_id=run_id,
                 title=body.title,
+                provider_id=provider_id,
                 revision=1,
             )
             db.add(conversation)
@@ -156,6 +159,7 @@ class ConversationStore(RunStore):
             "raw_job": job.raw,
             "preferences": profile,
             "conversation_id": conversation.id,
+            "provider_conversation_id": conversation.provider_id,
             "source_revision": conversation.revision,
             "conversation_title": conversation.title,
             "messages": list(reversed(messages)),
@@ -213,7 +217,7 @@ class ConversationStore(RunStore):
     def local_replies(self, tenant, id):
         conversation = self.conversation(tenant, id)
         with Session(self.engine) as db:
-            return [
+            local = [
                 {"id": row.id, "body": row.arguments["body"], "created_at": row.created_at}
                 for row in db.scalars(
                     select(WorkspaceWrite)
@@ -225,3 +229,19 @@ class ConversationStore(RunStore):
                     .order_by(WorkspaceWrite.created_at)
                 )
             ]
+            sent = [
+                {
+                    "id": row.id,
+                    "body": row.arguments["text"],
+                    "created_at": row.created_at,
+                    "status": "sent to student simulator",
+                }
+                for row in db.scalars(
+                    select(MarketplaceWrite).where(
+                        MarketplaceWrite.user_id == tenant,
+                        MarketplaceWrite.run_id == conversation.run_id,
+                        MarketplaceWrite.tool == "send_message",
+                    )
+                )
+            ]
+            return sorted(local + sent, key=lambda item: item["created_at"])

@@ -24,6 +24,7 @@ class BidState(TypedDict, total=False):
     raw_job: dict
     run_id: str
     preferences: dict
+    proposal_strategy: Literal["evidence_first", "problem_first"]
     verification: dict
     user_edited: bool
     memory: dict
@@ -46,6 +47,7 @@ class BidState(TypedDict, total=False):
 
 class ConversationState(BidState, total=False):
     conversation_id: str
+    provider_conversation_id: str | None
     conversation_title: str
     source_revision: int
     messages: list[dict]

@@ -1,0 +1,398 @@
+[
+  {
+    "id": "ai_ml-00",
+    "tenant": "119dd0f5-9398-57bd-bd7e-d412d04ec9e5",
+    "persona": "ai_ml",
+    "query": "Help a education team search a document collection; implement with Python, embeddings, retrieval; include input validation and reproducible tests."
+  },
+  {
+    "id": "ai_ml-01",
+    "tenant": "119dd0f5-9398-57bd-bd7e-d412d04ec9e5",
+    "persona": "ai_ml",
+    "query": "Help a education team route support requests; implement with Python, classification, evaluation; include input validation and reproducible tests."
+  },
+  {
+    "id": "ai_ml-02",
+    "tenant": "119dd0f5-9398-57bd-bd7e-d412d04ec9e5",
+    "persona": "ai_ml",
+    "query": "Help a education team predict weekly demand; implement with Python, forecasting, monitoring; include input validation and reproducible tests."
+  },
+  {
+    "id": "ai_ml-03",
+    "tenant": "119dd0f5-9398-57bd-bd7e-d412d04ec9e5",
+    "persona": "ai_ml",
+    "query": "Help a retail team search a document collection; implement with Python, embeddings, retrieval; include input validation and reproducible tests."
+  },
+  {
+    "id": "ai_ml-04",
+    "tenant": "119dd0f5-9398-57bd-bd7e-d412d04ec9e5",
+    "persona": "ai_ml",
+    "query": "Help a retail team route support requests; implement with Python, classification, evaluation; include input validation and reproducible tests."
+  },
+  {
+    "id": "ai_ml-05",
+    "tenant": "119dd0f5-9398-57bd-bd7e-d412d04ec9e5",
+    "persona": "ai_ml",
+    "query": "Help a retail team predict weekly demand; implement with Python, forecasting, monitoring; include input validation and reproducible tests."
+  },
+  {
+    "id": "ai_ml-06",
+    "tenant": "119dd0f5-9398-57bd-bd7e-d412d04ec9e5",
+    "persona": "ai_ml",
+    "query": "Help a health administration team search a document collection; implement with Python, embeddings, retrieval; include input validation and reproducible tests."
+  },
+  {
+    "id": "ai_ml-07",
+    "tenant": "119dd0f5-9398-57bd-bd7e-d412d04ec9e5",
+    "persona": "ai_ml",
+    "query": "Help a health administration team route support requests; implement with Python, classification, evaluation; include input validation and reproducible tests."
+  },
+  {
+    "id": "ai_ml-08",
+    "tenant": "119dd0f5-9398-57bd-bd7e-d412d04ec9e5",
+    "persona": "ai_ml",
+    "query": "Help a health administration team predict weekly demand; implement with Python, forecasting, monitoring; include input validation and reproducible tests."
+  },
+  {
+    "id": "ai_ml-09",
+    "tenant": "119dd0f5-9398-57bd-bd7e-d412d04ec9e5",
+    "persona": "ai_ml",
+    "query": "Help a logistics team search a document collection; implement with Python, embeddings, retrieval; include input validation and reproducible tests."
+  },
+  {
+    "id": "ai_ml-10",
+    "tenant": "119dd0f5-9398-57bd-bd7e-d412d04ec9e5",
+    "persona": "ai_ml",
+    "query": "Help a logistics team route support requests; implement with Python, classification, evaluation; include input validation and reproducible tests."
+  },
+  {
+    "id": "ai_ml-11",
+    "tenant": "119dd0f5-9398-57bd-bd7e-d412d04ec9e5",
+    "persona": "ai_ml",
+    "query": "Help a logistics team predict weekly demand; implement with Python, forecasting, monitoring; include input validation and reproducible tests."
+  },
+  {
+    "id": "ai_ml-12",
+    "tenant": "119dd0f5-9398-57bd-bd7e-d412d04ec9e5",
+    "persona": "ai_ml",
+    "query": "Help a publishing team search a document collection; implement with Python, embeddings, retrieval; include input validation and reproducible tests."
+  },
+  {
+    "id": "ai_ml-13",
+    "tenant": "119dd0f5-9398-57bd-bd7e-d412d04ec9e5",
+    "persona": "ai_ml",
+    "query": "Help a publishing team route support requests; implement with Python, classification, evaluation; include input validation and reproducible tests."
+  },
+  {
+    "id": "ai_ml-14",
+    "tenant": "119dd0f5-9398-57bd-bd7e-d412d04ec9e5",
+    "persona": "ai_ml",
+    "query": "Help a publishing team predict weekly demand; implement with Python, forecasting, monitoring; include input validation and reproducible tests."
+  },
+  {
+    "id": "ai_ml-15",
+    "tenant": "119dd0f5-9398-57bd-bd7e-d412d04ec9e5",
+    "persona": "ai_ml",
+    "query": "Help a hospitality team search a document collection; implement with Python, embeddings, retrieval; include input validation and reproducible tests."
+  },
+  {
+    "id": "ai_ml-16",
+    "tenant": "119dd0f5-9398-57bd-bd7e-d412d04ec9e5",
+    "persona": "ai_ml",
+    "query": "Help a hospitality team route support requests; implement with Python, classification, evaluation; include input validation and reproducible tests."
+  },
+  {
+    "id": "ai_ml-17",
+    "tenant": "119dd0f5-9398-57bd-bd7e-d412d04ec9e5",
+    "persona": "ai_ml",
+    "query": "Help a hospitality team predict weekly demand; implement with Python, forecasting, monitoring; include input validation and reproducible tests."
+  },
+  {
+    "id": "ai_ml-18",
+    "tenant": "119dd0f5-9398-57bd-bd7e-d412d04ec9e5",
+    "persona": "ai_ml",
+    "query": "Help a professional services team search a document collection; implement with Python, embeddings, retrieval; include input validation and reproducible tests."
+  },
+  {
+    "id": "ai_ml-19",
+    "tenant": "119dd0f5-9398-57bd-bd7e-d412d04ec9e5",
+    "persona": "ai_ml",
+    "query": "Help a professional services team route support requests; implement with Python, classification, evaluation; include input validation and reproducible tests."
+  },
+  {
+    "id": "ai_ml-unanswerable-0",
+    "tenant": "119dd0f5-9398-57bd-bd7e-d412d04ec9e5",
+    "persona": "ai_ml",
+    "query": "Design a cryogenic superconducting magnet"
+  },
+  {
+    "id": "ai_ml-unanswerable-1",
+    "tenant": "119dd0f5-9398-57bd-bd7e-d412d04ec9e5",
+    "persona": "ai_ml",
+    "query": "Draft a notarised land deed"
+  },
+  {
+    "id": "full_stack-00",
+    "tenant": "a290b777-5d4e-59d9-b1c0-a3d812ae9265",
+    "persona": "full_stack",
+    "query": "Help a education team manage online reservations; implement with React, FastAPI, PostgreSQL; include input validation and reproducible tests."
+  },
+  {
+    "id": "full_stack-01",
+    "tenant": "a290b777-5d4e-59d9-b1c0-a3d812ae9265",
+    "persona": "full_stack",
+    "query": "Help a education team manage orders and payments; implement with TypeScript, Node.js, Stripe; include input validation and reproducible tests."
+  },
+  {
+    "id": "full_stack-02",
+    "tenant": "a290b777-5d4e-59d9-b1c0-a3d812ae9265",
+    "persona": "full_stack",
+    "query": "Help a education team coordinate a distributed team; implement with Next.js, authentication, testing; include input validation and reproducible tests."
+  },
+  {
+    "id": "full_stack-03",
+    "tenant": "a290b777-5d4e-59d9-b1c0-a3d812ae9265",
+    "persona": "full_stack",
+    "query": "Help a retail team manage online reservations; implement with React, FastAPI, PostgreSQL; include input validation and reproducible tests."
+  },
+  {
+    "id": "full_stack-04",
+    "tenant": "a290b777-5d4e-59d9-b1c0-a3d812ae9265",
+    "persona": "full_stack",
+    "query": "Help a retail team manage orders and payments; implement with TypeScript, Node.js, Stripe; include input validation and reproducible tests."
+  },
+  {
+    "id": "full_stack-05",
+    "tenant": "a290b777-5d4e-59d9-b1c0-a3d812ae9265",
+    "persona": "full_stack",
+    "query": "Help a retail team coordinate a distributed team; implement with Next.js, authentication, testing; include input validation and reproducible tests."
+  },
+  {
+    "id": "full_stack-06",
+    "tenant": "a290b777-5d4e-59d9-b1c0-a3d812ae9265",
+    "persona": "full_stack",
+    "query": "Help a health administration team manage online reservations; implement with React, FastAPI, PostgreSQL; include input validation and reproducible tests."
+  },
+  {
+    "id": "full_stack-07",
+    "tenant": "a290b777-5d4e-59d9-b1c0-a3d812ae9265",
+    "persona": "full_stack",
+    "query": "Help a health administration team manage orders and payments; implement with TypeScript, Node.js, Stripe; include input validation and reproducible tests."
+  },
+  {
+    "id": "full_stack-08",
+    "tenant": "a290b777-5d4e-59d9-b1c0-a3d812ae9265",
+    "persona": "full_stack",
+    "query": "Help a health administration team coordinate a distributed team; implement with Next.js, authentication, testing; include input validation and reproducible tests."
+  },
+  {
+    "id": "full_stack-09",
+    "tenant": "a290b777-5d4e-59d9-b1c0-a3d812ae9265",
+    "persona": "full_stack",
+    "query": "Help a logistics team manage online reservations; implement with React, FastAPI, PostgreSQL; include input validation and reproducible tests."
+  },
+  {
+    "id": "full_stack-10",
+    "tenant": "a290b777-5d4e-59d9-b1c0-a3d812ae9265",
+    "persona": "full_stack",
+    "query": "Help a logistics team manage orders and payments; implement with TypeScript, Node.js, Stripe; include input validation and reproducible tests."
+  },
+  {
+    "id": "full_stack-11",
+    "tenant": "a290b777-5d4e-59d9-b1c0-a3d812ae9265",
+    "persona": "full_stack",
+    "query": "Help a logistics team coordinate a distributed team; implement with Next.js, authentication, testing; include input validation and reproducible tests."
+  },
+  {
+    "id": "full_stack-12",
+    "tenant": "a290b777-5d4e-59d9-b1c0-a3d812ae9265",
+    "persona": "full_stack",
+    "query": "Help a publishing team manage online reservations; implement with React, FastAPI, PostgreSQL; include input validation and reproducible tests."
+  },
+  {
+    "id": "full_stack-13",
+    "tenant": "a290b777-5d4e-59d9-b1c0-a3d812ae9265",
+    "persona": "full_stack",
+    "query": "Help a publishing team manage orders and payments; implement with TypeScript, Node.js, Stripe; include input validation and reproducible tests."
+  },
+  {
+    "id": "full_stack-14",
+    "tenant": "a290b777-5d4e-59d9-b1c0-a3d812ae9265",
+    "persona": "full_stack",
+    "query": "Help a publishing team coordinate a distributed team; implement with Next.js, authentication, testing; include input validation and reproducible tests."
+  },
+  {
+    "id": "full_stack-15",
+    "tenant": "a290b777-5d4e-59d9-b1c0-a3d812ae9265",
+    "persona": "full_stack",
+    "query": "Help a hospitality team manage online reservations; implement with React, FastAPI, PostgreSQL; include input validation and reproducible tests."
+  },
+  {
+    "id": "full_stack-16",
+    "tenant": "a290b777-5d4e-59d9-b1c0-a3d812ae9265",
+    "persona": "full_stack",
+    "query": "Help a hospitality team manage orders and payments; implement with TypeScript, Node.js, Stripe; include input validation and reproducible tests."
+  },
+  {
+    "id": "full_stack-17",
+    "tenant": "a290b777-5d4e-59d9-b1c0-a3d812ae9265",
+    "persona": "full_stack",
+    "query": "Help a hospitality team coordinate a distributed team; implement with Next.js, authentication, testing; include input validation and reproducible tests."
+  },
+  {
+    "id": "full_stack-18",
+    "tenant": "a290b777-5d4e-59d9-b1c0-a3d812ae9265",
+    "persona": "full_stack",
+    "query": "Help a professional services team manage online reservations; implement with React, FastAPI, PostgreSQL; include input validation and reproducible tests."
+  },
+  {
+    "id": "full_stack-19",
+    "tenant": "a290b777-5d4e-59d9-b1c0-a3d812ae9265",
+    "persona": "full_stack",
+    "query": "Help a professional services team manage orders and payments; implement with TypeScript, Node.js, Stripe; include input validation and reproducible tests."
+  },
+  {
+    "id": "full_stack-unanswerable-0",
+    "tenant": "a290b777-5d4e-59d9-b1c0-a3d812ae9265",
+    "persona": "full_stack",
+    "query": "Design a cryogenic superconducting magnet"
+  },
+  {
+    "id": "full_stack-unanswerable-1",
+    "tenant": "a290b777-5d4e-59d9-b1c0-a3d812ae9265",
+    "persona": "full_stack",
+    "query": "Draft a notarised land deed"
+  },
+  {
+    "id": "data_analyst-00",
+    "tenant": "71f46e01-625b-5adb-ad50-c71d620b197f",
+    "persona": "data_analyst",
+    "query": "Help a education team explain revenue changes; implement with SQL, Power BI, reporting; include input validation and reproducible tests."
+  },
+  {
+    "id": "data_analyst-01",
+    "tenant": "71f46e01-625b-5adb-ad50-c71d620b197f",
+    "persona": "data_analyst",
+    "query": "Help a education team evaluate a product experiment; implement with Python, statistics, experiments; include input validation and reproducible tests."
+  },
+  {
+    "id": "data_analyst-02",
+    "tenant": "71f46e01-625b-5adb-ad50-c71d620b197f",
+    "persona": "data_analyst",
+    "query": "Help a education team repair unreliable reporting data; implement with SQL, dbt, validation; include input validation and reproducible tests."
+  },
+  {
+    "id": "data_analyst-03",
+    "tenant": "71f46e01-625b-5adb-ad50-c71d620b197f",
+    "persona": "data_analyst",
+    "query": "Help a retail team explain revenue changes; implement with SQL, Power BI, reporting; include input validation and reproducible tests."
+  },
+  {
+    "id": "data_analyst-04",
+    "tenant": "71f46e01-625b-5adb-ad50-c71d620b197f",
+    "persona": "data_analyst",
+    "query": "Help a retail team evaluate a product experiment; implement with Python, statistics, experiments; include input validation and reproducible tests."
+  },
+  {
+    "id": "data_analyst-05",
+    "tenant": "71f46e01-625b-5adb-ad50-c71d620b197f",
+    "persona": "data_analyst",
+    "query": "Help a retail team repair unreliable reporting data; implement with SQL, dbt, validation; include input validation and reproducible tests."
+  },
+  {
+    "id": "data_analyst-06",
+    "tenant": "71f46e01-625b-5adb-ad50-c71d620b197f",
+    "persona": "data_analyst",
+    "query": "Help a health administration team explain revenue changes; implement with SQL, Power BI, reporting; include input validation and reproducible tests."
+  },
+  {
+    "id": "data_analyst-07",
+    "tenant": "71f46e01-625b-5adb-ad50-c71d620b197f",
+    "persona": "data_analyst",
+    "query": "Help a health administration team evaluate a product experiment; implement with Python, statistics, experiments; include input validation and reproducible tests."
+  },
+  {
+    "id": "data_analyst-08",
+    "tenant": "71f46e01-625b-5adb-ad50-c71d620b197f",
+    "persona": "data_analyst",
+    "query": "Help a health administration team repair unreliable reporting data; implement with SQL, dbt, validation; include input validation and reproducible tests."
+  },
+  {
+    "id": "data_analyst-09",
+    "tenant": "71f46e01-625b-5adb-ad50-c71d620b197f",
+    "persona": "data_analyst",
+    "query": "Help a logistics team explain revenue changes; implement with SQL, Power BI, reporting; include input validation and reproducible tests."
+  },
+  {
+    "id": "data_analyst-10",
+    "tenant": "71f46e01-625b-5adb-ad50-c71d620b197f",
+    "persona": "data_analyst",
+    "query": "Help a logistics team evaluate a product experiment; implement with Python, statistics, experiments; include input validation and reproducible tests."
+  },
+  {
+    "id": "data_analyst-11",
+    "tenant": "71f46e01-625b-5adb-ad50-c71d620b197f",
+    "persona": "data_analyst",
+    "query": "Help a logistics team repair unreliable reporting data; implement with SQL, dbt, validation; include input validation and reproducible tests."
+  },
+  {
+    "id": "data_analyst-12",
+    "tenant": "71f46e01-625b-5adb-ad50-c71d620b197f",
+    "persona": "data_analyst",
+    "query": "Help a publishing team explain revenue changes; implement with SQL, Power BI, reporting; include input validation and reproducible tests."
+  },
+  {
+    "id": "data_analyst-13",
+    "tenant": "71f46e01-625b-5adb-ad50-c71d620b197f",
+    "persona": "data_analyst",
+    "query": "Help a publishing team evaluate a product experiment; implement with Python, statistics, experiments; include input validation and reproducible tests."
+  },
+  {
+    "id": "data_analyst-14",
+    "tenant": "71f46e01-625b-5adb-ad50-c71d620b197f",
+    "persona": "data_analyst",
+    "query": "Help a publishing team repair unreliable reporting data; implement with SQL, dbt, validation; include input validation and reproducible tests."
+  },
+  {
+    "id": "data_analyst-15",
+    "tenant": "71f46e01-625b-5adb-ad50-c71d620b197f",
+    "persona": "data_analyst",
+    "query": "Help a hospitality team explain revenue changes; implement with SQL, Power BI, reporting; include input validation and reproducible tests."
+  },
+  {
+    "id": "data_analyst-16",
+    "tenant": "71f46e01-625b-5adb-ad50-c71d620b197f",
+    "persona": "data_analyst",
+    "query": "Help a hospitality team evaluate a product experiment; implement with Python, statistics, experiments; include input validation and reproducible tests."
+  },
+  {
+    "id": "data_analyst-17",
+    "tenant": "71f46e01-625b-5adb-ad50-c71d620b197f",
+    "persona": "data_analyst",
+    "query": "Help a hospitality team repair unreliable reporting data; implement with SQL, dbt, validation; include input validation and reproducible tests."
+  },
+  {
+    "id": "data_analyst-18",
+    "tenant": "71f46e01-625b-5adb-ad50-c71d620b197f",
+    "persona": "data_analyst",
+    "query": "Help a professional services team explain revenue changes; implement with SQL, Power BI, reporting; include input validation and reproducible tests."
+  },
+  {
+    "id": "data_analyst-19",
+    "tenant": "71f46e01-625b-5adb-ad50-c71d620b197f",
+    "persona": "data_analyst",
+    "query": "Help a professional services team evaluate a product experiment; implement with Python, statistics, experiments; include input validation and reproducible tests."
+  },
+  {
+    "id": "data_analyst-unanswerable-0",
+    "tenant": "71f46e01-625b-5adb-ad50-c71d620b197f",
+    "persona": "data_analyst",
+    "query": "Design a cryogenic superconducting magnet"
+  },
+  {
+    "id": "data_analyst-unanswerable-1",
+    "tenant": "71f46e01-625b-5adb-ad50-c71d620b197f",
+    "persona": "data_analyst",
+    "query": "Draft a notarised land deed"
+  }
+]

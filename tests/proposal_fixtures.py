@@ -36,6 +36,15 @@ class BrowserModels:
                 if payload.get("task") == "regenerate_one_paragraph"
                 else "I built a Python API. Could we discuss scope?"
             }
+            if "synthetic project" in job["title"] and not payload.get("task"):
+                outputs[role] = {
+                    "text": "I built a Python API. I would validate the inputs, implement "
+                    "embeddings and retrieval, and test the first milestone before handover.",
+                    "screening_answers": {
+                        question: "I would first confirm the acceptance criteria."
+                        for question in job.get("screening_questions", [])
+                    },
+                }
         if role == "liaison":
             outputs[role] = {
                 "intent": "interview"

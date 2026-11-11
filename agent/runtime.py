@@ -16,6 +16,7 @@ from agent.config import AgentConfig
 from agent.conversation_nodes import ConversationNodes
 from agent.graphs.bid_graph import build_bid_graph
 from agent.graphs.conversation_graph import build_conversation_graph
+from agent.marketplace_client import MarketplaceMCP
 from agent.mcp_client import build_client
 from agent.memory.service import MemoryService, MemoryUnavailable
 from agent.model_client import BudgetExceeded, ModelUnavailable, OllamaModels
@@ -23,6 +24,7 @@ from agent.portfolio_client import PortfolioMCP
 from agent.proposal_nodes import GroundingFailure, ProposalNodes, ReviewRequired
 from agent.run_store import LostWorkerLease, RunConflict, RunStore
 from agent.workspace_client import WorkspaceMCP
+from mcp_servers.marketplace.adapters.student_sim import MarketplaceRejected, MarketplaceUnavailable
 
 
 def lock_key(value):
@@ -53,8 +55,10 @@ async def process_run(
     models_factory=OllamaModels,
     portfolio_reader=None,
     workspace_reader=None,
+    marketplace_reader=None,
+    config=None,
 ):
-    store, token, config = RunStore(engine), str(uuid4()), AgentConfig()
+    store, token, config = RunStore(engine), str(uuid4()), config or AgentConfig()
     dsn = settings.database_url.replace("postgresql+psycopg://", "postgresql://", 1)
     thread = {
         "configurable": {"thread_id": f"{tenant}:{run_id}"},
@@ -73,7 +77,7 @@ async def process_run(
             return {"status": "not_pending"}
         try:
             if await asyncio.to_thread(store.recover_local, tenant, run_id, token):
-                return {"status": "drafted"}
+                return {"status": (await asyncio.to_thread(store.run, tenant, run_id)).status}
             # API/worker startup owns schema migrations. Never create concurrent
             # indexes while another run/request can hold a blocking snapshot.
 
@@ -129,6 +133,32 @@ async def process_run(
                 settle_budget=settle,
             )
             async with AsyncExitStack() as stack:
+                marketplace = marketplace_reader
+                if claimed["snapshot"].get("raw_job", {}).get("source") != "student_sim":
+                    marketplace = None
+                if (
+                    claimed["snapshot"].get("raw_job", {}).get("source") == "student_sim"
+                    and marketplace is None
+                ):
+                    market_client = build_client(
+                        {
+                            "marketplace": {
+                                "transport": "stdio",
+                                "command": sys.executable,
+                                "args": ["-m", "mcp_servers.marketplace.server"],
+                                "env": {
+                                    "GIGBID_TENANT_ID": tenant,
+                                    "GIGBID_RUN_ID": run_id,
+                                    "DATABASE_URL": settings.database_url,
+                                    "STUDENT_SIM_URL": settings.student_sim_url,
+                                    "STUDENT_SIM_API_KEY": settings.student_sim_api_key,
+                                },
+                            }
+                        }
+                    )
+                    marketplace = MarketplaceMCP(
+                        await stack.enter_async_context(market_client.session("marketplace"))
+                    )
                 reader = portfolio_reader
                 if reader is None:
                     client = build_client(
@@ -170,11 +200,21 @@ async def process_run(
                             await stack.enter_async_context(workspace_client.session("workspace"))
                         )
                     business = ConversationNodes(
-                        models, reader, workspace, config, load_memory=memory
+                        models,
+                        reader,
+                        workspace,
+                        config,
+                        load_memory=memory,
+                        marketplace=marketplace,
                     )
                 else:
                     business = ProposalNodes(
-                        models, reader, config, execute_local=execute, load_memory=memory
+                        models,
+                        reader,
+                        config,
+                        execute_local=execute,
+                        load_memory=memory,
+                        marketplace=marketplace,
                     )
 
                 def bounded(name, function):
@@ -248,8 +288,16 @@ async def process_run(
             if any(isinstance(item, LostWorkerLease) for item in leaf_errors(error)):
                 return {"status": "superseded"}
             if await asyncio.to_thread(store.recover_local, tenant, run_id, token):
-                return {"status": "drafted"}
-            safe = (BudgetExceeded, ModelUnavailable, GroundingFailure, ReviewRequired, RunConflict)
+                return {"status": (await asyncio.to_thread(store.run, tenant, run_id)).status}
+            safe = (
+                BudgetExceeded,
+                ModelUnavailable,
+                GroundingFailure,
+                ReviewRequired,
+                RunConflict,
+                MarketplaceUnavailable,
+                MarketplaceRejected,
+            )
             leaves = leaf_errors(error)
             known = [str(item) for item in leaves if isinstance(item, safe)]
             kinds = list(dict.fromkeys(type(item).__name__ for item in leaves))
@@ -271,7 +319,10 @@ async def process_run(
                 message,
                 retryable=bool(leaves)
                 and all(
-                    isinstance(item, (ModelUnavailable, ConnectionError, TimeoutError))
+                    isinstance(
+                        item,
+                        (ModelUnavailable, MarketplaceUnavailable, ConnectionError, TimeoutError),
+                    )
                     for item in leaves
                 ),
             )

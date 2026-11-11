@@ -6,7 +6,7 @@
         "idempotentHint": true,
         "readOnlyHint": true
       },
-      "description": "",
+      "description": "Search the connected student simulator's jobs; this cannot submit or spend.",
       "inputSchema": {
         "$defs": {
           "SearchJobs": {
@@ -72,7 +72,7 @@
         "idempotentHint": true,
         "readOnlyHint": true
       },
-      "description": "",
+      "description": "Read a simulator job by its provider ID; never returns private scenario labels.",
       "inputSchema": {
         "properties": {
           "job_id": {
@@ -114,7 +114,7 @@
         "idempotentHint": true,
         "readOnlyHint": true
       },
-      "description": "",
+      "description": "Read explicitly synthetic client history from the connected simulator.",
       "inputSchema": {
         "properties": {
           "client_id": {
@@ -156,7 +156,7 @@
         "idempotentHint": true,
         "readOnlyHint": true
       },
-      "description": "",
+      "description": "Read this host-bound account's simulated Connects balance.",
       "inputSchema": {
         "properties": {},
         "title": "get_connects_balanceArguments",
@@ -190,7 +190,7 @@
         "idempotentHint": true,
         "readOnlyHint": true
       },
-      "description": "",
+      "description": "Read only this account's simulator conversation messages.",
       "inputSchema": {
         "properties": {
           "conversation_id": {
@@ -229,10 +229,10 @@
     {
       "annotations": {
         "destructiveHint": true,
-        "idempotentHint": false,
+        "idempotentHint": true,
         "readOnlyHint": false
       },
-      "description": "",
+      "description": "Always preview a verified proposal and exact Connects charge without spending.",
       "inputSchema": {
         "$defs": {
           "ProposalWrite": {
@@ -258,6 +258,14 @@
                 "minLength": 1,
                 "title": "Job Id",
                 "type": "string"
+              },
+              "screening_answers": {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "maxProperties": 20,
+                "title": "Screening Answers",
+                "type": "object"
               },
               "text": {
                 "maxLength": 20000,
@@ -312,10 +320,10 @@
     {
       "annotations": {
         "destructiveHint": true,
-        "idempotentHint": false,
+        "idempotentHint": true,
         "readOnlyHint": false
       },
-      "description": "",
+      "description": "Preview by default; execution requires the run's exact latest human approval.",
       "inputSchema": {
         "$defs": {
           "ProposalWrite": {
@@ -341,6 +349,14 @@
                 "minLength": 1,
                 "title": "Job Id",
                 "type": "string"
+              },
+              "screening_answers": {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "maxProperties": 20,
+                "title": "Screening Answers",
+                "type": "object"
               },
               "text": {
                 "maxLength": 20000,
@@ -395,10 +411,10 @@
     {
       "annotations": {
         "destructiveHint": true,
-        "idempotentHint": false,
+        "idempotentHint": true,
         "readOnlyHint": false
       },
-      "description": "",
+      "description": "Preview by default; send only an exactly approved reply to the simulator.",
       "inputSchema": {
         "$defs": {
           "MessageWrite": {

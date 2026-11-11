@@ -78,3 +78,19 @@ Run the local Analyst smoke with `GIGBID_REAL_AGENTS=1 uv run pytest tests/integ
 - Desktop and phone analytics screenshots were inspected. The first phone check caught page overflow; setting minimum grid-child widths corrected it, and the phone-width assertion then passed. Graph Mermaid files are generated from the actual compiled builders and checked for staleness in CI.
 - Connected Drive searches for GigSim, GigBid and AI-4016 returned no matches. No supplied starter kit was found among matching Downloads filenames. Real provider integration, research experiments, trace export and deployment remain outstanding; this stage does not establish model quality or hidden-test readiness.
 - The API, frontend and updated Docker worker were restored. Native Ollama was stopped and restarted; all three configured models were present. A separate development-only paragraph response passed the real `qwen3:8b` structured schema check. This checks local inference/format connectivity, not grounding quality, A/B performance or a graded result.
+
+## November 11, 2026 verification checkpoint
+
+- Full current backend regression: **149 passed, 4 opt-in skipped**, in 151.38 seconds,
+  using isolated Postgres schemas. This includes simulator MCP effects, duplicate spending
+  prevention, full proposal/client-reply flow, durable LLM-client outbox, scheduler dedup and
+  outage handling, bearer boundary checks, and trusted UUID versus numerical-claim checks.
+- Frontend production build and TypeScript completed successfully after the dark redesign.
+  Screenshot checks at 1440px and 390px found no horizontal overflow.
+- Browser regression: 14 existing flows passed; the new simulator flow initially failed
+  because its assertion used the proposal heading on a reply screen. Correcting that selector
+  produced a separate passing outage/retry/submission/client-reply/send check (43.1 seconds).
+- The retrieval study executed all five production variants on real BGE/MiniLM models.
+  It is a controlled synthetic-corpus experiment, not a fixture test or real-job gold set.
+- Model experiments are ongoing and include grounding failures. A passing regression suite
+  does not establish that the selected LLM reliably writes acceptable proposals.

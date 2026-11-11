@@ -84,6 +84,7 @@ class SnapshotView(Contract):
     events: list[str] = Field(default_factory=list)
     memory: MemoryContext | None = None
     conversation_id: str | None = None
+    provider_conversation_id: str | None = None
     conversation_title: str | None = None
     source_revision: int | None = None
     intent: Literal["question", "negotiation", "interview", "scam"] | None = None

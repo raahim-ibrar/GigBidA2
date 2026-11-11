@@ -14,6 +14,7 @@ from apps.api.models import (
     ApprovalAudit,
     JobRecord,
     LocalDraftArtifact,
+    MarketplaceConnection,
     PipelineEvent,
     RunEvent,
     User,
@@ -151,7 +152,12 @@ class Dashboard:
                         ),
                     )
                 )
-            return PipelineView(cards=cards, truncated=len(rows) > 200)
+            connection = db.get(MarketplaceConnection, tenant)
+            return PipelineView(
+                cards=cards,
+                truncated=len(rows) > 200,
+                provider_connected=bool(connection and connection.mode == "student_sim"),
+            )
 
     def analytics(self, tenant, days):
         cutoff = utcnow() - timedelta(days=days)
@@ -215,7 +221,7 @@ class Dashboard:
                     if category in {"ai_ml", "full_stack", "data_analyst", "other"}
                     else "unknown"
                 )
-                counts = categories[category]
+                counts = categories[(submitted.source, category)]
                 counts["submitted"] += 1
                 counts["replied"] += any(
                     item.stage in {"replied", "interview", "hired"} for item in receipts
@@ -245,7 +251,8 @@ class Dashboard:
                 provider_submissions=sum(item["submitted"] for item in categories.values()),
                 category_rates=[
                     {
-                        "category": key,
+                        "category": key[1],
+                        "provider": key[0],
                         **value,
                         "reply_rate": value["replied"] / value["submitted"],
                         "hire_rate": value["hired"] / value["submitted"],
@@ -257,6 +264,10 @@ class Dashboard:
                 ],
                 measurements=measurements[:200],
                 measurements_truncated=len(measurements) > 200,
+                provider_connected=bool(
+                    db.get(MarketplaceConnection, tenant)
+                    and db.get(MarketplaceConnection, tenant).mode == "student_sim"
+                ),
             )
 
     def _measurement(self, run, job, events):

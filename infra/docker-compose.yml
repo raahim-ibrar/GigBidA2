@@ -6,7 +6,7 @@ services:
       dockerfile: infra/docker/web.Dockerfile
     environment:
       API_INTERNAL_URL: http://api:8000
-      NEXT_PUBLIC_API_URL: http://localhost:8000
+      NEXT_PUBLIC_API_URL: ""
     ports: ["127.0.0.1:3000:3000"]
     depends_on: [api]
   api:
@@ -20,6 +20,8 @@ services:
       QDRANT_URL: http://qdrant:6333
       MODEL_CACHE_DIR: /app/work/models
       HF_HOME: /app/work/models/hf
+      STUDENT_SIM_URL: http://student-sim:8080
+      STUDENT_SIM_API_KEY: ${STUDENT_SIM_API_KEY:-student_sim_local_only}
     volumes: ["model-cache:/app/work/models"]
     ports: ["127.0.0.1:8000:8000"]
     depends_on:
@@ -46,6 +48,8 @@ services:
       MODEL_CACHE_DIR: /app/work/models
       HF_HOME: /app/work/models/hf
       OLLAMA_BASE_URL: ${WORKER_OLLAMA_BASE_URL:-http://host.docker.internal:11434}
+      STUDENT_SIM_URL: http://student-sim:8080
+      STUDENT_SIM_API_KEY: ${STUDENT_SIM_API_KEY:-student_sim_local_only}
     volumes: ["model-cache:/app/work/models"]
     depends_on:
       postgres: {condition: service_healthy}
@@ -81,10 +85,18 @@ services:
     image: ollama/ollama:0.40.4
     ports: ["127.0.0.1:11435:11434"]
     volumes: ["ollama-data:/root/.ollama"]
-  # Optional until an instructor-provided image/build context is available.
-  gigsim:
-    profiles: ["gigsim"]
-    image: ${GIGSIM_IMAGE:-gigsim-instructor-image-required}
+  student-sim:
+    build: {context: ., dockerfile: infra/docker/api.Dockerfile}
+    command: [".venv/bin/uvicorn", "simulator.app:app", "--host", "0.0.0.0", "--port", "8080"]
+    environment:
+      STUDENT_SIM_API_KEY: ${STUDENT_SIM_API_KEY:-student_sim_local_only}
+      STUDENT_SIM_DATABASE: /app/work/simulator/student-sim.sqlite
+      STUDENT_SIM_CATALOGUE: ${STUDENT_SIM_CATALOGUE:-}
+      STUDENT_SIM_CLIENT_MODE: ${STUDENT_SIM_CLIENT_MODE:-rule}
+      OLLAMA_BASE_URL: ${WORKER_OLLAMA_BASE_URL:-http://host.docker.internal:11434}
+    volumes:
+      - student-sim-data:/app/work/simulator
+      - ./data/processed:/app/data/processed:ro
     ports: ["127.0.0.1:8080:8080"]
   # Do not expose HTTP without bearer auth. These stdio containers are scaffold entry points.
   portfolio-mcp:
@@ -104,3 +116,4 @@ volumes:
   postgres-data:
   qdrant-data:
   ollama-data:
+  student-sim-data:

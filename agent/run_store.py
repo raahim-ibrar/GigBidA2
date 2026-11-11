@@ -22,6 +22,7 @@ from apps.api.models import (
     FreelancerProfile,
     JobRecord,
     LocalDraftArtifact,
+    MarketplaceWrite,
     PortfolioDocument,
     RunEvent,
     WorkspaceWrite,
@@ -29,7 +30,17 @@ from apps.api.models import (
 )
 from apps.api.schemas.proposals import EventView, JobView, LocalDraftView, RunView
 
-TERMINAL = {"drafted", "rejected", "skip", "watch", "blocked", "needs_attention", "failed"}
+TERMINAL = {
+    "drafted",
+    "submitted",
+    "sent",
+    "rejected",
+    "skip",
+    "watch",
+    "blocked",
+    "needs_attention",
+    "failed",
+}
 MAX_RETRIES = 3
 
 
@@ -438,6 +449,30 @@ class RunStore:
         """A committed artifact is authoritative even if the final checkpoint failed."""
         with Session(self.engine) as db, db.begin():
             run = self._run(db, tenant, run_id, lock=True, worker_token=token)
+            preview = run.snapshot.get("preview")
+            effect = (
+                db.scalar(
+                    select(MarketplaceWrite).where(
+                        MarketplaceWrite.user_id == tenant,
+                        MarketplaceWrite.run_id == run_id,
+                        MarketplaceWrite.idempotency_key == preview["idempotency_key"],
+                    )
+                )
+                if preview
+                else None
+            )
+            if effect:
+                status = "submitted" if effect.tool == "submit_proposal" else "sent"
+                run.snapshot = {**run.snapshot, "status": status}
+                run.status, run.review, run.resume, run.worker_token, run.error = (
+                    status,
+                    None,
+                    None,
+                    None,
+                    None,
+                )
+                self._event(db, run, "committed_provider_write_recovered")
+                return True
             if run.kind == "conversation":
                 preview = run.snapshot.get("preview")
                 if not preview:

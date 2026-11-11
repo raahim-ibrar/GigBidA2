@@ -141,6 +141,75 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/marketplace": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Status */
+        get: operations["status_api_marketplace_get"];
+        /** Connect */
+        put: operations["connect_api_marketplace_put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/marketplace/balance": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Balance */
+        get: operations["balance_api_marketplace_balance_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/marketplace/search": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Search */
+        post: operations["search_api_marketplace_search_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/marketplace/sync": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Sync */
+        post: operations["sync_api_marketplace_sync_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/memory": {
         parameters: {
             query?: never;
@@ -738,6 +807,11 @@ export interface components {
             hire_rate: number;
             /** Hired */
             hired: number;
+            /**
+             * Provider
+             * @default unknown
+             */
+            provider: string;
             /** Replied */
             replied: number;
             /** Reply Rate */
@@ -785,6 +859,43 @@ export interface components {
              */
             key: "cut_opening" | "concise" | "avoid_passionate" | "avoid_excited" | "avoid_thrilled";
         };
+        /** ConnectionStatus */
+        ConnectionStatus: {
+            /**
+             * Available
+             * @default false
+             */
+            available: boolean;
+            /** Balance */
+            balance?: number | null;
+            /** Connected */
+            connected: boolean;
+            /** Error */
+            error?: string | null;
+            /**
+             * Label
+             * @default Student-built simulator; not instructor GigSim
+             */
+            label: string;
+            /**
+             * Mode
+             * @enum {string}
+             */
+            mode: "manual" | "student_sim";
+            /**
+             * Synthetic
+             * @default true
+             */
+            synthetic: boolean;
+        };
+        /** ConnectionUpdate */
+        ConnectionUpdate: {
+            /**
+             * Mode
+             * @enum {string}
+             */
+            mode: "manual" | "student_sim";
+        };
         /** ConversationView */
         ConversationView: {
             /**
@@ -796,6 +907,8 @@ export interface components {
             id: string;
             /** Job Id */
             job_id: string;
+            /** Provider Id */
+            provider_id?: string | null;
             /** Revision */
             revision: number;
             /** Run Id */
@@ -970,6 +1083,22 @@ export interface components {
             /** Detail */
             detail?: components["schemas"]["ValidationError"][];
         };
+        /** ImportedJobs */
+        ImportedJobs: {
+            /** Jobs */
+            jobs: components["schemas"]["JobView"][];
+            /**
+             * Provider
+             * @default student_sim
+             * @constant
+             */
+            provider: "student_sim";
+            /**
+             * Synthetic
+             * @default true
+             */
+            synthetic: boolean;
+        };
         /** JobSpec */
         JobSpec: {
             /**
@@ -1046,6 +1175,16 @@ export interface components {
             description: string;
             /** Title */
             title: string;
+        };
+        /** MarketplaceSearch */
+        MarketplaceSearch: {
+            /**
+             * Limit
+             * @default 10
+             */
+            limit: number;
+            /** Query */
+            query: string;
         };
         /** MemoryContext */
         MemoryContext: {
@@ -1263,6 +1402,11 @@ export interface components {
             created_at: string;
             /** Id */
             id: string;
+            /**
+             * Status
+             * @default local draft
+             */
+            status: string;
         };
         /** RetryRun */
         RetryRun: {
@@ -1372,6 +1516,11 @@ export interface components {
         };
         /** ScheduleUpdate */
         ScheduleUpdate: {
+            /**
+             * Auto Analyse
+             * @default false
+             */
+            auto_analyse: boolean;
             /** Enabled */
             enabled: boolean;
             /** Interval Minutes */
@@ -1382,8 +1531,13 @@ export interface components {
         /** ScheduleView */
         ScheduleView: {
             /**
+             * Auto Analyse
+             * @default false
+             */
+            auto_analyse: boolean;
+            /**
              * Connection Message
-             * @default Marketplace search is unavailable until the supplied GigSim adapter is connected.
+             * @default Scheduled searches use the connected student simulator. Automatic analysis is optional; submission always needs approval.
              */
             connection_message: string;
             /** Enabled */
@@ -1400,7 +1554,7 @@ export interface components {
              * Status
              * @enum {string}
              */
-            status: "paused" | "waiting_provider" | "no_queries";
+            status: "paused" | "waiting_provider" | "no_queries" | "queued" | "idle" | "unavailable";
             /** Version */
             version: number;
         };
@@ -1491,6 +1645,8 @@ export interface components {
             memory?: components["schemas"]["MemoryContext"] | null;
             preview?: components["schemas"]["WritePreview"] | null;
             price?: components["schemas"]["PriceQuote"] | null;
+            /** Provider Conversation Id */
+            provider_conversation_id?: string | null;
             risk?: components["schemas"]["RiskReport"] | null;
             /** Source Revision */
             source_revision?: number | null;
@@ -1516,6 +1672,13 @@ export interface components {
             key: "cut_opening" | "concise" | "avoid_passionate" | "avoid_excited" | "avoid_thrilled";
             /** Observations */
             observations: number;
+        };
+        /** SyncResult */
+        SyncResult: {
+            /** Events */
+            events: number;
+            /** Messages */
+            messages: number;
         };
         /** TimeWindow */
         TimeWindow: {
@@ -1834,6 +1997,132 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    status_api_marketplace_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConnectionStatus"];
+                };
+            };
+        };
+    };
+    connect_api_marketplace_put: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ConnectionUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConnectionStatus"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    balance_api_marketplace_balance_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+        };
+    };
+    search_api_marketplace_search_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MarketplaceSearch"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ImportedJobs"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    sync_api_marketplace_sync_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SyncResult"];
                 };
             };
         };

@@ -10,7 +10,7 @@ export class ApiError extends Error {
 }
 
 export async function apiRequest<T>(path: string, init: RequestInit = {}): Promise<T> {
-  const base = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
+  const base = process.env.NEXT_PUBLIC_API_URL ?? "";
   let response: Response;
   try { response = await fetch(`${base}/api${path}`, {
     ...init, credentials: "include", cache: "no-store",

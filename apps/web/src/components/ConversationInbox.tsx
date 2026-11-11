@@ -27,7 +27,7 @@ export function ConversationInbox() {
     catch (err) { setError(err instanceof Error ? err.message : "Could not create the conversation."); setBusy(false); }
   }
   if (loading) return <p role="status">Loading conversations…</p>;
-  return <><p className="notice">Enter client messages manually. Approved replies are saved as local email drafts. Nothing is sent to a client.</p>
+  return <><p className="notice">Review simulator client threads or enter a conversation manually. Simulator replies send only after approval; manual conversations save local drafts.</p>
     {error && <p role="alert" className="error">{error} {!account && <Link href="/sign-in">Sign in</Link>}</p>}
     <div className="cards portfolio-columns"><section className="card"><h2>Start a conversation</h2>
       {!jobs.length ? <p><Link href="/inbox">Add a job</Link> before starting its client conversation.</p> : <form onSubmit={submit}>

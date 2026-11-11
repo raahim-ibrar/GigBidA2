@@ -27,14 +27,14 @@ export function RunWorkspace({ id, trace = false, onSaved }: { id: string; trace
   const [paragraph, setParagraph] = useState(0);
   const cursor = useRef(0); const loaded = !!run; const active = !!run && ["queued", "running"].includes(run.status);
   const refresh = useCallback(async () => { setRun(await getRun(id)); }, [id]);
-  useEffect(() => { if (run?.status === "drafted" && onSaved) void onSaved().catch(err => setError(err.message)); }, [run?.status, onSaved]);
+  useEffect(() => { if (run && ["drafted", "sent"].includes(run.status) && onSaved) void onSaved().catch(err => setError(err.message)); }, [run?.status, onSaved, run]);
   useEffect(() => { let mounted = true;
     Promise.all([getRun(id), getAccount()]).then(([current, user]) => { if (mounted) { setRun(current); setAccount(user); } })
       .catch(err => { if (mounted) { setError(err.message); setSignIn(err instanceof ApiError && err.status === 401); } }); return () => { mounted = false; };
   }, [id]);
   useEffect(() => { if (run?.status === "awaiting_approval") { setEdit(run.snapshot.draft?.text ?? ""); setParagraph(0); } }, [run?.version, run?.status, run?.snapshot.draft?.text]);
   useEffect(() => { if (!loaded || signIn) return;
-    const base = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
+    const base = process.env.NEXT_PUBLIC_API_URL ?? "";
     const source = new EventSource(`${base}/api/runs/${encodeURIComponent(id)}/events?after=${cursor.current}`, { withCredentials: true });
     source.addEventListener("progress", event => { try { const item = JSON.parse((event as MessageEvent).data) as Progress;
       if (item.id > cursor.current) { cursor.current = item.id; setEvents(previous => [...previous, item].slice(-100)); }
@@ -62,6 +62,10 @@ export function RunWorkspace({ id, trace = false, onSaved }: { id: string; trace
   if (!run) return error ? <p role="alert" className="error">{error}</p> : <p role="status">Loading run…</p>;
   const state = run.snapshot; const draft = state.draft; const evidence = state.evidence ?? []; const ready = run.status === "awaiting_approval";
   const conversation = run.kind === "conversation";
+  const simulatorProposal = state.preview?.tool === "submit_proposal";
+  const simulatorReply = state.preview?.tool === "send_message";
+  const completed = ["drafted", "submitted", "sent"].includes(run.status);
+  const completedTitle = run.status === "submitted" ? "Submitted to student simulator" : run.status === "sent" ? "Reply sent to student simulator" : conversation ? "Saved local email draft" : "Saved local draft";
   const paragraphs = draft?.text.match(/\S[\s\S]*?(?=\n[ \t\r]*\n|$)/g) ?? [];
   return <><div className="source-actions"><Link href={`/jobs/${run.job_id}`}>Job detail</Link><Link href={conversation ? `/messages/${state.conversation_id}` : `/studio/${id}`}>{conversation ? "Conversation" : "Proposal review"}</Link><Link href={`/runs/${id}`}>Run activity</Link></div>
     <p role="status" className="notice">Status: <strong>{run.status.replaceAll("_", " ")}</strong>{active && " · Working in the background; you can leave this page."}</p>
@@ -73,13 +77,13 @@ export function RunWorkspace({ id, trace = false, onSaved }: { id: string; trace
       {state.risk && <><h3>Risk: {Math.round(state.risk.score * 100)}%</h3><ul>{state.risk.reasons?.map((text, i) => <li key={i}>{text}</li>)}</ul></>}
       {state.price && <p>Provisional quote: ${state.price.amount} {state.price.billing_type === "hourly" ? "per hour" : "total"}. {state.price.rationale}</p>}
     </section><section className="card"><h2>{conversation ? "Reply evidence" : "Requirement evidence"}</h2>{conversation ? <p>{evidence.length} portfolio sources retrieved. Inspect the underlined claims below.</p> : state.fit ? <><p>Coverage: {Math.round(state.fit.score * 100)}%</p>{Object.entries(state.fit.requirement_evidence).map(([requirement, ids]) => <div key={requirement}><strong>{requirement}</strong>{ids.length ? <ul>{ids.map(sourceId => { const source = evidence.find(item => item.id === sourceId); return <li key={sourceId}>{source?.source ?? "Source unavailable"}<details><summary>Read evidence</summary><p>{source?.text}</p></details></li>; })}</ul> : <p className="muted">No supporting evidence.</p>}</div>)}</> : <p className="muted">Waiting for portfolio matching.</p>}</section></div>
-    {draft && (ready || run.status === "drafted") && <section className="card draft-panel"><h2>{run.status === "drafted" ? (conversation ? "Saved local email draft" : "Saved local draft") : (conversation ? "Verified reply for review" : "Verified draft for review")}</h2><p className="muted">Hover or focus an underlined claim to inspect its portfolio source.</p>
+    {draft && (ready || completed) && <section className="card draft-panel"><h2>{completed ? completedTitle : (conversation ? "Verified reply for review" : "Verified draft for review")}</h2><p className="muted">Hover or focus an underlined claim to inspect its portfolio source.</p>
       {draft.text.split("\n").map((text, i) => <ClaimLine key={i} text={text} draft={draft} evidence={evidence} />)}
       {Object.entries(draft.screening_answers ?? {}).map(([question, answer]) => <div key={question}><h3>{question}</h3>{answer.split("\n").map((text, i) => <ClaimLine key={i} text={text} draft={draft} evidence={evidence} />)}</div>)}
       {state.critique?.reasons?.length ? <p>Critic: {state.critique.reasons.join(" ")}</p> : null}<p>Local draft checks: {state.compliance?.allowed ? "passed" : "pending"}. Instructor marketplace policy is not supplied.</p>
       {!!state.memory?.style_preferences?.length && <details><summary>Style preferences used in this run</summary><ul>{state.memory.style_preferences.map((text, index) => <li key={index}>{text}</li>)}</ul><p className="muted">These were loaded when this run started. Grounding and approval still apply.</p></details>}
-      {conversation && state.preview && <div><h3>Email draft preview</h3><p>Subject: {String(state.preview.arguments.subject)}</p><pre style={{ whiteSpace: "pre-wrap" }}>{String(state.preview.arguments.body)}</pre></div>}
-      {ready && <><h3>Preview</h3><p>{conversation ? "Save this email draft locally. No message will be sent." : "Save this draft locally. Connects spent: 0. No application will be sent."}</p><button disabled={busy} onClick={() => decide("approve")}>{conversation ? "Approve and save email draft" : "Approve and save local draft"}</button>
+      {conversation && state.preview && <div><h3>{simulatorReply ? "Simulator message preview" : "Email draft preview"}</h3>{!simulatorReply && <p>Subject: {String(state.preview.arguments.subject)}</p>}<pre style={{ whiteSpace: "pre-wrap" }}>{String(simulatorReply ? state.preview.arguments.text : state.preview.arguments.body)}</pre></div>}
+      {ready && <><h3>Preview</h3><p>{simulatorProposal ? `Submit this proposal to the student simulator. Simulated Connects spent: ${state.preview?.connects_cost}. No real Upwork application is sent.` : simulatorReply ? "Send this exact reply to the student simulator. No real client is contacted." : conversation ? "Save this email draft locally. No message will be sent." : "Save this draft locally. Connects spent: 0. No application will be sent."}</p><button disabled={busy} onClick={() => decide("approve")}>{simulatorProposal ? "Approve and submit to simulator" : simulatorReply ? "Approve and send simulator reply" : conversation ? "Approve and save email draft" : "Approve and save local draft"}</button>
         <label htmlFor="edited-draft">{conversation ? "Edit reply" : "Edit cover letter"}</label><textarea id="edited-draft" rows={9} maxLength={20000} value={edit} onChange={event => setEdit(event.target.value)} /><button className="secondary-button" disabled={busy} onClick={() => decide("edit")}>Verify edits and request a new review</button>
         {!conversation && paragraphs.length > 0 && <><label htmlFor="regenerate-paragraph">Paragraph to regenerate</label><select id="regenerate-paragraph" value={paragraph} onChange={event => setParagraph(Number(event.target.value))}>{paragraphs.slice(0, 100).map((text, index) => <option key={index} value={index}>{index + 1}. {text.slice(0, 100)}</option>)}</select><p className="muted">Regeneration uses the verified draft above and preserves the other paragraphs. The result is checked and needs a new approval.</p><button className="secondary-button" disabled={busy} onClick={() => decide("regenerate")}>Regenerate selected paragraph</button></>}
         <label htmlFor="rejection-reason">Reason for rejection</label><textarea id="rejection-reason" rows={2} maxLength={1000} value={reason} onChange={event => setReason(event.target.value)} /><button className="secondary-button" disabled={busy} onClick={() => decide("reject")}>Reject draft</button></>}

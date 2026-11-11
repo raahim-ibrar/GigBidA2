@@ -18,9 +18,12 @@ DATE_REFERENCE = re.compile(
 
 
 class ConversationNodes:
-    def __init__(self, models, portfolio, workspace, config, *, load_memory, clock=utcnow):
+    def __init__(
+        self, models, portfolio, workspace, config, *, load_memory, clock=utcnow, marketplace=None
+    ):
         self.models, self.portfolio, self.workspace = models, portfolio, workspace
         self.config, self.load_memory, self.clock = config, load_memory, clock
+        self.marketplace = marketplace
         self.grounding = ProposalNodes(models, portfolio, config, execute_local=None)
 
     def mapping(self):
@@ -44,7 +47,11 @@ class ConversationNodes:
         risk = RiskReport(
             score=1 if injection else 0,
             flags=["prompt_injection"] if injection else [],
-            reasons=["Manually entered client messages; provider history is unavailable."],
+            reasons=[
+                "Student-simulator conversation; all content is synthetic."
+                if state.get("provider_conversation_id")
+                else "Manually entered client messages; provider history is unavailable."
+            ],
         )
         return {
             "risk": risk,
@@ -66,7 +73,9 @@ class ConversationNodes:
             {
                 "job": state["raw_job"],
                 "client_messages": state["messages"],
-                "source": "manually entered",
+                "source": "student_sim (synthetic)"
+                if state.get("provider_conversation_id")
+                else "manually entered",
                 "current_time_utc": now.isoformat(),
                 "hourly_floor": state["preferences"]["hourly_floor"],
                 "portfolio_evidence": [item.model_dump() for item in evidence],
@@ -115,6 +124,33 @@ class ConversationNodes:
 
     async def preview(self, state):
         request = self._email(state, dry_run=True)
+        if state.get("provider_conversation_id"):
+            from agent.marketplace_port import MessageWrite
+            from agent.proposal_nodes import draft_digest
+
+            message = MessageWrite(
+                conversation_id=state["provider_conversation_id"],
+                text=request.body,
+                idempotency_key=request.idempotency_key,
+            )
+            result = await self.marketplace.message(message)
+            expected = {
+                "conversation_id": message.conversation_id,
+                "text": message.text,
+                "draft_digest": draft_digest(state["draft"]),
+            }
+            if result.get("arguments") != expected:
+                raise ReviewRequired("Simulator message preview differs from the verified reply")
+            return {
+                "preview": WritePreview(
+                    tool="send_message",
+                    arguments=expected,
+                    connects_cost=0,
+                    idempotency_key=message.idempotency_key,
+                ),
+                "status": "awaiting_approval",
+                "events": ["student_reply_previewed"],
+            }
         result = await self.workspace.email(request)
         expected = request.arguments()
         if result.get("arguments") != expected or result.get("backend") != "local":
@@ -134,6 +170,28 @@ class ConversationNodes:
         if state["approval"].action != "approve":
             raise ReviewRequired("Saving a reply requires human approval")
         request = self._email(state, dry_run=False)
+        if state.get("provider_conversation_id"):
+            from agent.marketplace_port import MessageWrite
+            from agent.proposal_nodes import draft_digest
+
+            expected = {
+                "conversation_id": state["provider_conversation_id"],
+                "text": request.body,
+                "draft_digest": draft_digest(state["draft"]),
+            }
+            if state["preview"].tool != "send_message" or state["preview"].arguments != expected:
+                raise ReviewRequired("Simulator reply changed after approval")
+            for item in state.get("evidence", []):
+                await self.portfolio.read(item.id)
+            await self.marketplace.message(
+                MessageWrite(
+                    conversation_id=state["provider_conversation_id"],
+                    text=request.body,
+                    idempotency_key=request.idempotency_key,
+                    dry_run=False,
+                )
+            )
+            return {"status": "sent", "events": ["student_reply_sent"]}
         if state["preview"].arguments != request.arguments():
             raise ReviewRequired("The reply changed after preview")
         for item in state.get("evidence", []):

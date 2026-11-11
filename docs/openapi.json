@@ -242,6 +242,11 @@
             "title": "Hired",
             "type": "integer"
           },
+          "provider": {
+            "default": "unknown",
+            "title": "Provider",
+            "type": "string"
+          },
           "replied": {
             "title": "Replied",
             "type": "integer"
@@ -366,6 +371,84 @@
         "title": "ConfirmStyle",
         "type": "object"
       },
+      "ConnectionStatus": {
+        "additionalProperties": false,
+        "properties": {
+          "available": {
+            "default": false,
+            "title": "Available",
+            "type": "boolean"
+          },
+          "balance": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Balance"
+          },
+          "connected": {
+            "title": "Connected",
+            "type": "boolean"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          },
+          "label": {
+            "default": "Student-built simulator; not instructor GigSim",
+            "title": "Label",
+            "type": "string"
+          },
+          "mode": {
+            "enum": [
+              "manual",
+              "student_sim"
+            ],
+            "title": "Mode",
+            "type": "string"
+          },
+          "synthetic": {
+            "default": true,
+            "title": "Synthetic",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "mode",
+          "connected"
+        ],
+        "title": "ConnectionStatus",
+        "type": "object"
+      },
+      "ConnectionUpdate": {
+        "additionalProperties": false,
+        "properties": {
+          "mode": {
+            "enum": [
+              "manual",
+              "student_sim"
+            ],
+            "title": "Mode",
+            "type": "string"
+          }
+        },
+        "required": [
+          "mode"
+        ],
+        "title": "ConnectionUpdate",
+        "type": "object"
+      },
       "ConversationView": {
         "additionalProperties": false,
         "properties": {
@@ -381,6 +464,17 @@
           "job_id": {
             "title": "Job Id",
             "type": "string"
+          },
+          "provider_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provider Id"
           },
           "revision": {
             "title": "Revision",
@@ -891,6 +985,34 @@
         "title": "HTTPValidationError",
         "type": "object"
       },
+      "ImportedJobs": {
+        "additionalProperties": false,
+        "properties": {
+          "jobs": {
+            "items": {
+              "$ref": "#/components/schemas/JobView"
+            },
+            "title": "Jobs",
+            "type": "array"
+          },
+          "provider": {
+            "const": "student_sim",
+            "default": "student_sim",
+            "title": "Provider",
+            "type": "string"
+          },
+          "synthetic": {
+            "default": true,
+            "title": "Synthetic",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "jobs"
+        ],
+        "title": "ImportedJobs",
+        "type": "object"
+      },
       "JobSpec": {
         "additionalProperties": false,
         "properties": {
@@ -1090,6 +1212,29 @@
           "budget_max"
         ],
         "title": "ManualJob",
+        "type": "object"
+      },
+      "MarketplaceSearch": {
+        "additionalProperties": false,
+        "properties": {
+          "limit": {
+            "default": 10,
+            "maximum": 50.0,
+            "minimum": 1.0,
+            "title": "Limit",
+            "type": "integer"
+          },
+          "query": {
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Query",
+            "type": "string"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "title": "MarketplaceSearch",
         "type": "object"
       },
       "MemoryContext": {
@@ -1665,6 +1810,11 @@
           "id": {
             "title": "Id",
             "type": "string"
+          },
+          "status": {
+            "default": "local draft",
+            "title": "Status",
+            "type": "string"
           }
         },
         "required": [
@@ -1979,6 +2129,11 @@
       "ScheduleUpdate": {
         "additionalProperties": false,
         "properties": {
+          "auto_analyse": {
+            "default": false,
+            "title": "Auto Analyse",
+            "type": "boolean"
+          },
           "enabled": {
             "title": "Enabled",
             "type": "boolean"
@@ -2006,8 +2161,13 @@
       "ScheduleView": {
         "additionalProperties": false,
         "properties": {
+          "auto_analyse": {
+            "default": false,
+            "title": "Auto Analyse",
+            "type": "boolean"
+          },
           "connection_message": {
-            "default": "Marketplace search is unavailable until the supplied GigSim adapter is connected.",
+            "default": "Scheduled searches use the connected student simulator. Automatic analysis is optional; submission always needs approval.",
             "title": "Connection Message",
             "type": "string"
           },
@@ -2056,7 +2216,10 @@
             "enum": [
               "paused",
               "waiting_provider",
-              "no_queries"
+              "no_queries",
+              "queued",
+              "idle",
+              "unavailable"
             ],
             "title": "Status",
             "type": "string"
@@ -2353,6 +2516,17 @@
               }
             ]
           },
+          "provider_conversation_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provider Conversation Id"
+          },
           "risk": {
             "anyOf": [
               {
@@ -2441,6 +2615,25 @@
           "active"
         ],
         "title": "StyleCandidate",
+        "type": "object"
+      },
+      "SyncResult": {
+        "additionalProperties": false,
+        "properties": {
+          "events": {
+            "title": "Events",
+            "type": "integer"
+          },
+          "messages": {
+            "title": "Messages",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "events",
+          "messages"
+        ],
+        "title": "SyncResult",
         "type": "object"
       },
       "TimeWindow": {
@@ -2894,6 +3087,147 @@
         "summary": "Get Job",
         "tags": [
           "jobs"
+        ]
+      }
+    },
+    "/api/marketplace": {
+      "get": {
+        "operationId": "status_api_marketplace_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConnectionStatus"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Status",
+        "tags": [
+          "marketplace"
+        ]
+      },
+      "put": {
+        "operationId": "connect_api_marketplace_put",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConnectionUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConnectionStatus"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Connect",
+        "tags": [
+          "marketplace"
+        ]
+      }
+    },
+    "/api/marketplace/balance": {
+      "get": {
+        "operationId": "balance_api_marketplace_balance_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Balance",
+        "tags": [
+          "marketplace"
+        ]
+      }
+    },
+    "/api/marketplace/search": {
+      "post": {
+        "operationId": "search_api_marketplace_search_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MarketplaceSearch"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImportedJobs"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Search",
+        "tags": [
+          "marketplace"
+        ]
+      }
+    },
+    "/api/marketplace/sync": {
+      "post": {
+        "operationId": "sync_api_marketplace_sync_post",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SyncResult"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Sync",
+        "tags": [
+          "marketplace"
         ]
       }
     },

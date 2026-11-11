@@ -12,7 +12,7 @@ test("persist a search schedule while clearly showing the missing marketplace co
   await page.getByRole("button", { name: "Save and continue" }).click();
   await expect(page.getByRole("heading", { name: "Job inbox", exact: true })).toBeVisible();
   await page.goto("/settings");
-  await expect(page.getByText("Marketplace search is unavailable.", { exact: false })).toBeVisible();
+  await expect(page.getByText("Saved searches fetch jobs from your connected simulator.", { exact: false })).toBeVisible();
   await page.getByLabel("Enable scheduled connection checks").check();
   await page.getByLabel("Check interval (minutes)").fill("15");
   await page.getByRole("button", { name: "Save search schedule" }).click();

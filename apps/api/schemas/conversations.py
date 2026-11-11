@@ -43,6 +43,7 @@ class ConversationView(Contract):
     job_id: str
     run_id: str
     title: str
+    provider_id: str | None = None
     revision: int
     created_at: datetime
 
@@ -51,3 +52,4 @@ class ReplyDraftView(Contract):
     id: str
     body: str
     created_at: datetime
+    status: str = "local draft"

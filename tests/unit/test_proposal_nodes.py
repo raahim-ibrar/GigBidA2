@@ -245,6 +245,28 @@ async def test_numeric_guard_requires_complete_numbers_not_substrings(setup_node
         await nodes.verifier(state)
 
 
+async def test_trusted_source_uuid_is_not_mistaken_for_a_numerical_achievement(setup_nodes):
+    nodes, state, portfolio, models, _ = setup_nodes
+    source_id = str(uuid4())
+    portfolio.evidence.id = source_id
+    models.reviews = [
+        {
+            "index": 0,
+            "kind": "experience",
+            "verdict": "supported",
+            "evidence_ids": [source_id],
+            "reason": "Supported source, identifier is a citation",
+        }
+    ]
+    state["evidence"] = [portfolio.evidence]
+    state["draft"] = ProposalDraft(text=f"I built a Python API (source {source_id}).")
+    result = await nodes.verifier(state)
+    assert result["draft"].text == state["draft"].text
+    state["draft"] = ProposalDraft(text=f"I built 100 Python APIs (source {source_id}).")
+    with pytest.raises(GroundingFailure):
+        await nodes.verifier(state)
+
+
 async def test_host_loaded_memory_reaches_writer_without_becoming_evidence(setup_nodes):
     nodes, state, _, models, _ = setup_nodes
     captured = []

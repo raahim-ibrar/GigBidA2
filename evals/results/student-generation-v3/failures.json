@@ -1,0 +1,373 @@
+[
+  {
+    "model": "qwen3-8b",
+    "job_id": "student-4016-ai_ml-001",
+    "run_id": "c200fcae-781e-454b-961d-0875ae720569",
+    "category": "cover grounding",
+    "error": "No verified cover text remains; add portfolio evidence or revise"
+  },
+  {
+    "model": "qwen3-8b",
+    "job_id": "student-4016-ai_ml-002",
+    "run_id": "548a3aa4-fa0e-49b9-b24d-004a227dd133",
+    "category": "cover grounding",
+    "error": "No verified cover text remains; add portfolio evidence or revise"
+  },
+  {
+    "model": "qwen3-8b",
+    "job_id": "student-4016-ai_ml-003",
+    "run_id": "2b1cfb9f-7094-4152-bb78-c400f54d1ef0",
+    "category": "cover grounding",
+    "error": "No verified cover text remains; add portfolio evidence or revise"
+  },
+  {
+    "model": "qwen3-8b",
+    "job_id": "student-4016-ai_ml-004",
+    "run_id": "75a02e9b-824f-4cb8-9a94-5897a8d1a822",
+    "category": "cover grounding",
+    "error": "No verified cover text remains; add portfolio evidence or revise"
+  },
+  {
+    "model": "qwen3-8b",
+    "job_id": "student-4016-ai_ml-005",
+    "run_id": "c409a087-ede7-4b7e-8692-a71ac0700506",
+    "category": "cover grounding",
+    "error": "No verified cover text remains; add portfolio evidence or revise"
+  },
+  {
+    "model": "qwen3-8b",
+    "job_id": "student-4016-ai_ml-006",
+    "run_id": "8d03724a-3564-46c6-b9ba-a8e70a978454",
+    "category": "cover grounding",
+    "error": "No verified cover text remains; add portfolio evidence or revise"
+  },
+  {
+    "model": "qwen3-8b",
+    "job_id": "student-4016-ai_ml-007",
+    "run_id": "282e8c47-d72d-4053-9d2f-176c5d9858db",
+    "category": "cover grounding",
+    "error": "No verified cover text remains; add portfolio evidence or revise"
+  },
+  {
+    "model": "qwen3-8b",
+    "job_id": "student-4016-ai_ml-008",
+    "run_id": "e96740c4-50e6-4d90-9bb3-34781eb77673",
+    "category": "cover grounding",
+    "error": "No verified cover text remains; add portfolio evidence or revise"
+  },
+  {
+    "model": "qwen3-8b",
+    "job_id": "student-4016-ai_ml-009",
+    "run_id": "b9568cf3-356f-407c-953e-5b6d9a1858cc",
+    "category": "cover grounding",
+    "error": "No verified cover text remains; add portfolio evidence or revise"
+  },
+  {
+    "model": "qwen3-8b",
+    "job_id": "student-4016-full_stack-001",
+    "run_id": "e6ae7fb8-7a68-4d2c-8913-41ba657c4c33",
+    "category": "cover grounding",
+    "error": "No verified cover text remains; add portfolio evidence or revise"
+  },
+  {
+    "model": "qwen3-8b",
+    "job_id": "student-4016-full_stack-002",
+    "run_id": "e9127bf0-8c5d-47ac-ba3c-7b62a17bfa04",
+    "category": "cover grounding",
+    "error": "No verified cover text remains; add portfolio evidence or revise"
+  },
+  {
+    "model": "qwen3-8b",
+    "job_id": "student-4016-full_stack-003",
+    "run_id": "f4e10ee8-85ea-4797-9cec-a6546cf57814",
+    "category": "cover grounding",
+    "error": "No verified cover text remains; add portfolio evidence or revise"
+  },
+  {
+    "model": "qwen3-8b",
+    "job_id": "student-4016-full_stack-004",
+    "run_id": "c1e61fc7-5bd9-42f8-aada-809fde9c7d3e",
+    "category": "cover grounding",
+    "error": "No verified cover text remains; add portfolio evidence or revise"
+  },
+  {
+    "model": "qwen3-8b",
+    "job_id": "student-4016-full_stack-005",
+    "run_id": "17331bb2-8d3b-4b0f-8dc1-fe95cdfde657",
+    "category": "cover grounding",
+    "error": "No verified cover text remains; add portfolio evidence or revise"
+  },
+  {
+    "model": "qwen3-8b",
+    "job_id": "student-4016-full_stack-006",
+    "run_id": "e1cca064-b63b-480e-a3dd-2090ad1ab177",
+    "category": "cover grounding",
+    "error": "No verified cover text remains; add portfolio evidence or revise"
+  },
+  {
+    "model": "qwen3-8b",
+    "job_id": "student-4016-full_stack-007",
+    "run_id": "e2f71bc7-776d-4176-9a4b-8b6d6c8b00f4",
+    "category": "cover grounding",
+    "error": "No verified cover text remains; add portfolio evidence or revise"
+  },
+  {
+    "model": "qwen3-8b",
+    "job_id": "student-4016-full_stack-008",
+    "run_id": "e3358a6d-9f88-42bc-af05-b3a9cbbb2722",
+    "category": "cover grounding",
+    "error": "No verified cover text remains; add portfolio evidence or revise"
+  },
+  {
+    "model": "qwen3-8b",
+    "job_id": "student-4016-full_stack-009",
+    "run_id": "80e111fb-99df-4702-b9d6-0954ba5fa404",
+    "category": "cover grounding",
+    "error": "No verified cover text remains; add portfolio evidence or revise"
+  },
+  {
+    "model": "qwen3-8b",
+    "job_id": "student-4016-data_analyst-002",
+    "run_id": "b5e0a2b4-f099-47e7-bfa4-dca1c650e4af",
+    "category": "cover grounding",
+    "error": "No verified cover text remains; add portfolio evidence or revise"
+  },
+  {
+    "model": "qwen3-8b",
+    "job_id": "student-4016-data_analyst-003",
+    "run_id": "70873b59-bda5-4eb5-8a15-24912370ea6d",
+    "category": "cover grounding",
+    "error": "No verified cover text remains; add portfolio evidence or revise"
+  },
+  {
+    "model": "qwen3-8b",
+    "job_id": "student-4016-data_analyst-004",
+    "run_id": "9f13c1cd-8bda-4bf2-b3e3-427383e9354a",
+    "category": "cover grounding",
+    "error": "No verified cover text remains; add portfolio evidence or revise"
+  },
+  {
+    "model": "qwen3-8b",
+    "job_id": "student-4016-data_analyst-005",
+    "run_id": "5457a18c-e6ed-4e6f-8205-bf4418d93f30",
+    "category": "cover grounding",
+    "error": "No verified cover text remains; add portfolio evidence or revise"
+  },
+  {
+    "model": "qwen3-8b",
+    "job_id": "student-4016-data_analyst-006",
+    "run_id": "82a0cc69-85f7-43e3-9ebe-b4acd0a2680d",
+    "category": "cover grounding",
+    "error": "No verified cover text remains; add portfolio evidence or revise"
+  },
+  {
+    "model": "qwen3-8b",
+    "job_id": "student-4016-data_analyst-007",
+    "run_id": "334dbd1d-0d1c-4a94-b200-e8cef60ffdf4",
+    "category": "cover grounding",
+    "error": "No verified cover text remains; add portfolio evidence or revise"
+  },
+  {
+    "model": "qwen3-8b",
+    "job_id": "student-4016-data_analyst-008",
+    "run_id": "570f0d55-3626-4767-bc5e-14f2c48f6e67",
+    "category": "cover grounding",
+    "error": "No verified cover text remains; add portfolio evidence or revise"
+  },
+  {
+    "model": "qwen3-8b",
+    "job_id": "student-4016-data_analyst-009",
+    "run_id": "bfeddda9-26d3-4417-8956-ccb0729733e5",
+    "category": "cover grounding",
+    "error": "No verified cover text remains; add portfolio evidence or revise"
+  },
+  {
+    "model": "qwen3.5-4b",
+    "job_id": "student-4016-ai_ml-001",
+    "run_id": "6f2938eb-f7eb-42b5-87db-d1e1999a75ae",
+    "category": "screening grounding",
+    "error": "A screening answer has no supported text; revise it before review"
+  },
+  {
+    "model": "qwen3.5-4b",
+    "job_id": "student-4016-ai_ml-002",
+    "run_id": "5aadd215-716c-4331-9bfc-5d091d6a4317",
+    "category": "screening grounding",
+    "error": "A screening answer has no supported text; revise it before review"
+  },
+  {
+    "model": "qwen3.5-4b",
+    "job_id": "student-4016-ai_ml-003",
+    "run_id": "36e808d7-5488-4938-a649-6cbe45f91013",
+    "category": "cover grounding",
+    "error": "No verified cover text remains; add portfolio evidence or revise"
+  },
+  {
+    "model": "qwen3.5-4b",
+    "job_id": "student-4016-ai_ml-004",
+    "run_id": "6dc981d5-3e1d-4f1d-bcc6-22e463ab0150",
+    "category": "cover grounding",
+    "error": "No verified cover text remains; add portfolio evidence or revise"
+  },
+  {
+    "model": "qwen3.5-4b",
+    "job_id": "student-4016-ai_ml-005",
+    "run_id": "c34f1971-00da-455a-a3fc-42d194fe6483",
+    "category": "cover grounding",
+    "error": "No verified cover text remains; add portfolio evidence or revise"
+  },
+  {
+    "model": "qwen3.5-4b",
+    "job_id": "student-4016-ai_ml-006",
+    "run_id": "a6e933b1-d467-4429-8e1f-f3aa2379a85d",
+    "category": "cover grounding",
+    "error": "No verified cover text remains; add portfolio evidence or revise"
+  },
+  {
+    "model": "qwen3.5-4b",
+    "job_id": "student-4016-ai_ml-007",
+    "run_id": "52695f90-6e97-4732-9c92-b708a450568e",
+    "category": "screening grounding",
+    "error": "A screening answer has no supported text; revise it before review"
+  },
+  {
+    "model": "qwen3.5-4b",
+    "job_id": "student-4016-ai_ml-008",
+    "run_id": "ecb64ca6-88d6-48f0-8798-42c29655dab8",
+    "category": "cover grounding",
+    "error": "No verified cover text remains; add portfolio evidence or revise"
+  },
+  {
+    "model": "qwen3.5-4b",
+    "job_id": "student-4016-ai_ml-009",
+    "run_id": "2ffe62ff-5bf0-4a58-8d36-3b0de3e520bc",
+    "category": "cover grounding",
+    "error": "No verified cover text remains; add portfolio evidence or revise"
+  },
+  {
+    "model": "qwen3.5-4b",
+    "job_id": "student-4016-full_stack-001",
+    "run_id": "1f8662d0-72ed-4973-8e48-f397d21f4d33",
+    "category": "screening grounding",
+    "error": "A screening answer has no supported text; revise it before review"
+  },
+  {
+    "model": "qwen3.5-4b",
+    "job_id": "student-4016-full_stack-002",
+    "run_id": "8ef8ec5e-4afd-41cd-a694-e89b4fe8a194",
+    "category": "cover grounding",
+    "error": "No verified cover text remains; add portfolio evidence or revise"
+  },
+  {
+    "model": "qwen3.5-4b",
+    "job_id": "student-4016-full_stack-003",
+    "run_id": "ea3be3ef-64da-4775-99bd-3073ac953a33",
+    "category": "cover grounding",
+    "error": "No verified cover text remains; add portfolio evidence or revise"
+  },
+  {
+    "model": "qwen3.5-4b",
+    "job_id": "student-4016-full_stack-004",
+    "run_id": "8006f150-3088-4763-b909-f40827fadb5b",
+    "category": "other runtime failure",
+    "error": "The verifier did not assess every draft sentence exactly once"
+  },
+  {
+    "model": "qwen3.5-4b",
+    "job_id": "student-4016-full_stack-005",
+    "run_id": "6bb87204-ed66-44e5-b433-fdc216e35d28",
+    "category": "screening grounding",
+    "error": "A screening answer has no supported text; revise it before review"
+  },
+  {
+    "model": "qwen3.5-4b",
+    "job_id": "student-4016-full_stack-006",
+    "run_id": "2e681131-6d59-4bbe-a177-a0748ebc8838",
+    "category": "cover grounding",
+    "error": "No verified cover text remains; add portfolio evidence or revise"
+  },
+  {
+    "model": "qwen3.5-4b",
+    "job_id": "student-4016-full_stack-007",
+    "run_id": "1ba40af7-f761-4e23-ae31-8c83db19d42f",
+    "category": "other runtime failure",
+    "error": "The verifier did not assess every draft sentence exactly once"
+  },
+  {
+    "model": "qwen3.5-4b",
+    "job_id": "student-4016-full_stack-008",
+    "run_id": "4c88b260-1c68-42a7-83d2-8876ac46c2ca",
+    "category": "screening grounding",
+    "error": "A screening answer has no supported text; revise it before review"
+  },
+  {
+    "model": "qwen3.5-4b",
+    "job_id": "student-4016-full_stack-009",
+    "run_id": "3a8ea084-2dad-472f-a2e6-16482dfc1169",
+    "category": "cover grounding",
+    "error": "No verified cover text remains; add portfolio evidence or revise"
+  },
+  {
+    "model": "qwen3.5-4b",
+    "job_id": "student-4016-data_analyst-001",
+    "run_id": "b5e39247-dcac-4d74-8aa5-db62e4d8c4a0",
+    "category": "cover grounding",
+    "error": "No verified cover text remains; add portfolio evidence or revise"
+  },
+  {
+    "model": "qwen3.5-4b",
+    "job_id": "student-4016-data_analyst-002",
+    "run_id": "11351536-ebc7-4068-82ec-8b4bc07bbac2",
+    "category": "cover grounding",
+    "error": "No verified cover text remains; add portfolio evidence or revise"
+  },
+  {
+    "model": "qwen3.5-4b",
+    "job_id": "student-4016-data_analyst-003",
+    "run_id": "4a3a3dce-259f-4ade-9432-c6f30dfe9ec7",
+    "category": "cover grounding",
+    "error": "No verified cover text remains; add portfolio evidence or revise"
+  },
+  {
+    "model": "qwen3.5-4b",
+    "job_id": "student-4016-data_analyst-004",
+    "run_id": "4d5e2c5c-1820-414e-afb1-52b1dce42871",
+    "category": "cover grounding",
+    "error": "No verified cover text remains; add portfolio evidence or revise"
+  },
+  {
+    "model": "qwen3.5-4b",
+    "job_id": "student-4016-data_analyst-005",
+    "run_id": "29a21225-e6f8-45f8-95e4-a416e4b89712",
+    "category": "screening grounding",
+    "error": "A screening answer has no supported text; revise it before review"
+  },
+  {
+    "model": "qwen3.5-4b",
+    "job_id": "student-4016-data_analyst-006",
+    "run_id": "b578af10-f969-49a5-83aa-fcc62121e43a",
+    "category": "cover grounding",
+    "error": "No verified cover text remains; add portfolio evidence or revise"
+  },
+  {
+    "model": "qwen3.5-4b",
+    "job_id": "student-4016-data_analyst-007",
+    "run_id": "dddf0545-6ddd-4654-9c7d-2f9e7b5eb1f6",
+    "category": "cover grounding",
+    "error": "No verified cover text remains; add portfolio evidence or revise"
+  },
+  {
+    "model": "qwen3.5-4b",
+    "job_id": "student-4016-data_analyst-008",
+    "run_id": "caf5a0a7-ba86-4c2c-ae95-7daa06b0f08e",
+    "category": "cover grounding",
+    "error": "No verified cover text remains; add portfolio evidence or revise"
+  },
+  {
+    "model": "qwen3.5-4b",
+    "job_id": "student-4016-data_analyst-009",
+    "run_id": "875e643e-6525-4832-a2c1-4d5ae7c84dc5",
+    "category": "cover grounding",
+    "error": "No verified cover text remains; add portfolio evidence or revise"
+  }
+]

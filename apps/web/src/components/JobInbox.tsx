@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { ApiError, getAccount, type Account } from "@/lib/api/accounts";
 import { createJob, listJobs, listRuns, startRun, type Job, type Run } from "@/lib/api/proposals";
+import { MarketplacePanel } from "./MarketplacePanel";
 
 export function JobInbox() {
   const router = useRouter(); const requestKey = useRef({ job: "", key: "" });
@@ -33,7 +34,8 @@ export function JobInbox() {
   if (loading) return <p role="status">Loading jobs…</p>;
   if (signIn) return <p className="notice"><Link href="/sign-in">Sign in</Link> to add and review jobs.</p>;
   return <>{error && <p role="alert" className="error">{error}</p>}
-    <p className="notice">Enter a job to analyse it against your <Link href="/portfolio">portfolio</Link>. Approval saves a local draft. Marketplace connection is pending.</p>
+    <MarketplacePanel onImported={async () => { setJobs(await listJobs()); setRuns(await listRuns()); }} />
+    <p className="notice">Analyse jobs against your <Link href="/portfolio">portfolio</Link>. Manual jobs save local drafts; connected simulator jobs can be submitted to the simulation after approval.</p>
     <div className="cards portfolio-columns"><section className="card"><h2>Add a job</h2><form onSubmit={submit}>
       <label htmlFor="job-title">Job title</label><input id="job-title" name="title" required maxLength={200} />
       <label htmlFor="job-description">Job description and screening questions</label><textarea id="job-description" name="description" rows={8} required maxLength={12000} />
@@ -42,6 +44,6 @@ export function JobInbox() {
       <label htmlFor="budget-max">Maximum client budget</label><input id="budget-max" name="budget_max" type="number" min="0.01" max="1000000" step="0.01" required />
       <button disabled={busy || !account}>{busy ? "Starting analysis…" : "Analyse and draft"}</button>
     </form></section><section className="card"><h2>Your jobs</h2>{!jobs.length && <p className="muted">No jobs added yet.</p>}
-      {jobs.map(job => { const latest = runs.find(run => run.job_id === job.id && run.kind !== "conversation"); return <article className="evidence-hit" key={job.id}><h3><Link href={`/jobs/${job.id}`}>{job.title}</Link></h3><p className="muted">Manually entered · {latest ? latest.status.replaceAll("_", " ") : "Not analysed"}</p>{latest && <Link href={`/studio/${latest.id}`}>Open proposal run</Link>}</article>; })}
+      {jobs.map(job => { const latest = runs.find(run => run.job_id === job.id && run.kind !== "conversation"); return <article className="evidence-hit" key={job.id}><h3><Link href={`/jobs/${job.id}`}>{job.title}</Link></h3><p className="muted">{job.raw.source === "student_sim" ? "Student simulator" : "Manually entered"} · {latest ? latest.status.replaceAll("_", " ") : "Not analysed"}</p>{latest && <Link href={`/studio/${latest.id}`}>Open proposal run</Link>}</article>; })}
     </section></div></>;
 }

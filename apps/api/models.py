@@ -234,6 +234,7 @@ class ClientConversation(Base):
         ForeignKey("agent_runs.id", ondelete="CASCADE"), unique=True
     )
     title: Mapped[str] = mapped_column(String(200))
+    provider_id: Mapped[str | None] = mapped_column(String(200), nullable=True)
     revision: Mapped[int] = mapped_column(Integer, default=1)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
 
@@ -259,6 +260,7 @@ class SearchSchedule(Base):
         ForeignKey("users.id", ondelete="CASCADE"), primary_key=True
     )
     enabled: Mapped[bool] = mapped_column(default=False)
+    auto_analyse: Mapped[bool] = mapped_column(default=False)
     interval_minutes: Mapped[int] = mapped_column(Integer, default=60)
     version: Mapped[int] = mapped_column(Integer, default=0)
     next_check_at: Mapped[datetime | None] = mapped_column(
@@ -280,3 +282,29 @@ class PipelineEvent(Base):
     stage: Mapped[str] = mapped_column(String(20))
     occurred_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
     connects_spent: Mapped[int | None] = mapped_column(Integer, nullable=True)
+
+
+class MarketplaceConnection(Base):
+    __tablename__ = "marketplace_connections"
+    user_id: Mapped[str] = mapped_column(
+        ForeignKey("users.id", ondelete="CASCADE"), primary_key=True
+    )
+    mode: Mapped[str] = mapped_column(String(30), default="manual")
+    event_cursor: Mapped[int] = mapped_column(Integer, default=0)
+    error: Mapped[str | None] = mapped_column(String(200), nullable=True)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
+class MarketplaceWrite(Base):
+    __tablename__ = "marketplace_writes"
+    __table_args__ = (UniqueConstraint("user_id", "idempotency_key", name="uq_marketplace_effect"),)
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=lambda: str(uuid4()))
+    user_id: Mapped[str] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True)
+    run_id: Mapped[str] = mapped_column(ForeignKey("agent_runs.id", ondelete="CASCADE"), index=True)
+    approval_id: Mapped[int] = mapped_column(ForeignKey("approval_audit.id"))
+    tool: Mapped[str] = mapped_column(String(40))
+    idempotency_key: Mapped[str] = mapped_column(String(200))
+    arguments: Mapped[dict] = mapped_column(JSON)
+    result: Mapped[dict] = mapped_column(JSON)
+    connects_spent: Mapped[int] = mapped_column(Integer, default=0)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)

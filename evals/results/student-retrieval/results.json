@@ -1,0 +1,490 @@
+{
+  "created_at_utc": "2026-11-10T19:10:55.052786+00:00",
+  "data_origin": "synthetic",
+  "inputs": [
+    {
+      "name": "cohort.json",
+      "sha256": "55f4238631f39180dfe88f814e2de398ef7cb9609204a394692fe7a82529a027"
+    }
+  ],
+  "metric": "student_retrieval_comparison",
+  "results": {
+    "embedding_model": "BAAI/bge-small-en-v1.5",
+    "limitations": "Controlled synthetic project-identity gold; not a human-labelled real-job dev set. No inference API charges; CPU/hardware costs not monetised.",
+    "reranker_model": "Xenova/ms-marco-MiniLM-L-6-v2",
+    "variants": {
+      "v0": {
+        "at_10": {
+          "by_persona": {
+            "ai_ml": {
+              "answerable": 20,
+              "macro_mrr_at_k": 0.96,
+              "macro_ndcg_at_k": 0.969342640361727,
+              "macro_precision_at_k": 0.10454545454545455,
+              "macro_recall_at_k": 1.0,
+              "n": 22,
+              "unanswerable": 2,
+              "unanswerable_with_retrieval": 2
+            },
+            "data_analyst": {
+              "answerable": 20,
+              "macro_mrr_at_k": 1.0,
+              "macro_ndcg_at_k": 1.0,
+              "macro_precision_at_k": 0.10454545454545455,
+              "macro_recall_at_k": 1.0,
+              "n": 22,
+              "unanswerable": 2,
+              "unanswerable_with_retrieval": 2
+            },
+            "full_stack": {
+              "answerable": 20,
+              "macro_mrr_at_k": 1.0,
+              "macro_ndcg_at_k": 1.0,
+              "macro_precision_at_k": 0.10454545454545455,
+              "macro_recall_at_k": 1.0,
+              "n": 22,
+              "unanswerable": 2,
+              "unanswerable_with_retrieval": 2
+            }
+          },
+          "k": 10,
+          "overall": {
+            "answerable": 60,
+            "macro_mrr_at_k": 0.9866666666666667,
+            "macro_ndcg_at_k": 0.9897808801205756,
+            "macro_precision_at_k": 0.10454545454545455,
+            "macro_recall_at_k": 1.0,
+            "n": 66,
+            "unanswerable": 6,
+            "unanswerable_with_retrieval": 6
+          }
+        },
+        "at_5": {
+          "by_persona": {
+            "ai_ml": {
+              "answerable": 20,
+              "macro_mrr_at_k": 0.96,
+              "macro_ndcg_at_k": 0.969342640361727,
+              "macro_precision_at_k": 0.2090909090909091,
+              "macro_recall_at_k": 1.0,
+              "n": 22,
+              "unanswerable": 2,
+              "unanswerable_with_retrieval": 2
+            },
+            "data_analyst": {
+              "answerable": 20,
+              "macro_mrr_at_k": 1.0,
+              "macro_ndcg_at_k": 1.0,
+              "macro_precision_at_k": 0.2090909090909091,
+              "macro_recall_at_k": 1.0,
+              "n": 22,
+              "unanswerable": 2,
+              "unanswerable_with_retrieval": 2
+            },
+            "full_stack": {
+              "answerable": 20,
+              "macro_mrr_at_k": 1.0,
+              "macro_ndcg_at_k": 1.0,
+              "macro_precision_at_k": 0.2090909090909091,
+              "macro_recall_at_k": 1.0,
+              "n": 22,
+              "unanswerable": 2,
+              "unanswerable_with_retrieval": 2
+            }
+          },
+          "k": 5,
+          "overall": {
+            "answerable": 60,
+            "macro_mrr_at_k": 0.9866666666666667,
+            "macro_ndcg_at_k": 0.9897808801205756,
+            "macro_precision_at_k": 0.2090909090909091,
+            "macro_recall_at_k": 1.0,
+            "n": 66,
+            "unanswerable": 6,
+            "unanswerable_with_retrieval": 6
+          }
+        },
+        "p50_seconds": 0.03987224999946193,
+        "p95_seconds": 0.049553050004760735
+      },
+      "v1": {
+        "at_10": {
+          "by_persona": {
+            "ai_ml": {
+              "answerable": 20,
+              "macro_mrr_at_k": 0.5376984126984127,
+              "macro_ndcg_at_k": 0.5984936850970733,
+              "macro_precision_at_k": 0.09090909090909091,
+              "macro_recall_at_k": 0.85,
+              "n": 22,
+              "unanswerable": 2,
+              "unanswerable_with_retrieval": 2
+            },
+            "data_analyst": {
+              "answerable": 20,
+              "macro_mrr_at_k": 0.5522817460317461,
+              "macro_ndcg_at_k": 0.6440491720937482,
+              "macro_precision_at_k": 0.1,
+              "macro_recall_at_k": 0.95,
+              "n": 22,
+              "unanswerable": 2,
+              "unanswerable_with_retrieval": 2
+            },
+            "full_stack": {
+              "answerable": 20,
+              "macro_mrr_at_k": 0.5676190476190477,
+              "macro_ndcg_at_k": 0.6506022124175426,
+              "macro_precision_at_k": 0.1,
+              "macro_recall_at_k": 0.95,
+              "n": 22,
+              "unanswerable": 2,
+              "unanswerable_with_retrieval": 2
+            }
+          },
+          "k": 10,
+          "overall": {
+            "answerable": 60,
+            "macro_mrr_at_k": 0.5525330687830687,
+            "macro_ndcg_at_k": 0.6310483565361213,
+            "macro_precision_at_k": 0.09696969696969697,
+            "macro_recall_at_k": 0.9166666666666666,
+            "n": 66,
+            "unanswerable": 6,
+            "unanswerable_with_retrieval": 6
+          }
+        },
+        "at_5": {
+          "by_persona": {
+            "ai_ml": {
+              "answerable": 20,
+              "macro_mrr_at_k": 0.5166666666666667,
+              "macro_ndcg_at_k": 0.5397363744528281,
+              "macro_precision_at_k": 0.14545454545454548,
+              "macro_recall_at_k": 0.675,
+              "n": 22,
+              "unanswerable": 2,
+              "unanswerable_with_retrieval": 2
+            },
+            "data_analyst": {
+              "answerable": 20,
+              "macro_mrr_at_k": 0.5166666666666667,
+              "macro_ndcg_at_k": 0.5520750787545914,
+              "macro_precision_at_k": 0.14545454545454548,
+              "macro_recall_at_k": 0.675,
+              "n": 22,
+              "unanswerable": 2,
+              "unanswerable_with_retrieval": 2
+            },
+            "full_stack": {
+              "answerable": 20,
+              "macro_mrr_at_k": 0.5533333333333333,
+              "macro_ndcg_at_k": 0.607049759204785,
+              "macro_precision_at_k": 0.17272727272727273,
+              "macro_recall_at_k": 0.825,
+              "n": 22,
+              "unanswerable": 2,
+              "unanswerable_with_retrieval": 2
+            }
+          },
+          "k": 5,
+          "overall": {
+            "answerable": 60,
+            "macro_mrr_at_k": 0.5288888888888889,
+            "macro_ndcg_at_k": 0.5662870708040681,
+            "macro_precision_at_k": 0.15454545454545457,
+            "macro_recall_at_k": 0.725,
+            "n": 66,
+            "unanswerable": 6,
+            "unanswerable_with_retrieval": 6
+          }
+        },
+        "p50_seconds": 0.054929350000747945,
+        "p95_seconds": 0.06835709999904793
+      },
+      "v2": {
+        "at_10": {
+          "by_persona": {
+            "ai_ml": {
+              "answerable": 20,
+              "macro_mrr_at_k": 0.8446428571428571,
+              "macro_ndcg_at_k": 0.8753572028827927,
+              "macro_precision_at_k": 0.10454545454545455,
+              "macro_recall_at_k": 1.0,
+              "n": 22,
+              "unanswerable": 2,
+              "unanswerable_with_retrieval": 2
+            },
+            "data_analyst": {
+              "answerable": 20,
+              "macro_mrr_at_k": 0.8125,
+              "macro_ndcg_at_k": 0.8608127539751068,
+              "macro_precision_at_k": 0.10454545454545455,
+              "macro_recall_at_k": 1.0,
+              "n": 22,
+              "unanswerable": 2,
+              "unanswerable_with_retrieval": 2
+            },
+            "full_stack": {
+              "answerable": 20,
+              "macro_mrr_at_k": 0.925,
+              "macro_ndcg_at_k": 0.9446394630357187,
+              "macro_precision_at_k": 0.10454545454545455,
+              "macro_recall_at_k": 1.0,
+              "n": 22,
+              "unanswerable": 2,
+              "unanswerable_with_retrieval": 2
+            }
+          },
+          "k": 10,
+          "overall": {
+            "answerable": 60,
+            "macro_mrr_at_k": 0.8607142857142858,
+            "macro_ndcg_at_k": 0.8936031399645394,
+            "macro_precision_at_k": 0.10454545454545455,
+            "macro_recall_at_k": 1.0,
+            "n": 66,
+            "unanswerable": 6,
+            "unanswerable_with_retrieval": 6
+          }
+        },
+        "at_5": {
+          "by_persona": {
+            "ai_ml": {
+              "answerable": 20,
+              "macro_mrr_at_k": 0.8375,
+              "macro_ndcg_at_k": 0.8586905362161261,
+              "macro_precision_at_k": 0.2,
+              "macro_recall_at_k": 0.95,
+              "n": 22,
+              "unanswerable": 2,
+              "unanswerable_with_retrieval": 2
+            },
+            "data_analyst": {
+              "answerable": 20,
+              "macro_mrr_at_k": 0.8125,
+              "macro_ndcg_at_k": 0.8608127539751068,
+              "macro_precision_at_k": 0.2090909090909091,
+              "macro_recall_at_k": 1.0,
+              "n": 22,
+              "unanswerable": 2,
+              "unanswerable_with_retrieval": 2
+            },
+            "full_stack": {
+              "answerable": 20,
+              "macro_mrr_at_k": 0.925,
+              "macro_ndcg_at_k": 0.9446394630357187,
+              "macro_precision_at_k": 0.2090909090909091,
+              "macro_recall_at_k": 1.0,
+              "n": 22,
+              "unanswerable": 2,
+              "unanswerable_with_retrieval": 2
+            }
+          },
+          "k": 5,
+          "overall": {
+            "answerable": 60,
+            "macro_mrr_at_k": 0.8583333333333333,
+            "macro_ndcg_at_k": 0.8880475844089838,
+            "macro_precision_at_k": 0.20606060606060608,
+            "macro_recall_at_k": 0.9833333333333333,
+            "n": 66,
+            "unanswerable": 6,
+            "unanswerable_with_retrieval": 6
+          }
+        },
+        "p50_seconds": 0.052202850001776824,
+        "p95_seconds": 0.0609958499953791
+      },
+      "v3": {
+        "at_10": {
+          "by_persona": {
+            "ai_ml": {
+              "answerable": 20,
+              "macro_mrr_at_k": 1.0,
+              "macro_ndcg_at_k": 1.0,
+              "macro_precision_at_k": 0.10454545454545455,
+              "macro_recall_at_k": 1.0,
+              "n": 22,
+              "unanswerable": 2,
+              "unanswerable_with_retrieval": 2
+            },
+            "data_analyst": {
+              "answerable": 20,
+              "macro_mrr_at_k": 1.0,
+              "macro_ndcg_at_k": 1.0,
+              "macro_precision_at_k": 0.10454545454545455,
+              "macro_recall_at_k": 1.0,
+              "n": 22,
+              "unanswerable": 2,
+              "unanswerable_with_retrieval": 2
+            },
+            "full_stack": {
+              "answerable": 20,
+              "macro_mrr_at_k": 1.0,
+              "macro_ndcg_at_k": 1.0,
+              "macro_precision_at_k": 0.10454545454545455,
+              "macro_recall_at_k": 1.0,
+              "n": 22,
+              "unanswerable": 2,
+              "unanswerable_with_retrieval": 2
+            }
+          },
+          "k": 10,
+          "overall": {
+            "answerable": 60,
+            "macro_mrr_at_k": 1.0,
+            "macro_ndcg_at_k": 1.0,
+            "macro_precision_at_k": 0.10454545454545455,
+            "macro_recall_at_k": 1.0,
+            "n": 66,
+            "unanswerable": 6,
+            "unanswerable_with_retrieval": 6
+          }
+        },
+        "at_5": {
+          "by_persona": {
+            "ai_ml": {
+              "answerable": 20,
+              "macro_mrr_at_k": 1.0,
+              "macro_ndcg_at_k": 1.0,
+              "macro_precision_at_k": 0.2090909090909091,
+              "macro_recall_at_k": 1.0,
+              "n": 22,
+              "unanswerable": 2,
+              "unanswerable_with_retrieval": 2
+            },
+            "data_analyst": {
+              "answerable": 20,
+              "macro_mrr_at_k": 1.0,
+              "macro_ndcg_at_k": 1.0,
+              "macro_precision_at_k": 0.2090909090909091,
+              "macro_recall_at_k": 1.0,
+              "n": 22,
+              "unanswerable": 2,
+              "unanswerable_with_retrieval": 2
+            },
+            "full_stack": {
+              "answerable": 20,
+              "macro_mrr_at_k": 1.0,
+              "macro_ndcg_at_k": 1.0,
+              "macro_precision_at_k": 0.2090909090909091,
+              "macro_recall_at_k": 1.0,
+              "n": 22,
+              "unanswerable": 2,
+              "unanswerable_with_retrieval": 2
+            }
+          },
+          "k": 5,
+          "overall": {
+            "answerable": 60,
+            "macro_mrr_at_k": 1.0,
+            "macro_ndcg_at_k": 1.0,
+            "macro_precision_at_k": 0.2090909090909091,
+            "macro_recall_at_k": 1.0,
+            "n": 66,
+            "unanswerable": 6,
+            "unanswerable_with_retrieval": 6
+          }
+        },
+        "p50_seconds": 3.0522475499965367,
+        "p95_seconds": 3.341676924997955
+      },
+      "v8": {
+        "at_10": {
+          "by_persona": {
+            "ai_ml": {
+              "answerable": 20,
+              "macro_mrr_at_k": 1.0,
+              "macro_ndcg_at_k": 1.0,
+              "macro_precision_at_k": 0.10454545454545455,
+              "macro_recall_at_k": 1.0,
+              "n": 22,
+              "unanswerable": 2,
+              "unanswerable_with_retrieval": 0
+            },
+            "data_analyst": {
+              "answerable": 20,
+              "macro_mrr_at_k": 1.0,
+              "macro_ndcg_at_k": 1.0,
+              "macro_precision_at_k": 0.10454545454545455,
+              "macro_recall_at_k": 1.0,
+              "n": 22,
+              "unanswerable": 2,
+              "unanswerable_with_retrieval": 0
+            },
+            "full_stack": {
+              "answerable": 20,
+              "macro_mrr_at_k": 1.0,
+              "macro_ndcg_at_k": 1.0,
+              "macro_precision_at_k": 0.10454545454545455,
+              "macro_recall_at_k": 1.0,
+              "n": 22,
+              "unanswerable": 2,
+              "unanswerable_with_retrieval": 0
+            }
+          },
+          "k": 10,
+          "overall": {
+            "answerable": 60,
+            "macro_mrr_at_k": 1.0,
+            "macro_ndcg_at_k": 1.0,
+            "macro_precision_at_k": 0.10454545454545455,
+            "macro_recall_at_k": 1.0,
+            "n": 66,
+            "unanswerable": 6,
+            "unanswerable_with_retrieval": 0
+          }
+        },
+        "at_5": {
+          "by_persona": {
+            "ai_ml": {
+              "answerable": 20,
+              "macro_mrr_at_k": 1.0,
+              "macro_ndcg_at_k": 1.0,
+              "macro_precision_at_k": 0.2090909090909091,
+              "macro_recall_at_k": 1.0,
+              "n": 22,
+              "unanswerable": 2,
+              "unanswerable_with_retrieval": 0
+            },
+            "data_analyst": {
+              "answerable": 20,
+              "macro_mrr_at_k": 1.0,
+              "macro_ndcg_at_k": 1.0,
+              "macro_precision_at_k": 0.2090909090909091,
+              "macro_recall_at_k": 1.0,
+              "n": 22,
+              "unanswerable": 2,
+              "unanswerable_with_retrieval": 0
+            },
+            "full_stack": {
+              "answerable": 20,
+              "macro_mrr_at_k": 1.0,
+              "macro_ndcg_at_k": 1.0,
+              "macro_precision_at_k": 0.2090909090909091,
+              "macro_recall_at_k": 1.0,
+              "n": 22,
+              "unanswerable": 2,
+              "unanswerable_with_retrieval": 0
+            }
+          },
+          "k": 5,
+          "overall": {
+            "answerable": 60,
+            "macro_mrr_at_k": 1.0,
+            "macro_ndcg_at_k": 1.0,
+            "macro_precision_at_k": 0.2090909090909091,
+            "macro_recall_at_k": 1.0,
+            "n": 66,
+            "unanswerable": 6,
+            "unanswerable_with_retrieval": 0
+          }
+        },
+        "p50_seconds": 6.255259199999273,
+        "p95_seconds": 10.7149607249994
+      }
+    },
+    "warmup_seconds": 0.9148946999994223
+  },
+  "schema_version": 1
+}

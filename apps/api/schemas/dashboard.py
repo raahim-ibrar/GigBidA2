@@ -11,7 +11,7 @@ Stage = Literal["submitted", "viewed", "replied", "interview", "hired", "lost"]
 class ProviderReceipt(Contract):
     event_id: str = Field(min_length=1, max_length=200)
     proposal_id: str = Field(min_length=1, max_length=200)
-    source: Literal["gigsim", "upwork"]
+    source: Literal["gigsim", "upwork", "student_sim"]
     stage: Stage
     occurred_at: datetime
     connects_spent: int | None = Field(default=None, strict=True, ge=0, le=10000)
@@ -59,6 +59,7 @@ class RunMeasurement(Contract):
 
 class CategoryRate(Contract):
     category: str
+    provider: str = "unknown"
     submitted: int
     replied: int
     hired: int

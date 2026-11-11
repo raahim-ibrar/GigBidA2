@@ -27,8 +27,12 @@ class AgentConfig:
         self.output_tokens = self.profile.get("output_tokens", 1500)
         self.retrieval = self.data["retrieval"]
         self.policy = self.data["policy"]
+        self.prompts = {
+            role: (ROOT / "prompts" / f"{role}.md").read_text(encoding="utf-8")
+            for role in self.models
+        }
 
     def prompt(self, role: str) -> str:
         if role not in self.models:
             raise ValueError("Unknown agent role")
-        return (ROOT / "prompts" / f"{role}.md").read_text(encoding="utf-8")
+        return self.prompts[role]

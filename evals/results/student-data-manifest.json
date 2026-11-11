@@ -1,0 +1,53 @@
+{
+  "source": "asaniczka/upwork-job-postings-dataset-2024-50k-records",
+  "source_version": 1,
+  "source_url": "https://www.kaggle.com/datasets/asaniczka/upwork-job-postings-dataset-2024-50k-records",
+  "license": "ODC Attribution License (ODC-By)",
+  "attribution": "Asaniczka, Upwork Job Postings Dataset 2024",
+  "archive_sha256": "3f40f06c267f6429e6c9fdd9a81c0c9bb3a3c9eb85edadb1d6638394e9ce5b35",
+  "output_sha256": "5938ca6deff4153f8a86f726e70da3e2104b773bb9f5c1afcf069ac03a779022",
+  "seed": 4016,
+  "counts": {
+    "input_rows": 53058,
+    "dropped_outside_personas": 42185,
+    "redacted_records": 10,
+    "dropped_unknown_budget": 8196,
+    "dropped_text_bounds": 101,
+    "dropped_duplicates": 23
+  },
+  "eligible_by_persona": {
+    "full_stack": 1125,
+    "data_analyst": 953,
+    "ai_ml": 475
+  },
+  "selected_by_persona": {
+    "ai_ml": 200,
+    "full_stack": 200,
+    "data_analyst": 200
+  },
+  "real_fields": [
+    "title",
+    "base description",
+    "published date",
+    "budget values"
+  ],
+  "synthetic_or_derived_fields": [
+    "category",
+    "skills",
+    "client identity/history",
+    "Connects cost",
+    "USD currency assumption",
+    "screening questions",
+    "controlled attacks",
+    "scenario labels",
+    "all client replies/hires/outcomes"
+  ],
+  "limitations": [
+    "Historical February 2024 jobs, not live listings",
+    "Persona assignment is keyword based",
+    "Budgets are client quotes, not verified fair-price bands",
+    "Original record currency is not exported; simulator assumes USD",
+    "Scenario labels do not establish whether original job authors were fraudulent",
+    "Database license is uploader-declared; underlying job text may have additional rights"
+  ]
+}

@@ -13,11 +13,14 @@ from mcp.shared.memory import create_connected_server_and_client_session
 from sqlalchemy.engine import make_url
 from sqlalchemy.schema import CreateSchema, DropSchema
 
+from agent.marketplace_client import MarketplaceMCP
 from agent.runtime import process_bid
 from agent.workspace_client import WorkspaceMCP
 from apps.api.database import make_engine
 from apps.api.main import create_app
 from apps.api.settings import Settings
+from mcp_servers.marketplace.factory import create_marketplace_server
+from mcp_servers.marketplace.service import MarketplaceService
 from mcp_servers.workspace.factory import create_workspace_server
 from mcp_servers.workspace.service import WorkspaceService
 from tests.portfolio_fixtures import portfolio_fixture
@@ -40,7 +43,9 @@ if __name__ == "__main__":
             (work / "browser-test-schema.txt").write_text(schema, encoding="utf-8")
         settings = Settings(
             database_url=database_url,
-            web_origin="http://127.0.0.1:3000",
+            web_origin="http://127.0.0.1:3002",
+            student_sim_url="http://127.0.0.1:8086",
+            student_sim_api_key="browser_sim_only",
         )
         engine = make_engine(settings.database_url)
         cfg = Config("alembic.ini")
@@ -72,7 +77,13 @@ if __name__ == "__main__":
             def run():
                 async def process():
                     server = create_workspace_server(WorkspaceService(engine), tenant, run_id)
-                    async with create_connected_server_and_client_session(server) as session:
+                    marketplace = create_marketplace_server(
+                        MarketplaceService(engine, settings, tenant, run_id), tenant, run_id
+                    )
+                    async with (
+                        create_connected_server_and_client_session(server) as session,
+                        create_connected_server_and_client_session(marketplace) as market_session,
+                    ):
                         return await process_bid(
                             engine,
                             settings,
@@ -81,6 +92,7 @@ if __name__ == "__main__":
                             models_factory=BrowserModels,
                             portfolio_reader=Reader(),
                             workspace_reader=WorkspaceMCP(session),
+                            marketplace_reader=MarketplaceMCP(market_session),
                         )
 
                 with asyncio.Runner(loop_factory=asyncio.SelectorEventLoop) as runner:
@@ -97,7 +109,7 @@ if __name__ == "__main__":
             uvicorn.run(
                 app,
                 host="127.0.0.1",
-                port=8000,
+                port=8002,
             )
         finally:
             service.index.client.close()

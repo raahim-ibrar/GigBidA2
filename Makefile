@@ -9,7 +9,7 @@ test:
 eval:
 	$(PYTHON) -m evals.runners.suite $(EVAL_ARGS)
 seed:
-	$(PYTHON) scripts/seed.py
+	$(PYTHON) -m scripts.seed
 demo:
 	$(PYTHON) scripts/demo.py
 lint:

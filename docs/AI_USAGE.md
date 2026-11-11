@@ -29,3 +29,5 @@ transaction. Store setup was moved to application/worker initialization and boun
 with timeouts. The blocked connection belonged to a disposable test schema; only that
 test session was released. SQLite verification also exposed lost timezone information
 on an idempotent draft response; that read contract now normalizes timestamps to UTC.
+
+| 2026-11-11 | Codex | Student-built simulator, approval-gated Marketplace MCP, event/message reconciliation, scheduled imports, dark purple frontend, approved Kaggle preprocessing, fictional persona generator, controlled retrieval experiments, model-study runner, regression tests and documentation. Model failures and missing human/external evidence are retained. |

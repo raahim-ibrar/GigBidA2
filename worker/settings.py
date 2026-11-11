@@ -18,6 +18,7 @@ from apps.api.settings import Settings
 from rag.runtime import build_portfolio
 from rag.service import MissingEvidence
 from worker.search_schedules import check_search_schedules
+from worker.simulator_sync import reconcile_simulator
 
 
 async def startup(ctx):
@@ -99,6 +100,7 @@ class WorkerSettings:
         cron(reconcile_portfolio, second={0, 30}, run_at_startup=True),
         cron(reconcile_runs, second={10, 40}, run_at_startup=True),
         cron(check_search_schedules, second=20, run_at_startup=True),
+        cron(reconcile_simulator, second={5, 35}, run_at_startup=True),
     ]
     on_startup = startup
     on_shutdown = shutdown

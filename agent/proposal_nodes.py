@@ -79,10 +79,12 @@ class ProposalNodes:
         *,
         execute_local: Callable[[dict], Awaitable[dict]],
         load_memory=None,
+        marketplace=None,
     ):
         self.models, self.portfolio, self.config = models, portfolio, config
         self.execute_local = execute_local
         self.load_memory = load_memory
+        self.marketplace = marketplace
 
     def mapping(self):
         return {
@@ -106,16 +108,20 @@ class ProposalNodes:
 
     async def scout(self, state):
         raw = state["raw_job"]
-        if raw.get("source") != "manual":
-            raise ReviewRequired(
-                "Connect the supplied marketplace adapter before importing its jobs"
-            )
+        if raw.get("source") == "student_sim":
+            if not self.marketplace:
+                raise ReviewRequired("Connect the student simulator before analysing its jobs")
+            current = await self.marketplace.job(raw["provider_job_id"])
+            if current.get("id") != raw["provider_job_id"]:
+                raise ReviewRequired("Simulator job identity changed")
+        elif raw.get("source") != "manual":
+            raise ReviewRequired("This marketplace source is not supported")
         if not raw.get("title", "").strip() or not raw.get("description", "").strip():
             raise ReviewRequired("A job title and description are required")
         if len(json.dumps(raw)) > 20000:
             raise ReviewRequired("Shorten the job post before analysing it")
         memory = await self.load_memory() if self.load_memory else {}
-        return {"status": "analysing", "memory": memory, "events": ["manual_job_loaded"]}
+        return {"status": "analysing", "memory": memory, "events": ["job_loaded"]}
 
     async def analyst(self, state):
         job = await self.models.complete("analyst", {"job": state["raw_job"]}, JobSpec)
@@ -129,6 +135,7 @@ class ProposalNodes:
                 "billing_type": raw.get("billing_type", "unknown"),
                 "budget_min": raw.get("budget_min"),
                 "budget_max": raw.get("budget_max"),
+                "screening_questions": raw.get("screening_questions", job.screening_questions),
             }
         )
         if not job.requirements or len(job.requirements) > 20:
@@ -137,9 +144,14 @@ class ProposalNodes:
 
     async def risk(self, state):
         raw = state["raw_job"]
+        history = await self.marketplace.client(raw["client_id"]) if self.marketplace else None
         report = await self.models.complete(
             "risk",
-            {"job": raw, "client_history": None, "history_status": "unavailable"},
+            {
+                "job": raw,
+                "client_history": history,
+                "history_status": "synthetic student simulator" if history else "unavailable",
+            },
             RiskReport,
         )
         text = json.dumps(raw)
@@ -155,7 +167,9 @@ class ProposalNodes:
                 flags=list(dict.fromkeys(flags)),
                 reasons=[
                     *report.reasons,
-                    "Client history is unavailable for a manually entered job.",
+                    "Client history is synthetic student-simulator data."
+                    if history
+                    else "Client history is unavailable for a manually entered job.",
                 ],
             ),
             "events": ["risk_assessed"],
@@ -211,7 +225,11 @@ class ProposalNodes:
                 reasons=[
                     f"Portfolio evidence covers {len(requirements) - len(gaps)}"
                     f"/{len(requirements)} "
-                    "requirements; local draft review only.",
+                    + (
+                        "requirements; student simulator submission requires approval."
+                        if self.marketplace
+                        else "requirements; local draft review only."
+                    ),
                 ],
             )
         return {"fit": fit, "decision": decision, "events": ["bid_decided"]}
@@ -231,15 +249,25 @@ class ProposalNodes:
             amount = max(amount, floor)
         if amount > Decimal(str(job.budget_max)):
             raise ReviewRequired("The client's hourly budget is below your minimum rate")
+        connects = state["raw_job"].get("connects_cost") if self.marketplace else None
+        if self.marketplace:
+            balance = await self.marketplace.balance()
+            if not isinstance(connects, int) or connects < 0 or connects > balance["connects"]:
+                raise ReviewRequired("Student-simulator Connects balance is insufficient")
         return {
             "price": PriceQuote(
                 amount=float(amount),
                 billing_type=job.billing_type,
-                connects=None,
+                connects=connects,
                 rationale="Provisional quote from the entered client budget"
                 + (" and your hourly rate floor." if job.billing_type == "hourly" else ".")
-                + " Market history and Connects cost are unavailable; "
-                "review scope and price manually.",
+                + (
+                    " Connects cost and balance verified against the student simulator; "
+                    "market statistics remain synthetic."
+                    if self.marketplace
+                    else " Market history and Connects cost are unavailable; "
+                    "review scope and price manually."
+                ),
             ),
             "events": ["price_proposed"],
         }
@@ -284,6 +312,7 @@ class ProposalNodes:
                 "critique": state["critique"].model_dump() if state.get("critique") else None,
                 "previous_draft": state["draft"].model_dump() if state.get("draft") else None,
                 "promoted_memory": state.get("memory", {}),
+                "proposal_strategy": state.get("proposal_strategy", "problem_first"),
             },
             ProposalDraft,
         )
@@ -346,7 +375,12 @@ class ProposalNodes:
                 cited = " ".join(item.text for item in evidence if item.id in ids)
                 # A conservative extra check: numerical experience/results must appear
                 # in cited text, even if the probabilistic verifier said 'supported'.
-                numbers = re.findall(r"\b\d+(?:[.,]\d+)*%?", text)
+                # A source UUID cited in prose is an identifier, not a metric claim.
+                # Only remove exact IDs from the trusted evidence set before checking numbers.
+                numeric_text = text
+                for source_id in valid:
+                    numeric_text = numeric_text.replace(source_id, "")
+                numbers = re.findall(r"\b\d+(?:[.,]\d+)*%?", numeric_text)
                 cited_numbers = set(re.findall(r"\b\d+(?:[.,]\d+)*%?", cited))
                 supported = set(numbers) <= cited_numbers
                 if not supported:
@@ -435,6 +469,33 @@ class ProposalNodes:
 
     async def preview(self, state):
         digest = draft_digest(state["draft"])
+        if self.marketplace:
+            from agent.marketplace_port import ProposalWrite
+
+            request = ProposalWrite(
+                job_id=state["raw_job"]["provider_job_id"],
+                text=state["draft"].text,
+                screening_answers=state["draft"].screening_answers,
+                bid_amount=state["price"].amount,
+                idempotency_key=f"student-proposal:{state['run_id']}:{digest}",
+            )
+            result = await self.marketplace.proposal(request)
+            expected = {**request.arguments(), "draft_digest": digest}
+            if (
+                result.get("arguments") != expected
+                or result.get("connects_cost") != state["price"].connects
+            ):
+                raise ReviewRequired("Provider preview changed; regenerate the quote")
+            return {
+                "preview": WritePreview(
+                    tool="submit_proposal",
+                    arguments=expected,
+                    connects_cost=result["connects_cost"],
+                    idempotency_key=request.idempotency_key,
+                ),
+                "status": "awaiting_approval",
+                "events": ["student_submission_previewed"],
+            }
         return {
             "preview": WritePreview(
                 tool="save_local_draft",
@@ -453,6 +514,22 @@ class ProposalNodes:
 
     async def execute(self, state):
         preview = state["preview"]
+        if self.marketplace:
+            from agent.marketplace_port import ProposalWrite
+
+            if state["approval"].action != "approve" or preview.tool != "submit_proposal":
+                raise ReviewRequired("Simulator submission requires exact human approval")
+            request = ProposalWrite(
+                **{key: value for key, value in preview.arguments.items() if key != "draft_digest"},
+                idempotency_key=preview.idempotency_key,
+                dry_run=False,
+            )
+            if preview.arguments.get("draft_digest") != draft_digest(state["draft"]):
+                raise ReviewRequired("Proposal changed after approval")
+            for item in state.get("evidence", []):
+                await self.portfolio.read(item.id)
+            await self.marketplace.proposal(request)
+            return {"status": "submitted", "events": ["student_proposal_submitted"]}
         if state["approval"].action != "approve" or preview.tool != "save_local_draft":
             raise ReviewRequired("Only an explicitly approved local draft can be saved")
         if preview.arguments.get("draft_digest") != draft_digest(state["draft"]):

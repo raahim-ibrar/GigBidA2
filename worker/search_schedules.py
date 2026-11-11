@@ -1,8 +1,4 @@
-"""Durable polling configuration; no search result is invented while the adapter is absent.
-
-The worker checks prerequisites on schedule. Provider reads and result ingestion must
-be implemented against the supplied GigSim contract before this can fetch jobs.
-"""
+"""Durable, bounded simulator searches with opt-in analysis and no automatic writes."""
 
 from datetime import UTC, timedelta
 
@@ -10,7 +6,15 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from agent.run_store import RunConflict, RunNotFound
-from apps.api.models import FreelancerProfile, SearchSchedule, User, utcnow
+from apps.api.models import (
+    AgentRun,
+    FreelancerProfile,
+    JobRecord,
+    MarketplaceConnection,
+    SearchSchedule,
+    User,
+    utcnow,
+)
 from apps.api.schemas.schedules import ScheduleView
 
 
@@ -28,9 +32,10 @@ class SearchSchedules:
         return ScheduleView(
             version=row.version if row else 0,
             enabled=row.enabled if row else False,
+            auto_analyse=row.auto_analyse if row else False,
             interval_minutes=row.interval_minutes if row else 60,
             queries=queries,
-            status=("no_queries" if not queries else "waiting_provider")
+            status=("no_queries" if not queries else row.status)
             if row and row.enabled
             else "paused",
             next_check_at=aware(row.next_check_at) if row else None,
@@ -60,13 +65,15 @@ class SearchSchedules:
                 row = SearchSchedule(user_id=tenant, version=0)
                 db.add(row)
             row.enabled, row.interval_minutes = body.enabled, body.interval_minutes
+            row.auto_analyse = body.auto_analyse
             row.version += 1
             row.next_check_at = self.clock() if body.enabled else None
             row.status = "waiting_provider" if body.enabled else "paused"
             return self._view(db, tenant, row)
 
-    def check_due(self):
+    def check_due(self, *, collect=False):
         now = self.clock()
+        work = []
         with Session(self.engine) as db, db.begin():
             rows = db.scalars(
                 select(SearchSchedule)
@@ -80,14 +87,86 @@ class SearchSchedules:
                 row.status = (
                     "waiting_provider" if profile and profile.saved_searches else "no_queries"
                 )
+                connection = db.get(MarketplaceConnection, row.user_id)
+                if (
+                    profile
+                    and profile.saved_searches
+                    and connection
+                    and connection.mode == "student_sim"
+                ):
+                    row.status = "queued"
+                    work.append((row.user_id, profile.saved_searches[:5], row.auto_analyse))
                 row.last_checked_at = now
                 row.next_check_at = now + timedelta(minutes=row.interval_minutes)
                 # Version covers worker changes too; stale UI edits must reload.
                 row.version += 1
-            return len(rows)
+            return work if collect else len(rows)
+
+    def finish(self, tenant, status):
+        with Session(self.engine) as db, db.begin():
+            row = db.get(SearchSchedule, tenant)
+            if row and row.enabled:
+                row.status = status
+                row.version += 1
 
 
 async def check_search_schedules(ctx):
     import asyncio
+    from uuid import NAMESPACE_URL, uuid5
 
-    return await asyncio.to_thread(SearchSchedules(ctx["engine"]).check_due)
+    from mcp.shared.memory import create_connected_server_and_client_session
+
+    from agent.marketplace_client import MarketplaceMCP
+    from agent.run_store import RunStore
+    from apps.api.marketplace import MarketplaceAccounts
+    from mcp_servers.marketplace.factory import create_marketplace_server
+    from mcp_servers.marketplace.service import MarketplaceService
+
+    engine, settings = ctx["engine"], ctx["settings"]
+    schedules, accounts = SearchSchedules(engine), MarketplaceAccounts(engine, settings)
+    work = await asyncio.to_thread(schedules.check_due, collect=True)
+    imported = 0
+    for tenant, queries, analyse in work:
+        try:
+            service = MarketplaceService(engine, settings, tenant, adapter=accounts.adapter(tenant))
+            with Session(engine) as db:
+                existing = set(db.scalars(select(JobRecord.id).where(JobRecord.user_id == tenant)))
+            new_jobs = []
+            server = create_marketplace_server(service, tenant)
+            async with create_connected_server_and_client_session(server) as session:
+                for query in queries:
+                    result = await MarketplaceMCP(session).search(query, 20)
+                    for raw in result["items"]:
+                        job = await asyncio.to_thread(accounts.import_job, tenant, raw)
+                        if job.id not in existing:
+                            existing.add(job.id)
+                            new_jobs.append(job)
+            imported += len(new_jobs)
+            if analyse and new_jobs:
+                # At most one new analysis per account/tick. No submission is authorized here.
+                job = new_jobs[0]
+                with Session(engine) as db:
+                    known = db.scalar(
+                        select(AgentRun.id).where(
+                            AgentRun.user_id == tenant,
+                            AgentRun.job_id == job.id,
+                        )
+                    )
+                if not known:
+                    run = await asyncio.to_thread(
+                        RunStore(engine).create_run,
+                        tenant,
+                        job.id,
+                        str(uuid5(NAMESPACE_URL, "saved-search:" + tenant + ":" + job.id)),
+                    )
+                    await ctx["redis"].enqueue_job(
+                        "run_bid", tenant, run.id, _job_id=f"bid:{run.id}"
+                    )
+            await asyncio.to_thread(schedules.finish, tenant, "idle")
+        except Exception:
+            # The already-reserved next tick bounds retries, including 429/503 outages.
+            await asyncio.to_thread(schedules.finish, tenant, "unavailable")
+            await asyncio.to_thread(
+                accounts.failure, tenant, "Scheduled simulator search unavailable"
+            )
+    return {"accounts": len(work), "imported": imported}

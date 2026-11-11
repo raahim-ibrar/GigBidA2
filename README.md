@@ -1,113 +1,112 @@
 # GigBid
 
-A freelancer copilot that will find jobs, assess risk and fit, draft evidence-grounded proposals, and pause for human approval before any external write.
+A freelancer workspace for finding suitable jobs, drafting evidence-backed proposals and
+reviewing every outgoing action. Built with LangGraph, MCP, FastAPI and Next.js.
 
-**Stage: local proposal and conversation workflows.** Accounts, portfolio retrieval, manual jobs, proposal/reply agents, durable review, approved local drafts, calendar options, retry handling, pipeline and activity analytics are implemented. Offline evaluation and A/B analysis tools are ready for recorded inputs. Marketplace adapters, actual research experiments and public deployment remain unfinished. No graded LLM results or real marketplace outcomes are claimed.
+![GigBid dark workspace](docs/images/workspace-dark.png)
 
-## Start here
+**Working locally:** accounts, portfolios, durable proposal/reply review, the student-built
+marketplace simulator, scheduled job imports, pipeline, analytics and a responsive dark UI.
+Public deployment and parts of the research programme remain unfinished. No real Upwork
+client is contacted, and simulated replies or hires are not real business outcomes.
 
-- [Understand the project](docs/WALKTHROUGH.md): a plain-language explanation of the parts.
-- [Implementation status](docs/STATUS.md): what works, what is pending, and the next build order.
-- [Architecture](docs/ARCHITECTURE.md): graphs, ports, tools and persistence boundaries.
-- [Runbook](docs/RUNBOOK.md): local startup and service limitations.
-- [Evaluation guide](docs/EVALUATION.md): validated inputs, metrics, gates and experiment limitations.
+## Run
 
-## Local setup
-
-Requirements: Python 3.11-3.13, Node.js 22+, and uv. Docker Desktop is needed for Compose.
-
-```powershell
-# Run inside the gigbid repository.
-Copy-Item .env.example .env
+```text
 uv sync --frozen --extra dev
-uv run python scripts/export_openapi.py
-cd apps/web
-npm ci
-npm run generate:api
-npm run dev
-```
-
-In a second terminal at the repository root:
-
-```powershell
-uv run alembic upgrade head
-uv run uvicorn apps.api.main:app --reload
-```
-
-Postgres must be running first. Start only that service with `docker compose --project-directory . -f infra/docker-compose.yml up -d postgres`. Full Compose startup applies migrations automatically before the API starts.
-
-Open the frontend at http://localhost:3000 and API documentation at http://localhost:8000/docs.
-Create an account at `/sign-in`, configure your profile at `/onboarding`, and upload CVs/case studies at `/portfolio`. Add a manual job at `/inbox`; open its run to review evidence, edit, reject or approve a local draft. `/messages` handles manually entered client conversations and approved local email drafts. `/runs` lists saved runs and recovery controls. `/pipeline` shows local drafts and recorded provider stages; `/analytics` shows actual activity and distinguishes unavailable measurements. `/health/ready` checks database access and core migrations.
-
-For portfolio indexing, start `redis`, `qdrant` and `worker` with Compose. The first indexing/search downloads CPU open models into the shared model cache. On Windows, use the Linux Docker worker; Arq's native shutdown uses Unix signals. The browser shows queued/indexing/failed/ready states, and the worker recovers saved queued uploads after a restart.
-
-Proposal agents use native Ollama by default. Pull the candidate models named in `agent/config.yaml`: `qwen3.5:4b`, `qwen3:8b` and the eligible-role fallback `llama3.2:1b`. The Docker worker reaches native Ollama through `WORKER_OLLAMA_BASE_URL`; `localhost` inside the worker points to the worker itself. See the runbook for optional container inference.
-
-## Checks
-
-```powershell
-uv run pytest
-uv run ruff check .
-uv run python scripts/check_structure.py
-cd apps/web
-npm run typecheck
-npm run build
-npx playwright install chromium
-npm run test:e2e
-```
-
-Tests cover accounts, tenant isolation, retrieval, graph/MCP contracts, Postgres pause/resume, stale approvals, worker cancellation and idempotent local commits. Browser tests cover account/profile/portfolio flows and local proposal approve/reject/edit/compliance flows. Set `GIGBID_TEST_DATABASE_URL` for disposable Postgres schemas; proposal browser tests require it. SQLite supports the other isolated tests. Role and embedding fixtures in browser tests measure UI/control behavior, not model quality. One marketplace-outage browser flow remains explicitly pending.
-
-Compose configuration:
-
-```powershell
-docker compose --project-directory . -f infra/docker-compose.yml config --quiet
+python -m scripts.download_student_data
+# Copy .env.example to .env and configure local values.
 docker compose --project-directory . -f infra/docker-compose.yml up --build
 ```
 
-Default Compose services are web, API, worker, Postgres, Redis and Qdrant. Ollama is available under the optional `container-inference` profile; its host port is 11435 so it does not conflict with native Ollama on 11434. No inference models are downloaded automatically. GigSim requires an instructor image. MCP HTTP transport stays disabled until bearer authentication exists; agents use the tenant-bound Portfolio server over stdio.
+The prepared catalogue contains 600 historical job texts with clearly labelled synthetic
+context. Without prepared data, the simulator uses fully synthetic jobs and identifies that
+in `/health`. See [the data card](docs/DATA_CARD.md) for licenses, attribution and limitations.
+The original instructor GigSim was not delivered; `simulator/` is our independent implementation.
 
-## What the skeleton contains
+Open [the app](http://localhost:3000). Create an account, upload evidence, and connect the
+student simulator from the inbox or Settings. Search jobs, open one and start analysis.
+Review its evidence and exact preview before approving. Use Sync simulator activity to
+import lifecycle events and client replies. Every reply requires another approval.
 
-- FastAPI accounts, profiles, portfolio, manual jobs, durable runs, approvals, local drafts and SSE.
-- Next.js account/profile/portfolio forms, inbox, job detail, proposal/reply review, pipeline, analytics and run activity.
-- Generated API types, rather than a handwritten copy of the API schema.
-- Pydantic handoffs and typed graph state.
-- Bid and conversation StateGraph business nodes, parallel analysis, bounded Critic revisions, edit/reverify interrupts, durable budgets and bounded explicit checkpoint retries.
-- Three official-SDK MCP server registrations, schemas, resources, prompt template and contract snapshot.
-- A marketplace interface with GigSim and Upwork adapter stubs.
-- Local Workspace MCP tools with approved calendar/draft writes and idempotent audit receipts.
-- PDF/Markdown/text ingestion and implemented V0, V1, V2, V3 and V8 retrieval components. V8 uses a bounded LangGraph retrieve/grade/correct loop.
-- Portfolio source metadata includes persona, type, project, skills, date, industry and proposal outcome; retrieved chunks retain source IDs and PDF pages.
-- Sentence claim verification and rule-promoted LangGraph style/outcome memory are implemented. Settings exposes edit history, confirmation and removal. Outcome ingestion still requires the real marketplace adapter; calibration and graded evaluations remain pending.
-- Docker and CI scaffolding, pinned dependencies, and uv/npm lockfiles.
-- Strict recorded-input scoring for retrieval, decisions, judge calibration, simulator outcomes, tool/orchestration comparisons and ablations; seeded X2 plans and A/B analysis. These do not replace actual experiment execution.
+The worker normally calls native Ollama at `host.docker.internal:11434`. Pull the models in
+`agent/config.yaml` first. Optional container inference runs with the `container-inference`
+profile. Models, downloads and queued indexing take time; none of the tests below prove
+proposal quality. [Runbook](docs/RUNBOOK.md) and [implementation status](docs/STATUS.md).
+
+Create separate fictional reviewer accounts and portfolios with `python -m scripts.seed`.
+Private generated credentials stay in ignored `work/demo-accounts.json`; never publish them.
 
 ## Architecture
 
 ```mermaid
 flowchart LR
-    Web[Next.js UI] --> API[FastAPI]
-    API --> Queue[Redis / Arq]
-    Queue --> Graph[LangGraph]
-    Graph --> MCP[MCP tools]
-    MCP --> Portfolio[Portfolio / Qdrant / BM25]
-    MCP --> Port[Marketplace port]
-    Port --> GigSim[GigSim adapter]
-    Port --> Upwork[Official Upwork MCP adapter]
-    Graph --> PG[Postgres checkpoints]
-    Graph --> Approval[Human interrupt]
-    Approval --> API
+  UI[Next.js workspace] --> API[FastAPI / sessions / CSRF]
+  API --> Redis[Redis + Arq]
+  Redis --> Graph[Durable bid + conversation graphs]
+  Graph --> MCP[Tenant-bound MCP capabilities]
+  MCP --> RAG[Portfolio / BGE / Qdrant / BM25 / MiniLM]
+  MCP --> Market[Marketplace port / student simulator]
+  MCP --> Workspace[Local calendar + drafts]
+  Graph --> PG[Postgres checkpoints + audit + memory ledger]
+  Graph --> Review[Human interrupt: approve / edit / reject]
+  Review --> API
 ```
 
-## Assignment results and portfolio deliverables
+The Analyst, Risk Assessor and Matcher branches run in parallel. Typed handoffs, evidence
+re-reads, bounded Critic loops, token/step limits and checkpointed approvals govern execution.
+An approval binds a version, interrupt ID, digest and exact write payload. The simulator's
+idempotency receipt prevents duplicate debits; SQL reconciliation preserves observed effects.
+[Rendered graphs](docs/GRAPHS.md) · [Architecture](docs/ARCHITECTURE.md) · [Tools](docs/TOOLS.md).
 
-Not produced yet: demo GIF, public URL, reviewer account, trace links, RAG and orchestration results tables, tool-design study, report, published Portfolio MCP package, technical write-up, and demo video. `evals/results/` is intentionally empty. Never report fixture tests as experimental results.
+## Measured retrieval
 
-The document says GigSim, persona corpora, the policy pack and labelled dev sets are provided separately. This repository supplies the code skeleton ourselves. If those assets are not provided, clarify their expected source with the instructor; do not silently replace grading assets with invented equivalents.
+Controlled synthetic study: 60 answerable project tasks and six unrelated tasks, with real
+BGE-small embeddings and MiniLM cross-encoder inference. This is easier than independently
+labelled real job relevance. Source: [results.json](evals/results/student-retrieval/results.json).
 
-Model names in `agent/config.yaml` are candidate defaults, not an evaluation-backed selection. Open models are mandatory for the deployed profile. Google API access may be used for hosted Gemma when supported; Google credentials are not needed to inspect this skeleton.
+| Variant | Recall@5 | MRR@5 | nDCG@10 | p95 seconds | Unrelated tasks retrieving evidence |
+|---|---:|---:|---:|---:|---:|
+| V0 dense | 1.000 | 0.987 | 0.990 | 0.050 | 6/6 |
+| V1 decomposition | 0.725 | 0.529 | 0.631 | 0.068 | 6/6 |
+| V2 hybrid | 0.983 | 0.858 | 0.894 | 0.061 | 6/6 |
+| V3 hybrid + rerank | 1.000 | 1.000 | 1.000 | 3.342 | 6/6 |
+| V8 corrective | 1.000 | 1.000 | 1.000 | 10.715 | 0/6 |
 
-## AI assistance
+The hypothesis that reranking improves recall over V0 was not supported here. V3 improved
+ordering; V8 improved abstention at greater latency. The declared recall/ordering/latency
+selection rule chooses V3. This does not establish better client reply rates.
 
-See [AI_USAGE](docs/AI_USAGE.md). The author must understand and verify the eventual implementation and measured results.
+The two-model graph study is ongoing. The small all-role configuration failed grounding on
+most positive jobs; those failures are retained. See [measured results](docs/RESULTS.md),
+[study plan](evals/STUDENT_RESEARCH_PLAN.md), and [evaluation guide](docs/EVALUATION.md).
+The 40-task tool-design and 50-job orchestration comparisons are not yet completed.
+Human judge calibration, blind classmate ratings and hidden-test results are not fabricated.
+
+## Verification
+
+```text
+python -m pytest
+python -m ruff check .
+python scripts/check_structure.py
+python scripts/render_graphs.py --check
+cd apps/web
+npm run typecheck
+npm run build
+npm run test:e2e
+```
+
+Set `GIGBID_TEST_DATABASE_URL` for isolated Postgres schemas. The latest full backend run
+passed 149 tests with four opt-in skips. Browser checks passed the 14 existing flows and
+then the added simulator outage-to-reply flow in a separate targeted run. Deterministic
+browser/control fixtures are not quality measurements. [Verification history](docs/VERIFICATION.md).
+
+## Submission status
+
+Repository: [raahim-ibrar/GigBidA2](https://github.com/raahim-ibrar/GigBidA2).
+No public live URL yet. Reviewer details must be supplied privately after deployment.
+Official Upwork OAuth, GitHub ingestion, public trace links and remaining studies still need
+completion. The required video/GIF is excluded from the current work at the user's request.
+
+[Portfolio MCP install instructions](mcp_servers/portfolio/README.md) ·
+[Data provenance](docs/DATA_CARD.md) · [AI assistance disclosure](docs/AI_USAGE.md).

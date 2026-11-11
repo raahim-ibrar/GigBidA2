@@ -7,5 +7,3 @@ test("navigation exposes the job inbox and requires sign-in", async ({ page }) =
   await expect(page.getByText("Sign in to add and review jobs.")).toBeVisible();
 });
 
-// These are deliberately pending, not passing placeholders for the five required user flows.
-test.fixme("show marketplace-unavailable banner and recover queued work", async () => {});

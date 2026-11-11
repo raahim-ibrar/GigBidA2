@@ -16,8 +16,12 @@ class ProposalWrite(Contract):
     job_id: str = Field(min_length=1)
     text: str = Field(min_length=1, max_length=20000)
     bid_amount: float = Field(gt=0)
+    screening_answers: dict[str, str] = Field(default_factory=dict, max_length=20)
     idempotency_key: str = Field(min_length=8, max_length=200)
     dry_run: bool = True
+
+    def arguments(self):
+        return self.model_dump(exclude={"dry_run", "idempotency_key"})
 
 
 class MessageWrite(Contract):
@@ -41,3 +45,5 @@ class MarketplacePort(Protocol):
     async def create_proposal_draft(self, request: ProposalWrite) -> MarketplaceResult: ...
     async def submit_proposal(self, request: ProposalWrite) -> MarketplaceResult: ...
     async def send_message(self, request: MessageWrite) -> MarketplaceResult: ...
+    async def events(self, after: int = 0) -> MarketplaceResult: ...
+    async def get_proposal(self, proposal_id: str) -> MarketplaceResult: ...
