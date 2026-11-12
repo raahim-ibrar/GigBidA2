@@ -121,6 +121,10 @@ Source: [frozen analysis](evals/results/gemini-orchestration-v1/analysis.json).
 
 ## Verification
 
+Install the research extra for the full unit/contract suite, including the native
+research-model transport checks: `uv sync --frozen --extra dev --extra research`.
+These tests use controlled provider fixtures and do not make model API calls.
+
 ```text
 python -m pytest
 python -m ruff check .

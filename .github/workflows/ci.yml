@@ -18,7 +18,7 @@ jobs:
       - uses: actions/setup-python@v5
         with: {python-version: '3.13'}
       - run: pip install uv==0.9.6
-      - run: uv sync --frozen --extra dev
+      - run: uv sync --frozen --extra dev --extra research
       - run: uv run python scripts/check_structure.py
       - run: uv run python scripts/render_graphs.py --check
       - run: uv run ruff check .
