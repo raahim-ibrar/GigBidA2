@@ -4,6 +4,7 @@ No prompts, documents, tool arguments/results, user identities or exception mess
 leave the application. Automatic SDK tracing is not required or enabled here.
 """
 
+from copy import deepcopy
 from datetime import UTC, timedelta
 from uuid import UUID, uuid5
 
@@ -68,6 +69,30 @@ def build_spans(run, events):
         "extra": {"metadata": {"trace_id": run.id, "export_policy": "metadata-only-v1"}},
     }
     spans, nodes = [root], []
+    for event in events:
+        if event.kind != "recovery_observed":
+            continue
+        # Host-observed recovery metadata only. Never export arbitrary audit payloads.
+        elapsed = max(0, min(float(event.details.get("elapsed_seconds", 0)), 3600))
+        start = event.created_at - timedelta(seconds=elapsed)
+        identity = str(uuid5(root_id, "recovery:" + str(event.id)))
+        spans.append(
+            {
+                "id": identity,
+                "trace_id": run.id,
+                "parent_run_id": run.id,
+                "name": "control:api_restart",
+                "run_type": "chain",
+                "start_time": start,
+                "end_time": event.created_at,
+                "dotted_order": root_order + "." + stamp(start) + identity,
+                "inputs": {},
+                "outputs": {
+                    "process_exit_observed": event.details.get("process_exit_observed") is True,
+                    "readiness_observed": event.details.get("readiness_observed") is True,
+                },
+            }
+        )
     for event in events:
         if event.kind != "node_started":
             continue
@@ -174,9 +199,33 @@ def export_run(engine, settings, tenant, run_id, *, client=None):
         source = [e for e in events if not e.kind.startswith("trace_")]
         cursor = max((e.id for e in source), default=0)
         prior = next((e.details for e in reversed(events) if e.kind == "trace_exported"), {})
-        if prior.get("cursor") == cursor:
+        policy = "immutable-snapshot-v2"
+        if prior.get("cursor") == cursor and prior.get("policy") == policy:
             return prior
         spans = build_spans(run, source)
+        # Some trace services reject repeated patches to a closed span. Export an
+        # immutable snapshot per audit cursor instead. Every span retains the same
+        # GigBid correlation ID in metadata; the vendor ID identifies this snapshot.
+        remote_root = str(uuid5(UUID(run.id), f"{policy}:{cursor}"))
+        identities = {
+            span["id"]: remote_root
+            if span["id"] == run.id
+            else str(uuid5(UUID(remote_root), span["id"]))
+            for span in spans
+        }
+        for span in spans:
+            old = span["id"]
+            span["id"] = identities[old]
+            span["trace_id"] = remote_root
+            if span.get("parent_run_id"):
+                span["parent_run_id"] = identities[span["parent_run_id"]]
+            order = span["dotted_order"]
+            for original, replacement in identities.items():
+                order = order.replace(original, replacement)
+            span["dotted_order"] = order
+            span.setdefault("extra", {}).setdefault("metadata", {}).update(
+                trace_id=run.id, export_policy=policy, audit_cursor=cursor
+            )
         if client is None:
             from langsmith import Client
 
@@ -185,20 +234,19 @@ def export_run(engine, settings, tenant, run_id, *, client=None):
                 api_url="https://api.smith.langchain.com",
                 auto_batch_tracing=False,
             )
-        known = set(prior.get("span_ids", []))
         client.batch_ingest_runs(
-            create=[
-                {**s, "session_name": settings.langsmith_project}
-                for s in spans
-                if s["id"] not in known
-            ],
-            update=[s for s in spans if s["id"] in known],
+            create=[{**deepcopy(s), "session_name": settings.langsmith_project} for s in spans],
+            update=[],
         )
         result = {
             "trace_id": run_id,
+            "remote_trace_id": remote_root,
+            "policy": policy,
             "status": "exported",
             "cursor": cursor,
-            "span_ids": [s["id"] for s in spans],
+            # LangSmith may normalize update dictionaries in place to UUID objects.
+            # Persist JSON primitives even after the SDK has touched those objects.
+            "span_ids": [str(s["id"]) for s in spans],
             "spans": len(spans),
         }
         db.add(RunEvent(run_id=run_id, kind="trace_exported", details=result))
@@ -223,4 +271,5 @@ def trace_summary(engine, tenant, run_id):
             "status": exported.get("status", "not_exported"),
             "spans": exported.get("spans", 0),
             "public_url": public,
+            "remote_trace_id": exported.get("remote_trace_id", run_id),
         }

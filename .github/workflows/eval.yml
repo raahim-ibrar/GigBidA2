@@ -1,25 +1,35 @@
-name: Recorded evaluation bundle
+name: Fresh 30-job application smoke
 on:
+  pull_request:
+  push:
+    branches: [main]
   workflow_dispatch:
-    inputs:
-      manifest:
-        description: Path to a committed supplied-data experiment manifest
-        required: true
-        default: evals/datasets/smoke-manifest.json
+permissions:
+  contents: read
 jobs:
-  eval:
+  smoke:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:16.6-alpine
+        env: {POSTGRES_USER: gigbid, POSTGRES_PASSWORD: ci_only, POSTGRES_DB: gigbid}
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U gigbid -d gigbid"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      DATABASE_URL: postgresql+psycopg://gigbid:ci_only@127.0.0.1:5432/gigbid
+      TRACE_EXPORT_ENABLED: 'false'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: {python-version: '3.13'}
       - run: pip install uv==0.9.6
       - run: uv sync --frozen --extra dev
-      # Automatic PR experiments await the supplied data and an actual GigSim runner.
-      - name: Score supplied observations and enforce the declared gates
-        env:
-          GIGBID_EVAL_MANIFEST: ${{ inputs.manifest }}
-        run: uv run python -m evals.runners.suite --require-supplied
+      # Fresh production graphs/MCP/approval/simulator runs. Deterministic model and
+      # embedding fixtures: a control-regression gate, not an LLM research score.
+      - run: uv run python -m evals.runners.ci_smoke
       - uses: actions/upload-artifact@v4
         if: always()
-        with: {name: recorded-evaluation-results, path: evals/results/latest}
+        with: {name: fresh-ci-smoke-30, path: evals/results/ci-smoke}

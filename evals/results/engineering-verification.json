@@ -1,17 +1,20 @@
 {
   "data_origin": "development-control-fixtures",
-  "date_pkt": "2026-11-11",
+  "date_pkt": "2026-11-12",
   "backend": {
-    "passed": 162,
-    "skipped": 4,
-    "seconds": 140.12,
-    "database": "isolated Postgres schemas"
+    "passed": 214,
+    "skipped": 5,
+    "seconds": 175.68,
+    "database": "isolated Postgres schemas",
+    "log_sha256": "081efbc540c6f2174a3a897268778963279821c1ecee37d170605b23c9032150"
   },
   "browser": {
-    "suite_passed": 15,
+    "suite_passed": 17,
     "additional_targeted_passed": 0,
-    "reported_duration": "1.5 minutes",
-    "after_site_spacing_changes": true
+    "reported_duration": "1.4 minutes",
+    "after_site_spacing_changes": true,
+    "checkpoint_replay_passed": true,
+    "log_sha256": "54c4533fe01971406336babef18370a772629b1b27699a514d1247d7415872e9"
   },
   "frontend": {
     "typescript": "passed",
@@ -35,5 +38,8 @@
     }
   },
   "limits": "Control/integration tests are not model quality measurements. Latest backend, full browser suite, production build, and desktop/mobile Settings layout checks passed; API-based research comparisons remain separate.",
-  "verification_checkpoint": "work/unattended-checks/20261111T164939Z"
+  "prior_checkpoint": "work/unattended-checks/20261111T164939Z",
+  "fresh_ci_control": "ci-control-30/summary.json",
+  "public_article": "article-publication.json",
+  "live_source_import": "github-source-verification.json"
 }

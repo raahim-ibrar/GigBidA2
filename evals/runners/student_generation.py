@@ -41,7 +41,9 @@ from scripts.student_personas import TOPICS, documents
 from simulator.app import create_app
 
 
-async def run(models, per_persona, output, *, profile="open", study_id="v3"):
+async def run(
+    models, per_persona, output, *, profile="open", study_id="v3", retrieval_variant=None
+):
     output = Path(output)
     output.mkdir(parents=True, exist_ok=True)
     settings = Settings()
@@ -83,7 +85,7 @@ async def run(models, per_persona, output, *, profile="open", study_id="v3"):
         "runtime_overrides": {
             "token_budget": 32000,
             "fallback": None,
-            "retrieval": "v0" if profile == "open" else "configured",
+            "retrieval": retrieval_variant or ("v0" if profile == "open" else "configured"),
         },
         "job_ids": [row["id"] for row in cohort],
         "assignments": assignments,
@@ -120,6 +122,8 @@ async def run(models, per_persona, output, *, profile="open", study_id="v3"):
             config.timeout = 180
             if profile == "open":
                 config.retrieval = {**config.retrieval, "variant": "v0"}
+            if retrieval_variant:
+                config.retrieval = {**config.retrieval, "variant": retrieval_variant}
             label = (profile + "-" if model == "routed" else "") + model.replace(":", "-").replace(
                 "/", "-"
             )

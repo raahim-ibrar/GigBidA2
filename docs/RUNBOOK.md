@@ -102,3 +102,26 @@ Do not run destructive volume resets when investigating failures. Postgres data 
 A watch decision means the current source evidence does not support enough requirements; it is not an indexing error by itself. Check that sources are ready and inspect the requirement matrix. Fit measures relevant capability for proposed work. It does not establish that the user has completed an identical job before. Specialist platforms, required credentials and claimed past results still need direct support; proposal claims are independently verified.
 
 Hosted application calls share a conservative per-key/model Redis allowance. `GROQ_DAILY_TOKEN_CAP` defaults to 200000 accounted tokens per model/day for the app; the standalone study gate retains its 150000 default. These are local limits, not provider quotas or verified billing limits. Calls share the same counters; the app allowance is not an extra independent pool. Exhaustion is a retryable provider outage; the graph token/step caps remain independent. Groq may reject calls earlier under its own limits.
+
+
+## Current control and replay workflow
+
+Apply all Alembic migrations before starting a previously seeded demo schema, including
+`0011_upwork_oauth`; otherwise current connection-status queries cannot run. Personal and
+fictional demo schemas are separate. Never switch the personal database to a demo schema.
+
+`make eval` now executes a fresh 30-job deterministic control run; it requires Postgres and
+owns/drops only its random test schema. `make eval-recorded EVAL_ARGS="--manifest PATH"`
+scores already collected research. PR workflows run tests and the control gate without keys.
+Model/prompt quality remains a separately measured cohort, not a CI fixture score.
+
+In an owned bid's run viewer, load checkpoint history, choose the saved checkpoint and
+restart stage, then create a replay. This makes a new run and invalidates any inherited
+approval. Analysis branches rerun together; selecting Critic/compliance/preview/execute
+returns through claim verification. A new approval is mandatory even when the old run
+was approved. The original audit history and provider binding remain intact.
+
+Encrypted Upwork OAuth and live reads are implemented; see `UPWORK.md`. Portfolio HTTP
+bearer/rate controls and immutable metadata-only trace exports are implemented; see
+`TRACING.md`. The actual API-kill/approval recovery is recorded in the demo video.
+Production-wide acceptance and continuous public uptime are still not established.

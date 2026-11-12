@@ -1,0 +1,27 @@
+{
+  "pairs": 9,
+  "by_phase": {
+    "before": {
+      "labels": {
+        "supported": 31,
+        "unsupported": 1,
+        "not_factual": 17
+      },
+      "factual_claims": 32,
+      "unsupported_claim_rate": 0.03125,
+      "mean_quality": 4.111111111111111
+    },
+    "after": {
+      "labels": {
+        "supported": 12,
+        "not_factual": 36,
+        "unsupported": 1
+      },
+      "factual_claims": 13,
+      "unsupported_claim_rate": 0.07692307692307693,
+      "mean_quality": 4.333333333333333
+    }
+  },
+  "data_origin": "synthetic",
+  "limits": "Nine-pair descriptive sample; selection requires successful verification. Verifier rejection counts are self-assessment, not independent truth."
+}

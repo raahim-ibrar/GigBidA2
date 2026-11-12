@@ -7,7 +7,7 @@ export type PortfolioSearch = components["schemas"]["PortfolioSearch"];
 export type SearchResult = components["schemas"]["SearchResult"];
 
 export const listDocuments = () => apiRequest<DocumentView[]>("/portfolio/documents");
-export const importGitHub = (body: { repository_url: string; ref: string; project: string; skills: string[] }, csrf: string) => apiRequest<DocumentView>("/portfolio/import/github", {
+export const importGitHub = (body: { repository_url: string; ref: string; project: string; skills: string[]; path: string }, csrf: string) => apiRequest<DocumentView>("/portfolio/import/github", {
   method: "POST", headers: { "X-CSRF-Token": csrf }, body: JSON.stringify(body),
 });
 export const uploadDocument = (file: File, metadata: DocumentMetadata, csrf: string) => {

@@ -271,6 +271,52 @@
         "title": "CategoryRate",
         "type": "object"
       },
+      "CheckpointView": {
+        "additionalProperties": false,
+        "properties": {
+          "checkpoint_id": {
+            "title": "Checkpoint Id",
+            "type": "string"
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created At"
+          },
+          "next_nodes": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Next Nodes",
+            "type": "array"
+          },
+          "step": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Step"
+          }
+        },
+        "required": [
+          "checkpoint_id",
+          "created_at",
+          "next_nodes",
+          "step"
+        ],
+        "title": "CheckpointView",
+        "type": "object"
+      },
       "Claim": {
         "additionalProperties": false,
         "properties": {
@@ -1068,6 +1114,13 @@
       "GitHubImport": {
         "additionalProperties": false,
         "properties": {
+          "path": {
+            "default": "README.md",
+            "maxLength": 350,
+            "minLength": 1,
+            "title": "Path",
+            "type": "string"
+          },
           "project": {
             "maxLength": 200,
             "minLength": 1,
@@ -1928,6 +1981,47 @@
         "title": "RemoveMemory",
         "type": "object"
       },
+      "ReplayRun": {
+        "additionalProperties": false,
+        "properties": {
+          "checkpoint_id": {
+            "format": "uuid",
+            "title": "Checkpoint Id",
+            "type": "string"
+          },
+          "idempotency_key": {
+            "format": "uuid",
+            "title": "Idempotency Key",
+            "type": "string"
+          },
+          "node": {
+            "enum": [
+              "scout",
+              "analyst",
+              "risk",
+              "matcher",
+              "decision",
+              "pricing",
+              "writer",
+              "regenerate",
+              "verifier",
+              "critic",
+              "compliance",
+              "preview",
+              "approval",
+              "execute"
+            ],
+            "title": "Node",
+            "type": "string"
+          }
+        },
+        "required": [
+          "checkpoint_id",
+          "node"
+        ],
+        "title": "ReplayRun",
+        "type": "object"
+      },
       "ReplyDraftView": {
         "additionalProperties": false,
         "properties": {
@@ -2682,6 +2776,18 @@
               }
             ],
             "title": "Provider Result"
+          },
+          "replay_request": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Replay Request"
           },
           "risk": {
             "anyOf": [
@@ -4406,6 +4512,52 @@
         ]
       }
     },
+    "/api/runs/{run_id}/checkpoints": {
+      "get": {
+        "operationId": "checkpoint_history_api_runs__run_id__checkpoints_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/CheckpointView"
+                  },
+                  "title": "Response Checkpoint History Api Runs  Run Id  Checkpoints Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Checkpoint History",
+        "tags": [
+          "runs"
+        ]
+      }
+    },
     "/api/runs/{run_id}/events": {
       "get": {
         "operationId": "run_events_api_runs__run_id__events_get",
@@ -4468,6 +4620,58 @@
           }
         },
         "summary": "Run Events",
+        "tags": [
+          "runs"
+        ]
+      }
+    },
+    "/api/runs/{run_id}/replays": {
+      "post": {
+        "operationId": "replay_run_api_runs__run_id__replays_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReplayRun"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Replay Run",
         "tags": [
           "runs"
         ]

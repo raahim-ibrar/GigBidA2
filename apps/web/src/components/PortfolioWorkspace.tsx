@@ -71,15 +71,15 @@ export function PortfolioWorkspace() {
     setBusy(true); setError(""); setMessage("");
     try {
       const doc = await importGitHub({ repository_url: String(data.get("repository_url")),
-        ref: String(data.get("ref")) || "HEAD", project: String(data.get("github_project")),
+        path: String(data.get("github_path")) || "README.md", ref: String(data.get("ref")) || "HEAD", project: String(data.get("github_project")),
         skills: String(data.get("github_skills")).split(",").map(s => s.trim()).filter(Boolean) }, account.csrf_token);
-      setMessage(doc.error ?? "README saved at a fixed commit. Background indexing is queued.");
+      setMessage(doc.error ?? "Source saved at a fixed commit. Background indexing is queued.");
       form.reset(); await load();
     } catch (err) { setError(err instanceof Error ? err.message : "GitHub import failed."); }
     finally { setBusy(false); }
   }
 
-  if (loading) return <p role="status">Loading your portfolio…</p>;
+  if (loading) return <p role="status">Loading your portfolioâ€¦</p>;
   if (needsSignIn) return <p className="notice">Sign in to manage your portfolio. <Link href="/sign-in">Sign in</Link></p>;
   if (!account) return <p role="alert" className="error">{error || "Portfolio unavailable."}</p>;
 
@@ -104,40 +104,41 @@ export function PortfolioWorkspace() {
         <label htmlFor="outcome">Past proposal outcome</label><select id="outcome" name="outcome" defaultValue="">
           <option value="">Unknown / not applicable</option><option value="won">Won</option><option value="replied">Replied</option><option value="ignored">Ignored</option>
         </select>
-        <button type="submit" disabled={busy}>{busy ? "Saving upload…" : "Upload evidence"}</button>
+        <button type="submit" disabled={busy}>{busy ? "Saving uploadâ€¦" : "Upload evidence"}</button>
       </form>
     </section><section className="card"><h2>Search your evidence</h2>
       <form onSubmit={search}>
         <label htmlFor="evidence-query">Job requirement</label><textarea id="evidence-query" name="query" required maxLength={4000} rows={4} placeholder="Experience building Python APIs with PostgreSQL" />
         <label htmlFor="retrieval-variant">Retrieval variant</label><select id="retrieval-variant" name="variant" defaultValue="v0">
-          <option value="v0">V0 · Dense baseline</option><option value="v1">V1 · Per requirement</option><option value="v2">V2 · Hybrid BM25 + dense</option><option value="v3">V3 · Cross-encoder reranking</option><option value="v8">V8 · Corrective retrieval</option>
+          <option value="v0">V0 Â· Dense baseline</option><option value="v1">V1 Â· Per requirement</option><option value="v2">V2 Â· Hybrid BM25 + dense</option><option value="v3">V3 Â· Cross-encoder reranking</option><option value="v8">V8 Â· Corrective retrieval</option>
         </select>
         <p className="muted">Development comparison controls. The final pipeline will be chosen using the instructor&apos;s evaluation data.</p>
-        <button type="submit" disabled={searching || !documents.some(d => d.status === "ready")}>{searching ? "Searching evidence…" : "Search evidence"}</button>
+        <button type="submit" disabled={searching || !documents.some(d => d.status === "ready")}>{searching ? "Searching evidenceâ€¦" : "Search evidence"}</button>
       </form>
       {results && <section aria-label="Evidence results"><h3>{results.items.length ? "Retrieved evidence" : "No supporting evidence found"}</h3>
         {results.items.map(hit => <article className="evidence-hit" key={hit.evidence.id}>
           <strong>{hit.evidence.project ?? hit.evidence.source}</strong>
-          <p className="muted">{hit.evidence.source}{hit.evidence.page ? ` · page ${hit.evidence.page}` : ""} · {hit.evidence.type}</p>
+          <p className="muted">{hit.evidence.source}{hit.evidence.page ? ` Â· page ${hit.evidence.page}` : ""} Â· {hit.evidence.type}</p>
           <p>{hit.evidence.text}</p><details><summary>Source details</summary><code>{hit.evidence.id}</code>
-          <p>Skills: {hit.evidence.skills?.join(", ") || "Not provided"}</p><p>Ranking score: {hit.score.toFixed(4)} · {results.variant}</p></details>
+          <p>Skills: {hit.evidence.skills?.join(", ") || "Not provided"}</p><p>Ranking score: {hit.score.toFixed(4)} Â· {results.variant}</p></details>
         </article>)}
       </section>}
     </section></div>
     <section className="card"><h2>Import a public GitHub project</h2>
-      <p className="muted">Import its README through GitHub MCP. The source is pinned to a commit; repository text alone does not establish authorship or client results.</p>
+      <p className="muted">Import a README or source-code file through GitHub MCP. The source is pinned to a commit; repository text alone does not establish authorship or client results.</p>
       <form onSubmit={importRepository}>
         <label htmlFor="github-url">Repository URL</label><input id="github-url" name="repository_url" type="url" placeholder="https://github.com/owner/project" required maxLength={500} />
+        <label htmlFor="github-path">Repository file path</label><input id="github-path" name="github_path" defaultValue="README.md" required maxLength={350} /><p className="muted">Import README.md or a source file such as agent/graphs/bid_graph.py. Binary and secret files are rejected.</p>
         <label htmlFor="github-project">Project title</label><input id="github-project" name="github_project" required maxLength={200} />
         <label htmlFor="github-ref">Branch, tag or commit</label><input id="github-ref" name="ref" defaultValue="HEAD" maxLength={200} />
         <label htmlFor="github-skills">Skills (comma separated)</label><input id="github-skills" name="github_skills" maxLength={2000} />
-        <button disabled={busy}>{busy ? "Saving…" : "Import README"}</button>
+        <button disabled={busy}>{busy ? "Savingâ€¦" : "Import source"}</button>
       </form>
     </section>
     <section className="card"><h2>Your sources</h2>
       {!documents.length && <p className="muted">No portfolio evidence yet. Add your first CV or case study above.</p>}
       {documents.map(doc => <article className="source-row" key={doc.id}>
-        <div><strong>{doc.filename}</strong><p className="muted">{doc.details.project} · revision {doc.revision} · <span className={`source-status ${doc.status}`} data-testid="source-status">{doc.status}</span></p>
+        <div><strong>{doc.filename}</strong><p className="muted">{doc.details.project} Â· revision {doc.revision} Â· <span className={`source-status ${doc.status}`} data-testid="source-status">{doc.status}</span></p>
           {doc.details.source_url && <p><a href={doc.details.source_url} target="_blank" rel="noreferrer">View pinned GitHub source</a></p>}
           {doc.error && <p className="error">{doc.error}</p>}</div>
         <div className="source-actions">{doc.status !== "indexing" && <button className="secondary-button" onClick={async () => {

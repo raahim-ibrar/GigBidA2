@@ -15,9 +15,12 @@ from evals.research_judge import MODEL, PROMPT, Batch, proposal_inputs, validate
 ROOT = Path("evals/results/judge-proposals-final")
 
 
-async def main():
-    ROOT.mkdir(parents=True, exist_ok=True)
-    items = proposal_inputs("evals/results/gemini-orchestration-v1/runs.jsonl")
+async def main(items=None, *, output=ROOT):
+    root = Path(output)
+    root.mkdir(parents=True, exist_ok=True)
+    original_cohort = items is None
+    if original_cohort:
+        items = proposal_inputs("evals/results/gemini-orchestration-v1/runs.jsonl")
     expected = {r["id"]: r for r in items}
     plan = {
         "model": MODEL,
@@ -31,16 +34,18 @@ async def main():
             "Batch five; accept each exact validated item; retry malformed items"
             " individually at most twice. Accepted labels never replaced."
         ),
-        "reuse": ["judge-proposals-v1/model-labels.jsonl", "judge-proposals-v3/model-labels.jsonl"],
+        "reuse": ["judge-proposals-v1/model-labels.jsonl", "judge-proposals-v3/model-labels.jsonl"]
+        if original_cohort
+        else [],
         "reuse_rule": (
             "First available validated observation in listed source order; no score-based selection"
         ),
     }
-    path = ROOT / "plan.json"
+    path = root / "plan.json"
     if path.exists() and json.loads(path.read_text(encoding="utf-8")) != plan:
         raise ValueError("Frozen final-judge plan differs")
     path.write_text(json.dumps(plan, indent=2), encoding="utf-8")
-    raw = ROOT / "model-labels.jsonl"
+    raw = root / "model-labels.jsonl"
     accepted = (
         {json.loads(x)["id"]: json.loads(x) for x in raw.read_text(encoding="utf-8").splitlines()}
         if raw.exists()
@@ -101,7 +106,7 @@ async def main():
             if response.status_code != 200:
                 raise RuntimeError(f"Free judge HTTP {response.status_code}; accepted labels saved")
             data = response.json()
-            with (ROOT / "calls.jsonl").open("a", encoding="utf-8") as handle:
+            with (root / "calls.jsonl").open("a", encoding="utf-8") as handle:
                 handle.write(
                     json.dumps(
                         {
@@ -127,7 +132,7 @@ async def main():
                             accept(value.model_dump())
                         except ValueError:
                             pass
-                with (ROOT / "raw-responses.jsonl").open("a", encoding="utf-8") as handle:
+                with (root / "raw-responses.jsonl").open("a", encoding="utf-8") as handle:
                     handle.write(
                         json.dumps({"ids": [r["id"] for r in group], "arguments": content}) + "\n"
                     )

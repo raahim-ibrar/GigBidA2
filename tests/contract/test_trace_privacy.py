@@ -7,6 +7,36 @@ import pytest
 from agent.tracing import TracedSession, build_spans
 
 
+def test_recovery_trace_exports_observations_without_private_audit_details():
+    start = datetime.now(UTC)
+    run = SimpleNamespace(
+        id=str(uuid4()),
+        kind="bid",
+        created_at=start,
+        updated_at=start + timedelta(seconds=8),
+        status="submitted",
+        steps=2,
+        tokens=50,
+    )
+    event = SimpleNamespace(
+        id=1,
+        kind="recovery_observed",
+        created_at=start + timedelta(seconds=5),
+        details={
+            "elapsed_seconds": 3,
+            "process_exit_observed": True,
+            "readiness_observed": True,
+            "pid": 123,
+            "private": "PRIVATE_RECOVERY_CANARY",
+        },
+    )
+    spans = build_spans(run, [event])
+    assert spans[1]["name"] == "control:api_restart"
+    assert spans[1]["end_time"] - spans[1]["start_time"] == timedelta(seconds=3)
+    assert spans[1]["outputs"] == {"process_exit_observed": True, "readiness_observed": True}
+    assert "PRIVATE_RECOVERY_CANARY" not in str(spans) and "pid" not in str(spans)
+
+
 def test_export_contains_measured_spans_and_no_source_payload():
     start = datetime.now(UTC)
     run = SimpleNamespace(

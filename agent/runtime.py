@@ -283,9 +283,36 @@ async def process_run(
                         checkpointer=saver,
                         nodes=bounded_nodes,
                         max_revisions=config.budgets.max_critic_revisions,
+                        entry_node=claimed["snapshot"]
+                        .get("replay_request", {})
+                        .get("effective_node", "scout"),
                     )
                 )
                 snapshot = await graph.aget_state(thread)
+                initial = claimed["snapshot"]
+                if not snapshot.values and initial.get("replay_request"):
+                    request = initial["replay_request"]
+                    parent_config = {
+                        "configurable": {
+                            "thread_id": f"{tenant}:{request['parent_run_id']}",
+                            "checkpoint_id": request["checkpoint_id"],
+                        }
+                    }
+                    parent = await graph.aget_state(parent_config)
+                    if not parent.values:
+                        raise RunConflict("Replay source checkpoint no longer exists")
+                    # Reuse typed state from the saver, but never inherit approval,
+                    # write receipts, preview keys or token/step counters.
+                    initial = {
+                        **parent.values,
+                        **initial,
+                        "events": [],
+                        "revisions": 0,
+                        "status": "queued",
+                        "user_edited": False,
+                    }
+                    for field in ("approval", "preview", "provider_result", "verification"):
+                        initial.pop(field, None)
                 fresh_messages = claimed["kind"] == "conversation" and (
                     snapshot.values.get("source_revision") != claimed["snapshot"]["source_revision"]
                 )
@@ -298,7 +325,7 @@ async def process_run(
                 elif snapshot.interrupts or (snapshot.values and not snapshot.next):
                     graph_input = None
                 else:
-                    graph_input = None if snapshot.values else claimed["snapshot"]
+                    graph_input = None if snapshot.values else initial
                 # An already paused/finished checkpoint needs only DB reconciliation.
                 run_graph = not snapshot.values or bool(snapshot.next and not snapshot.interrupts)
                 run_graph = run_graph or isinstance(graph_input, Command) or fresh_messages

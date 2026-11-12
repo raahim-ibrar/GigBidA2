@@ -592,6 +592,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/runs/{run_id}/checkpoints": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Checkpoint History */
+        get: operations["checkpoint_history_api_runs__run_id__checkpoints_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/runs/{run_id}/events": {
         parameters: {
             query?: never;
@@ -603,6 +620,23 @@ export interface paths {
         get: operations["run_events_api_runs__run_id__events_get"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/runs/{run_id}/replays": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Replay Run */
+        post: operations["replay_run_api_runs__run_id__replays_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -889,6 +923,17 @@ export interface components {
             reply_rate: number;
             /** Submitted */
             submitted: number;
+        };
+        /** CheckpointView */
+        CheckpointView: {
+            /** Checkpoint Id */
+            checkpoint_id: string;
+            /** Created At */
+            created_at: string | null;
+            /** Next Nodes */
+            next_nodes: string[];
+            /** Step */
+            step: number | null;
         };
         /** Claim */
         Claim: {
@@ -1187,6 +1232,11 @@ export interface components {
         };
         /** GitHubImport */
         GitHubImport: {
+            /**
+             * Path
+             * @default README.md
+             */
+            path: string;
             /** Project */
             project: string;
             /**
@@ -1512,6 +1562,24 @@ export interface components {
             /** Version */
             version: number;
         };
+        /** ReplayRun */
+        ReplayRun: {
+            /**
+             * Checkpoint Id
+             * Format: uuid
+             */
+            checkpoint_id: string;
+            /**
+             * Idempotency Key
+             * Format: uuid
+             */
+            idempotency_key?: string;
+            /**
+             * Node
+             * @enum {string}
+             */
+            node: "scout" | "analyst" | "risk" | "matcher" | "decision" | "pricing" | "writer" | "regenerate" | "verifier" | "critic" | "compliance" | "preview" | "approval" | "execute";
+        };
         /** ReplyDraftView */
         ReplyDraftView: {
             /** Body */
@@ -1772,6 +1840,10 @@ export interface components {
             provider_conversation_id?: string | null;
             /** Provider Result */
             provider_result?: {
+                [key: string]: unknown;
+            } | null;
+            /** Replay Request */
+            replay_request?: {
                 [key: string]: unknown;
             } | null;
             risk?: components["schemas"]["RiskReport"] | null;
@@ -3024,6 +3096,37 @@ export interface operations {
             };
         };
     };
+    checkpoint_history_api_runs__run_id__checkpoints_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CheckpointView"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     run_events_api_runs__run_id__events_get: {
         parameters: {
             query?: {
@@ -3046,6 +3149,41 @@ export interface operations {
                 };
                 content: {
                     "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    replay_run_api_runs__run_id__replays_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ReplayRun"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RunView"];
                 };
             };
             /** @description Validation Error */

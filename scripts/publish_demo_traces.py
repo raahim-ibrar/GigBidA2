@@ -1,5 +1,6 @@
 import json
 import sys
+import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -53,18 +54,39 @@ for row in rows:
         spans = build_spans(run, [e for e in events if not e.kind.startswith("trace_")])
         counts = {k: sum(s["run_type"] == k for s in spans) for k in ["chain", "llm", "tool"]}
         assert counts["llm"] and counts["tool"]
-        export_run(engine, s, run.user_id, run.id, client=c)
-        remote = c.read_run(run.id)
-        assert str(remote.trace_id) == run.id
+        exported = export_run(engine, s, run.user_id, run.id, client=c)
+        remote_id = exported["remote_trace_id"]
+        for attempt in range(12):
+            try:
+                remote = c.read_run(remote_id)
+                break
+            except Exception:
+                if attempt == 11:
+                    raise
+                time.sleep(3)
+        assert str(remote.trace_id) == remote_id
         url = next(
-            (e.details["url"] for e in events if e.kind == "trace_shared"), None
-        ) or c.share_run(run.id)
-        if not any(e.kind == "trace_shared" for e in events):
+            (
+                e.details["url"]
+                for e in events
+                if e.kind == "trace_shared" and e.details.get("remote_trace_id") == remote_id
+            ),
+            None,
+        ) or c.share_run(remote_id)
+        if not any(
+            e.kind == "trace_shared" and e.details.get("remote_trace_id") == remote_id
+            for e in events
+        ):
             db.add(
                 RunEvent(
                     run_id=run.id,
                     kind="trace_shared",
-                    details={"url": url, "data_origin": "synthetic", "policy": "metadata-only-v1"},
+                    details={
+                        "url": url,
+                        "remote_trace_id": remote_id,
+                        "data_origin": "synthetic",
+                        "policy": exported["policy"],
+                    },
                 )
             )
             db.commit()
@@ -72,17 +94,22 @@ for row in rows:
             {
                 "kind": row["kind"],
                 "run_id": run.id,
+                "remote_trace_id": remote_id,
                 "status": run.status,
                 "url": url,
                 "spans": counts,
                 "data_origin": "synthetic",
                 "privacy": "Metadata only; no prompts, CV, tool arguments/results or credentials",
-                "app_url": json.loads((p / "status.json").read_text())["public_url"]
-                + "/runs/"
-                + run.id,
             }
         )
-Path("evals/results/public-traces.json").write_text(
-    json.dumps({"complete": len(public) == 3, "traces": public}, indent=2), encoding="utf-8"
+destination = Path("evals/results/public-traces.json")
+existing = (
+    json.loads(destination.read_text(encoding="utf-8"))["traces"] if destination.exists() else []
+)
+merged = {row["run_id"]: row for row in existing}
+merged.update({row["run_id"]: row for row in public})
+destination.write_text(
+    json.dumps({"complete": len(public) == 3, "traces": list(merged.values())}, indent=2),
+    encoding="utf-8",
 )
 print(json.dumps(public, indent=2))

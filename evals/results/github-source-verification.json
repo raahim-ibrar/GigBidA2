@@ -1,0 +1,11 @@
+{
+  "provider": "official GitHub read-only MCP",
+  "repository": "https://github.com/raahim-ibrar/GigBidA2",
+  "requested_path": "agent/graphs/bid_graph.py",
+  "status": "ready",
+  "source_commit": "c498e6562d321965e2429e41c770c93323128bcf",
+  "source_url": "https://github.com/raahim-ibrar/GigBidA2/blob/c498e6562d321965e2429e41c770c93323128bcf/agent/graphs/bid_graph.py",
+  "type": "code",
+  "scope": "isolated fictional demo account; personal CV unchanged",
+  "professional_experience_verified": false
+}

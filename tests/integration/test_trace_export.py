@@ -1,3 +1,5 @@
+from uuid import UUID
+
 import pytest
 
 from agent.run_store import RunNotFound
@@ -29,7 +31,28 @@ def test_trace_export_is_tenant_scoped_idempotent_and_retryable(account_app, run
     first = export_run(store.engine, settings, user["id"], run.id, client=client)
     assert first == export_run(store.engine, settings, user["id"], run.id, client=client)
     assert len(calls) == 1
-    assert not calls[0]["update"] and calls[0]["create"][0]["id"] == run.id
+    assert not calls[0]["update"]
+    assert calls[0]["create"][0]["id"] == first["remote_trace_id"]
+    assert calls[0]["create"][0]["extra"]["metadata"]["trace_id"] == run.id
+
+    # Real SDK normalizes IDs in place. Snapshots must survive mutation without
+    # a failed local audit commit, and never patch already closed remote spans.
+    class MutatingClient:
+        def batch_ingest_runs(self, *, create, update):
+            assert not update
+            for span in create:
+                span["id"] = UUID(str(span["id"]))
+
+    from sqlalchemy.orm import Session
+
+    from apps.api.models import RunEvent
+
+    with Session(store.engine) as db, db.begin():
+        db.add(RunEvent(run_id=run.id, kind="recovery_observed", details={}))
+    result = export_run(store.engine, settings, user["id"], run.id, client=MutatingClient())
+    assert result["remote_trace_id"] != first["remote_trace_id"]
+    assert all(isinstance(identity, str) for identity in result["span_ids"])
+    assert export_run(store.engine, settings, user["id"], run.id, client=MutatingClient()) == result
 
 
 def test_trace_endpoint_cannot_read_another_users_run(client, run_fixture):

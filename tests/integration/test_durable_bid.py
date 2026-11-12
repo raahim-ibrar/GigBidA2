@@ -103,12 +103,12 @@ def durable(client, account_app):
     )
     run = store.create_run(tenant, job.id, str(uuid4()))
 
-    async def process():
+    async def process(target_id=None):
         return await process_bid(
             account_app.state.engine,
             account_app.state.settings,
             tenant,
-            run.id,
+            target_id or run.id,
             models_factory=Models,
             portfolio_reader=Reader(),
         )

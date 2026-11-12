@@ -1,0 +1,67 @@
+{
+  "kind": "Genuine browser recording of real hosted-model demo runs; synthetic persona/client",
+  "video_seconds": 180,
+  "gif_seconds": 30,
+  "edits": "Video captioned and padded at end; GIF selects six five-second excerpts.",
+  "stages": [
+    {
+      "label": "Fictional portfolio: no real clients",
+      "seconds": 0.001
+    },
+    {
+      "label": "Open an analysed simulator job",
+      "seconds": 7.376
+    },
+    {
+      "label": "Job requirements and source",
+      "seconds": 13.538
+    },
+    {
+      "label": "Verified proposal and exact preview",
+      "seconds": 19.712
+    },
+    {
+      "label": "Kill and restart the API while approval is pending",
+      "seconds": 35.178
+    },
+    {
+      "label": "Approve this exact simulator proposal",
+      "seconds": 53.865
+    },
+    {
+      "label": "Unpaid trial and off-platform scam rejected",
+      "seconds": 67.545
+    },
+    {
+      "label": "Planted instruction rejected",
+      "seconds": 78.427
+    },
+    {
+      "label": "Sync actual simulator lifecycle receipts",
+      "seconds": 87.64
+    },
+    {
+      "label": "Handle the simulator client reply",
+      "seconds": 95.253
+    },
+    {
+      "label": "Receipt-backed pipeline",
+      "seconds": 159.785
+    },
+    {
+      "label": "Measured runs and public trace links",
+      "seconds": 168.19
+    }
+  ],
+  "source_sha256": "6b984432ba3622b08624779cb510dd3e004eb3b9a488b36bfa769759d60b3940",
+  "files": {
+    "output\\video\\GigBid_Demo.mp4": {
+      "sha256": "b70de13a47b93adec7c3920c8487b8a035bba8d6a9d4f6c0e0a5b1aeecbad33f",
+      "bytes": 2700021
+    },
+    "docs\\images\\demo.gif": {
+      "sha256": "1a551603f78e70d779153294c0e1b2d0f2417b26b8681ee3a3c424b0702c5b26",
+      "bytes": 4008668
+    }
+  }
+}

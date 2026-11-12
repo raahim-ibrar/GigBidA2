@@ -1,12 +1,39 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8">
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="What 150 GigBid runs revealed about agent correctness, completion, and approval boundaries.">
+<meta name="description"
+content="What 150 GigBid runs revealed about correctness, completion, and approval boundaries.">
 <title>GigBid: correct decisions, incomplete proposals — Raahim Ibrar</title>
 <style>
-:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#101014;color:#e9e7ef;font:18px/1.85 system-ui,sans-serif}a{color:#bc9aff;text-underline-offset:4px}header,main,footer{max-width:800px;margin:auto;padding:28px}header{border-bottom:1px solid #30303a;display:flex;justify-content:space-between;font-size:14px}header a{color:#d0b6ff}article{padding:40px 0 64px}h1{font-size:clamp(34px,5vw,52px);line-height:1.16;letter-spacing:-1.6px;margin:14px 0 40px}h2{font-size:26px;line-height:1.35;color:#c7a8ff;margin:48px 0 18px}p{margin:0 0 24px;color:#ceccd6}.eyebrow{font:13px/1.5 system-ui;color:#a5a0b3;letter-spacing:.08em;text-transform:uppercase}.sources{border:1px solid #363041;background:#19151f;padding:24px;border-radius:12px;font-size:15px}footer{border-top:1px solid #30303a;font-size:13px;color:#aaa3b6;padding-bottom:60px}.skip{position:absolute;left:-9999px}.skip:focus{left:20px;top:10px;background:#171321;padding:12px}
-</style></head><body><a class="skip" href="#article">Skip to article</a>
-<header><a href="https://github.com/raahim-ibrar">Raahim Ibrar · Engineering notes</a><a href="https://github.com/raahim-ibrar/GigBidA2">Project source ↗</a></header>
-<main id="article"><article><div class="eyebrow">12 November 2026 · Agent systems · 1528 words</div>
+:root{color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:#101014;color:#e9e7ef;font:18px/1.85 system-ui,sans-serif}
+a{color:#bc9aff;text-underline-offset:4px}
+header,main,footer{max-width:800px;margin:auto;padding:28px}
+header{border-bottom:1px solid #30303a;display:flex;justify-content:space-between;font-size:14px}
+header a{color:#d0b6ff}
+article{padding:40px 0 64px}
+h1{font-size:clamp(34px,5vw,52px);line-height:1.16;letter-spacing:-1.6px;margin:14px 0 40px}
+h2{font-size:26px;line-height:1.35;color:#c7a8ff;margin:48px 0 18px}
+p{margin:0 0 24px;color:#ceccd6}
+.eyebrow{font:13px/1.5 system-ui;color:#a5a0b3;letter-spacing:.08em;text-transform:uppercase}
+.sources{border:1px solid #363041;background:#19151f;padding:24px;border-radius:12px;font-size:15px}
+footer{border-top:1px solid #30303a;font-size:13px;color:#aaa3b6;padding-bottom:60px}
+.skip{position:absolute;left:-9999px}
+.skip:focus{left:20px;top:10px;background:#171321;padding:12px}
+</style>
+</head>
+<body>
+<a class="skip" href="#article">Skip to article</a>
+<header>
+<a href="https://github.com/raahim-ibrar">Raahim Ibrar · Engineering notes</a>
+<a href="https://github.com/raahim-ibrar/GigBidA2">Project source ↗</a>
+</header>
+<main id="article">
+<article>
+<div class="eyebrow">12 November 2026 · Agent systems · 1647 words</div>
 <h1>GigBid: why a correct bid decision is not a completed proposal</h1>
 <p>GigBid is a freelancer copilot that finds jobs, checks risk and portfolio fit, proposes a price, drafts a grounded application, and prepares client replies. The practical constraint is that the freelancer remains responsible for every external action. A convincing paragraph is insufficient: the system must explain its evidence, preserve edits across restarts, and avoid spending Connects or sending messages without approval. I implemented a Next.js workspace, FastAPI service, LangGraph workflows, three MCP capability boundaries, and an independent student marketplace simulator. The strongest finding was that reliable early decisions did not imply reliable completion. In a controlled fifty-job comparison, the custom graph made 49 correct bid decisions but still encountered thirteen later failures.</p>
 <h2>Data and what the outcomes mean</h2>
@@ -28,9 +55,25 @@
 <p>The independent Nvidia Nemotron judge was calibrated against thirty student-supplied evidence-and-claim labels. Claim-label agreement was 60%, with Cohen&#x27;s kappa 0.403. Exact quality-score agreement was 46.7%, with quadratic weighted kappa 0.681 on the five-point scale. Consequently, automated unsupported-claim and quality scores are proxy measurements rather than ground truth. Output-protocol errors, including invented claim indices, were rejected and retained as diagnostic attempts. Schema repairs preserved the scoring rubric rather than tuning it to match the human answers.</p>
 <p>Two user-supplied classmate responses rated twelve anonymized pairs of raw local-model proposals. Qwen 4B received thirteen votes and Qwen 8B eleven; reviewers agreed on eleven pairs, kappa 0.833. This small convenience panel does not establish a meaningful model winner. Twenty-four ratings represent twelve repeated jobs, not twenty-four independent examples. Reviewer identities and independence were not independently verified, and the second response was reconstructed from the user&#x27;s stated final-choice difference. These observations concern the older local candidates, not the Gemini architecture study.</p>
 <p>For the X2 extension, the custom-graph jobs were assigned before execution to evidence-first or problem-first openings, twenty-five per arm. Intention-to-treat replies were 12/25 and 17/25. The evidence-minus-problem difference was minus twenty percentage points, but the two-sided Fisher p-value was 0.252. A conservative 95% Hoeffding interval spanned minus 79.2 to plus 39.2 points. The experiment therefore does not establish a strategy benefit. The pooled test ignores assignment strata; per-persona counts are retained, and all outcomes come from the rule simulator.</p>
+<p>A supplemental paired diagnostic ran nine identical jobs per retrieval variant using the same hosted open profile. V0 produced two replies and V3 one; failures stayed in the denominator. V3&#x27;s lower latency included early stops, so it does not establish a speed gain. Four changed verifier checkpoint pairs were independently judged: unsupported factual claims were 2/22 before and 1/13 after, with unchanged mean quality of 3.75. Nine unchanged control pairs received inconsistent factual labels, exposing judge noise. These small retrospective samples support caution, not a broad grounding-improvement claim.</p>
 <h2>What remains defensible</h2>
-<p>The forty-task tool-design study adds a narrower result: fine, coarse, and rewritten tools all achieved perfect selection and argument accuracy in 120 GPT-OSS 120B calls. Fine tools used about 618 tokens per task against 989 for coarse tools. The accuracy ceiling prevents a strong behavior claim. Together, the studies support reducing context and verification overhead before adding coordination. Durable approval and factual grounding remain necessary even when they expose failures. Temporary laptop-backed HTTPS hosting, an authenticated Portfolio MCP endpoint, commit-pinned GitHub README ingestion and three public metadata-only LangSmith traces are verified. Real Upwork OAuth and live job reads were subsequently verified; provider-preview writes remain fixture-tested, and final submissions and direct messages stay disabled. Always-on hosting and hidden-test performance remain unverified. Codex assisted implementation and analysis; human ratings came from the student and reported classmates. Results files and reproducible scripts distinguish these evidence sources.</p>
+<p>The forty-task tool-design study adds a narrower result: fine, coarse, and rewritten tools all achieved perfect selection and argument accuracy in 120 GPT-OSS 120B calls. Fine tools used about 618 tokens per task against 989 for coarse tools. The accuracy ceiling prevents a strong behavior claim. Together, the studies support reducing context and verification overhead before adding coordination. Durable approval and factual grounding remain necessary even when they expose failures. Temporary laptop-backed HTTPS hosting, an authenticated Portfolio MCP endpoint, commit-pinned GitHub README/source ingestion and public metadata-only trace cases are verified. Real Upwork OAuth and live job reads were subsequently verified; provider-preview writes remain fixture-tested, and final submissions and direct messages stay disabled. A recorded API crash preserved approval and yielded one simulator receipt. The demo video, GIF, installable MCP command and 214 backend/17 browser checks are available. The public app is off; always-on hosting and hidden-test performance remain unverified. Codex assisted implementation and analysis; human ratings came from the student and reported classmates. Results files and reproducible scripts distinguish these evidence sources.</p>
 <h2>Evidence and reproduction</h2>
-<p>Repository: https://github.com/raahim-ibrar/GigBidA2. Numerical evidence is in `evals/results/student-data-manifest.json`, `student-retrieval/results.json`, `student-generation-v3/progress.json`, `student-tool-study-v3/results.json`, `gemini-orchestration-v1/analysis.json`, `judge-calibration-v4/agreement.json`, `judge-proposals-final/results.json`, and `human-panel-v1/results.json`. Run `python -m evals.analyse_final_research` and `python -m evals.analyse_proposal_quality` to regenerate the final analysis without inference. See `DATA_CARD.md`, `VERIFICATION.md`, and `AI_USAGE.md` for provenance, control checks, and assistance disclosure.</p>
-<aside class="sources"><strong>Inspect the evidence</strong><p>All reported experiments use declared cohorts. Simulator outcomes are synthetic, and failures remain in the results.</p><a href="https://github.com/raahim-ibrar/GigBidA2/tree/main/evals/results">Results and raw records</a> · <a href="https://github.com/raahim-ibrar/GigBidA2/blob/main/docs/AI_USAGE.md">AI assistance disclosure</a> · <a href="https://github.com/raahim-ibrar/GigBidA2/blob/main/output/pdf/GigBid_RnD_Report.pdf">Engineering report</a></aside>
-</article></main><footer>Written by Raahim Ibrar with disclosed AI assistance. Built for AI-4016. Research findings are distinguished from deterministic control tests.</footer></body></html>
+<p>Repository: https://github.com/raahim-ibrar/GigBidA2. Numerical evidence is in `evals/results/student-data-manifest.json`, `student-retrieval/results.json`, `student-generation-v3/progress.json`, `student-tool-study-v3/results.json`, `gemini-orchestration-v1/analysis.json`, `judge-calibration-v4/agreement.json`, `judge-proposals-final/results.json`, `human-panel-v1/results.json`, `rag-end-to-end-v1/analysis.json`, and `verification-changed-v1/analysis.json`. Run `python -m evals.analyse_final_research` and `python -m evals.analyse_proposal_quality` to regenerate the final analysis without inference. See `DATA_CARD.md`, `VERIFICATION.md`, and `AI_USAGE.md` for provenance, control checks, and assistance disclosure.</p>
+<aside class="sources">
+<strong>Inspect the evidence</strong>
+<p>All reported experiments use declared cohorts. Simulator outcomes are synthetic,
+and failures remain in the results.</p>
+<a href="https://github.com/raahim-ibrar/GigBidA2/tree/main/evals/results">
+Results and raw records</a> ·
+<a href="https://github.com/raahim-ibrar/GigBidA2/blob/main/docs/AI_USAGE.md">
+AI assistance disclosure</a> ·
+<a href="https://github.com/raahim-ibrar/GigBidA2/blob/main/output/pdf/GigBid_RnD_Report.pdf">
+Engineering report</a>
+</aside>
+</article>
+</main>
+<footer>Written by Raahim Ibrar with disclosed AI assistance. Built for AI-4016.
+Research findings are distinguished from deterministic control tests.</footer>
+</body>
+</html>

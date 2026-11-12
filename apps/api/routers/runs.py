@@ -6,9 +6,41 @@ from starlette.concurrency import run_in_threadpool
 
 from agent.run_store import TERMINAL
 from apps.api.auth.dependencies import CurrentUser
-from apps.api.schemas.proposals import CreateRun, EventView, RetryRun, RunView
+from apps.api.schemas.proposals import (
+    CheckpointView,
+    CreateRun,
+    EventView,
+    ReplayRun,
+    RetryRun,
+    RunView,
+)
 
 router = APIRouter(tags=["runs"])
+
+
+@router.get("/runs/{run_id}/checkpoints", response_model=list[CheckpointView])
+async def checkpoint_history(run_id: str, user: CurrentUser, request: Request):
+    from agent.replay import checkpoints
+
+    return await checkpoints(request.app.state.engine, request.app.state.settings, user.id, run_id)
+
+
+@router.post("/runs/{run_id}/replays", response_model=RunView, status_code=202)
+async def replay_run(run_id: str, body: ReplayRun, user: CurrentUser, request: Request):
+    from agent.replay import fork
+
+    run = await fork(
+        request.app.state.engine,
+        request.app.state.settings,
+        request.app.state.runs,
+        user.id,
+        run_id,
+        body,
+    )
+    if run.status == "queued":
+        if not await request.app.state.enqueue_run(user.id, run.id):
+            run.error = "Replay saved; waiting for the worker queue to recover."
+    return run
 
 
 @router.post("/runs", response_model=RunView, status_code=202)

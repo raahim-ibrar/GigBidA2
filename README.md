@@ -3,12 +3,15 @@
 A freelancer workspace for finding suitable jobs, drafting evidence-backed proposals and
 reviewing every outgoing action. Built with LangGraph, MCP, FastAPI and Next.js.
 
-![GigBid dark workspace](docs/images/workspace-dark.png)
+![Thirty-second recording of GigBid](docs/images/demo.gif)
+
+[Watch the three-minute demo](https://raahim-ibrar.github.io/GigBidA2/demo.html) ·
+[Published technical article](https://raahim-ibrar.github.io/GigBidA2/)
 
 **Working locally:** accounts, portfolios, durable proposal/reply review, the student-built
 marketplace simulator, scheduled job imports, pipeline, analytics and a responsive dark UI.
-A temporary public laptop-backed demo is available; stable hosting and some integrations remain unfinished. No real Upwork
-client is contacted, and simulated replies or hires are not real business outcomes.
+The temporary public demo is currently off. Real Upwork OAuth and job reads are verified;
+no real client was contacted. Simulated replies and hires are not real business outcomes.
 
 ## Run
 
@@ -77,6 +80,24 @@ The hypothesis that reranking improves recall over V0 was not supported here. V3
 ordering; V8 improved abstention at greater latency. The declared recall/ordering/latency
 selection rule chooses V3. This does not establish better client reply rates.
 
+<!-- rag-e2e-table:start -->
+
+| Variant | Recall@5* | nDCG@10* | Unsupported / available proposal | Judge / 5 | Reply / submitted | p95/job seconds | USD/proposal |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| V0 | 1.000 | 0.990 | 0.00 (n=5) | 3.80 | 2/2 | 368.16 | unknown |
+| V3 | 1.000 | 1.000 | 0.00 (n=2) | 4.00 | 1/1 | 124.43 | unknown |
+
+*Retrieval: separate 60-answerable-task cohort. Proposal columns: nine matched jobs per variant; every available draft judged, including later-failing runs. The columns do not establish a causal retrieval-to-reply relationship.
+
+Intention-to-treat replies were 2/9 (V0) versus 1/9 (V3). V3's shorter latency includes more early failures, not a demonstrated speed improvement. The sample is small; API billing remains unknown.
+
+<!-- rag-e2e-table:end -->
+
+The supplemental end-to-end table is derived by
+`python -m evals.analyse_rag_end_to_end` without inference from
+[frozen observations and analysis](evals/results/rag-end-to-end-v1/analysis.json).
+It does not replace the larger retrieval or architecture studies.
+
 The two open-model cohorts are complete (30 jobs each); grounding failures are retained.
 The 150-run optional Gemini architecture comparison is complete: ReAct had 41/50
 error-free runs, supervisor 24/50, and the custom graph 37/50. Intermediate decision
@@ -86,6 +107,17 @@ were 48% versus 68%, Fisher p=0.252: no significant strategy benefit established
 See [measured results](docs/RESULTS.md), [technical narrative](docs/TECHNICAL_WRITEUP.md),
 [study plan](evals/STUDENT_RESEARCH_PLAN.md), and [evaluation guide](docs/EVALUATION.md).
 Hidden-test results are unavailable before grading.
+
+| Architecture, 50 matched jobs each | Error-free | Correct intermediate decisions | Simulator submissions | Replies | p95 seconds |
+|---|---:|---:|---:|---:|---:|
+| ReAct | 41 | 36 | 40 | 35 | 138.55 |
+| Supervisor | 24 | 24 | 19 | 18 | 186.13 |
+| Custom graph | 37 | 49 | 30 | 29 | 178.69 |
+
+These are optional Gemini architecture runs, separate from the two open-weight cohorts.
+ReAct submitted five scam controls to the isolated simulator; the supervisor submitted
+one and the custom graph none. Higher completion alone is not a safe selection rule.
+Source: [frozen analysis](evals/results/gemini-orchestration-v1/analysis.json).
 
 ## Verification
 
@@ -101,26 +133,38 @@ npm run test:e2e
 ```
 
 Set `GIGBID_TEST_DATABASE_URL` for isolated Postgres schemas. The latest full backend run
-passed 193 tests with four opt-in skips.
-The existing Chromium suite and added Upwork UI check passed 16 flows in total. Deterministic
+passed 214 tests with five opt-in skips.
+The Chromium suite passed 17 flows, including safe checkpoint replay. Deterministic
 browser/control fixtures are not quality measurements. [Verification history](docs/VERIFICATION.md).
+
+`make eval` runs a fresh 30-job control evaluation through production graphs, MCP,
+approval transactions and the rule simulator. It checks retrieval, decisions, grounding
+and reply-rate thresholds. Deterministic model/embedding fixtures require no API key or
+GPU and do not measure prompt/model quality. Every PR runs this smoke plus the test
+workflows. Use `make eval-recorded EVAL_ARGS="--manifest PATH"` to score frozen research
+outputs separately. [Latest control evidence](evals/results/ci-control-30/summary.json).
+
+The run viewer can fork an owned checkpoint into a new bid run. Selecting a later write
+stage returns through verification and always requires a new approval; the source run
+and its audit history remain intact.
 
 ## Submission status
 
 Repository: [raahim-ibrar/GigBidA2](https://github.com/raahim-ibrar/GigBidA2).
-Temporary public demo: [open GigBid](https://interpreted-vid-recovered-estimation.trycloudflare.com).
-It depends on the laptop, Docker and tunnel remaining running; the URL changes after restart.
+The former temporary tunnel is off; its old URL is not an active deployment.
+Demo hosting depends on the laptop, Docker and tunnel, and changes URL after restart.
 Actual verification: [demo results](evals/results/demo-deployment.json) and
 [demo hosting notes](docs/DEMO_HOSTING.md). Reviewer credentials are kept private.
 The optional [student-credit Azure/Vercel configuration](docs/DEPLOYMENT.md) is prepared
 but no Azure resources were provisioned.
-Public [Portfolio MCP](https://interpreted-vid-recovered-estimation.trycloudflare.com/mcp)
-is bearer-protected; private connection details are in `work/public-demo/MCP-CONNECTION.json`.
-GitHub import reads a public repository's README through the official read-only MCP server,
+The installable [Portfolio MCP package](mcp_servers/portfolio/README.md) supports uvx
+or Docker. Its optional HTTP demo is currently off. Private connection details remain
+in ignored files. GitHub import reads public README and source-code files through official read-only MCP,
 pins the commit, and indexes it in the signed-in account's portfolio.
 
 Public LangSmith traces contain measured timings, token usage and MCP calls, with source
-content omitted: [proposal awaiting approval](https://smith.langchain.com/public/a2f56a69-3bde-4159-b994-cd81ed98a3f9/r),
+content omitted: [approved proposal and actual API crash/restart](https://smith.langchain.com/public/f91fd52f-2903-4c50-8160-f2415edd1ea7/r),
+[real-model Critic loop](https://smith.langchain.com/public/039792a8-3f8a-4d96-863e-8a9b43e3ae88/r),
 [scam rejected](https://smith.langchain.com/public/b55b89d4-881e-4c66-8516-cef09cba7cd2/r),
 [injection rejected](https://smith.langchain.com/public/06918fe8-f9e4-4551-a7d8-f1435f522869/r).
 See [trace evidence](evals/results/public-traces.json) and [tracing policy](docs/TRACING.md).
@@ -129,8 +173,10 @@ It does not establish a security improvement; model failures and paired outcomes
 Real Upwork OAuth, account-scoped encrypted credentials and live job reads are verified.
 See [Upwork setup and limits](docs/UPWORK.md) and [sanitized live evidence](evals/results/upwork-live-verification.json).
 Provider-preview preparation is approval-gated and fixture-tested; no live write was
-attempted. Final submissions and direct message sending remain disabled. The required video/GIF
-is excluded from the current work at the user's request.
+attempted. Final submissions and direct message sending remain disabled.
+The demo recording uses a fictional account, real hosted inference, an actual API
+process restart and one verified simulator submission receipt; it makes no live Upwork writes.
+See [submission checklist](docs/SUBMISSION.md) for artifacts and remaining external limitations.
 
 [Portfolio MCP install instructions](mcp_servers/portfolio/README.md) Ã‚Â·
 [Data provenance](docs/DATA_CARD.md) Ã‚Â· [AI assistance disclosure](docs/AI_USAGE.md).

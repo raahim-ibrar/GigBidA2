@@ -1,0 +1,10 @@
+{
+  "data_origin": "synthetic",
+  "gold": "gold.jsonl",
+  "predictions": "predictions.jsonl",
+  "outcomes": "outcomes.jsonl",
+  "experiment_id": "fresh-ci-control-30",
+  "min_cases": 30,
+  "bid_f1_floor": 0.98,
+  "unsupported_claim_rate_ceiling": 0
+}

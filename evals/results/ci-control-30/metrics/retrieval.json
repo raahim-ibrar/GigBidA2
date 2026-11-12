@@ -1,0 +1,72 @@
+{
+  "created_at_utc": "2026-11-12T16:21:46.148414+00:00",
+  "data_origin": "synthetic",
+  "inputs": [
+    {
+      "name": "manifest.json",
+      "sha256": "33391a40744022102d4c34dbe2b4f88291e71e14da7234f869532efc80f0aea0"
+    },
+    {
+      "name": "gold.jsonl",
+      "rows": 30,
+      "sha256": "1c3fd15c645ade86e1f980e11abfd05971632a1072881272eb604e63882eaac4"
+    },
+    {
+      "name": "predictions.jsonl",
+      "rows": 30,
+      "sha256": "d2c28ada0e3629bcf70a0a1fefd7a9653943e5c91fb99c80eed3107b03054454"
+    },
+    {
+      "name": "outcomes.jsonl",
+      "rows": 30,
+      "sha256": "aeef30bee74265f0ea5b18d18d77384e4ec5e94d18e355f235868d650a0da0b9"
+    }
+  ],
+  "metric": "retrieval",
+  "results": {
+    "by_persona": {
+      "ai_ml": {
+        "answerable": 10,
+        "macro_mrr_at_k": 1.0,
+        "macro_ndcg_at_k": 1.0,
+        "macro_precision_at_k": 0.2,
+        "macro_recall_at_k": 1.0,
+        "n": 10,
+        "unanswerable": 0,
+        "unanswerable_with_retrieval": 0
+      },
+      "data_analyst": {
+        "answerable": 10,
+        "macro_mrr_at_k": 1.0,
+        "macro_ndcg_at_k": 1.0,
+        "macro_precision_at_k": 0.2,
+        "macro_recall_at_k": 1.0,
+        "n": 10,
+        "unanswerable": 0,
+        "unanswerable_with_retrieval": 0
+      },
+      "full_stack": {
+        "answerable": 10,
+        "macro_mrr_at_k": 1.0,
+        "macro_ndcg_at_k": 1.0,
+        "macro_precision_at_k": 0.2,
+        "macro_recall_at_k": 1.0,
+        "n": 10,
+        "unanswerable": 0,
+        "unanswerable_with_retrieval": 0
+      }
+    },
+    "k": 5,
+    "overall": {
+      "answerable": 30,
+      "macro_mrr_at_k": 1.0,
+      "macro_ndcg_at_k": 1.0,
+      "macro_precision_at_k": 0.2,
+      "macro_recall_at_k": 1.0,
+      "n": 30,
+      "unanswerable": 0,
+      "unanswerable_with_retrieval": 0
+    }
+  },
+  "schema_version": 1
+}

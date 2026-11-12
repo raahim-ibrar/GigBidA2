@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { CheckpointReplay } from "./CheckpointReplay";
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { ApiError, apiRequest, getAccount, type Account } from "@/lib/api/accounts";
 import { getRun, getRunActivity, retryRun, reviewRun, type Draft, type Evidence, type Review, type Run } from "@/lib/api/proposals";
@@ -14,7 +15,7 @@ function ClaimLine({ text, draft, evidence }: { text: string; draft: Draft; evid
     const match = matches[0]; if (!match) break;
     if (match.index > offset) parts.push(text.slice(offset, match.index));
     const sources = evidence.filter(item => match.claim.evidence_ids?.includes(item.id));
-    parts.push(sources.length ? <span key={match.index} tabIndex={0} className="grounded-claim" aria-label={`${match.claim.text} Portfolio evidence available.`}>{match.claim.text}<span className="evidence-popover" role="tooltip">{sources.map(source => <span key={source.id}><strong>{source.source}{source.page ? ` · page ${source.page}` : ""}</strong><br />{source.text}<br /></span>)}</span></span> : match.claim.text);
+    parts.push(sources.length ? <span key={match.index} tabIndex={0} className="grounded-claim" aria-label={`${match.claim.text} Portfolio evidence available.`}>{match.claim.text}<span className="evidence-popover" role="tooltip">{sources.map(source => <span key={source.id}><strong>{source.source}{source.page ? ` Â· page ${source.page}` : ""}</strong><br />{source.text}<br /></span>)}</span></span> : match.claim.text);
     offset = match.index + match.claim.text.length;
   }
   parts.push(text.slice(offset)); return <p>{parts}</p>;
@@ -73,20 +74,20 @@ export function RunWorkspace({ id, trace = false, onSaved }: { id: string; trace
     finally { setBusy(false); }
   }
   if (signIn) return <p className="notice"><Link href="/sign-in">Sign in</Link> to view this run.</p>;
-  if (!run) return error ? <p role="alert" className="error">{error}</p> : <p role="status">Loading run…</p>;
+  if (!run) return error ? <p role="alert" className="error">{error}</p> : <p role="status">Loading runâ€¦</p>;
   const state = run.snapshot; const draft = state.draft; const evidence = state.evidence ?? []; const ready = run.status === "awaiting_approval";
   const conversation = run.kind === "conversation";
   const liveProposal = state.preview?.tool === "submit_proposal" && state.marketplace_provider === "upwork";
   const simulatorProposal = state.preview?.tool === "submit_proposal" && !liveProposal;
   const simulatorReply = state.preview?.tool === "send_message";
   const completed = ["drafted", "submitted", "sent", "pending_provider_confirmation"].includes(run.status);
-  const completedTitle = run.status === "pending_provider_confirmation" ? "Upwork preview prepared — not submitted" : run.status === "submitted" ? "Submitted to student simulator" : run.status === "sent" ? "Reply sent to student simulator" : conversation ? "Saved local email draft" : "Saved local draft";
+  const completedTitle = run.status === "pending_provider_confirmation" ? "Upwork preview prepared â€” not submitted" : run.status === "submitted" ? "Submitted to student simulator" : run.status === "sent" ? "Reply sent to student simulator" : conversation ? "Saved local email draft" : "Saved local draft";
   const paragraphs = draft?.text.match(/\S[\s\S]*?(?=\n[ \t\r]*\n|$)/g) ?? [];
   return <div className="section-stack run-workspace"><nav className="source-actions run-nav" aria-label="Proposal navigation"><Link href={`/jobs/${run.job_id}`}>Job detail</Link><Link href={conversation ? `/messages/${state.conversation_id}` : `/studio/${id}`}>{conversation ? "Conversation" : "Proposal review"}</Link><Link href={`/runs/${id}`}>Run activity</Link></nav>
-    <p role="status" className="notice">Status: <strong>{run.status.replaceAll("_", " ")}</strong>{active && " · Working in the background; you can leave this page."}</p>
+    <p role="status" className="notice">Status: <strong>{run.status.replaceAll("_", " ")}</strong>{active && " Â· Working in the background; you can leave this page."}</p>
     {error && <p role="alert" className="error">{error}</p>}{run.error && <p role="alert" className="error">{run.error}</p>}{state.job && <h2>{state.job.title}</h2>}
     {["needs_attention", "failed"].includes(run.status) && <section className="card"><h2>{run.status === "failed" ? "Retries exhausted" : "Run needs attention"}</h2><p>{run.retry_count ?? 0} of 3 retries used. Previous token charges and step counts are preserved.</p>
-      {run.retryable ? <><p>Retry the failed step after restoring the unavailable service. Any earlier approval remains limited to its exact preview.</p><button disabled={busy} onClick={retry}>{busy ? "Queuing retry…" : "Retry failed step"}</button></> : <p>Inspect the error and correct the source inputs. This run cannot be retried from this screen.</p>}
+      {run.retryable ? <><p>Retry the failed step after restoring the unavailable service. Any earlier approval remains limited to its exact preview.</p><button disabled={busy} onClick={retry}>{busy ? "Queuing retryâ€¦" : "Retry failed step"}</button></> : <p>Inspect the error and correct the source inputs. This run cannot be retried from this screen.</p>}
     </section>}
     <div className="cards"><section className="card"><h2>{conversation ? "Client intent" : "Recommendation"}</h2>{conversation ? <p>{state.intent ?? "Waiting for classification."}</p> : state.decision ? <><strong>{state.decision.action}</strong><ul>{state.decision.reasons.map((text, i) => <li key={i}>{text}</li>)}</ul></> : <p className="muted">Waiting for analysis.</p>}
       {state.risk && <><h3>Risk: {Math.round(state.risk.score * 100)}%</h3><ul>{state.risk.reasons?.map((text, i) => <li key={i}>{text}</li>)}</ul></>}
@@ -104,6 +105,7 @@ export function RunWorkspace({ id, trace = false, onSaved }: { id: string; trace
         <label htmlFor="rejection-reason">Reason for rejection</label><textarea id="rejection-reason" rows={2} maxLength={1000} value={reason} onChange={event => setReason(event.target.value)} /><button className="secondary-button" disabled={busy} onClick={() => decide("reject")}>Reject draft</button></>}
     </section>}
     {run.status === "pending_provider_confirmation" && <section className="card"><h2>Final confirmation remains on Upwork</h2><p>No proposal was submitted and no Connects were spent. Final confirmation is disabled in GigBid.</p><p>Provider preview ID: <code>{String(state.provider_result?.preview_id ?? "unavailable")}</code></p><p className="muted">This is a server preview, not a confirmed application. Review it through an authorized Upwork client or prepare the application manually on Upwork. A provider preview may expire.</p></section>}
-    {(trace || active) && <section className="card draft-panel"><h2>Run activity</h2><p className="muted">{run.steps} steps · {run.tokens} tokens charged or reserved. Local model costs exclude hardware and electricity.</p><p className="muted">Trace ID: <code>{id}</code> · {traceInfo?.status ?? "not exported"}{traceInfo?.public_url && <> · <a href={traceInfo.public_url} target="_blank" rel="noreferrer">Open public trace</a></>}</p><ol className="run-events">{events.map(event => <li key={event.id}>{event.kind.replaceAll("_", " ")}{typeof event.details.node === "string" && ` · ${event.details.node}`}{typeof event.details.role === "string" && ` · ${event.details.role}`}</li>)}</ol></section>}
+    {trace && account && run.kind === "bid" && <CheckpointReplay runId={id} csrf={account.csrf_token} />}
+    {(trace || active) && <section className="card draft-panel"><h2>Run activity</h2><p className="muted">{run.steps} steps Â· {run.tokens} tokens charged or reserved. Local model costs exclude hardware and electricity.</p><p className="muted">Trace ID: <code>{id}</code> Â· {traceInfo?.status ?? "not exported"}{traceInfo?.public_url && <> Â· <a href={traceInfo.public_url} target="_blank" rel="noreferrer">Open public trace</a></>}</p><ol className="run-events">{events.map(event => <li key={event.id}>{event.kind.replaceAll("_", " ")}{typeof event.details.node === "string" && ` Â· ${event.details.node}`}{typeof event.details.role === "string" && ` Â· ${event.details.role}`}</li>)}</ol></section>}
   </div>;
 }

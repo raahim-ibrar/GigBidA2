@@ -322,31 +322,67 @@ def build(output="output/pdf/GigBid_RnD_Report.pdf"):
         [20 * mm, 26 * mm, 24 * mm, 29 * mm, 24 * mm, 48 * mm],
     )
     sub(
-        "Conclusion",
-        "H1 is not supported on this controlled set: V0 and V3 both have full "
-        "recall. Reranking improves ordering. Requirement decomposition loses recall when "
-        "generic requirements dominate rank fusion. V8 rejects the unrelated tasks at greater "
-        "latency. This cohort is highly templated; ceiling effects limit generalisation.",
-    )
-    sub(
-        "Shipped choice and ablations",
-        "The declared rule selects by Recall@5, then nDCG@10, "
-        "then p95. It selects V3. V3 versus V2 removes the reranker; V2 versus V0 removes "
-        "lexical fusion; V8 versus V3 removes correction. These comparisons do not establish "
-        "a real-client reply-rate benefit. Per-persona metrics and raw rankings remain available.",
+        "Conclusion, shipped choice and ablations",
+        "H1 is unsupported: V0/V3 recall ties on this templated cohort. The declared "
+        "recall, nDCG, latency rule selects V3 for ordering; V8 improves abstention at "
+        "greater latency. V3/V2 ablates reranking, V2/V0 lexical fusion, V8/V3 correction. "
+        "V1's generic requirements dilute retrieval. Per-persona rankings are retained; "
+        "these measurements do not establish real-client reply benefits.",
     )
     sub(
         "Grounding",
-        "The verifier assesses cover and screening sentences. Past claims need "
-        "live supporting IDs; numerical achievements receive an additional source check. "
-        "A source UUID is an identifier, not an achievement number. Future plans now have "
-        "an explicit non-factual verdict. Human calibration and the blind panel "
-        "are reported on page 9; "
-        "uncalibrated model judgements are not independent gold labels.",
+        "Cover and screening claims need live supporting IDs; numerical achievements "
+        "receive a source check. Source UUIDs are identifiers, not achievement numbers. "
+        "Future plans have a non-factual verdict. Human calibration/panel appear on page 9.",
+    )
+    paired = read("evals/results/rag-end-to-end-v1/analysis.json")
+    if paired:
+        table(
+            [
+                "V",
+                "Recall@5*",
+                "nDCG@10*",
+                "Bad / draft",
+                "Judge / 5",
+                "Reply / sent",
+                "p95/job s",
+                "USD/draft",
+            ],
+            [
+                [
+                    name.upper(),
+                    f"{r['separate_retrieval_cohort']['recall_at_5']:.3f}",
+                    f"{r['separate_retrieval_cohort']['ndcg_at_10']:.3f}",
+                    f"{r['unsupported_claims_per_available_proposal']:.2f} "
+                    f"(n={r['available_drafts']})",
+                    f"{r['mean_judge_quality']:.2f}",
+                    f"{r['replies']}/{r['submissions']}",
+                    f"{r['p95_job_seconds']:.1f}",
+                    "unknown",
+                ]
+                for name, r in paired["variants"].items()
+            ],
+            [12 * mm, 23 * mm, 24 * mm, 27 * mm, 21 * mm, 24 * mm, 20 * mm, 20 * mm],
+        )
+        body(
+            "*Retrieval uses the separate 60-answerable-task cohort. Proposal columns use "
+            "nine matched jobs per variant with the same routed hosted open profile and "
+            "32,000-token caps. Every available draft is judged, including later failures. "
+            "Intention-to-treat replies: V0 2/9, V3 1/9. V3's lower p95 includes more early "
+            "failures, not a proven speed benefit. Small dev sample; billing unknown."
+        )
+    body(
+        "Before/after verification: all four changed checkpoint pairs were independently "
+        "judged in a retrospective stratum. Unsupported factual claims were 2/22 (9.1%) "
+        "before and 1/13 (7.7%) after; mean quality stayed 3.75/5. Across 54 completed "
+        "passes the verifier removed four of 272 sentences. Nine unchanged control pairs "
+        "received inconsistent factual labels, exposing judge noise. Failed/unpaired "
+        "attempts are excluded from this conditional diagnostic, not counted as successes."
     )
     source(
         "evals/STUDENT_RESEARCH_PLAN.md; evals/results/student-retrieval/*.jsonl and "
-        "results.json; agent/proposal_nodes.py; tests/unit/test_proposal_nodes.py."
+        "results.json; rag-end-to-end-v1/analysis.json; verification-{changed,before-after}-v1/ "
+        "under evals/results/; agent/proposal_nodes.py."
     )
 
     section(5, "Models and negative results")

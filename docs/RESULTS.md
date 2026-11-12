@@ -92,3 +92,53 @@ The hand-graph jobs were preassigned 25 per arm: evidence-first had 12 replies (
 ## Limits and unmeasured requirements
 
 Hidden-test performance, real-client response and instructor-policy-change implementation timing remain unmeasured. A separate 56-call component-level injection-boundary comparison completed: before 3/18 and after 4/18 evaluable attacks disclosed fake markers/nonces, with six model errors per arm. Sixteen fully observed pairs had no discordant outcomes; no improvement was established. This does not measure end-to-end approval bypass. Temporary laptop-backed public hosting, an authenticated Portfolio MCP endpoint, GitHub README ingestion and three public metadata-only traces are verified. Real Upwork OAuth and live reads are now verified separately in upwork-live-verification.json; no live writes were tested, and final submissions/direct messages remain disabled. Always-on hosting remains a gap. The local hardware inventory was captured after the study, not as an as-run trace: see `evals/results/local-hardware-inventory.json`. Local output throughput was 79.324 tokens/s for Qwen4B and 64.396 for Qwen8B; API cost was zero for local inference but hardware/electricity was not priced.
+
+
+## Supplemental V0/V3 end-to-end diagnostic
+
+Eighteen real routed hosted-open runs completed on nine matched synthetic development jobs
+per retrieval variant, with the same three persona portfolios, 32,000-token caps and no
+fallback. The original 150-run study was not rerun. The pre-call paired plan and as-run
+source snapshot are in `evals/results/rag-end-to-end-v1/`.
+
+| Variant | Recall@5* | nDCG@10* | Unsupported / available proposal | Judge / 5 | Reply / submitted | p95/job seconds | USD/proposal |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| V0 | 1.000 | 0.990 | 0.00 (n=5) | 3.80 | 2/2 | 368.16 | unknown |
+| V3 | 1.000 | 1.000 | 0.00 (n=2) | 4.00 | 1/1 | 124.43 | unknown |
+
+*Retrieval: separate 60-answerable-task cohort. Proposal columns: nine matched jobs per variant; every available draft judged, including later-failing runs. The columns do not establish a causal retrieval-to-reply relationship.
+
+Intention-to-treat replies were 2/9 (V0) versus 1/9 (V3). V3's shorter latency includes more early failures, not a demonstrated speed improvement. The sample is small; API billing remains unknown.
+
+
+Intermediate bid F1 was 0.909 for V0 and 1.000 for V3, but only two versus one candidates
+reached the approval interrupt. V0 statuses: three skip, two awaiting approval, three needs
+attention and one watch. V3: three skip, one awaiting approval and five needs attention.
+Generation/context and provider TPM reservations dominate the failures. Known tokens total
+112,773 versus 56,249; unknown/failed-call usage and billing cannot be treated as zero.
+A faster failing cohort does not prove an optimization. Per-persona decisions, latency,
+price coverage and raw errors remain in `analysis.json` and the unedited observations.
+
+The prototype runner's legacy caveat text predates the completed human calibration; the
+independent scoring used the existing frozen calibrated Nvidia rubric. It did not change
+or regenerate the student's human answers. Regenerate with
+`python -m evals.analyse_rag_end_to_end` (no inference); `--judge` resumes only missing labels.
+
+## Before/after claim verification
+
+A retrospective checkpoint extraction found 54 completed verifier passes assessing 272
+sentences; four sentences were removed. These are the verifier's own decisions, not gold.
+Failed/unpaired attempts are not counted as successful passes.
+
+The first three paired jobs per persona produced nine unchanged-text pairs. A blinded
+independent judge called one factual claim unsupported in each phase, with different factual
+denominators (1/32 versus 1/13). Because all nine texts were unchanged, this variation is
+judge inconsistency, not a filtering effect. The human calibration kappa of 0.403 cautions
+against interpreting these labels as truth.
+
+A separately declared exploratory stratum includes all four completed passes that actually
+changed text, selected by filter activity before their judging, not by scores. Unsupported
+factual claims: **2/22 (9.1%) before, 1/13 (7.7%) after**. Mean quality remained **3.75/5**.
+This tiny conditional sample does not establish a general improvement. Pair order was
+shuffled and phase labels hidden; accepted labels were never revised. Evidence:
+`evals/results/verification-before-after-v1/` and `verification-changed-v1/`.

@@ -1,0 +1,19 @@
+{
+  "kind": "fresh deterministic application-control smoke, not LLM quality research",
+  "jobs": 30,
+  "passed": true,
+  "checks": {
+    "decision_and_grounding_gate": true,
+    "all_runs_terminal": true,
+    "recall_at_5_floor_095": true,
+    "reply_rate_floor_095": true
+  },
+  "recall_at_5": 1.0,
+  "reply_rate": 1.0,
+  "submitted": 27,
+  "replied": 27,
+  "elapsed_seconds": 32.989708600000085,
+  "model_api_calls": 0,
+  "usd_api": 0,
+  "limits": "Deterministic role/embedding fixtures; not prompt or model quality."
+}

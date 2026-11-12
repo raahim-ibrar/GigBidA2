@@ -1,0 +1,13 @@
+{
+  "run_id": "704c29d5-f045-4743-8b28-2cd329270edb",
+  "actual_api_process_killed": true,
+  "new_api_process_observed": true,
+  "pending_approval_survived": true,
+  "approval_from_ui": true,
+  "approval_records": 1,
+  "application_write_receipts": 1,
+  "simulator_proposals_for_job": 1,
+  "provider": "student_sim",
+  "real_upwork_writes": 0,
+  "video": "output/video/GigBid_Demo.mp4"
+}

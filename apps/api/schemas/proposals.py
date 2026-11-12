@@ -67,6 +67,34 @@ class RetryRun(Contract):
     version: int = Field(ge=0)
 
 
+class ReplayRun(Contract):
+    checkpoint_id: UUID
+    node: Literal[
+        "scout",
+        "analyst",
+        "risk",
+        "matcher",
+        "decision",
+        "pricing",
+        "writer",
+        "regenerate",
+        "verifier",
+        "critic",
+        "compliance",
+        "preview",
+        "approval",
+        "execute",
+    ]
+    idempotency_key: UUID = Field(default_factory=uuid4)
+
+
+class CheckpointView(Contract):
+    checkpoint_id: str
+    created_at: str | None
+    next_nodes: list[str]
+    step: int | None
+
+
 class SnapshotView(Contract):
     model_config = ConfigDict(extra="ignore")
     status: str | None = None
@@ -89,6 +117,7 @@ class SnapshotView(Contract):
     source_revision: int | None = None
     provider_result: dict | None = None
     marketplace_provider: str | None = None
+    replay_request: dict | None = None
     intent: Literal["question", "negotiation", "interview", "scam"] | None = None
     calendar_slots: list[TimeWindow] = Field(default_factory=list)
 

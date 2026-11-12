@@ -1,0 +1,11 @@
+{
+  "inspector_version": "1.0.5",
+  "sdk_version": "1.30.0",
+  "scope": "Actual stdio connections and tools/list on three local servers; fictional tenant only",
+  "provider_write_calls": 0,
+  "screenshots": {
+    "docs\\images\\mcp-inspector-portfolio.png": "f9e41857cdaeee015b976877f9f6ed50344964ae9778ca5b3c66aa2965e604de",
+    "docs\\images\\mcp-inspector-marketplace.png": "d3e756ed45afea3c61babfc9e4e33ba0c2dde33211b348f8bfa3b31ba8b5e8ba",
+    "docs\\images\\mcp-inspector-workspace.png": "f262d413aba8fb79fa12bc84c7a08c8f01c31301c301f5133f7738894563e4db"
+  }
+}

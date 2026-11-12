@@ -1,12 +1,14 @@
 PYTHON ?= python
 COMPOSE = docker compose --project-directory . -f infra/docker-compose.yml
 
-.PHONY: dev test eval seed demo lint api schema graphs
+.PHONY: dev test eval eval-recorded seed demo lint api schema graphs
 dev:
 	$(COMPOSE) up --build
 test:
 	$(PYTHON) -m pytest
 eval:
+	$(PYTHON) -m evals.runners.ci_smoke $(EVAL_ARGS)
+eval-recorded:
 	$(PYTHON) -m evals.runners.suite $(EVAL_ARGS)
 seed:
 	$(PYTHON) -m scripts.seed

@@ -1,0 +1,18 @@
+{
+  "kind": "Installed package console entrypoint verified in a clean disposable Linux container",
+  "image": "gigbid-upwork-worker",
+  "source_commit": "c498e65",
+  "tools": [
+    "search_evidence",
+    "get_case_study",
+    "list_skills"
+  ],
+  "resource_templates": [
+    "portfolio://case/{id}",
+    "portfolio://proposal/{id}"
+  ],
+  "prompts": [
+    "answer_screening_question"
+  ],
+  "provider_write_calls": 0
+}

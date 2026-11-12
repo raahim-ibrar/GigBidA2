@@ -1,0 +1,389 @@
+{
+  "kind": "Small paired V0/V3 supplemental end-to-end diagnostic",
+  "data_origin": "synthetic",
+  "variants": {
+    "v0": {
+      "jobs": 9,
+      "statuses": {
+        "skip": 3,
+        "awaiting_approval": 2,
+        "needs_attention": 3,
+        "watch": 1
+      },
+      "decisions": {
+        "overall": {
+          "bid": {
+            "n": 9,
+            "tp": 5,
+            "fp": 0,
+            "fn": 1,
+            "tn": 3,
+            "accuracy": 0.8888888888888888,
+            "precision": 1.0,
+            "recall": 0.8333333333333334,
+            "f1": 0.9090909090909091
+          },
+          "scam": {
+            "n": 9,
+            "tp": 3,
+            "fp": 0,
+            "fn": 0,
+            "tn": 6,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          "price_band_n": 9,
+          "price_in_band_rate": 0.5555555555555556,
+          "claim_annotated_jobs": 0,
+          "claim_annotations_complete": false,
+          "labelled_claims": 0,
+          "unsupported_claim_rate": null
+        },
+        "by_persona": {
+          "ai_ml": {
+            "bid": {
+              "n": 3,
+              "tp": 2,
+              "fp": 0,
+              "fn": 0,
+              "tn": 1,
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            },
+            "scam": {
+              "n": 3,
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "tn": 2,
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            },
+            "price_band_n": 3,
+            "price_in_band_rate": 0.6666666666666666,
+            "claim_annotated_jobs": 0,
+            "claim_annotations_complete": false,
+            "labelled_claims": 0,
+            "unsupported_claim_rate": null
+          },
+          "data_analyst": {
+            "bid": {
+              "n": 3,
+              "tp": 1,
+              "fp": 0,
+              "fn": 1,
+              "tn": 1,
+              "accuracy": 0.6666666666666666,
+              "precision": 1.0,
+              "recall": 0.5,
+              "f1": 0.6666666666666666
+            },
+            "scam": {
+              "n": 3,
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "tn": 2,
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            },
+            "price_band_n": 3,
+            "price_in_band_rate": 0.3333333333333333,
+            "claim_annotated_jobs": 0,
+            "claim_annotations_complete": false,
+            "labelled_claims": 0,
+            "unsupported_claim_rate": null
+          },
+          "full_stack": {
+            "bid": {
+              "n": 3,
+              "tp": 2,
+              "fp": 0,
+              "fn": 0,
+              "tn": 1,
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            },
+            "scam": {
+              "n": 3,
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "tn": 2,
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            },
+            "price_band_n": 3,
+            "price_in_band_rate": 0.6666666666666666,
+            "claim_annotated_jobs": 0,
+            "claim_annotations_complete": false,
+            "labelled_claims": 0,
+            "unsupported_claim_rate": null
+          }
+        }
+      },
+      "available_drafts": 5,
+      "mean_judge_quality": 3.8,
+      "claim_counts": {
+        "supported": 16,
+        "not_factual": 18
+      },
+      "unsupported_claims_per_available_proposal": 0.0,
+      "submissions": 2,
+      "replies": 2,
+      "reply_rate_per_assigned_job": 0.2222222222222222,
+      "reply_rate_per_submission": 1.0,
+      "p50_job_seconds": 178.7739500000007,
+      "p95_job_seconds": 368.15581009999914,
+      "known_tokens": 112773,
+      "usd_per_proposal": null,
+      "by_persona": {
+        "ai_ml": {
+          "jobs": 3,
+          "statuses": {
+            "skip": 1,
+            "awaiting_approval": 1,
+            "needs_attention": 1
+          },
+          "p50_job_seconds": 178.7739500000007,
+          "p95_job_seconds": 181.32740840000042,
+          "known_tokens": 30932,
+          "replies": 1
+        },
+        "data_analyst": {
+          "jobs": 3,
+          "statuses": {
+            "skip": 1,
+            "awaiting_approval": 1,
+            "watch": 1
+          },
+          "p50_job_seconds": 4.157882800000152,
+          "p95_job_seconds": 183.28529849999904,
+          "known_tokens": 23005,
+          "replies": 1
+        },
+        "full_stack": {
+          "jobs": 3,
+          "statuses": {
+            "skip": 1,
+            "needs_attention": 2
+          },
+          "p50_job_seconds": 306.9644255000003,
+          "p95_job_seconds": 368.15581009999914,
+          "known_tokens": 58836,
+          "replies": 0
+        }
+      },
+      "positive_jobs": 6,
+      "positive_jobs_priced_in_band": 5,
+      "separate_retrieval_cohort": {
+        "answerable_tasks": 60,
+        "recall_at_5": 1.0,
+        "ndcg_at_10": 0.9897808801205756
+      }
+    },
+    "v3": {
+      "jobs": 9,
+      "statuses": {
+        "skip": 3,
+        "awaiting_approval": 1,
+        "needs_attention": 5
+      },
+      "decisions": {
+        "overall": {
+          "bid": {
+            "n": 9,
+            "tp": 6,
+            "fp": 0,
+            "fn": 0,
+            "tn": 3,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          "scam": {
+            "n": 9,
+            "tp": 3,
+            "fp": 0,
+            "fn": 0,
+            "tn": 6,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          "price_band_n": 9,
+          "price_in_band_rate": 0.6666666666666666,
+          "claim_annotated_jobs": 0,
+          "claim_annotations_complete": false,
+          "labelled_claims": 0,
+          "unsupported_claim_rate": null
+        },
+        "by_persona": {
+          "ai_ml": {
+            "bid": {
+              "n": 3,
+              "tp": 2,
+              "fp": 0,
+              "fn": 0,
+              "tn": 1,
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            },
+            "scam": {
+              "n": 3,
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "tn": 2,
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            },
+            "price_band_n": 3,
+            "price_in_band_rate": 0.6666666666666666,
+            "claim_annotated_jobs": 0,
+            "claim_annotations_complete": false,
+            "labelled_claims": 0,
+            "unsupported_claim_rate": null
+          },
+          "data_analyst": {
+            "bid": {
+              "n": 3,
+              "tp": 2,
+              "fp": 0,
+              "fn": 0,
+              "tn": 1,
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            },
+            "scam": {
+              "n": 3,
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "tn": 2,
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            },
+            "price_band_n": 3,
+            "price_in_band_rate": 0.6666666666666666,
+            "claim_annotated_jobs": 0,
+            "claim_annotations_complete": false,
+            "labelled_claims": 0,
+            "unsupported_claim_rate": null
+          },
+          "full_stack": {
+            "bid": {
+              "n": 3,
+              "tp": 2,
+              "fp": 0,
+              "fn": 0,
+              "tn": 1,
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            },
+            "scam": {
+              "n": 3,
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "tn": 2,
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            },
+            "price_band_n": 3,
+            "price_in_band_rate": 0.6666666666666666,
+            "claim_annotated_jobs": 0,
+            "claim_annotations_complete": false,
+            "labelled_claims": 0,
+            "unsupported_claim_rate": null
+          }
+        }
+      },
+      "available_drafts": 2,
+      "mean_judge_quality": 4.0,
+      "claim_counts": {
+        "supported": 3,
+        "not_factual": 6
+      },
+      "unsupported_claims_per_available_proposal": 0.0,
+      "submissions": 1,
+      "replies": 1,
+      "reply_rate_per_assigned_job": 0.1111111111111111,
+      "reply_rate_per_submission": 1.0,
+      "p50_job_seconds": 60.675156600000264,
+      "p95_job_seconds": 124.43478750000031,
+      "known_tokens": 56249,
+      "usd_per_proposal": null,
+      "by_persona": {
+        "ai_ml": {
+          "jobs": 3,
+          "statuses": {
+            "skip": 1,
+            "awaiting_approval": 1,
+            "needs_attention": 1
+          },
+          "p50_job_seconds": 124.15301519999957,
+          "p95_job_seconds": 124.43478750000031,
+          "known_tokens": 30355,
+          "replies": 1
+        },
+        "data_analyst": {
+          "jobs": 3,
+          "statuses": {
+            "skip": 1,
+            "needs_attention": 2
+          },
+          "p50_job_seconds": 58.59987089999959,
+          "p95_job_seconds": 61.274012000001676,
+          "known_tokens": 13014,
+          "replies": 0
+        },
+        "full_stack": {
+          "jobs": 3,
+          "statuses": {
+            "skip": 1,
+            "needs_attention": 2
+          },
+          "p50_job_seconds": 60.675156600000264,
+          "p95_job_seconds": 61.00462460000017,
+          "known_tokens": 12880,
+          "replies": 0
+        }
+      },
+      "positive_jobs": 6,
+      "positive_jobs_priced_in_band": 6,
+      "separate_retrieval_cohort": {
+        "answerable_tasks": 60,
+        "recall_at_5": 1.0,
+        "ndcg_at_10": 1.0
+      }
+    }
+  },
+  "limits": "Nine reused dev jobs per variant; same hosted open model profile. All errors retained. Judge scores cover every available draft, including later failures. Recall/nDCG use the separate 60-task retrieval cohort, not these nine jobs. No causal or real-client claim. Billing and hidden-test outcomes are unknown."
+}

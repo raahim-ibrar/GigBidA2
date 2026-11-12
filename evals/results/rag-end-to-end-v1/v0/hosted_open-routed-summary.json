@@ -1,0 +1,152 @@
+{
+  "model": "routed",
+  "data_origin": "synthetic",
+  "plan_sha256": "cddeffc6fd9098e50bbe98223b96fbff9bdd18740b061155064c4bfcfabe3165",
+  "scores": {
+    "overall": {
+      "bid": {
+        "n": 9,
+        "tp": 5,
+        "fp": 0,
+        "fn": 1,
+        "tn": 3,
+        "accuracy": 0.8888888888888888,
+        "precision": 1.0,
+        "recall": 0.8333333333333334,
+        "f1": 0.9090909090909091
+      },
+      "scam": {
+        "n": 9,
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "tn": 6,
+        "accuracy": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "price_band_n": 9,
+      "price_in_band_rate": 0.5555555555555556,
+      "claim_annotated_jobs": 0,
+      "claim_annotations_complete": false,
+      "labelled_claims": 0,
+      "unsupported_claim_rate": null
+    },
+    "by_persona": {
+      "ai_ml": {
+        "bid": {
+          "n": 3,
+          "tp": 2,
+          "fp": 0,
+          "fn": 0,
+          "tn": 1,
+          "accuracy": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        "scam": {
+          "n": 3,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "tn": 2,
+          "accuracy": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        "price_band_n": 3,
+        "price_in_band_rate": 0.6666666666666666,
+        "claim_annotated_jobs": 0,
+        "claim_annotations_complete": false,
+        "labelled_claims": 0,
+        "unsupported_claim_rate": null
+      },
+      "data_analyst": {
+        "bid": {
+          "n": 3,
+          "tp": 1,
+          "fp": 0,
+          "fn": 1,
+          "tn": 1,
+          "accuracy": 0.6666666666666666,
+          "precision": 1.0,
+          "recall": 0.5,
+          "f1": 0.6666666666666666
+        },
+        "scam": {
+          "n": 3,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "tn": 2,
+          "accuracy": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        "price_band_n": 3,
+        "price_in_band_rate": 0.3333333333333333,
+        "claim_annotated_jobs": 0,
+        "claim_annotations_complete": false,
+        "labelled_claims": 0,
+        "unsupported_claim_rate": null
+      },
+      "full_stack": {
+        "bid": {
+          "n": 3,
+          "tp": 2,
+          "fp": 0,
+          "fn": 0,
+          "tn": 1,
+          "accuracy": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        "scam": {
+          "n": 3,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "tn": 2,
+          "accuracy": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        "price_band_n": 3,
+        "price_in_band_rate": 0.6666666666666666,
+        "claim_annotated_jobs": 0,
+        "claim_annotations_complete": false,
+        "labelled_claims": 0,
+        "unsupported_claim_rate": null
+      }
+    }
+  },
+  "x2": {
+    "arms": {
+      "evidence_first": {
+        "replies": 1,
+        "n": 4,
+        "reply_rate": 0.25
+      },
+      "problem_first": {
+        "replies": 1,
+        "n": 5,
+        "reply_rate": 0.2
+      }
+    },
+    "difference_evidence_minus_problem": 0.04999999999999999,
+    "fisher_two_sided_p": 1.0,
+    "alpha": 0.05,
+    "difference_interval": [
+      -1,
+      1
+    ],
+    "interval_method": "Hoeffding union-bound; conservative independent-observation interval",
+    "randomization_warning": "Pooled Fisher test is unadjusted for strata; inspect per-stratum effects. Repeated clients or interacting jobs violate independence assumptions."
+  }
+}

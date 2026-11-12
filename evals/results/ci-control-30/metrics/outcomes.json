@@ -1,0 +1,35 @@
+{
+  "created_at_utc": "2026-11-12T16:21:46.155154+00:00",
+  "data_origin": "synthetic",
+  "inputs": [
+    {
+      "name": "manifest.json",
+      "sha256": "33391a40744022102d4c34dbe2b4f88291e71e14da7234f869532efc80f0aea0"
+    },
+    {
+      "name": "gold.jsonl",
+      "rows": 30,
+      "sha256": "1c3fd15c645ade86e1f980e11abfd05971632a1072881272eb604e63882eaac4"
+    },
+    {
+      "name": "predictions.jsonl",
+      "rows": 30,
+      "sha256": "d2c28ada0e3629bcf70a0a1fefd7a9653943e5c91fb99c80eed3107b03054454"
+    },
+    {
+      "name": "outcomes.jsonl",
+      "rows": 30,
+      "sha256": "aeef30bee74265f0ea5b18d18d77384e4ec5e94d18e355f235868d650a0da0b9"
+    }
+  ],
+  "metric": "gigsim_outcomes",
+  "results": {
+    "hire_rate": 1.0,
+    "jobs": 30,
+    "known_connects_spend": 186,
+    "reply_rate": 1.0,
+    "submissions_with_known_spend": 27,
+    "submitted": 27
+  },
+  "schema_version": 1
+}

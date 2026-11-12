@@ -45,3 +45,18 @@ follow-up. Report arm counts and uncertainty; do not claim causality beyond this
 Human judge calibration, classmates' blind ratings, actual public uptime, external MCP OAuth
 and the hidden test require observations or account access that code cannot manufacture.
 Prepare review materials and record these as missing until actually collected.
+
+
+## Supplemental completion diagnostics (November 12)
+
+The completed 150-run cohort is preserved. A separate pre-call paired plan in
+`results/rag-end-to-end-v1/paired-plan.json` fixes nine matched jobs per V0/V3 variant,
+models, budgets, hypothesis and selection before the 18 new hosted-open runs. Its
+source snapshot is immutable. It is a small reused development cohort, not a new
+confirmatory or held-out study. Final scoring reuses the calibrated independent rubric.
+
+`results/verification-before-after-v1` retrospectively selects the first three paired
+checkpoint jobs per persona. All nine pairs happened to have unchanged text; judge
+variation is reported as such. `results/verification-changed-v1` separately includes
+all four completed passes that removed text, selected by filter activity before judging.
+No causal population claim or successful-verification claim for failed/unpaired cases is made.

@@ -1,0 +1,27 @@
+{
+  "pairs": 4,
+  "by_phase": {
+    "before": {
+      "labels": {
+        "supported": 20,
+        "unsupported": 2
+      },
+      "factual_claims": 22,
+      "unsupported_claim_rate": 0.09090909090909091,
+      "mean_quality": 3.75
+    },
+    "after": {
+      "labels": {
+        "supported": 12,
+        "not_factual": 5,
+        "unsupported": 1
+      },
+      "factual_claims": 13,
+      "unsupported_claim_rate": 0.07692307692307693,
+      "mean_quality": 3.75
+    }
+  },
+  "data_origin": "synthetic",
+  "identical_text_pairs": 0,
+  "limits": "Retrospective, small changed-draft stratum; no causal population claim. Failed/unpaired verification attempts are not counted as successes."
+}

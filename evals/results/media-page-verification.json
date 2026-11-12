@@ -1,0 +1,12 @@
+{
+  "video": {
+    "duration": 180,
+    "width": 1440,
+    "height": 900
+  },
+  "desktop_width": 1440,
+  "mobile_width": 390,
+  "horizontal_overflow": false,
+  "article_checked": true,
+  "scope": "Static video player and article; does not imply live app uptime"
+}

@@ -63,3 +63,14 @@ The instructor's follow-up permits student-built data/simulation, confirmed by t
   unseen grading simulator is not established. Hidden-test results cannot be reported in advance.
 
 See DATA_CARD.md for provenance and `evals/STUDENT_RESEARCH_PLAN.md` for declared studies.
+
+
+## Completion update (November 12)
+
+The entries above describe earlier checkpoints. Current evidence adds source-code GitHub import,
+safe checkpoint replay in the UI, a fresh 30-job CI control, 214 passing backend checks and
+17 browser flows, actual Inspector screenshots, an installable MCP command, public technical
+article, video/GIF, and approved-proposal / Critic / actual API-crash public trace snapshots.
+See `SUBMISSION.md` and `evals/results/engineering-verification.json`. E6 uptime is explicitly
+excluded by the student, not claimed complete. Real Upwork write verification, unseen GigSim
+compatibility, the instructor-specific policy change and hidden-test results remain unverified.

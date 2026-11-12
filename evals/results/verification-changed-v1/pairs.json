@@ -1,0 +1,1489 @@
+{
+  "kind": "Retrospective checkpoint diagnostic; not a new graph/model trial",
+  "selection": "All completed verifier passes that actually removed sentences. Exploratory stratum selected by filter activity, not judge scores.",
+  "judge": "Same independently calibrated Nvidia rubric; pair phase hidden and order shuffled.",
+  "data_origin": "synthetic",
+  "pairs": [
+    {
+      "run_id": "41324c72-28c8-4338-bc01-470090226e75",
+      "persona": "ai_ml",
+      "items": {
+        "before": {
+          "id": "a9e7a44813609fcda8d9",
+          "job": {
+            "source": "student_sim",
+            "title": "Forecasting Experiment for synthetic project 9",
+            "description": "Deliver a reproducible forecasting experiment. Use Python, pandas, time series. Include tests, documented assumptions and a short handover.",
+            "category": "ai_ml",
+            "client_id": "independent-student-4016-ai_ml-008",
+            "required_skills": [
+              "Python",
+              "pandas",
+              "time series"
+            ],
+            "billing_type": "hourly",
+            "budget_min": 33,
+            "budget_max": 48,
+            "currency": "USD",
+            "connects_cost": 4,
+            "screening_questions": [
+              "What would you validate before implementation?"
+            ],
+            "synthetic": true,
+            "scenario_version": "student-v1",
+            "provider_job_id": "student-4016-ai_ml-008"
+          },
+          "evidence": [
+            {
+              "id": "698a2c91-ff1b-56a0-9413-f03f11cbbc41",
+              "text": "# Demo Forecast monitoring / education SYNTHETIC PERSONA EXAMPLE. Fictional work for coursework; not a real client's record. The fictional education team needed to predict weekly demand. I used Python, forecasting, monitoring to build rolling-window features, compare seasonal baselines, backtest forecasts and monitor error drift. I documented the acceptance criteria, checked malformed inputs, and supplied reproducible tests and a handover guide. The prototype was delivered as a scoped demonstration. No revenue uplift, accuracy number, years of experience or client testimonial is established by this synthetic example.",
+              "source": "case-02.md",
+              "type": "case_study",
+              "date": "2025-03-01",
+              "outcome": null,
+              "project": "Demo Forecast monitoring / education",
+              "skills": [
+                "Python",
+                "forecasting",
+                "monitoring"
+              ],
+              "persona": "ai_ml",
+              "client_industry": "education",
+              "document_id": "24167fc4-db8b-4f98-8bcd-ee3864909e8a",
+              "page": null
+            },
+            {
+              "id": "a1b2cda1-e911-5709-939f-b13237a7e5a9",
+              "text": "# Demo Document search / education SYNTHETIC PERSONA EXAMPLE. Fictional work for coursework; not a real client's record. The fictional education team needed to search a document collection. I used Python, embeddings, retrieval to extract text, chunk documents, index embeddings, evaluate retrieval against held-out questions and expose a Python API. I documented the acceptance criteria, checked malformed inputs, and supplied reproducible tests and a handover guide. The prototype was delivered as a scoped demonstration. No revenue uplift, accuracy number, years of experience or client testimonial is established by this synthetic example.",
+              "source": "case-00.md",
+              "type": "case_study",
+              "date": "2025-01-01",
+              "outcome": null,
+              "project": "Demo Document search / education",
+              "skills": [
+                "Python",
+                "embeddings",
+                "retrieval"
+              ],
+              "persona": "ai_ml",
+              "client_industry": "education",
+              "document_id": "18023461-99cf-4a6a-8c22-41daa95c5038",
+              "page": null
+            },
+            {
+              "id": "da229fa6-6052-5dfd-9381-fc8b28dbf16c",
+              "text": "# Demo Ticket classification / education SYNTHETIC PERSONA EXAMPLE. Fictional work for coursework; not a real client's record. The fictional education team needed to route support requests. I used Python, classification, evaluation to clean labelled tickets, train a text classifier, measure per-class precision and recall, and provide a confidence threshold. I documented the acceptance criteria, checked malformed inputs, and supplied reproducible tests and a handover guide. The prototype was delivered as a scoped demonstration. No revenue uplift, accuracy number, years of experience or client testimonial is established by this synthetic example.",
+              "source": "case-01.md",
+              "type": "case_study",
+              "date": "2025-02-01",
+              "outcome": null,
+              "project": "Demo Ticket classification / education",
+              "skills": [
+                "Python",
+                "classification",
+                "evaluation"
+              ],
+              "persona": "ai_ml",
+              "client_industry": "education",
+              "document_id": "8f26f2c9-792a-4467-bf0d-0fe552abf6a7",
+              "page": null
+            }
+          ],
+          "proposal": {
+            "text": "In a previous forecasting demonstration, I used Python to build rolling-window features, compare seasonal baselines, backtest forecasts, and monitor error drift. I also provided reproducible tests and a handover guide. I can apply this experience to your synthetic project by developing a robust forecasting experiment. My intention is to use pandas for data manipulation and time series analysis to ensure your requirements are met. I acknowledge that I have not previously used pandas in a professional capacity, though I am prepared to integrate it into this workflow.",
+            "screening_answers": {
+              "What would you validate before implementation?": "I would validate data integrity by checking for malformed inputs, missing values, and stationarity. Additionally, I would confirm the alignment between the chosen seasonal baselines and the historical data patterns to ensure the forecasting assumptions are sound."
+            },
+            "claims": []
+          },
+          "claims": [
+            {
+              "index": 0,
+              "text": "In a previous forecasting demonstration, I used Python to build rolling-window features, compare seasonal baselines, backtest forecasts, and monitor error drift."
+            },
+            {
+              "index": 1,
+              "text": "I also provided reproducible tests and a handover guide."
+            },
+            {
+              "index": 2,
+              "text": "I can apply this experience to your synthetic project by developing a robust forecasting experiment."
+            },
+            {
+              "index": 3,
+              "text": "My intention is to use pandas for data manipulation and time series analysis to ensure your requirements are met."
+            },
+            {
+              "index": 4,
+              "text": "I acknowledge that I have not previously used pandas in a professional capacity, though I am prepared to integrate it into this workflow."
+            },
+            {
+              "index": 5,
+              "text": "I would validate data integrity by checking for malformed inputs, missing values, and stationarity."
+            },
+            {
+              "index": 6,
+              "text": "Additionally, I would confirm the alignment between the chosen seasonal baselines and the historical data patterns to ensure the forecasting assumptions are sound."
+            }
+          ]
+        },
+        "after": {
+          "id": "ffe2497ab3e0ceb993df",
+          "job": {
+            "source": "student_sim",
+            "title": "Forecasting Experiment for synthetic project 9",
+            "description": "Deliver a reproducible forecasting experiment. Use Python, pandas, time series. Include tests, documented assumptions and a short handover.",
+            "category": "ai_ml",
+            "client_id": "independent-student-4016-ai_ml-008",
+            "required_skills": [
+              "Python",
+              "pandas",
+              "time series"
+            ],
+            "billing_type": "hourly",
+            "budget_min": 33,
+            "budget_max": 48,
+            "currency": "USD",
+            "connects_cost": 4,
+            "screening_questions": [
+              "What would you validate before implementation?"
+            ],
+            "synthetic": true,
+            "scenario_version": "student-v1",
+            "provider_job_id": "student-4016-ai_ml-008"
+          },
+          "evidence": [
+            {
+              "id": "698a2c91-ff1b-56a0-9413-f03f11cbbc41",
+              "text": "# Demo Forecast monitoring / education SYNTHETIC PERSONA EXAMPLE. Fictional work for coursework; not a real client's record. The fictional education team needed to predict weekly demand. I used Python, forecasting, monitoring to build rolling-window features, compare seasonal baselines, backtest forecasts and monitor error drift. I documented the acceptance criteria, checked malformed inputs, and supplied reproducible tests and a handover guide. The prototype was delivered as a scoped demonstration. No revenue uplift, accuracy number, years of experience or client testimonial is established by this synthetic example.",
+              "source": "case-02.md",
+              "type": "case_study",
+              "date": "2025-03-01",
+              "outcome": null,
+              "project": "Demo Forecast monitoring / education",
+              "skills": [
+                "Python",
+                "forecasting",
+                "monitoring"
+              ],
+              "persona": "ai_ml",
+              "client_industry": "education",
+              "document_id": "24167fc4-db8b-4f98-8bcd-ee3864909e8a",
+              "page": null
+            },
+            {
+              "id": "a1b2cda1-e911-5709-939f-b13237a7e5a9",
+              "text": "# Demo Document search / education SYNTHETIC PERSONA EXAMPLE. Fictional work for coursework; not a real client's record. The fictional education team needed to search a document collection. I used Python, embeddings, retrieval to extract text, chunk documents, index embeddings, evaluate retrieval against held-out questions and expose a Python API. I documented the acceptance criteria, checked malformed inputs, and supplied reproducible tests and a handover guide. The prototype was delivered as a scoped demonstration. No revenue uplift, accuracy number, years of experience or client testimonial is established by this synthetic example.",
+              "source": "case-00.md",
+              "type": "case_study",
+              "date": "2025-01-01",
+              "outcome": null,
+              "project": "Demo Document search / education",
+              "skills": [
+                "Python",
+                "embeddings",
+                "retrieval"
+              ],
+              "persona": "ai_ml",
+              "client_industry": "education",
+              "document_id": "18023461-99cf-4a6a-8c22-41daa95c5038",
+              "page": null
+            },
+            {
+              "id": "da229fa6-6052-5dfd-9381-fc8b28dbf16c",
+              "text": "# Demo Ticket classification / education SYNTHETIC PERSONA EXAMPLE. Fictional work for coursework; not a real client's record. The fictional education team needed to route support requests. I used Python, classification, evaluation to clean labelled tickets, train a text classifier, measure per-class precision and recall, and provide a confidence threshold. I documented the acceptance criteria, checked malformed inputs, and supplied reproducible tests and a handover guide. The prototype was delivered as a scoped demonstration. No revenue uplift, accuracy number, years of experience or client testimonial is established by this synthetic example.",
+              "source": "case-01.md",
+              "type": "case_study",
+              "date": "2025-02-01",
+              "outcome": null,
+              "project": "Demo Ticket classification / education",
+              "skills": [
+                "Python",
+                "classification",
+                "evaluation"
+              ],
+              "persona": "ai_ml",
+              "client_industry": "education",
+              "document_id": "8f26f2c9-792a-4467-bf0d-0fe552abf6a7",
+              "page": null
+            }
+          ],
+          "proposal": {
+            "text": "In a previous forecasting demonstration, I used Python to build rolling-window features, compare seasonal baselines, backtest forecasts, and monitor error drift.\nI also provided reproducible tests and a handover guide.\nI can apply this experience to your synthetic project by developing a robust forecasting experiment.\nMy intention is to use pandas for data manipulation and time series analysis to ensure your requirements are met.",
+            "screening_answers": {
+              "What would you validate before implementation?": "I would validate data integrity by checking for malformed inputs, missing values, and stationarity. Additionally, I would confirm the alignment between the chosen seasonal baselines and the historical data patterns to ensure the forecasting assumptions are sound."
+            },
+            "claims": [
+              {
+                "text": "In a previous forecasting demonstration, I used Python to build rolling-window features, compare seasonal baselines, backtest forecasts, and monitor error drift.",
+                "evidence_ids": [
+                  "698a2c91-ff1b-56a0-9413-f03f11cbbc41"
+                ],
+                "verdict": "supported",
+                "kind": "experience",
+                "reason": "Evidence confirms the forecasting demonstration tasks performed."
+              },
+              {
+                "text": "I also provided reproducible tests and a handover guide.",
+                "evidence_ids": [
+                  "698a2c91-ff1b-56a0-9413-f03f11cbbc41"
+                ],
+                "verdict": "supported",
+                "kind": "experience",
+                "reason": "Evidence confirms provision of tests and handover guide."
+              },
+              {
+                "text": "I can apply this experience to your synthetic project by developing a robust forecasting experiment.",
+                "evidence_ids": [],
+                "verdict": "not_applicable",
+                "kind": "non_experience",
+                "reason": "This is a proposed future approach."
+              },
+              {
+                "text": "My intention is to use pandas for data manipulation and time series analysis to ensure your requirements are met.",
+                "evidence_ids": [],
+                "verdict": "not_applicable",
+                "kind": "non_experience",
+                "reason": "This is a statement of future intent."
+              },
+              {
+                "text": "I would validate data integrity by checking for malformed inputs, missing values, and stationarity.",
+                "evidence_ids": [],
+                "verdict": "not_applicable",
+                "kind": "non_experience",
+                "reason": "This is a proposed future methodology."
+              },
+              {
+                "text": "Additionally, I would confirm the alignment between the chosen seasonal baselines and the historical data patterns to ensure the forecasting assumptions are sound.",
+                "evidence_ids": [],
+                "verdict": "not_applicable",
+                "kind": "non_experience",
+                "reason": "This is a proposed future methodology."
+              }
+            ]
+          },
+          "claims": [
+            {
+              "index": 0,
+              "text": "In a previous forecasting demonstration, I used Python to build rolling-window features, compare seasonal baselines, backtest forecasts, and monitor error drift."
+            },
+            {
+              "index": 1,
+              "text": "I also provided reproducible tests and a handover guide."
+            },
+            {
+              "index": 2,
+              "text": "I can apply this experience to your synthetic project by developing a robust forecasting experiment."
+            },
+            {
+              "index": 3,
+              "text": "My intention is to use pandas for data manipulation and time series analysis to ensure your requirements are met."
+            },
+            {
+              "index": 4,
+              "text": "I would validate data integrity by checking for malformed inputs, missing values, and stationarity."
+            },
+            {
+              "index": 5,
+              "text": "Additionally, I would confirm the alignment between the chosen seasonal baselines and the historical data patterns to ensure the forecasting assumptions are sound."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "run_id": "4c8fcf66-bd8e-4ed7-a54d-98345842711c",
+      "persona": "ai_ml",
+      "items": {
+        "before": {
+          "id": "d4c10be5d8f63ee65ee5",
+          "job": {
+            "source": "student_sim",
+            "title": "Classification Baseline for synthetic project 10",
+            "description": "Deliver a reproducible classification baseline. Use Python, scikit-learn, classification. Include tests, documented assumptions and a short handover.",
+            "category": "ai_ml",
+            "client_id": "independent-student-4016-ai_ml-009",
+            "required_skills": [
+              "Python",
+              "scikit-learn",
+              "classification"
+            ],
+            "billing_type": "fixed",
+            "budget_min": 300,
+            "budget_max": 550,
+            "currency": "USD",
+            "connects_cost": 6,
+            "screening_questions": [
+              "What would you validate before implementation?"
+            ],
+            "synthetic": true,
+            "scenario_version": "student-v1",
+            "provider_job_id": "student-4016-ai_ml-009"
+          },
+          "evidence": [
+            {
+              "id": "da229fa6-6052-5dfd-9381-fc8b28dbf16c",
+              "text": "# Demo Ticket classification / education SYNTHETIC PERSONA EXAMPLE. Fictional work for coursework; not a real client's record. The fictional education team needed to route support requests. I used Python, classification, evaluation to clean labelled tickets, train a text classifier, measure per-class precision and recall, and provide a confidence threshold. I documented the acceptance criteria, checked malformed inputs, and supplied reproducible tests and a handover guide. The prototype was delivered as a scoped demonstration. No revenue uplift, accuracy number, years of experience or client testimonial is established by this synthetic example.",
+              "source": "case-01.md",
+              "type": "case_study",
+              "date": "2025-02-01",
+              "outcome": null,
+              "project": "Demo Ticket classification / education",
+              "skills": [
+                "Python",
+                "classification",
+                "evaluation"
+              ],
+              "persona": "ai_ml",
+              "client_industry": "education",
+              "document_id": "8f26f2c9-792a-4467-bf0d-0fe552abf6a7",
+              "page": null
+            },
+            {
+              "id": "698a2c91-ff1b-56a0-9413-f03f11cbbc41",
+              "text": "# Demo Forecast monitoring / education SYNTHETIC PERSONA EXAMPLE. Fictional work for coursework; not a real client's record. The fictional education team needed to predict weekly demand. I used Python, forecasting, monitoring to build rolling-window features, compare seasonal baselines, backtest forecasts and monitor error drift. I documented the acceptance criteria, checked malformed inputs, and supplied reproducible tests and a handover guide. The prototype was delivered as a scoped demonstration. No revenue uplift, accuracy number, years of experience or client testimonial is established by this synthetic example.",
+              "source": "case-02.md",
+              "type": "case_study",
+              "date": "2025-03-01",
+              "outcome": null,
+              "project": "Demo Forecast monitoring / education",
+              "skills": [
+                "Python",
+                "forecasting",
+                "monitoring"
+              ],
+              "persona": "ai_ml",
+              "client_industry": "education",
+              "document_id": "24167fc4-db8b-4f98-8bcd-ee3864909e8a",
+              "page": null
+            },
+            {
+              "id": "a1b2cda1-e911-5709-939f-b13237a7e5a9",
+              "text": "# Demo Document search / education SYNTHETIC PERSONA EXAMPLE. Fictional work for coursework; not a real client's record. The fictional education team needed to search a document collection. I used Python, embeddings, retrieval to extract text, chunk documents, index embeddings, evaluate retrieval against held-out questions and expose a Python API. I documented the acceptance criteria, checked malformed inputs, and supplied reproducible tests and a handover guide. The prototype was delivered as a scoped demonstration. No revenue uplift, accuracy number, years of experience or client testimonial is established by this synthetic example.",
+              "source": "case-00.md",
+              "type": "case_study",
+              "date": "2025-01-01",
+              "outcome": null,
+              "project": "Demo Document search / education",
+              "skills": [
+                "Python",
+                "embeddings",
+                "retrieval"
+              ],
+              "persona": "ai_ml",
+              "client_industry": "education",
+              "document_id": "18023461-99cf-4a6a-8c22-41daa95c5038",
+              "page": null
+            }
+          ],
+          "proposal": {
+            "text": "For your classification baseline, the first milestone is to establish a reproducible model using Python and evaluation techniques to meet your requirements. I will start by validating class distributions, input formats, and malformed records. While my past work includes a demonstration ticket classification prototype built in Python, I note a material gap regarding scikit-learn experience, which I intend to bridge through focused implementation. My concrete first step is to deliver the baseline pipeline accompanied by tests and documented assumptions.",
+            "screening_answers": {
+              "What would you validate before implementation?": "I would validate class distributions, malformed inputs, and expected data schemas."
+            },
+            "claims": []
+          },
+          "claims": [
+            {
+              "index": 0,
+              "text": "For your classification baseline, the first milestone is to establish a reproducible model using Python and evaluation techniques to meet your requirements."
+            },
+            {
+              "index": 1,
+              "text": "I will start by validating class distributions, input formats, and malformed records."
+            },
+            {
+              "index": 2,
+              "text": "While my past work includes a demonstration ticket classification prototype built in Python, I note a material gap regarding scikit-learn experience, which I intend to bridge through focused implementation."
+            },
+            {
+              "index": 3,
+              "text": "My concrete first step is to deliver the baseline pipeline accompanied by tests and documented assumptions."
+            },
+            {
+              "index": 4,
+              "text": "I would validate class distributions, malformed inputs, and expected data schemas."
+            }
+          ]
+        },
+        "after": {
+          "id": "d0dd62df349d331b80e9",
+          "job": {
+            "source": "student_sim",
+            "title": "Classification Baseline for synthetic project 10",
+            "description": "Deliver a reproducible classification baseline. Use Python, scikit-learn, classification. Include tests, documented assumptions and a short handover.",
+            "category": "ai_ml",
+            "client_id": "independent-student-4016-ai_ml-009",
+            "required_skills": [
+              "Python",
+              "scikit-learn",
+              "classification"
+            ],
+            "billing_type": "fixed",
+            "budget_min": 300,
+            "budget_max": 550,
+            "currency": "USD",
+            "connects_cost": 6,
+            "screening_questions": [
+              "What would you validate before implementation?"
+            ],
+            "synthetic": true,
+            "scenario_version": "student-v1",
+            "provider_job_id": "student-4016-ai_ml-009"
+          },
+          "evidence": [
+            {
+              "id": "da229fa6-6052-5dfd-9381-fc8b28dbf16c",
+              "text": "# Demo Ticket classification / education SYNTHETIC PERSONA EXAMPLE. Fictional work for coursework; not a real client's record. The fictional education team needed to route support requests. I used Python, classification, evaluation to clean labelled tickets, train a text classifier, measure per-class precision and recall, and provide a confidence threshold. I documented the acceptance criteria, checked malformed inputs, and supplied reproducible tests and a handover guide. The prototype was delivered as a scoped demonstration. No revenue uplift, accuracy number, years of experience or client testimonial is established by this synthetic example.",
+              "source": "case-01.md",
+              "type": "case_study",
+              "date": "2025-02-01",
+              "outcome": null,
+              "project": "Demo Ticket classification / education",
+              "skills": [
+                "Python",
+                "classification",
+                "evaluation"
+              ],
+              "persona": "ai_ml",
+              "client_industry": "education",
+              "document_id": "8f26f2c9-792a-4467-bf0d-0fe552abf6a7",
+              "page": null
+            },
+            {
+              "id": "698a2c91-ff1b-56a0-9413-f03f11cbbc41",
+              "text": "# Demo Forecast monitoring / education SYNTHETIC PERSONA EXAMPLE. Fictional work for coursework; not a real client's record. The fictional education team needed to predict weekly demand. I used Python, forecasting, monitoring to build rolling-window features, compare seasonal baselines, backtest forecasts and monitor error drift. I documented the acceptance criteria, checked malformed inputs, and supplied reproducible tests and a handover guide. The prototype was delivered as a scoped demonstration. No revenue uplift, accuracy number, years of experience or client testimonial is established by this synthetic example.",
+              "source": "case-02.md",
+              "type": "case_study",
+              "date": "2025-03-01",
+              "outcome": null,
+              "project": "Demo Forecast monitoring / education",
+              "skills": [
+                "Python",
+                "forecasting",
+                "monitoring"
+              ],
+              "persona": "ai_ml",
+              "client_industry": "education",
+              "document_id": "24167fc4-db8b-4f98-8bcd-ee3864909e8a",
+              "page": null
+            },
+            {
+              "id": "a1b2cda1-e911-5709-939f-b13237a7e5a9",
+              "text": "# Demo Document search / education SYNTHETIC PERSONA EXAMPLE. Fictional work for coursework; not a real client's record. The fictional education team needed to search a document collection. I used Python, embeddings, retrieval to extract text, chunk documents, index embeddings, evaluate retrieval against held-out questions and expose a Python API. I documented the acceptance criteria, checked malformed inputs, and supplied reproducible tests and a handover guide. The prototype was delivered as a scoped demonstration. No revenue uplift, accuracy number, years of experience or client testimonial is established by this synthetic example.",
+              "source": "case-00.md",
+              "type": "case_study",
+              "date": "2025-01-01",
+              "outcome": null,
+              "project": "Demo Document search / education",
+              "skills": [
+                "Python",
+                "embeddings",
+                "retrieval"
+              ],
+              "persona": "ai_ml",
+              "client_industry": "education",
+              "document_id": "18023461-99cf-4a6a-8c22-41daa95c5038",
+              "page": null
+            }
+          ],
+          "proposal": {
+            "text": "For your classification baseline, the first milestone is to establish a reproducible model using Python and evaluation techniques to meet your requirements.\nI will start by validating class distributions, input formats, and malformed records.\nMy concrete first step is to deliver the baseline pipeline accompanied by tests and documented assumptions.",
+            "screening_answers": {
+              "What would you validate before implementation?": "I would validate class distributions, malformed inputs, and expected data schemas."
+            },
+            "claims": [
+              {
+                "text": "For your classification baseline, the first milestone is to establish a reproducible model using Python and evaluation techniques to meet your requirements.",
+                "evidence_ids": [],
+                "verdict": "not_applicable",
+                "kind": "non_experience",
+                "reason": "Proposes a future milestone approach without past claims."
+              },
+              {
+                "text": "I will start by validating class distributions, input formats, and malformed records.",
+                "evidence_ids": [],
+                "verdict": "not_applicable",
+                "kind": "non_experience",
+                "reason": "States a future planned action."
+              },
+              {
+                "text": "My concrete first step is to deliver the baseline pipeline accompanied by tests and documented assumptions.",
+                "evidence_ids": [],
+                "verdict": "not_applicable",
+                "kind": "non_experience",
+                "reason": "States a future delivery plan."
+              },
+              {
+                "text": "I would validate class distributions, malformed inputs, and expected data schemas.",
+                "evidence_ids": [],
+                "verdict": "not_applicable",
+                "kind": "non_experience",
+                "reason": "Proposes a future validation approach."
+              }
+            ]
+          },
+          "claims": [
+            {
+              "index": 0,
+              "text": "For your classification baseline, the first milestone is to establish a reproducible model using Python and evaluation techniques to meet your requirements."
+            },
+            {
+              "index": 1,
+              "text": "I will start by validating class distributions, input formats, and malformed records."
+            },
+            {
+              "index": 2,
+              "text": "My concrete first step is to deliver the baseline pipeline accompanied by tests and documented assumptions."
+            },
+            {
+              "index": 3,
+              "text": "I would validate class distributions, malformed inputs, and expected data schemas."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "run_id": "4c8fcf66-bd8e-4ed7-a54d-98345842711c",
+      "persona": "ai_ml",
+      "items": {
+        "before": {
+          "id": "27c8975290ba5a925b61",
+          "job": {
+            "source": "student_sim",
+            "title": "Classification Baseline for synthetic project 10",
+            "description": "Deliver a reproducible classification baseline. Use Python, scikit-learn, classification. Include tests, documented assumptions and a short handover.",
+            "category": "ai_ml",
+            "client_id": "independent-student-4016-ai_ml-009",
+            "required_skills": [
+              "Python",
+              "scikit-learn",
+              "classification"
+            ],
+            "billing_type": "fixed",
+            "budget_min": 300,
+            "budget_max": 550,
+            "currency": "USD",
+            "connects_cost": 6,
+            "screening_questions": [
+              "What would you validate before implementation?"
+            ],
+            "synthetic": true,
+            "scenario_version": "student-v1",
+            "provider_job_id": "student-4016-ai_ml-009"
+          },
+          "evidence": [
+            {
+              "id": "da229fa6-6052-5dfd-9381-fc8b28dbf16c",
+              "text": "# Demo Ticket classification / education SYNTHETIC PERSONA EXAMPLE. Fictional work for coursework; not a real client's record. The fictional education team needed to route support requests. I used Python, classification, evaluation to clean labelled tickets, train a text classifier, measure per-class precision and recall, and provide a confidence threshold. I documented the acceptance criteria, checked malformed inputs, and supplied reproducible tests and a handover guide. The prototype was delivered as a scoped demonstration. No revenue uplift, accuracy number, years of experience or client testimonial is established by this synthetic example.",
+              "source": "case-01.md",
+              "type": "case_study",
+              "date": "2025-02-01",
+              "outcome": null,
+              "project": "Demo Ticket classification / education",
+              "skills": [
+                "Python",
+                "classification",
+                "evaluation"
+              ],
+              "persona": "ai_ml",
+              "client_industry": "education",
+              "document_id": "8f26f2c9-792a-4467-bf0d-0fe552abf6a7",
+              "page": null
+            },
+            {
+              "id": "698a2c91-ff1b-56a0-9413-f03f11cbbc41",
+              "text": "# Demo Forecast monitoring / education SYNTHETIC PERSONA EXAMPLE. Fictional work for coursework; not a real client's record. The fictional education team needed to predict weekly demand. I used Python, forecasting, monitoring to build rolling-window features, compare seasonal baselines, backtest forecasts and monitor error drift. I documented the acceptance criteria, checked malformed inputs, and supplied reproducible tests and a handover guide. The prototype was delivered as a scoped demonstration. No revenue uplift, accuracy number, years of experience or client testimonial is established by this synthetic example.",
+              "source": "case-02.md",
+              "type": "case_study",
+              "date": "2025-03-01",
+              "outcome": null,
+              "project": "Demo Forecast monitoring / education",
+              "skills": [
+                "Python",
+                "forecasting",
+                "monitoring"
+              ],
+              "persona": "ai_ml",
+              "client_industry": "education",
+              "document_id": "24167fc4-db8b-4f98-8bcd-ee3864909e8a",
+              "page": null
+            },
+            {
+              "id": "a1b2cda1-e911-5709-939f-b13237a7e5a9",
+              "text": "# Demo Document search / education SYNTHETIC PERSONA EXAMPLE. Fictional work for coursework; not a real client's record. The fictional education team needed to search a document collection. I used Python, embeddings, retrieval to extract text, chunk documents, index embeddings, evaluate retrieval against held-out questions and expose a Python API. I documented the acceptance criteria, checked malformed inputs, and supplied reproducible tests and a handover guide. The prototype was delivered as a scoped demonstration. No revenue uplift, accuracy number, years of experience or client testimonial is established by this synthetic example.",
+              "source": "case-00.md",
+              "type": "case_study",
+              "date": "2025-01-01",
+              "outcome": null,
+              "project": "Demo Document search / education",
+              "skills": [
+                "Python",
+                "embeddings",
+                "retrieval"
+              ],
+              "persona": "ai_ml",
+              "client_industry": "education",
+              "document_id": "18023461-99cf-4a6a-8c22-41daa95c5038",
+              "page": null
+            }
+          ],
+          "proposal": {
+            "text": "For your classification baseline, the first milestone is to establish a reproducible model using Python and evaluation techniques, while noting that I will adapt my experience with Python classification prototypes to incorporate scikit-learn for your pipeline. I will start by validating class distributions, input formats, and malformed records. My concrete first step is to deliver the baseline pipeline accompanied by tests and documented assumptions.",
+            "screening_answers": {
+              "What would you validate before implementation?": "I would validate class distributions, malformed inputs, and expected data schemas."
+            },
+            "claims": []
+          },
+          "claims": [
+            {
+              "index": 0,
+              "text": "For your classification baseline, the first milestone is to establish a reproducible model using Python and evaluation techniques, while noting that I will adapt my experience with Python classification prototypes to incorporate scikit-learn for your pipeline."
+            },
+            {
+              "index": 1,
+              "text": "I will start by validating class distributions, input formats, and malformed records."
+            },
+            {
+              "index": 2,
+              "text": "My concrete first step is to deliver the baseline pipeline accompanied by tests and documented assumptions."
+            },
+            {
+              "index": 3,
+              "text": "I would validate class distributions, malformed inputs, and expected data schemas."
+            }
+          ]
+        },
+        "after": {
+          "id": "77a19e7e8d5763061b99",
+          "job": {
+            "source": "student_sim",
+            "title": "Classification Baseline for synthetic project 10",
+            "description": "Deliver a reproducible classification baseline. Use Python, scikit-learn, classification. Include tests, documented assumptions and a short handover.",
+            "category": "ai_ml",
+            "client_id": "independent-student-4016-ai_ml-009",
+            "required_skills": [
+              "Python",
+              "scikit-learn",
+              "classification"
+            ],
+            "billing_type": "fixed",
+            "budget_min": 300,
+            "budget_max": 550,
+            "currency": "USD",
+            "connects_cost": 6,
+            "screening_questions": [
+              "What would you validate before implementation?"
+            ],
+            "synthetic": true,
+            "scenario_version": "student-v1",
+            "provider_job_id": "student-4016-ai_ml-009"
+          },
+          "evidence": [
+            {
+              "id": "da229fa6-6052-5dfd-9381-fc8b28dbf16c",
+              "text": "# Demo Ticket classification / education SYNTHETIC PERSONA EXAMPLE. Fictional work for coursework; not a real client's record. The fictional education team needed to route support requests. I used Python, classification, evaluation to clean labelled tickets, train a text classifier, measure per-class precision and recall, and provide a confidence threshold. I documented the acceptance criteria, checked malformed inputs, and supplied reproducible tests and a handover guide. The prototype was delivered as a scoped demonstration. No revenue uplift, accuracy number, years of experience or client testimonial is established by this synthetic example.",
+              "source": "case-01.md",
+              "type": "case_study",
+              "date": "2025-02-01",
+              "outcome": null,
+              "project": "Demo Ticket classification / education",
+              "skills": [
+                "Python",
+                "classification",
+                "evaluation"
+              ],
+              "persona": "ai_ml",
+              "client_industry": "education",
+              "document_id": "8f26f2c9-792a-4467-bf0d-0fe552abf6a7",
+              "page": null
+            },
+            {
+              "id": "698a2c91-ff1b-56a0-9413-f03f11cbbc41",
+              "text": "# Demo Forecast monitoring / education SYNTHETIC PERSONA EXAMPLE. Fictional work for coursework; not a real client's record. The fictional education team needed to predict weekly demand. I used Python, forecasting, monitoring to build rolling-window features, compare seasonal baselines, backtest forecasts and monitor error drift. I documented the acceptance criteria, checked malformed inputs, and supplied reproducible tests and a handover guide. The prototype was delivered as a scoped demonstration. No revenue uplift, accuracy number, years of experience or client testimonial is established by this synthetic example.",
+              "source": "case-02.md",
+              "type": "case_study",
+              "date": "2025-03-01",
+              "outcome": null,
+              "project": "Demo Forecast monitoring / education",
+              "skills": [
+                "Python",
+                "forecasting",
+                "monitoring"
+              ],
+              "persona": "ai_ml",
+              "client_industry": "education",
+              "document_id": "24167fc4-db8b-4f98-8bcd-ee3864909e8a",
+              "page": null
+            },
+            {
+              "id": "a1b2cda1-e911-5709-939f-b13237a7e5a9",
+              "text": "# Demo Document search / education SYNTHETIC PERSONA EXAMPLE. Fictional work for coursework; not a real client's record. The fictional education team needed to search a document collection. I used Python, embeddings, retrieval to extract text, chunk documents, index embeddings, evaluate retrieval against held-out questions and expose a Python API. I documented the acceptance criteria, checked malformed inputs, and supplied reproducible tests and a handover guide. The prototype was delivered as a scoped demonstration. No revenue uplift, accuracy number, years of experience or client testimonial is established by this synthetic example.",
+              "source": "case-00.md",
+              "type": "case_study",
+              "date": "2025-01-01",
+              "outcome": null,
+              "project": "Demo Document search / education",
+              "skills": [
+                "Python",
+                "embeddings",
+                "retrieval"
+              ],
+              "persona": "ai_ml",
+              "client_industry": "education",
+              "document_id": "18023461-99cf-4a6a-8c22-41daa95c5038",
+              "page": null
+            }
+          ],
+          "proposal": {
+            "text": "I will start by validating class distributions, input formats, and malformed records.\nMy concrete first step is to deliver the baseline pipeline accompanied by tests and documented assumptions.",
+            "screening_answers": {
+              "What would you validate before implementation?": "I would validate class distributions, malformed inputs, and expected data schemas."
+            },
+            "claims": [
+              {
+                "text": "I will start by validating class distributions, input formats, and malformed records.",
+                "evidence_ids": [],
+                "verdict": "not_applicable",
+                "kind": "non_experience",
+                "reason": "Future proposed action"
+              },
+              {
+                "text": "My concrete first step is to deliver the baseline pipeline accompanied by tests and documented assumptions.",
+                "evidence_ids": [],
+                "verdict": "not_applicable",
+                "kind": "non_experience",
+                "reason": "Future proposed deliverable"
+              },
+              {
+                "text": "I would validate class distributions, malformed inputs, and expected data schemas.",
+                "evidence_ids": [],
+                "verdict": "not_applicable",
+                "kind": "non_experience",
+                "reason": "Future proposed action"
+              }
+            ]
+          },
+          "claims": [
+            {
+              "index": 0,
+              "text": "I will start by validating class distributions, input formats, and malformed records."
+            },
+            {
+              "index": 1,
+              "text": "My concrete first step is to deliver the baseline pipeline accompanied by tests and documented assumptions."
+            },
+            {
+              "index": 2,
+              "text": "I would validate class distributions, malformed inputs, and expected data schemas."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "run_id": "a0e96ab5-a532-469a-ac92-0c6aa13d4922",
+      "persona": "data_analyst",
+      "items": {
+        "before": {
+          "id": "7fda02eedeb7e00386f9",
+          "job": {
+            "source": "student_sim",
+            "title": "Sales Analysis for synthetic project 13",
+            "description": "Deliver a reproducible sales analysis. Use SQL, Python, pandas. Include tests, documented assumptions and a short handover.",
+            "category": "data_analyst",
+            "client_id": "independent-student-4016-data_analyst-012",
+            "required_skills": [
+              "SQL",
+              "Python",
+              "pandas"
+            ],
+            "billing_type": "hourly",
+            "budget_min": 37,
+            "budget_max": 52,
+            "currency": "USD",
+            "connects_cost": 4,
+            "screening_questions": [
+              "What would you validate before implementation?"
+            ],
+            "synthetic": true,
+            "scenario_version": "student-v1",
+            "provider_job_id": "student-4016-data_analyst-012"
+          },
+          "evidence": [
+            {
+              "id": "b566b2d7-79da-5a7b-8b2b-d4d52d2126de",
+              "text": "# Demo Experiment analysis / education SYNTHETIC PERSONA EXAMPLE. Fictional work for coursework; not a real client's record. The fictional education team needed to evaluate a product experiment. I used Python, statistics, experiments to validate assignment balance, define the analysis window, calculate confidence intervals and report sample-size limitations. I documented the acceptance criteria, checked malformed inputs, and supplied reproducible tests and a handover guide. The prototype was delivered as a scoped demonstration. No revenue uplift, accuracy number, years of experience or client testimonial is established by this synthetic example.",
+              "source": "case-01.md",
+              "type": "case_study",
+              "date": "2025-02-01",
+              "outcome": null,
+              "project": "Demo Experiment analysis / education",
+              "skills": [
+                "Python",
+                "statistics",
+                "experiments"
+              ],
+              "persona": "data_analyst",
+              "client_industry": "education",
+              "document_id": "1b8b95d1-4804-4f5c-8db0-37952b4d970b",
+              "page": null
+            },
+            {
+              "id": "aad861f5-63d6-54a9-8d22-db98af8db11c",
+              "text": "# Demo Revenue reporting / education SYNTHETIC PERSONA EXAMPLE. Fictional work for coursework; not a real client's record. The fictional education team needed to explain revenue changes. I used SQL, Power BI, reporting to model a SQL star schema, reconcile revenue totals, define Power BI measures and build a filterable reporting dashboard. I documented the acceptance criteria, checked malformed inputs, and supplied reproducible tests and a handover guide. The prototype was delivered as a scoped demonstration. No revenue uplift, accuracy number, years of experience or client testimonial is established by this synthetic example.",
+              "source": "case-00.md",
+              "type": "case_study",
+              "date": "2025-01-01",
+              "outcome": null,
+              "project": "Demo Revenue reporting / education",
+              "skills": [
+                "SQL",
+                "Power BI",
+                "reporting"
+              ],
+              "persona": "data_analyst",
+              "client_industry": "education",
+              "document_id": "72306b25-3d31-49b9-b63e-52870c8f8b88",
+              "page": null
+            },
+            {
+              "id": "a59e6072-b9c7-5012-b5c1-3aa834864971",
+              "text": "# Demo Data quality / education SYNTHETIC PERSONA EXAMPLE. Fictional work for coursework; not a real client's record. The fictional education team needed to repair unreliable reporting data. I used SQL, dbt, validation to profile missing values, deduplicate records, write dbt uniqueness tests and reconcile source-to-report totals. I documented the acceptance criteria, checked malformed inputs, and supplied reproducible tests and a handover guide. The prototype was delivered as a scoped demonstration. No revenue uplift, accuracy number, years of experience or client testimonial is established by this synthetic example.",
+              "source": "case-02.md",
+              "type": "case_study",
+              "date": "2025-03-01",
+              "outcome": null,
+              "project": "Demo Data quality / education",
+              "skills": [
+                "SQL",
+                "dbt",
+                "validation"
+              ],
+              "persona": "data_analyst",
+              "client_industry": "education",
+              "document_id": "423ac9a0-ffab-447e-8742-814ab5f154e9",
+              "page": null
+            }
+          ],
+          "proposal": {
+            "text": "To deliver a reproducible sales analysis for your project, I will begin by auditing your source data to ensure integrity and consistency. My approach focuses on building a robust pipeline using SQL for data extraction and Python for processing. I will implement automated tests to validate calculations and document all assumptions to ensure transparency. As a first step, I will profile the raw sales data to identify potential quality issues or missing values. While I have extensive experience with SQL and Python, I acknowledge that I will be applying my data-processing expertise to the pandas library for this specific task.",
+            "screening_answers": {
+              "What would you validate before implementation?": "Before implementation, I would validate the source data for completeness, check for duplicate records, and reconcile total sales figures against raw inputs to ensure the baseline is accurate."
+            },
+            "claims": []
+          },
+          "claims": [
+            {
+              "index": 0,
+              "text": "To deliver a reproducible sales analysis for your project, I will begin by auditing your source data to ensure integrity and consistency."
+            },
+            {
+              "index": 1,
+              "text": "My approach focuses on building a robust pipeline using SQL for data extraction and Python for processing."
+            },
+            {
+              "index": 2,
+              "text": "I will implement automated tests to validate calculations and document all assumptions to ensure transparency."
+            },
+            {
+              "index": 3,
+              "text": "As a first step, I will profile the raw sales data to identify potential quality issues or missing values."
+            },
+            {
+              "index": 4,
+              "text": "While I have extensive experience with SQL and Python, I acknowledge that I will be applying my data-processing expertise to the pandas library for this specific task."
+            },
+            {
+              "index": 5,
+              "text": "Before implementation, I would validate the source data for completeness, check for duplicate records, and reconcile total sales figures against raw inputs to ensure the baseline is accurate."
+            }
+          ]
+        },
+        "after": {
+          "id": "ba703c7527dfced74a2a",
+          "job": {
+            "source": "student_sim",
+            "title": "Sales Analysis for synthetic project 13",
+            "description": "Deliver a reproducible sales analysis. Use SQL, Python, pandas. Include tests, documented assumptions and a short handover.",
+            "category": "data_analyst",
+            "client_id": "independent-student-4016-data_analyst-012",
+            "required_skills": [
+              "SQL",
+              "Python",
+              "pandas"
+            ],
+            "billing_type": "hourly",
+            "budget_min": 37,
+            "budget_max": 52,
+            "currency": "USD",
+            "connects_cost": 4,
+            "screening_questions": [
+              "What would you validate before implementation?"
+            ],
+            "synthetic": true,
+            "scenario_version": "student-v1",
+            "provider_job_id": "student-4016-data_analyst-012"
+          },
+          "evidence": [
+            {
+              "id": "b566b2d7-79da-5a7b-8b2b-d4d52d2126de",
+              "text": "# Demo Experiment analysis / education SYNTHETIC PERSONA EXAMPLE. Fictional work for coursework; not a real client's record. The fictional education team needed to evaluate a product experiment. I used Python, statistics, experiments to validate assignment balance, define the analysis window, calculate confidence intervals and report sample-size limitations. I documented the acceptance criteria, checked malformed inputs, and supplied reproducible tests and a handover guide. The prototype was delivered as a scoped demonstration. No revenue uplift, accuracy number, years of experience or client testimonial is established by this synthetic example.",
+              "source": "case-01.md",
+              "type": "case_study",
+              "date": "2025-02-01",
+              "outcome": null,
+              "project": "Demo Experiment analysis / education",
+              "skills": [
+                "Python",
+                "statistics",
+                "experiments"
+              ],
+              "persona": "data_analyst",
+              "client_industry": "education",
+              "document_id": "1b8b95d1-4804-4f5c-8db0-37952b4d970b",
+              "page": null
+            },
+            {
+              "id": "aad861f5-63d6-54a9-8d22-db98af8db11c",
+              "text": "# Demo Revenue reporting / education SYNTHETIC PERSONA EXAMPLE. Fictional work for coursework; not a real client's record. The fictional education team needed to explain revenue changes. I used SQL, Power BI, reporting to model a SQL star schema, reconcile revenue totals, define Power BI measures and build a filterable reporting dashboard. I documented the acceptance criteria, checked malformed inputs, and supplied reproducible tests and a handover guide. The prototype was delivered as a scoped demonstration. No revenue uplift, accuracy number, years of experience or client testimonial is established by this synthetic example.",
+              "source": "case-00.md",
+              "type": "case_study",
+              "date": "2025-01-01",
+              "outcome": null,
+              "project": "Demo Revenue reporting / education",
+              "skills": [
+                "SQL",
+                "Power BI",
+                "reporting"
+              ],
+              "persona": "data_analyst",
+              "client_industry": "education",
+              "document_id": "72306b25-3d31-49b9-b63e-52870c8f8b88",
+              "page": null
+            },
+            {
+              "id": "a59e6072-b9c7-5012-b5c1-3aa834864971",
+              "text": "# Demo Data quality / education SYNTHETIC PERSONA EXAMPLE. Fictional work for coursework; not a real client's record. The fictional education team needed to repair unreliable reporting data. I used SQL, dbt, validation to profile missing values, deduplicate records, write dbt uniqueness tests and reconcile source-to-report totals. I documented the acceptance criteria, checked malformed inputs, and supplied reproducible tests and a handover guide. The prototype was delivered as a scoped demonstration. No revenue uplift, accuracy number, years of experience or client testimonial is established by this synthetic example.",
+              "source": "case-02.md",
+              "type": "case_study",
+              "date": "2025-03-01",
+              "outcome": null,
+              "project": "Demo Data quality / education",
+              "skills": [
+                "SQL",
+                "dbt",
+                "validation"
+              ],
+              "persona": "data_analyst",
+              "client_industry": "education",
+              "document_id": "423ac9a0-ffab-447e-8742-814ab5f154e9",
+              "page": null
+            }
+          ],
+          "proposal": {
+            "text": "To deliver a reproducible sales analysis for your project, I will begin by auditing your source data to ensure integrity and consistency.\nMy approach focuses on building a robust pipeline using SQL for data extraction and Python for processing.\nI will implement automated tests to validate calculations and document all assumptions to ensure transparency.\nAs a first step, I will profile the raw sales data to identify potential quality issues or missing values.",
+            "screening_answers": {
+              "What would you validate before implementation?": "Before implementation, I would validate the source data for completeness, check for duplicate records, and reconcile total sales figures against raw inputs to ensure the baseline is accurate."
+            },
+            "claims": [
+              {
+                "text": "To deliver a reproducible sales analysis for your project, I will begin by auditing your source data to ensure integrity and consistency.",
+                "evidence_ids": [],
+                "verdict": "not_applicable",
+                "kind": "non_experience",
+                "reason": "This is a proposed future approach."
+              },
+              {
+                "text": "My approach focuses on building a robust pipeline using SQL for data extraction and Python for processing.",
+                "evidence_ids": [],
+                "verdict": "not_applicable",
+                "kind": "non_experience",
+                "reason": "This is a proposed future approach."
+              },
+              {
+                "text": "I will implement automated tests to validate calculations and document all assumptions to ensure transparency.",
+                "evidence_ids": [],
+                "verdict": "not_applicable",
+                "kind": "non_experience",
+                "reason": "This is a proposed future approach."
+              },
+              {
+                "text": "As a first step, I will profile the raw sales data to identify potential quality issues or missing values.",
+                "evidence_ids": [],
+                "verdict": "not_applicable",
+                "kind": "non_experience",
+                "reason": "This is a proposed future approach."
+              },
+              {
+                "text": "Before implementation, I would validate the source data for completeness, check for duplicate records, and reconcile total sales figures against raw inputs to ensure the baseline is accurate.",
+                "evidence_ids": [],
+                "verdict": "not_applicable",
+                "kind": "non_experience",
+                "reason": "This is a proposed future approach."
+              }
+            ]
+          },
+          "claims": [
+            {
+              "index": 0,
+              "text": "To deliver a reproducible sales analysis for your project, I will begin by auditing your source data to ensure integrity and consistency."
+            },
+            {
+              "index": 1,
+              "text": "My approach focuses on building a robust pipeline using SQL for data extraction and Python for processing."
+            },
+            {
+              "index": 2,
+              "text": "I will implement automated tests to validate calculations and document all assumptions to ensure transparency."
+            },
+            {
+              "index": 3,
+              "text": "As a first step, I will profile the raw sales data to identify potential quality issues or missing values."
+            },
+            {
+              "index": 4,
+              "text": "Before implementation, I would validate the source data for completeness, check for duplicate records, and reconcile total sales figures against raw inputs to ensure the baseline is accurate."
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "all_completed_passes": [
+    {
+      "run_id": "88c16a42-d151-4e9f-ad30-b45dc9fd6bc9",
+      "persona": "ai_ml",
+      "before_checkpoint": "1f1ddfa6-15df-61e1-8005-6446bc4615f1",
+      "after_checkpoint": "1f1ddfa7-3190-68f7-8006-7f44ad30de0e",
+      "assessed_sentences": 5,
+      "removed_sentences": 0
+    },
+    {
+      "run_id": "8e2ff939-74a8-44eb-ba29-2005c5d405d5",
+      "persona": "ai_ml",
+      "before_checkpoint": "1f1ddfb0-2a72-6e7b-8005-dc46cc6c6b08",
+      "after_checkpoint": "1f1ddfb0-407a-6010-8006-6fd7f0ac8f32",
+      "assessed_sentences": 6,
+      "removed_sentences": 0
+    },
+    {
+      "run_id": "8e2ff939-74a8-44eb-ba29-2005c5d405d5",
+      "persona": "ai_ml",
+      "before_checkpoint": "1f1ddfb0-698f-6f74-8009-983040230a54",
+      "after_checkpoint": "1f1ddfb0-80be-6901-800a-f7afe755814f",
+      "assessed_sentences": 6,
+      "removed_sentences": 0
+    },
+    {
+      "run_id": "d16bc4e1-cdaa-42bc-931f-f8901ae54840",
+      "persona": "ai_ml",
+      "before_checkpoint": "1f1ddfb9-2d6a-6385-8005-8c29c60c7145",
+      "after_checkpoint": "1f1ddfb9-467a-6118-8006-e714e99f8b69",
+      "assessed_sentences": 6,
+      "removed_sentences": 0
+    },
+    {
+      "run_id": "d16bc4e1-cdaa-42bc-931f-f8901ae54840",
+      "persona": "ai_ml",
+      "before_checkpoint": "1f1ddfb9-f5ee-62e0-8009-1468e87c4608",
+      "after_checkpoint": "1f1ddfba-0a66-6f7f-800a-f0076a03890c",
+      "assessed_sentences": 6,
+      "removed_sentences": 0
+    },
+    {
+      "run_id": "7fd03d2f-ffa3-4e44-8c79-f050988d70ab",
+      "persona": "ai_ml",
+      "before_checkpoint": "1f1ddfbd-943d-6fa6-8005-657152abef78",
+      "after_checkpoint": "1f1ddfbd-ac57-607b-8006-8da579e37639",
+      "assessed_sentences": 4,
+      "removed_sentences": 0
+    },
+    {
+      "run_id": "503c1a5b-995c-45a0-8cd7-ddb730ae5e0e",
+      "persona": "ai_ml",
+      "before_checkpoint": "1f1ddfc1-7ce7-672e-8005-a4235fb2469d",
+      "after_checkpoint": "1f1ddfc1-a7a7-6298-8006-8b2f8c90a987",
+      "assessed_sentences": 6,
+      "removed_sentences": 0
+    },
+    {
+      "run_id": "503c1a5b-995c-45a0-8cd7-ddb730ae5e0e",
+      "persona": "ai_ml",
+      "before_checkpoint": "1f1ddfc2-0652-6410-8009-cee3bedfc580",
+      "after_checkpoint": "1f1ddfc2-2087-6a5c-800a-45ef49abb34c",
+      "assessed_sentences": 6,
+      "removed_sentences": 0
+    },
+    {
+      "run_id": "b6342c7d-929a-413e-82a8-0e66b6ec6211",
+      "persona": "ai_ml",
+      "before_checkpoint": "1f1ddfc6-abc3-67e8-8005-02cdcb3db097",
+      "after_checkpoint": "1f1ddfc6-cd30-6dd3-8006-fecc769013fe",
+      "assessed_sentences": 6,
+      "removed_sentences": 0
+    },
+    {
+      "run_id": "b6342c7d-929a-413e-82a8-0e66b6ec6211",
+      "persona": "ai_ml",
+      "before_checkpoint": "1f1ddfc6-fcd0-6c99-8009-1fa27b27a6c3",
+      "after_checkpoint": "1f1ddfc7-1338-66a5-800a-ff5c86fd8f0d",
+      "assessed_sentences": 6,
+      "removed_sentences": 0
+    },
+    {
+      "run_id": "fd3b5f68-d49a-42eb-87bd-a12e2ceeb65f",
+      "persona": "ai_ml",
+      "before_checkpoint": "1f1ddfd7-e235-6e4d-8005-832f664526a5",
+      "after_checkpoint": "1f1ddfd8-0783-6e90-8006-b437a713407a",
+      "assessed_sentences": 6,
+      "removed_sentences": 0
+    },
+    {
+      "run_id": "41324c72-28c8-4338-bc01-470090226e75",
+      "persona": "ai_ml",
+      "before_checkpoint": "1f1ddfda-ddb8-689e-8005-fd794b236d91",
+      "after_checkpoint": "1f1ddfda-f39d-61e1-8006-812bc9c910bd",
+      "assessed_sentences": 7,
+      "removed_sentences": 1
+    },
+    {
+      "run_id": "41324c72-28c8-4338-bc01-470090226e75",
+      "persona": "ai_ml",
+      "before_checkpoint": "1f1ddfdb-197b-6de5-8009-09291bb45af2",
+      "after_checkpoint": "1f1ddfdc-6feb-62e2-800a-584d4bd7b430",
+      "assessed_sentences": 6,
+      "removed_sentences": 0
+    },
+    {
+      "run_id": "4c8fcf66-bd8e-4ed7-a54d-98345842711c",
+      "persona": "ai_ml",
+      "before_checkpoint": "1f1ddfec-932f-66f7-8005-d309d6ffa580",
+      "after_checkpoint": "1f1ddfec-f5ae-6cc5-8006-170c7c443738",
+      "assessed_sentences": 5,
+      "removed_sentences": 1
+    },
+    {
+      "run_id": "4c8fcf66-bd8e-4ed7-a54d-98345842711c",
+      "persona": "ai_ml",
+      "before_checkpoint": "1f1ddfed-b790-628e-8009-d74cf027d7cb",
+      "after_checkpoint": "1f1ddfed-fa95-6557-800a-e9417de2c64a",
+      "assessed_sentences": 4,
+      "removed_sentences": 1
+    },
+    {
+      "run_id": "4e2b6ed0-370e-4a5c-beb1-4ac88d508d20",
+      "persona": "ai_ml",
+      "before_checkpoint": "1f1ddffa-b4b2-6273-8005-9e7cb21d4c6e",
+      "after_checkpoint": "1f1ddffb-aa7e-64b7-8006-aa5538e21754",
+      "assessed_sentences": 5,
+      "removed_sentences": 0
+    },
+    {
+      "run_id": "4e2b6ed0-370e-4a5c-beb1-4ac88d508d20",
+      "persona": "ai_ml",
+      "before_checkpoint": "1f1ddffb-d54b-6b59-8009-73fbced1e2d9",
+      "after_checkpoint": "1f1ddffb-eb83-69c2-800a-388fc96997a5",
+      "assessed_sentences": 5,
+      "removed_sentences": 0
+    },
+    {
+      "run_id": "8f9d1c4c-68b9-4b43-adcf-09d5fc6ea73d",
+      "persona": "ai_ml",
+      "before_checkpoint": "1f1de001-3a30-6b8a-8005-bb290982bb85",
+      "after_checkpoint": "1f1de001-73cd-6b68-8006-6c50bac5fce4",
+      "assessed_sentences": 5,
+      "removed_sentences": 0
+    },
+    {
+      "run_id": "922eda4a-6067-450b-96a2-03f82f2f2377",
+      "persona": "ai_ml",
+      "before_checkpoint": "1f1de004-0f73-6a1c-8005-244d89d6fd78",
+      "after_checkpoint": "1f1de004-3011-69d0-8006-8829b5cbb6fa",
+      "assessed_sentences": 4,
+      "removed_sentences": 0
+    },
+    {
+      "run_id": "4e28b093-a0ac-4b60-ad36-97316d921508",
+      "persona": "ai_ml",
+      "before_checkpoint": "1f1de00a-d42f-6425-8005-56849b4bc70b",
+      "after_checkpoint": "1f1de00b-2ccd-6b86-8006-5fe6066f18ca",
+      "assessed_sentences": 4,
+      "removed_sentences": 0
+    },
+    {
+      "run_id": "af532bac-eebb-4a54-9bc1-799311039e75",
+      "persona": "ai_ml",
+      "before_checkpoint": "1f1de00f-e430-658c-8005-ccbf6c9da050",
+      "after_checkpoint": "1f1de010-3c3e-6473-8006-3a8fcc39b975",
+      "assessed_sentences": 5,
+      "removed_sentences": 0
+    },
+    {
+      "run_id": "c909a7b1-4d29-47c8-81b2-ea16e065f2d5",
+      "persona": "data_analyst",
+      "before_checkpoint": "1f1de086-7cec-6b18-8005-93d4c581a833",
+      "after_checkpoint": "1f1de086-9947-62cc-8006-34c84d3b5e69",
+      "assessed_sentences": 6,
+      "removed_sentences": 0
+    },
+    {
+      "run_id": "c909a7b1-4d29-47c8-81b2-ea16e065f2d5",
+      "persona": "data_analyst",
+      "before_checkpoint": "1f1de086-cdd7-6cfb-8009-b0a55967bb13",
+      "after_checkpoint": "1f1de087-0e3a-668c-800a-5754138956b9",
+      "assessed_sentences": 6,
+      "removed_sentences": 0
+    },
+    {
+      "run_id": "01d8d121-f1ef-4726-afe1-be8d06ffd15e",
+      "persona": "data_analyst",
+      "before_checkpoint": "1f1de08b-834e-6347-8005-59220f86f755",
+      "after_checkpoint": "1f1de08b-a4fa-6d04-8006-187283257a00",
+      "assessed_sentences": 6,
+      "removed_sentences": 0
+    },
+    {
+      "run_id": "01d8d121-f1ef-4726-afe1-be8d06ffd15e",
+      "persona": "data_analyst",
+      "before_checkpoint": "1f1de08c-43c8-6a15-8009-2e7ff8fab1d6",
+      "after_checkpoint": "1f1de08c-88d5-646b-800a-91c1ce7ad75d",
+      "assessed_sentences": 6,
+      "removed_sentences": 0
+    },
+    {
+      "run_id": "92267996-baf7-4335-b7df-a632d1beaec8",
+      "persona": "data_analyst",
+      "before_checkpoint": "1f1de70f-6865-67e9-8005-d46e453b8602",
+      "after_checkpoint": "1f1de70f-817e-69b9-8006-23ca66407f22",
+      "assessed_sentences": 6,
+      "removed_sentences": 0
+    },
+    {
+      "run_id": "425ce774-0316-4351-8670-510e4149a852",
+      "persona": "data_analyst",
+      "before_checkpoint": "1f1de713-442c-6401-8005-ae70ceb139a4",
+      "after_checkpoint": "1f1de713-8ba3-6959-8006-02a9ff092135",
+      "assessed_sentences": 5,
+      "removed_sentences": 0
+    },
+    {
+      "run_id": "38c38795-8282-4bbf-8bc7-d9b9dfd9724f",
+      "persona": "data_analyst",
+      "before_checkpoint": "1f1de719-a161-6c48-8005-62e5ba6eaf4a",
+      "after_checkpoint": "1f1de719-be82-6b85-8006-f795fb4e7ebe",
+      "assessed_sentences": 5,
+      "removed_sentences": 0
+    },
+    {
+      "run_id": "48cc0c35-6200-4541-8d4b-046785147181",
+      "persona": "data_analyst",
+      "before_checkpoint": "1f1de71e-eaea-6ed0-8005-5c599174b252",
+      "after_checkpoint": "1f1de71f-4013-6b3b-8006-8070ebedfe8b",
+      "assessed_sentences": 4,
+      "removed_sentences": 0
+    },
+    {
+      "run_id": "48cc0c35-6200-4541-8d4b-046785147181",
+      "persona": "data_analyst",
+      "before_checkpoint": "1f1de71f-ca54-62ca-8009-90582d509401",
+      "after_checkpoint": "1f1de71f-f98e-6539-800a-38ece8408db4",
+      "assessed_sentences": 3,
+      "removed_sentences": 0
+    },
+    {
+      "run_id": "46e4f203-249c-45a1-8746-f59ac3813fe3",
+      "persona": "data_analyst",
+      "before_checkpoint": "1f1de729-d2ac-6d95-8005-fb379e935f92",
+      "after_checkpoint": "1f1de729-e6de-6b4d-8006-9904abb95054",
+      "assessed_sentences": 5,
+      "removed_sentences": 0
+    },
+    {
+      "run_id": "a0e96ab5-a532-469a-ac92-0c6aa13d4922",
+      "persona": "data_analyst",
+      "before_checkpoint": "1f1de733-5bd1-646b-8005-affbe7f52167",
+      "after_checkpoint": "1f1de733-7c2c-68a6-8006-d37a20677b2c",
+      "assessed_sentences": 6,
+      "removed_sentences": 1
+    },
+    {
+      "run_id": "a0e96ab5-a532-469a-ac92-0c6aa13d4922",
+      "persona": "data_analyst",
+      "before_checkpoint": "1f1de733-a1a7-6c7f-8009-e9e9ce9b1a53",
+      "after_checkpoint": "1f1de733-f893-6fac-800a-dd2a470af5a6",
+      "assessed_sentences": 5,
+      "removed_sentences": 0
+    },
+    {
+      "run_id": "fe69ad4c-9df3-47cd-8ca7-b61bcea7ddcf",
+      "persona": "data_analyst",
+      "before_checkpoint": "1f1de734-ba13-6bbd-8005-c2172ac76482",
+      "after_checkpoint": "1f1de734-ce9c-66c0-8006-effe7fbfc772",
+      "assessed_sentences": 4,
+      "removed_sentences": 0
+    },
+    {
+      "run_id": "a3c624b3-d490-40c5-b885-c4a244e9e5fc",
+      "persona": "data_analyst",
+      "before_checkpoint": "1f1de749-9f0f-6a87-8005-b15828566069",
+      "after_checkpoint": "1f1de749-b2f0-68ce-8006-2e5130a8cc20",
+      "assessed_sentences": 5,
+      "removed_sentences": 0
+    },
+    {
+      "run_id": "a3c624b3-d490-40c5-b885-c4a244e9e5fc",
+      "persona": "data_analyst",
+      "before_checkpoint": "1f1de749-d9bf-601b-8009-4a5738b68424",
+      "after_checkpoint": "1f1de749-ecb0-61ea-800a-6c655cd635a0",
+      "assessed_sentences": 5,
+      "removed_sentences": 0
+    },
+    {
+      "run_id": "f35dd68e-024d-411e-aefb-565d7650eb96",
+      "persona": "data_analyst",
+      "before_checkpoint": "1f1de752-70f4-6d0f-8005-17939d0f4ca8",
+      "after_checkpoint": "1f1de752-ef7d-6c2a-8006-e60bca85d4bb",
+      "assessed_sentences": 4,
+      "removed_sentences": 0
+    },
+    {
+      "run_id": "f35dd68e-024d-411e-aefb-565d7650eb96",
+      "persona": "data_analyst",
+      "before_checkpoint": "1f1de753-777d-640f-8009-4a59bd7cf2cd",
+      "after_checkpoint": "1f1de753-8b53-6733-800a-0252ec25a63e",
+      "assessed_sentences": 4,
+      "removed_sentences": 0
+    },
+    {
+      "run_id": "f35dd68e-024d-411e-aefb-565d7650eb96",
+      "persona": "data_analyst",
+      "before_checkpoint": "1f1de753-bb79-6178-800d-45dd5487176e",
+      "after_checkpoint": "1f1de754-697a-6943-800e-67b192579f58",
+      "assessed_sentences": 4,
+      "removed_sentences": 0
+    },
+    {
+      "run_id": "4722200e-0d12-4d40-8ce8-cca53f147825",
+      "persona": "full_stack",
+      "before_checkpoint": "1f1de01f-ba83-6ea0-8005-bbf6a7e32fbf",
+      "after_checkpoint": "1f1de01f-ce0c-6348-8006-19494349ca00",
+      "assessed_sentences": 3,
+      "removed_sentences": 0
+    },
+    {
+      "run_id": "1eef952c-5640-4737-bf35-09a11a9655d7",
+      "persona": "full_stack",
+      "before_checkpoint": "1f1de02b-221c-6949-8005-201bdce16b8d",
+      "after_checkpoint": "1f1de02b-4b1f-6c7f-8006-d5e3cc52b8ad",
+      "assessed_sentences": 6,
+      "removed_sentences": 0
+    },
+    {
+      "run_id": "988fdd51-9abe-4dbd-8ce3-07590f83b192",
+      "persona": "full_stack",
+      "before_checkpoint": "1f1de032-fb04-6273-8005-5b34fa6ea002",
+      "after_checkpoint": "1f1de033-cffe-6560-8006-083f0f33c5e0",
+      "assessed_sentences": 5,
+      "removed_sentences": 0
+    },
+    {
+      "run_id": "980c2a91-09b1-4e05-b6ab-ed5f33f62556",
+      "persona": "full_stack",
+      "before_checkpoint": "1f1de036-b7a1-680f-8005-1921d8b1082e",
+      "after_checkpoint": "1f1de036-f29e-65d1-8006-8ad51c6ca102",
+      "assessed_sentences": 5,
+      "removed_sentences": 0
+    },
+    {
+      "run_id": "2cf87df5-16aa-4d4c-8f54-70215aee694c",
+      "persona": "full_stack",
+      "before_checkpoint": "1f1de03f-9c23-638c-8005-f609c070e3c8",
+      "after_checkpoint": "1f1de040-770e-6e16-8006-b6604e70a112",
+      "assessed_sentences": 5,
+      "removed_sentences": 0
+    },
+    {
+      "run_id": "b9ba6dd5-9d65-4b57-8b41-9c4a5600589a",
+      "persona": "full_stack",
+      "before_checkpoint": "1f1de041-12da-69c6-8005-5a45f90a1a5b",
+      "after_checkpoint": "1f1de041-504d-696c-8006-17914a7a645b",
+      "assessed_sentences": 4,
+      "removed_sentences": 0
+    },
+    {
+      "run_id": "628ddd43-d726-4279-a98f-8dc7f216e707",
+      "persona": "full_stack",
+      "before_checkpoint": "1f1de048-fd43-66d3-8005-073b8f179d41",
+      "after_checkpoint": "1f1de049-638e-68b0-8006-559d76cd7260",
+      "assessed_sentences": 6,
+      "removed_sentences": 0
+    },
+    {
+      "run_id": "00217df2-ff5e-476a-9aa4-a366fe8e6765",
+      "persona": "full_stack",
+      "before_checkpoint": "1f1de049-e308-6dea-8005-9cbf574620f5",
+      "after_checkpoint": "1f1de049-f599-6304-8006-b105ac6f7fce",
+      "assessed_sentences": 5,
+      "removed_sentences": 0
+    },
+    {
+      "run_id": "423e156c-7256-4a04-ad0d-2be6c525b885",
+      "persona": "full_stack",
+      "before_checkpoint": "1f1de04e-ec77-678a-8005-13842063b113",
+      "after_checkpoint": "1f1de04f-45ee-6756-8006-8bd31b6dd6c5",
+      "assessed_sentences": 6,
+      "removed_sentences": 0
+    },
+    {
+      "run_id": "5aa0b97e-d62a-49bd-a9fa-eed58da9dcb4",
+      "persona": "full_stack",
+      "before_checkpoint": "1f1de05b-2a2c-6640-8005-e0805db017dd",
+      "after_checkpoint": "1f1de05c-784b-6a1c-8006-f819516d74e2",
+      "assessed_sentences": 4,
+      "removed_sentences": 0
+    },
+    {
+      "run_id": "5299b6c3-caba-4374-b106-7208aa43069e",
+      "persona": "full_stack",
+      "before_checkpoint": "1f1de05d-8006-60b2-8005-481b5acd4734",
+      "after_checkpoint": "1f1de05d-9747-6023-8006-9812b1d13326",
+      "assessed_sentences": 5,
+      "removed_sentences": 0
+    },
+    {
+      "run_id": "c6e3a4f6-77b1-457f-b1d6-d90792680a0b",
+      "persona": "full_stack",
+      "before_checkpoint": "1f1de062-1c82-68ad-8005-650440141f24",
+      "after_checkpoint": "1f1de063-862b-699e-8006-b997374b9d60",
+      "assessed_sentences": 3,
+      "removed_sentences": 0
+    },
+    {
+      "run_id": "44282dbe-b373-410c-8577-6d18d9ee90ab",
+      "persona": "full_stack",
+      "before_checkpoint": "1f1de068-cac9-67e2-8005-c4805b18f1ae",
+      "after_checkpoint": "1f1de068-db8a-6123-8006-606bd348276a",
+      "assessed_sentences": 4,
+      "removed_sentences": 0
+    },
+    {
+      "run_id": "f52c9edf-b00a-4dc3-ab0b-c4e5ba5f8a45",
+      "persona": "full_stack",
+      "before_checkpoint": "1f1de06f-6607-63b1-8005-08e5096dd5c3",
+      "after_checkpoint": "1f1de06f-955a-6e8f-8006-570b26ab15d0",
+      "assessed_sentences": 4,
+      "removed_sentences": 0
+    },
+    {
+      "run_id": "e1354ed7-c234-42fe-8b46-875cd17b0f9e",
+      "persona": "full_stack",
+      "before_checkpoint": "1f1de070-73d1-693e-8005-25f45f875d4a",
+      "after_checkpoint": "1f1de070-870a-684a-8006-b7881d861ad9",
+      "assessed_sentences": 5,
+      "removed_sentences": 0
+    }
+  ],
+  "limits": "Retrospective, small changed-draft stratum; no causal population claim. Failed/unpaired verification attempts are not counted as successes."
+}

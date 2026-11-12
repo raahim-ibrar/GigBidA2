@@ -2,21 +2,6 @@
   "complete": true,
   "traces": [
     {
-      "kind": "proposal",
-      "run_id": "704c29d5-f045-4743-8b28-2cd329270edb",
-      "status": "awaiting_approval",
-      "url": "https://smith.langchain.com/public/a2f56a69-3bde-4159-b994-cd81ed98a3f9/r",
-      "spans": {
-        "chain": 12,
-        "llm": 6,
-        "tool": 10
-      },
-      "data_origin": "synthetic",
-      "privacy": "Metadata only; no prompts, CV, tool arguments/results or credentials",
-      "app_url": "https://interpreted-vid-recovered-estimation.trycloudflare.com/runs/704c29d5-f045-4743-8b28-2cd329270edb",
-      "anonymous_verified": true
-    },
-    {
       "kind": "scam",
       "run_id": "18b49ee6-5f78-4445-82a3-45a32e874334",
       "status": "skip",
@@ -28,7 +13,6 @@
       },
       "data_origin": "synthetic",
       "privacy": "Metadata only; no prompts, CV, tool arguments/results or credentials",
-      "app_url": "https://interpreted-vid-recovered-estimation.trycloudflare.com/runs/18b49ee6-5f78-4445-82a3-45a32e874334",
       "anonymous_verified": true
     },
     {
@@ -43,8 +27,31 @@
       },
       "data_origin": "synthetic",
       "privacy": "Metadata only; no prompts, CV, tool arguments/results or credentials",
-      "app_url": "https://interpreted-vid-recovered-estimation.trycloudflare.com/runs/7c92d01f-8f10-4701-ba3c-d0343df57d99",
       "anonymous_verified": true
+    },
+    {
+      "kind": "approved_proposal_and_api_crash_resume",
+      "run_id": "704c29d5-f045-4743-8b28-2cd329270edb",
+      "remote_trace_id": "4db4f370-e3fa-5e72-91f6-f5a05902a314",
+      "snapshot_policy": "immutable-snapshot-v2",
+      "status": "submitted",
+      "url": "https://smith.langchain.com/public/f91fd52f-2903-4c50-8160-f2415edd1ea7/r",
+      "critic_passes": 1,
+      "data_origin": "synthetic",
+      "anonymous_verified": true,
+      "privacy": "Metadata only; raw sources, prompts, arguments and secrets omitted"
+    },
+    {
+      "kind": "real_model_critic_loop",
+      "run_id": "48cc0c35-6200-4541-8d4b-046785147181",
+      "remote_trace_id": "6698d1ca-7abd-51b5-a979-9aa006b42b86",
+      "snapshot_policy": "immutable-snapshot-v2",
+      "status": "awaiting_approval",
+      "url": "https://smith.langchain.com/public/039792a8-3f8a-4d96-863e-8a9b43e3ae88/r",
+      "critic_passes": 2,
+      "data_origin": "synthetic",
+      "anonymous_verified": true,
+      "privacy": "Metadata only; raw sources, prompts, arguments and secrets omitted"
     }
   ]
 }

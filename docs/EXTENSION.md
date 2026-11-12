@@ -1,8 +1,15 @@
-# Signature extension - X2 analysis tooling
+# Signature extension - X2 proposal experiment
 
-Selected direction: proposal experiments in GigSim. Frozen assignment plans and
-offline analysis are implemented. Runtime strategy wiring, actual simulator trials
-and measured results remain pending; the extension is not yet assignment-complete.
+Implemented and measured on the independent student simulator. The frozen 50-job
+custom-graph cohort assigned 25 jobs to each opening before execution. Evidence-first
+received 12 replies (48%); problem-first received 17 (68%). Evidence-minus-problem was
+-20 percentage points, Fisher p=0.251590 and conservative 95% CI [-0.792, 0.392].
+No strategy benefit was established. All assigned jobs, including failures, remain in
+the intention-to-treat denominator. These are rule-client outcomes, not real clients.
+Evidence: `evals/results/gemini-orchestration-v1/{plan,analysis}.json` and `runs.jsonl`.
+The native architectures are not extra independent X2 observations.
+
+## Reproducing the design on a new cohort
 
 Compare two grounded proposal strategies: an evidence-first opening and a concise problem-first opening. Hold model configuration, retrieval, pricing and compliance constant. Predeclare the primary metric as reply rate, randomization seed and sample size; assign jobs to arms within persona/category strata. Keep the held-out evaluation separate from prompt iteration.
 
@@ -36,4 +43,4 @@ difference, a two-sided fixed-margin Fisher exact p-value and a conservative
 Hoeffding/union-bound confidence interval. The interval assumes independent bounded
 observations and can be wide. The pooled Fisher test is not adjusted for strata;
 inspect heterogeneous effects and do not treat one pooled p-value as proof that a
-strategy works for every persona. No significant-result claim exists yet.
+strategy works for every persona. The completed study did not establish significance.

@@ -54,7 +54,7 @@ def stop(state):
     return {"status": state["decision"].action}
 
 
-def build_bid_graph(*, checkpointer, nodes=None, max_revisions=2):
+def build_bid_graph(*, checkpointer, nodes=None, max_revisions=2, entry_node="scout"):
     if checkpointer is None:
         raise ValueError("Provide a Postgres checkpointer; tests may use InMemorySaver")
     if not 0 <= max_revisions <= 2:
@@ -71,7 +71,9 @@ def build_bid_graph(*, checkpointer, nodes=None, max_revisions=2):
         "blocked": blocked,
     }.items():
         graph.add_node(name, node)
-    graph.add_edge(START, "scout")
+    if entry_node not in BUSINESS_NODES:
+        raise ValueError("Unknown replay entry node")
+    graph.add_edge(START, entry_node)
     graph.add_conditional_edges("scout", analysis_fanout, ["analyst", "risk", "matcher"])
     graph.add_edge(["analyst", "risk", "matcher"], "decision")
     graph.add_conditional_edges("decision", decision_route, {"pricing": "pricing", "stop": "stop"})

@@ -60,7 +60,8 @@ def test_import_is_authenticated_csrf_scoped_and_indexed(account_app, portfolio,
 
 
 @pytest.mark.asyncio
-async def test_github_mcp_pins_commit_and_reads_embedded_resource(monkeypatch):
+@pytest.mark.parametrize("path,kind", [("README.md", "readme"), ("src/my api.py", "code")])
+async def test_github_mcp_pins_commit_and_reads_embedded_resource(monkeypatch, path, kind):
     from rag.github_import import fetch_readme
 
     calls = []
@@ -100,7 +101,36 @@ async def test_github_mcp_pins_commit_and_reads_embedded_resource(monkeypatch):
         github_token=SimpleNamespace(get_secret_value=lambda: "fake-test-key")
     )
     _, text, metadata = await fetch_readme(
-        GitHubImport(repository_url="https://github.com/a/b.git", project="Test"), settings
+        GitHubImport(repository_url="https://github.com/a/b.git", project="Test", path=path),
+        settings,
     )
     assert b"Actual README" in text and metadata.source_commit == "a" * 40
     assert calls[-1][1]["sha"] == "a" * 40
+    assert calls[-1][1]["path"] == path
+    assert metadata.type == kind
+    assert metadata.source_url.endswith(path.replace(" ", "%20"))
+    if kind == "code":
+        assert b"```\nActual README\n```" in text
+
+
+@pytest.mark.parametrize(
+    "path",
+    [
+        "../secret.py",
+        "/etc/file.py",
+        "a//b.py",
+        ".env",
+        "private/.env.txt",
+        ".git/config.txt",
+        "node_modules/a.js",
+        "binary.exe",
+        "file.py?token=x",
+        "folder?token/file.py",
+        "folder#fragment/file.py",
+        "%2e%2e/file.py",
+        "C:/file.py",
+    ],
+)
+def test_github_source_path_rejects_unsafe_files(path):
+    with pytest.raises(ValidationError):
+        GitHubImport(repository_url="https://github.com/a/b", project="Test", path=path)

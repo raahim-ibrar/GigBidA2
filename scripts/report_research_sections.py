@@ -180,13 +180,13 @@ def append_research(body, sub, section, table, source, read):
             ],
             [
                 "Public delivery",
-                "Public repository, temporary laptop-backed app and authenticated Portfolio MCP; "
-                "three public metadata-only LangSmith trace links verified. "
-                "Credentials stay private.",
+                "Public repository/article, installable MCP command and Inspector screenshots. "
+                "Approved proposal/crash, scam, injection and real Critic trace cases verified. "
+                "Temporary app/HTTP demo is off; E6 uptime is excluded, not satisfied.",
             ],
             [
                 "Integration gaps",
-                "GitHub README ingestion and explicit audit-span export are implemented. "
+                "GitHub README/code import and immutable audit snapshots are verified. "
                 "Real Upwork OAuth/live reads are verified; preview writes are fixture-tested. "
                 "Final submissions/messages are disabled; production-wide auth limits "
                 "remain incomplete.",
@@ -199,8 +199,9 @@ def append_research(body, sub, section, table, source, read):
             ],
             [
                 "Video",
-                "Required three-minute recording is excluded from this implementation "
-                "work at the student's request; it remains a student deliverable.",
+                "Genuine three-minute UI recording and 30-second GIF: proposal approval, "
+                "actual API restart, scam/injection rejection and approved client reply. "
+                "Fictional account, real hosted inference, one simulator submission receipt.",
             ],
         ],
         [43 * mm, 128 * mm],

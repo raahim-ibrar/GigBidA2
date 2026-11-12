@@ -79,6 +79,24 @@ test("reject a proposal only with a reason", async ({ page }) => {
   await expect(page.getByRole("status")).toContainText("rejected", { timeout: 15000 });
 });
 
+test("replay a saved checkpoint into a separate run with a fresh approval", async ({ page }) => {
+  await prepare(page);
+  const original = page.url().split("/").at(-1)!;
+  await page.goto(`/runs/${original}`);
+  await page.getByRole("button", { name: "Load checkpoint history" }).click();
+  await expect(page.getByLabel("Saved checkpoint")).toBeVisible();
+  // An execution replay must return through verification instead of inheriting approval.
+  await page.getByLabel("Start again from").selectOption("execute");
+  await page.getByRole("button", { name: "Create replay run" }).click();
+  await expect(page).not.toHaveURL(new RegExp(`/runs/${original}$`));
+  await expect(page.getByRole("heading", { name: "Verified draft for review" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Saved local draft" })).toHaveCount(0);
+  await page.getByRole("button", { name: "Approve and save local draft" }).click();
+  await expect(page.getByRole("heading", { name: "Saved local draft" })).toBeVisible();
+  await page.goto(`/studio/${original}`);
+  await expect(page.getByRole("heading", { name: "Verified draft for review" })).toBeVisible();
+});
+
 test("edits are reverified and require a separate approval", async ({ page }) => {
   await prepare(page);
   await page.getByLabel("Edit cover letter").fill("Could we discuss scope?");
