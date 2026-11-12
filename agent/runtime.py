@@ -147,10 +147,14 @@ async def process_run(
             )
             async with AsyncExitStack() as stack:
                 marketplace = marketplace_reader
-                if claimed["snapshot"].get("raw_job", {}).get("source") != "student_sim":
+                if claimed["snapshot"].get("raw_job", {}).get("source") not in {
+                    "student_sim",
+                    "upwork",
+                }:
                     marketplace = None
                 if (
-                    claimed["snapshot"].get("raw_job", {}).get("source") == "student_sim"
+                    claimed["snapshot"].get("raw_job", {}).get("source")
+                    in {"student_sim", "upwork"}
                     and marketplace is None
                 ):
                     market_client = build_client(
@@ -163,6 +167,9 @@ async def process_run(
                                     "GIGBID_TENANT_ID": tenant,
                                     "GIGBID_RUN_ID": run_id,
                                     "DATABASE_URL": settings.database_url,
+                                    "OAUTH_ENCRYPTION_KEY": (
+                                        settings.oauth_encryption_key.get_secret_value()
+                                    ),
                                     "STUDENT_SIM_URL": settings.student_sim_url,
                                     "STUDENT_SIM_API_KEY": settings.student_sim_api_key,
                                 },

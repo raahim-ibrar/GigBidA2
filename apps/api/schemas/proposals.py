@@ -87,6 +87,8 @@ class SnapshotView(Contract):
     provider_conversation_id: str | None = None
     conversation_title: str | None = None
     source_revision: int | None = None
+    provider_result: dict | None = None
+    marketplace_provider: str | None = None
     intent: Literal["question", "negotiation", "interview", "scam"] | None = None
     calendar_slots: list[TimeWindow] = Field(default_factory=list)
 

@@ -35,3 +35,7 @@ on an idempotent draft response; that read contract now normalizes timestamps to
 ## November 11-12 research completion
 
 Codex prepared calibration and blinded panel packets, implemented and repaired the real orchestration baselines and optional Gemini transport, ran the recorded studies, and calculated agreement and intention-to-treat outcomes. Raahim supplied 30 calibration ratings and reported two classmate responses. The second classmate response was reconstructed from the user-stated final-choice difference; reviewer identity/independence was not verified. No AI-generated rating is represented as human. Earlier statements about no generated research apply to their dated development checkpoints, not these later explicitly labelled synthetic experiments. Failed API/output-format pilots remain separate. Codex drafted the final report and technical narrative from saved measurements.
+
+## November 12 Upwork integration
+
+Codex implemented the local OAuth helper, encrypted per-user storage, provider routing, verified MCP mappings, draft-only approval ledger, UI, tests and documentation. Raahim completed the real Upwork browser login and authorization himself. Actual verification used account discovery and read-only public job/balance requests, with no model inference, live proposal preparation, submission or message send. Provider-write behavior was tested only with synthetic fixtures. Raw account data and credentials were excluded from published evidence.

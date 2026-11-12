@@ -25,15 +25,41 @@ from mcp_servers.marketplace.adapters.student_sim import StudentSimAdapter
 class MarketplaceService:
     def __init__(self, engine, settings, tenant, run_id=None, *, adapter=None):
         self.engine, self.settings, self.tenant, self.run_id = engine, settings, tenant, run_id
+        with Session(engine) as db:
+            connection = db.get(MarketplaceConnection, tenant)
+            run = db.get(AgentRun, run_id) if run_id else None
+            raw = run.snapshot.get("raw_job", {}) if run and run.user_id == tenant else {}
+            self.provider = raw.get("source") or (connection.mode if connection else "student_sim")
+            self.generation = raw.get("connection_generation")
+        if adapter is None and self.provider == "upwork":
+            from apps.api.marketplace import MarketplaceAccounts
+
+            adapter = MarketplaceAccounts(engine, settings).adapter(
+                tenant, "upwork", self.generation
+            )
         self.adapter = adapter or StudentSimAdapter(
             settings.student_sim_url, settings.student_sim_api_key, tenant
         )
 
     def connected(self):
+        if self.provider not in {"student_sim", "upwork"}:
+            raise RunConflict("Connect a marketplace in Settings first")
         with Session(self.engine) as db:
             row = db.get(MarketplaceConnection, self.tenant)
-            if row is None or row.mode != "student_sim":
-                raise RunConflict("Connect the student simulator in Settings first")
+            if row is None or row.mode != self.provider:
+                raise RunConflict(
+                    "Connect this run's original marketplace provider before continuing"
+                )
+            if self.provider == "upwork":
+                from apps.api.models import OAuthCredential
+
+                credential = db.get(OAuthCredential, (self.tenant, "upwork"))
+                if (
+                    not credential
+                    or not credential.connected
+                    or (self.generation and credential.generation != self.generation)
+                ):
+                    raise RunConflict("Upwork authorization changed; start a new run")
 
     async def read(self, name, *args):
         await asyncio.to_thread(self.connected)
@@ -61,7 +87,7 @@ class MarketplaceService:
                 if (
                     job is None
                     or job.user_id != self.tenant
-                    or job.raw.get("source") != "student_sim"
+                    or job.raw.get("source") != self.provider
                     or job.raw.get("provider_job_id") != request.job_id
                 ):
                     raise RunConflict("Provider job does not match this run")
@@ -94,10 +120,10 @@ class MarketplaceService:
             else:
                 response = await self.adapter.send_message(request)
             return MarketplaceResult(
-                provider="student_sim", data={**response.data, "arguments": arguments}
+                provider=self.provider, data={**response.data, "arguments": arguments}
             )
         return MarketplaceResult(
-            provider="student_sim", data=await asyncio.to_thread(self._execute, tool, request)
+            provider=self.provider, data=await asyncio.to_thread(self._execute, tool, request)
         )
 
     def _execute(self, tool, request):
@@ -106,8 +132,8 @@ class MarketplaceService:
             # Match the Workspace lock order: run, account, source evidence.
             db.scalar(select(User.id).where(User.id == self.tenant).with_for_update(key_share=True))
             connection = db.get(MarketplaceConnection, self.tenant)
-            if connection is None or connection.mode != "student_sim":
-                raise RunConflict("Student simulator was disconnected")
+            if connection is None or connection.mode != self.provider:
+                raise RunConflict("Original marketplace provider was disconnected")
             arguments = self._arguments(run, tool, request)
             previous = db.scalar(
                 select(MarketplaceWrite).where(
@@ -122,6 +148,10 @@ class MarketplaceService:
                     or previous.arguments != arguments
                 ):
                     raise RunConflict("Provider idempotency key has different arguments")
+                if previous.result.get("status") in {"in_flight", "provider_outcome_unknown"}:
+                    raise RunConflict(
+                        "Provider draft outcome is uncertain; inspect Upwork before any new attempt"
+                    )
                 return previous.result
             audit = db.scalar(
                 select(ApprovalAudit)
@@ -175,6 +205,27 @@ class MarketplaceService:
                         raise RunConflict("Reviewed interview options are no longer available")
             # Bounded provider IO while locks preserve the authorization/evidence snapshot.
             # If commit is lost, retry the SAME upstream key; never invent a new key.
+            if self.provider == "upwork":
+                if tool != "submit_proposal":
+                    raise RunConflict(
+                        "Live messages are local drafts only; direct Upwork sending is disabled"
+                    )
+                intent = MarketplaceWrite(
+                    user_id=self.tenant,
+                    run_id=run.id,
+                    approval_id=audit.id,
+                    tool=tool,
+                    idempotency_key=request.idempotency_key,
+                    arguments=arguments,
+                    result={"status": "in_flight", "provider": "upwork", "connects_spent": 0},
+                    connects_spent=0,
+                )
+                db.add(intent)
+                db.flush()
+                identity = intent.id
+                # Commit before non-idempotent remote IO; never repeat a committed intent.
+                db.commit()
+                return self._finish_live(identity, request, cost)
             result = asyncio.run(getattr(self.adapter, tool)(request)).data
             if tool == "submit_proposal" and result.get("connects_spent") != cost:
                 raise RunConflict(
@@ -193,3 +244,24 @@ class MarketplaceService:
                 )
             )
             return result
+
+    def _finish_live(self, identity, request, approved_cost):
+        try:
+            result = asyncio.run(
+                self.adapter.prepare_approved_proposal(request, approved_cost=approved_cost)
+            )
+        except Exception:
+            with Session(self.engine) as db, db.begin():
+                row = db.get(MarketplaceWrite, identity)
+                row.result = {
+                    "status": "provider_outcome_unknown",
+                    "provider": "upwork",
+                    "connects_spent": 0,
+                }
+            raise RunConflict(
+                "Provider draft outcome unknown. No automatic retry; inspect Upwork first."
+            ) from None
+        with Session(self.engine) as db, db.begin():
+            row = db.get(MarketplaceWrite, identity)
+            row.result = result
+        return result

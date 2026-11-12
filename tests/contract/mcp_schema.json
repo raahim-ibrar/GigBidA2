@@ -6,7 +6,7 @@
         "idempotentHint": true,
         "readOnlyHint": true
       },
-      "description": "Search the connected student simulator's jobs; this cannot submit or spend.",
+      "description": "Search the connected marketplace; this cannot submit or spend.",
       "inputSchema": {
         "$defs": {
           "SearchJobs": {
@@ -72,7 +72,7 @@
         "idempotentHint": true,
         "readOnlyHint": true
       },
-      "description": "Read a simulator job by its provider ID; never returns private scenario labels.",
+      "description": "Read a job from this account's connected provider; no private scenario labels.",
       "inputSchema": {
         "properties": {
           "job_id": {
@@ -114,7 +114,7 @@
         "idempotentHint": true,
         "readOnlyHint": true
       },
-      "description": "Read explicitly synthetic client history from the connected simulator.",
+      "description": "Read client context; synthetic in the simulator, possibly incomplete on Upwork.",
       "inputSchema": {
         "properties": {
           "client_id": {
@@ -156,7 +156,7 @@
         "idempotentHint": true,
         "readOnlyHint": true
       },
-      "description": "Read this host-bound account's simulated Connects balance.",
+      "description": "Read this host-bound account's provider Connects balance.",
       "inputSchema": {
         "properties": {},
         "title": "get_connects_balanceArguments",
@@ -190,7 +190,7 @@
         "idempotentHint": true,
         "readOnlyHint": true
       },
-      "description": "Read only this account's simulator conversation messages.",
+      "description": "Read only this account's connected marketplace conversation messages.",
       "inputSchema": {
         "properties": {
           "conversation_id": {

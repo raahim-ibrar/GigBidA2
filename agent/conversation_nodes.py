@@ -48,7 +48,11 @@ class ConversationNodes:
             score=1 if injection else 0,
             flags=["prompt_injection"] if injection else [],
             reasons=[
-                "Student-simulator conversation; all content is synthetic."
+                (
+                    "Upwork job context; messages are user-provided, not automatically synced."
+                    if state.get("raw_job", {}).get("source") == "upwork"
+                    else "Student-simulator conversation; all content is synthetic."
+                )
                 if state.get("provider_conversation_id")
                 else "Manually entered client messages; provider history is unavailable."
             ],
@@ -66,6 +70,15 @@ class ConversationNodes:
         evidence = await self.portfolio.search(
             query, k=self.config.retrieval["top_k"], variant=self.config.retrieval["variant"]
         )
+        if state.get("raw_job", {}).get("source") == "upwork":
+            evidence = [
+                item
+                for item in evidence
+                if not any(
+                    marker in item.text.casefold()
+                    for marker in ("synthetic persona", "fictional", "synthetic prototype")
+                )
+            ]
         now = self.clock()
         slots = await self.workspace.slots(SlotRequest(start=now, end=now + timedelta(days=7)))
         reply = await self.models.complete(
@@ -73,7 +86,11 @@ class ConversationNodes:
             {
                 "job": state["raw_job"],
                 "client_messages": state["messages"],
-                "source": "student_sim (synthetic)"
+                "source": (
+                    "upwork (real job; user-provided message context)"
+                    if state.get("raw_job", {}).get("source") == "upwork"
+                    else "student_sim (synthetic)"
+                )
                 if state.get("provider_conversation_id")
                 else "manually entered",
                 "current_time_utc": now.isoformat(),
@@ -124,7 +141,10 @@ class ConversationNodes:
 
     async def preview(self, state):
         request = self._email(state, dry_run=True)
-        if state.get("provider_conversation_id"):
+        if (
+            state.get("provider_conversation_id")
+            and state.get("raw_job", {}).get("source") != "upwork"
+        ):
             from agent.marketplace_port import MessageWrite
             from agent.proposal_nodes import draft_digest
 
@@ -170,7 +190,10 @@ class ConversationNodes:
         if state["approval"].action != "approve":
             raise ReviewRequired("Saving a reply requires human approval")
         request = self._email(state, dry_run=False)
-        if state.get("provider_conversation_id"):
+        if (
+            state.get("provider_conversation_id")
+            and state.get("raw_job", {}).get("source") != "upwork"
+        ):
             from agent.marketplace_port import MessageWrite
             from agent.proposal_nodes import draft_digest
 

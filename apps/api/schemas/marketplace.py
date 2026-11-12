@@ -7,17 +7,22 @@ from apps.api.schemas.proposals import JobView
 
 
 class ConnectionUpdate(Contract):
-    mode: Literal["manual", "student_sim"]
+    mode: Literal["manual", "student_sim", "upwork"]
 
 
 class ConnectionStatus(Contract):
-    mode: Literal["manual", "student_sim"]
+    mode: Literal["manual", "student_sim", "upwork"]
     connected: bool
     available: bool = False
     balance: int | None = None
     error: str | None = None
     synthetic: bool = True
     label: str = "Student-built simulator; not instructor GigSim"
+    upwork_connected: bool = False
+    capabilities: list[str] = Field(default_factory=list)
+    unavailable_capabilities: list[str] = Field(default_factory=list)
+    reconnect_required: bool = False
+    expires_at: str | None = None
 
 
 class MarketplaceSearch(Contract):
@@ -28,7 +33,7 @@ class MarketplaceSearch(Contract):
 class ImportedJobs(Contract):
     jobs: list[JobView]
     synthetic: bool = True
-    provider: Literal["student_sim"] = "student_sim"
+    provider: Literal["student_sim", "upwork"] = "student_sim"
 
 
 class SyncResult(Contract):

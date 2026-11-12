@@ -1,0 +1,526 @@
+[
+  {
+    "name": "upwork__find_jobs",
+    "title": "Find Jobs",
+    "description": "Marketplace job postings: search them by keywords and filters, get one by id, or get the jobs recommended for the freelancer's own profile (smart_search).\nActions: search, get, smart_search.\nCall get_tool_help(tool_name=\"find_jobs\") for how to use this tool.",
+    "inputSchema": {
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "action": {
+                "const": "search"
+              }
+            },
+            "required": [
+              "action"
+            ]
+          },
+          "then": {
+            "properties": {
+              "params": {
+                "properties": {
+                  "previous_clients_only": {
+                    "description": "Only jobs from clients you have worked with before",
+                    "type": "boolean"
+                  },
+                  "skills": {
+                    "maxItems": 5,
+                    "minItems": 1,
+                    "type": "array",
+                    "description": "Upwork skill names, at most 5, ANDed \u2014 a job must carry every one. A name that matches no Upwork skill is reported in filters_ignored and not applied; when none match, the search is refused with the closest matches",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "timezone": {
+                    "description": "Client timezone filter",
+                    "type": "string"
+                  },
+                  "workload": {
+                    "description": "Hours per week \u2014 distinct from duration, which is project length",
+                    "enum": [
+                      "full_time",
+                      "part_time",
+                      "as_needed"
+                    ],
+                    "type": "string"
+                  },
+                  "budget_max": {
+                    "description": "Fixed-price budget ceiling; does not filter hourly jobs \u2014 use rate_max for those",
+                    "exclusiveMinimum": 0,
+                    "type": "number"
+                  },
+                  "cursor": {
+                    "description": "Page cursor from prior pageInfo.endCursor",
+                    "type": "string"
+                  },
+                  "duration": {
+                    "type": "string",
+                    "description": "Expected project length. Constrains hourly jobs only \u2014 fixed-price jobs are returned regardless of duration, so pair it with job_type=hourly to exclude them",
+                    "enum": [
+                      "less_than_1_month",
+                      "1_to_3_months",
+                      "3_to_6_months",
+                      "more_than_6_months"
+                    ]
+                  },
+                  "include_full_details": {
+                    "default": false,
+                    "description": "Include each result's full untruncated job description. False by default to keep responses compact",
+                    "type": "boolean"
+                  },
+                  "query": {
+                    "description": "Broad match across the whole posting, title and description, with semantic expansion \u2014 prefer title when the user names a specific kind of work",
+                    "type": "string"
+                  },
+                  "sort": {
+                    "description": "Result order. Omit for newest-first; relevance is the default for a query-only search and is refused alongside title, skills, category or subcategory",
+                    "enum": [
+                      "recency",
+                      "relevance",
+                      "client_total_charge",
+                      "client_rating"
+                    ],
+                    "type": "string"
+                  },
+                  "subcategory": {
+                    "description": "Category one level down, by name or ontology id",
+                    "type": "string"
+                  },
+                  "verified_payment_only": {
+                    "description": "Only jobs from clients with verified payment method",
+                    "type": "boolean"
+                  },
+                  "budget_min": {
+                    "description": "Fixed-price budget floor; does not filter hourly jobs \u2014 use rate_min for those",
+                    "exclusiveMinimum": 0,
+                    "type": "number"
+                  },
+                  "proposals_max": {
+                    "description": "Maximum proposals already submitted, e.g. 5 for jobs with fewer than 5",
+                    "minimum": 0,
+                    "type": "integer"
+                  },
+                  "rate_min": {
+                    "description": "Hourly posted-range overlap lower endpoint. Keeps jobs whose posted maximum is at least this value; it does not require the posted minimum to meet it. For a strict floor keep only rows whose budget min is >= this; drop \"up to B/hr\" (no min) and no-range",
+                    "exclusiveMinimum": 0,
+                    "type": "number"
+                  },
+                  "location": {
+                    "description": "Client country/location filter",
+                    "type": "string"
+                  },
+                  "client_hires_max": {
+                    "description": "Maximum hires the client has made; 0 with client_hires_min=0 for clients who never hired",
+                    "minimum": 0,
+                    "type": "integer"
+                  },
+                  "client_hires_min": {
+                    "description": "Minimum hires the client has made",
+                    "minimum": 0,
+                    "type": "integer"
+                  },
+                  "experience_level": {
+                    "type": "string",
+                    "description": "Required experience level",
+                    "enum": [
+                      "entry_level",
+                      "intermediate",
+                      "expert"
+                    ]
+                  },
+                  "job_type": {
+                    "description": "Fixed-price or hourly",
+                    "enum": [
+                      "fixed",
+                      "hourly"
+                    ],
+                    "type": "string"
+                  },
+                  "proposals_min": {
+                    "description": "Minimum proposals already submitted",
+                    "minimum": 0,
+                    "type": "integer"
+                  },
+                  "rate_max": {
+                    "description": "Hourly posted-range overlap upper endpoint. Keeps jobs whose posted minimum is at most this value; it does not require the posted maximum to meet it. No-range jobs may appear. For a strict ceiling keep only rows whose budget max is <= this; drop \"A+/hr\" (no max) and no-range",
+                    "exclusiveMinimum": 0,
+                    "type": "number"
+                  },
+                  "title": {
+                    "description": "Match the job title only: 1-3 key words, ANDed, stemmed, whole words. Cannot be combined with query or sort=relevance",
+                    "type": "string"
+                  },
+                  "category": {
+                    "type": "string",
+                    "description": "Top-level category, by name (\"Web, Mobile & Software Dev\") or ontology id; an unknown name is rejected with the valid list"
+                  },
+                  "limit": {
+                    "type": "integer",
+                    "default": 10,
+                    "description": "Max results (1\u201310, default 10)",
+                    "maximum": 10,
+                    "minimum": 1
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "action": {
+                "const": "get"
+              }
+            },
+            "required": [
+              "action"
+            ]
+          },
+          "then": {
+            "properties": {
+              "params": {
+                "properties": {
+                  "id": {
+                    "description": "Job ID from find_jobs search (preferred), a ~02\u2026 ciphertext, or a full Upwork job URL \u2014 pass any of these as-is.",
+                    "type": "string"
+                  },
+                  "job_id": {
+                    "description": "Alias for id \u2014 provide id or job_id",
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "action"
+            ],
+            "properties": {
+              "action": {
+                "const": "smart_search"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "params": {
+                "properties": {
+                  "from_date": {
+                    "type": "string",
+                    "description": "Only jobs posted on or after this date \u2014 YYYY-MM-DD, or an RFC3339 timestamp for finer granularity. Use with to_date for an explicit range; use days_posted instead for a window ending now. Applies to mode=most_recent"
+                  },
+                  "limit": {
+                    "default": 10,
+                    "description": "Max results (1\u201310, default 10)",
+                    "maximum": 10,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "previous_clients_only": {
+                    "description": "Only jobs from clients you have worked with before",
+                    "type": "boolean"
+                  },
+                  "rate_min": {
+                    "exclusiveMinimum": 0,
+                    "type": "number",
+                    "description": "Hourly posted-range overlap lower endpoint. Keeps jobs whose posted maximum is at least this value; it does not require the posted minimum to meet it. For a strict floor keep only rows whose budget min is >= this; drop \"up to B/hr\" (no min) and no-range"
+                  },
+                  "timezone": {
+                    "description": "Client timezone filter",
+                    "type": "string"
+                  },
+                  "to_date": {
+                    "description": "Only jobs posted on or before this date \u2014 YYYY-MM-DD (inclusive, so to_date=2026-09-03 includes all of the 3rd), or an RFC3339 timestamp. Defaults to now when only from_date is given. Applies to mode=most_recent",
+                    "type": "string"
+                  },
+                  "verified_payment_only": {
+                    "description": "Only jobs from clients with verified payment method",
+                    "type": "boolean"
+                  },
+                  "cursor": {
+                    "description": "Page cursor \u2014 the next_cursor from the previous response",
+                    "type": "string"
+                  },
+                  "days_posted": {
+                    "type": "integer",
+                    "description": "Only jobs posted within the last N days (days_posted=1 for \"posted today\"). Applies to mode=most_recent; the best_match recommender selects its own set and ignores the window. Cannot be combined with from_date/to_date",
+                    "minimum": 1
+                  },
+                  "duration": {
+                    "description": "Expected project length. Constrains hourly jobs only \u2014 fixed-price jobs are returned regardless of duration, so pair it with job_type=hourly to exclude them",
+                    "enum": [
+                      "less_than_1_month",
+                      "1_to_3_months",
+                      "3_to_6_months",
+                      "more_than_6_months"
+                    ],
+                    "type": "string"
+                  },
+                  "location": {
+                    "description": "Client country/location filter",
+                    "type": "string"
+                  },
+                  "mode": {
+                    "enum": [
+                      "best_match",
+                      "most_recent"
+                    ],
+                    "type": "string",
+                    "description": "Which feed to read. best_match (default) is Upwork's personalized recommendations ranked by fit; most_recent is the newest postings matched to this freelancer, newest first. Use most_recent when the user asks for the newest, latest or just-posted jobs"
+                  },
+                  "rate_max": {
+                    "description": "Hourly posted-range overlap upper endpoint. Keeps jobs whose posted minimum is at most this value; it does not require the posted maximum to meet it. No-range jobs may appear. For a strict ceiling keep only rows whose budget max is <= this; drop \"A+/hr\" (no max) and no-range",
+                    "exclusiveMinimum": 0,
+                    "type": "number"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        }
+      ],
+      "properties": {
+        "action": {
+          "description": "The operation to perform",
+          "enum": [
+            "search",
+            "get",
+            "smart_search"
+          ],
+          "type": "string"
+        },
+        "org_uid": {
+          "description": "Your Upwork org_uid from list_accounts",
+          "type": "string"
+        },
+        "params": {
+          "type": "object",
+          "description": "Action-specific parameters (see allOf branches per action when present)"
+        }
+      },
+      "required": [
+        "action",
+        "org_uid"
+      ],
+      "type": "object"
+    },
+    "outputSchema": null,
+    "icons": null,
+    "annotations": {
+      "title": "Find Jobs",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false
+    },
+    "meta": null,
+    "execution": null
+  },
+  {
+    "name": "upwork__get_freelancer_financials",
+    "title": "Get Freelancer Financials",
+    "description": "View your own financial data as a freelancer or agency: the balance available to withdraw right now, earnings and transaction history, connects balance, and time report. Use this to verify a payment or earnings release, or to answer how much money is currently in the account.\nActions: available_balance, summary, transactions, connects_balance, timesheets.\nCall get_tool_help(tool_name=\"get_freelancer_financials\") for the parameters and how to use this tool.",
+    "inputSchema": {
+      "properties": {
+        "params": {
+          "description": "Action-specific parameters \u2014 call get_tool_help(tool_name=\"get_freelancer_financials\") for the full field list.",
+          "type": "object"
+        },
+        "action": {
+          "type": "string",
+          "description": "The operation to perform",
+          "enum": [
+            "available_balance",
+            "summary",
+            "transactions",
+            "connects_balance",
+            "timesheets"
+          ]
+        },
+        "org_uid": {
+          "type": "string",
+          "description": "Your Upwork org_uid from list_accounts"
+        }
+      },
+      "required": [
+        "action",
+        "org_uid"
+      ],
+      "type": "object"
+    },
+    "outputSchema": null,
+    "icons": null,
+    "annotations": {
+      "title": "Get Freelancer Financials",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false
+    },
+    "meta": null,
+    "execution": null
+  },
+  {
+    "name": "upwork__get_messages",
+    "title": "Get Messages",
+    "description": "List rooms, find rooms by context, and read messages.\nActions: list_rooms, search_rooms, find_room, list_messages, get_message.\nCall get_tool_help(tool_name=\"get_messages\") for the parameters and how to use this tool.",
+    "inputSchema": {
+      "properties": {
+        "action": {
+          "description": "The operation to perform",
+          "enum": [
+            "list_rooms",
+            "search_rooms",
+            "find_room",
+            "list_messages",
+            "get_message"
+          ],
+          "type": "string"
+        },
+        "org_uid": {
+          "description": "Your Upwork org_uid from list_accounts",
+          "type": "string"
+        },
+        "params": {
+          "description": "Action-specific parameters \u2014 call get_tool_help(tool_name=\"get_messages\") for the full field list.",
+          "type": "object"
+        }
+      },
+      "required": [
+        "action",
+        "org_uid"
+      ],
+      "type": "object"
+    },
+    "outputSchema": null,
+    "icons": null,
+    "annotations": {
+      "title": "Get Messages",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false
+    },
+    "meta": null,
+    "execution": null
+  },
+  {
+    "name": "upwork__list_accounts",
+    "title": null,
+    "description": "List your available Upwork accounts (Freelancer, Client, Agency). Call this first.",
+    "inputSchema": {
+      "properties": {},
+      "type": "object"
+    },
+    "outputSchema": null,
+    "icons": null,
+    "annotations": {
+      "title": null,
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false
+    },
+    "meta": null,
+    "execution": null
+  },
+  {
+    "name": "upwork__list_freelancer_proposals",
+    "title": "List Freelancer Proposals",
+    "description": "View your freelancer proposals and received invitations. Prior proposals make good drafting examples. Note: the status 'Accepted' means the proposal was submitted and validated (NOT that the client accepted you) \u2014 each result includes a status_label with the plain-English meaning. Start with recent submitted (Accepted) proposals; when looking for the strongest templates, also check Offered/Hired examples. list shows only Accepted by default: when a proposal the user asks about is not there, also check Offered, Hired, Declined and Withdrawn before saying it does not exist, and tell them which status it was under.\nActions: list, invitations, get, get_room.\nCall get_tool_help(tool_name=\"list_freelancer_proposals\") for the parameters and how to use this tool.",
+    "inputSchema": {
+      "properties": {
+        "action": {
+          "enum": [
+            "list",
+            "invitations",
+            "get",
+            "get_room"
+          ],
+          "type": "string",
+          "description": "The operation to perform"
+        },
+        "org_uid": {
+          "type": "string",
+          "description": "Your Upwork org_uid from list_accounts"
+        },
+        "params": {
+          "description": "Action-specific parameters \u2014 call get_tool_help(tool_name=\"list_freelancer_proposals\") for the full field list.",
+          "type": "object"
+        }
+      },
+      "required": [
+        "action",
+        "org_uid"
+      ],
+      "type": "object"
+    },
+    "outputSchema": null,
+    "icons": null,
+    "annotations": {
+      "title": "List Freelancer Proposals",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false
+    },
+    "meta": null,
+    "execution": null
+  },
+  {
+    "name": "upwork__manage_proposals",
+    "title": "Manage Proposals",
+    "description": "Submit, edit, or withdraw freelancer proposals. Submitting can include a Connects boost bid for a top slot on the client's list. Also accept or decline client job invitations. For client offers, use respond_to_offer. Freelancers cannot send the first message on a proposal \u2014 see PROPOSAL MESSAGING.\n\nWRITE OPERATION \u2014 REQUIRES EXPLICIT USER CONFIRMATION.\nReturns a preview \u2014 call confirm_preview only after explicit user approval.\nActions: create, accept_invitation, start_ai_interview, decline_invitation, withdraw, edit, send_proposal, acknowledge_policy.\nCall get_tool_help(tool_name=\"manage_proposals\") for the parameters and how to use this tool.",
+    "inputSchema": {
+      "required": [
+        "action",
+        "org_uid"
+      ],
+      "type": "object",
+      "properties": {
+        "action": {
+          "description": "The operation to perform",
+          "enum": [
+            "create",
+            "accept_invitation",
+            "start_ai_interview",
+            "decline_invitation",
+            "withdraw",
+            "edit",
+            "send_proposal",
+            "acknowledge_policy"
+          ],
+          "type": "string"
+        },
+        "org_uid": {
+          "description": "Your Upwork org_uid from list_accounts",
+          "type": "string"
+        },
+        "params": {
+          "type": "object",
+          "description": "Action-specific parameters \u2014 call get_tool_help(tool_name=\"manage_proposals\") for the full field list."
+        }
+      }
+    },
+    "outputSchema": null,
+    "icons": null,
+    "annotations": {
+      "title": "Manage Proposals",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "meta": null,
+    "execution": null
+  }
+]

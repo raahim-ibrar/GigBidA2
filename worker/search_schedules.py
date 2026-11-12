@@ -64,6 +64,15 @@ class SearchSchedules:
             if row is None:
                 row = SearchSchedule(user_id=tenant, version=0)
                 db.add(row)
+            connection = db.get(MarketplaceConnection, tenant)
+            if (
+                connection
+                and connection.mode == "upwork"
+                and (body.auto_analyse or body.interval_minutes < 60)
+            ):
+                raise RunConflict(
+                    "Live Upwork schedules require at least 60 minutes and automatic analysis off"
+                )
             row.enabled, row.interval_minutes = body.enabled, body.interval_minutes
             row.auto_analyse = body.auto_analyse
             row.version += 1
@@ -92,10 +101,21 @@ class SearchSchedules:
                     profile
                     and profile.saved_searches
                     and connection
-                    and connection.mode == "student_sim"
+                    and connection.mode in {"student_sim", "upwork"}
                 ):
                     row.status = "queued"
-                    work.append((row.user_id, profile.saved_searches[:5], row.auto_analyse))
+                    queries = (
+                        profile.saved_searches[:1]
+                        if connection.mode == "upwork"
+                        else profile.saved_searches[:5]
+                    )
+                    work.append(
+                        (
+                            row.user_id,
+                            queries,
+                            row.auto_analyse if connection.mode != "upwork" else False,
+                        )
+                    )
                 row.last_checked_at = now
                 row.next_check_at = now + timedelta(minutes=row.interval_minutes)
                 # Version covers worker changes too; stale UI edits must reload.

@@ -4,13 +4,13 @@
     {
       "path": "output/pdf/GigBid_RnD_Report.pdf",
       "pages": 10,
-      "sha256": "eace16ecc674e4e5188d470dadc9ad5647f36dead8ac17dbc7fd3fa49dd884d5",
+      "sha256": "809babbd0c4603c305af1d9fd9112f97d15f3b32797d02b7b51d571b7af8ed9f",
       "rendered_and_visually_checked": true
     },
     {
       "path": "output/pdf/GigBid_Technical_Writeup.pdf",
       "pages": 4,
-      "sha256": "4077ddf5ee63299a97dd73cc14f380be53603e67904ca6917d5963b7b35cfad2",
+      "sha256": "2fa9a7e24561b65c650441d1312fdaa5fecd45bdfa27ab52a58defe9276e320a",
       "rendered_and_visually_checked": true
     }
   ],
@@ -23,7 +23,7 @@
   "research_targeted_tests_passed": 11,
   "secret_pattern_scan": "passed; .env ignored",
   "limits": "Research/write-up complete; public deployment and integration gaps remain documented. Local files are not proof of GitHub publication.",
-  "technical_narrative_words_current": 1509,
+  "technical_narrative_words_current": 1528,
   "latest_integration_verification": {
     "backend_suite_passed": 176,
     "additional_trace_tests_passed": 2,
@@ -31,5 +31,13 @@
     "browser_flows_passed": 15,
     "public_traces_anonymous_verified": 3,
     "injection_calls_completed": 56
+  },
+  "upwork_verification": {
+    "backend_suite_passed": 193,
+    "optional_skips": 4,
+    "browser_flows_passed": 16,
+    "live_read_only_verification": true,
+    "live_write_calls": 0,
+    "evidence": "evals/results/upwork-live-verification.json"
   }
 }

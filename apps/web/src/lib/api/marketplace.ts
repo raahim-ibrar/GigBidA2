@@ -2,8 +2,11 @@ import { apiRequest } from "./accounts";
 import type { components } from "./schema";
 export type Connection = components["schemas"]["ConnectionStatus"];
 export const getMarketplace = () => apiRequest<Connection>("/marketplace");
-export const setMarketplace = (mode: "manual" | "student_sim", csrf: string) => apiRequest<Connection>("/marketplace", {
+export const setMarketplace = (mode: "manual" | "student_sim" | "upwork", csrf: string) => apiRequest<Connection>("/marketplace", {
   method: "PUT", headers: { "X-CSRF-Token": csrf }, body: JSON.stringify({ mode }),
+});
+export const disconnectUpwork = (csrf: string) => apiRequest<Connection>("/marketplace/upwork", {
+  method: "DELETE", headers: { "X-CSRF-Token": csrf },
 });
 export const searchMarketplace = (query: string, csrf: string) => apiRequest<components["schemas"]["ImportedJobs"]>("/marketplace/search", {
   method: "POST", headers: { "X-CSRF-Token": csrf }, body: JSON.stringify({ query, limit: 10 }),

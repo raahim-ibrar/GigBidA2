@@ -22,6 +22,7 @@ services:
       HF_HOME: /app/work/models/hf
       MODEL_PROFILE: ${MODEL_PROFILE:-open}
       GROQ_API_KEY: ${GROQ_API_KEY:-}
+      OAUTH_ENCRYPTION_KEY: ${OAUTH_ENCRYPTION_KEY:-}
       GROQ_DAILY_TOKEN_CAP: ${GROQ_DAILY_TOKEN_CAP:-200000}
       STUDENT_SIM_URL: http://student-sim:8080
       STUDENT_SIM_API_KEY: ${STUDENT_SIM_API_KEY:-student_sim_local_only}
@@ -53,6 +54,7 @@ services:
       OLLAMA_BASE_URL: ${WORKER_OLLAMA_BASE_URL:-http://host.docker.internal:11434}
       MODEL_PROFILE: ${MODEL_PROFILE:-open}
       GROQ_API_KEY: ${GROQ_API_KEY:-}
+      OAUTH_ENCRYPTION_KEY: ${OAUTH_ENCRYPTION_KEY:-}
       STUDENT_SIM_URL: ${WORKER_STUDENT_SIM_URL:-http://student-sim:8080}
       GROQ_DAILY_TOKEN_CAP: ${GROQ_DAILY_TOKEN_CAP:-200000}
       STUDENT_SIM_API_KEY: ${STUDENT_SIM_API_KEY:-student_sim_local_only}

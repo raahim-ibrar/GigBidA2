@@ -490,8 +490,9 @@ def build(output="output/pdf/GigBid_RnD_Report.pdf"):
         "to immutable commits. Three public LangSmith examples contain actual node/model/MCP "
         "spans with all source text omitted. URLs and anonymous-access verification are in "
         "README and public-traces.json. This deployment depends on the laptop remaining awake; "
-        "it is not always-on cloud hosting. Upwork OAuth and production-wide "
-        "auth limits remain gaps.",
+        "it is not always-on cloud hosting. Real Upwork OAuth, encrypted credentials and live "
+        "job reads are verified. Provider-preview writes are fixture-tested only; final "
+        "submissions and direct messages are disabled. Production-wide auth limits remain gaps.",
     )
     sub(
         "Recovery evidence",

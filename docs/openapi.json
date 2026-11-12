@@ -391,6 +391,13 @@
             ],
             "title": "Balance"
           },
+          "capabilities": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Capabilities",
+            "type": "array"
+          },
           "connected": {
             "title": "Connected",
             "type": "boolean"
@@ -406,6 +413,17 @@
             ],
             "title": "Error"
           },
+          "expires_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expires At"
+          },
           "label": {
             "default": "Student-built simulator; not instructor GigSim",
             "title": "Label",
@@ -414,14 +432,32 @@
           "mode": {
             "enum": [
               "manual",
-              "student_sim"
+              "student_sim",
+              "upwork"
             ],
             "title": "Mode",
             "type": "string"
           },
+          "reconnect_required": {
+            "default": false,
+            "title": "Reconnect Required",
+            "type": "boolean"
+          },
           "synthetic": {
             "default": true,
             "title": "Synthetic",
+            "type": "boolean"
+          },
+          "unavailable_capabilities": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Unavailable Capabilities",
+            "type": "array"
+          },
+          "upwork_connected": {
+            "default": false,
+            "title": "Upwork Connected",
             "type": "boolean"
           }
         },
@@ -438,7 +474,8 @@
           "mode": {
             "enum": [
               "manual",
-              "student_sim"
+              "student_sim",
+              "upwork"
             ],
             "title": "Mode",
             "type": "string"
@@ -1089,8 +1126,11 @@
             "type": "array"
           },
           "provider": {
-            "const": "student_sim",
             "default": "student_sim",
+            "enum": [
+              "student_sim",
+              "upwork"
+            ],
             "title": "Provider",
             "type": "string"
           },
@@ -2579,6 +2619,17 @@
               }
             ]
           },
+          "marketplace_provider": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Marketplace Provider"
+          },
           "memory": {
             "anyOf": [
               {
@@ -2619,6 +2670,18 @@
               }
             ],
             "title": "Provider Conversation Id"
+          },
+          "provider_result": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provider Result"
           },
           "risk": {
             "anyOf": [
@@ -3319,6 +3382,27 @@
           }
         },
         "summary": "Sync",
+        "tags": [
+          "marketplace"
+        ]
+      }
+    },
+    "/api/marketplace/upwork": {
+      "delete": {
+        "operationId": "disconnect_upwork_api_marketplace_upwork_delete",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConnectionStatus"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Disconnect Upwork",
         "tags": [
           "marketplace"
         ]

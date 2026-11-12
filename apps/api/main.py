@@ -12,6 +12,7 @@ from agent.memory.service import MemoryService, MemoryUnavailable
 from agent.proposal_nodes import ReviewRequired
 from agent.run_store import RunConflict, RunNotFound, RunStore
 from apps.api.auth.security import AuthLimiter
+from apps.api.auth.token_store import OAuthUnavailable
 from apps.api.dashboard import Dashboard
 from apps.api.database import make_engine
 from apps.api.marketplace import MarketplaceAccounts
@@ -106,6 +107,7 @@ def create_app(
     async def marketplace_rejected(request: Request, exc):
         return JSONResponse(status_code=409, content={"detail": str(exc)})
 
+    @app.exception_handler(OAuthUnavailable)
     @app.exception_handler(MarketplaceUnavailable)
     async def marketplace_unavailable(request: Request, exc):
         return JSONResponse(status_code=503, content={"detail": str(exc)})

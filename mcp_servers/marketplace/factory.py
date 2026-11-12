@@ -42,27 +42,27 @@ def create_marketplace_server(service=None, tenant_id=None, run_id=None):
 
     @mcp.tool(annotations=read)
     async def search_jobs(request: SearchJobs) -> MarketplaceResult:
-        """Search the connected student simulator's jobs; this cannot submit or spend."""
+        """Search the connected marketplace; this cannot submit or spend."""
         return await result(owner().read("search_jobs", request))
 
     @mcp.tool(annotations=read)
     async def get_job(job_id: str) -> MarketplaceResult:
-        """Read a simulator job by its provider ID; never returns private scenario labels."""
+        """Read a job from this account's connected provider; no private scenario labels."""
         return await result(owner().read("get_job", job_id))
 
     @mcp.tool(annotations=read)
     async def get_client_history(client_id: str) -> MarketplaceResult:
-        """Read explicitly synthetic client history from the connected simulator."""
+        """Read client context; synthetic in the simulator, possibly incomplete on Upwork."""
         return await result(owner().read("get_client_history", client_id))
 
     @mcp.tool(annotations=read)
     async def get_connects_balance() -> MarketplaceResult:
-        """Read this host-bound account's simulated Connects balance."""
+        """Read this host-bound account's provider Connects balance."""
         return await result(owner().read("get_connects_balance"))
 
     @mcp.tool(annotations=read)
     async def list_messages(conversation_id: str) -> MarketplaceResult:
-        """Read only this account's simulator conversation messages."""
+        """Read only this account's connected marketplace conversation messages."""
         return await result(owner().read("list_messages", conversation_id))
 
     @mcp.tool(annotations=write)

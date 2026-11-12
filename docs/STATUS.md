@@ -25,8 +25,8 @@ The instructor's follow-up permits student-built data/simulation, confirmed by t
 - Dark responsive frontend with purple accents, active navigation and actual overview counts.
 - Pinned approved Kaggle archive and reproducible preprocessing to 600 hybrid scenarios;
   separately labelled fictional demo portfolios and seed command.
-- Backend regression: **176 passed, five optional skipped**, plus two new trace
-  retry/isolation checks. Full browser regression: **15 passed**.
+- Backend regression: **193 passed, four optional skipped**. Existing and new Upwork
+  browser checks: **16 passed**.
 - Public GitHub README ingestion through official read-only MCP, pinned to a commit.
 - Temporary public laptop-backed application and bearer-protected Portfolio MCP HTTP
   endpoint, with Redis account rate limits and host-bound tenant identity.
@@ -49,8 +49,10 @@ The instructor's follow-up permits student-built data/simulation, confirmed by t
 
 ## Remaining evidence or access requirements
 
-- Official Upwork OAuth/schema mapping is not implemented/connected.
-  No user's real marketplace account has been authorised and no live client is contacted.
+- Real Upwork OAuth and verified tool mappings are implemented. Authorization, job
+  search/detail and Connects reads passed on the existing personal account. No live
+  client was contacted. Provider-preview preparation is fixture-tested only; final
+  confirmation and direct message sending remain disabled. See `UPWORK.md`.
 - The published MCP endpoint serves the read-only demo portfolio; graph capability
   calls continue to use tenant-bound stdio. Production-wide authentication limits
   remain incomplete. No public package-registry release is claimed.

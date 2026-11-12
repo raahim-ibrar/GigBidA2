@@ -37,7 +37,9 @@
     ".next-e2e/types/**/*.ts",
     ".next-e2e/dev/types/**/*.ts",
     ".next-demo-v2/types/**/*.ts",
-    ".next-demo-v2/dev/types/**/*.ts"
+    ".next-demo-v2/dev/types/**/*.ts",
+    ".next-upwork-check/types/**/*.ts",
+    ".next-upwork-check/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

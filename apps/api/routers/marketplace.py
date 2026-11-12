@@ -23,6 +23,10 @@ router = APIRouter(tags=["marketplace"])
 async def status(user: CurrentUser, request: Request):
     accounts = request.app.state.marketplace
     result = await asyncio.to_thread(accounts.status, user.id)
+    if result["mode"] == "upwork":
+        # Status polling never polls the remote marketplace or financial endpoint.
+        result["available"] = result["connected"] and not result["error"]
+        return result
     if result["connected"]:
         try:
             result["balance"] = (await accounts.adapter(user.id).get_connects_balance()).data[
@@ -41,7 +45,7 @@ async def status(user: CurrentUser, request: Request):
 async def connect(body: ConnectionUpdate, user: CurrentUser, request: Request):
     accounts = request.app.state.marketplace
     if body.mode == "student_sim":
-        await accounts.adapter(user.id).get_connects_balance()
+        await accounts.adapter(user.id, "student_sim").get_connects_balance()
     await asyncio.to_thread(accounts.set_mode, user.id, body.mode)
     return await status(user, request)
 
@@ -56,8 +60,16 @@ async def search(body: MarketplaceSearch, user: CurrentUser, request: Request):
         adapter=app.state.marketplace.adapter(user.id),
     )
     server = create_marketplace_server(service, user.id)
-    async with create_connected_server_and_client_session(server) as session:
-        result = await MarketplaceMCP(session).search(body.query, body.limit)
+    try:
+        async with create_connected_server_and_client_session(server) as session:
+            result = await MarketplaceMCP(session).search(body.query, body.limit)
+    except (MarketplaceUnavailable, MarketplaceRejected):
+        await asyncio.to_thread(
+            app.state.marketplace.failure,
+            user.id,
+            "Marketplace unavailable or authorization requires reconnect",
+        )
+        raise
     jobs = [
         await asyncio.to_thread(app.state.marketplace.import_job, user.id, item)
         for item in result["items"]
@@ -65,8 +77,8 @@ async def search(body: MarketplaceSearch, user: CurrentUser, request: Request):
     await asyncio.to_thread(app.state.marketplace.failure, user.id, "")
     return {
         "jobs": [job.model_dump(mode="json") for job in jobs],
-        "synthetic": True,
-        "provider": "student_sim",
+        "synthetic": service.provider != "upwork",
+        "provider": service.provider,
     }
 
 
@@ -78,6 +90,33 @@ async def balance(user: CurrentUser, request: Request):
 
         raise RunConflict("Connect the student simulator first")
     return (await accounts.adapter(user.id).get_connects_balance()).data
+
+
+@router.delete("/marketplace/upwork", response_model=ConnectionStatus)
+async def disconnect_upwork(user: CurrentUser, request: Request):
+    from apps.api.auth.token_store import EncryptedTokenStorage
+
+    store = EncryptedTokenStorage(request.app.state.engine, request.app.state.settings, user.id)
+    data = await asyncio.to_thread(store.read)
+    await asyncio.to_thread(store.disconnect)
+    # Erase/fence locally first; provider revocation is best-effort and never restores access.
+    import httpx
+
+    try:
+        token = data.get("tokens", {}).get("refresh_token") or data.get("tokens", {}).get(
+            "access_token"
+        )
+        if token:
+            async with httpx.AsyncClient(timeout=10) as client:
+                await client.post(
+                    "https://www.upwork.com/api/v3/oauth2/token/revoke",
+                    data={"token": token, "client_id": data.get("client", {}).get("client_id", "")},
+                )
+    except httpx.HTTPError:
+        pass
+    if request.app.state.marketplace.status(user.id)["mode"] == "upwork":
+        await asyncio.to_thread(request.app.state.marketplace.set_mode, user.id, "manual")
+    return await status(user, request)
 
 
 @router.post("/marketplace/sync", response_model=SyncResult)

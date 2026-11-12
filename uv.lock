@@ -437,6 +437,7 @@ source = { editable = "." }
 dependencies = [
     { name = "alembic" },
     { name = "arq" },
+    { name = "cryptography" },
     { name = "email-validator" },
     { name = "fastapi" },
     { name = "fastembed" },
@@ -474,6 +475,7 @@ research = [
 requires-dist = [
     { name = "alembic", specifier = "==1.20.1" },
     { name = "arq", specifier = "==0.28.0" },
+    { name = "cryptography", specifier = "==50.0.2" },
     { name = "email-validator", specifier = "==2.3.0" },
     { name = "fastapi", specifier = "==0.162.0" },
     { name = "fastembed", specifier = "==0.9.1" },

@@ -101,8 +101,8 @@ npm run test:e2e
 ```
 
 Set `GIGBID_TEST_DATABASE_URL` for isolated Postgres schemas. The latest full backend run
-passed 176 tests with five opt-in skips; two additional trace retry/isolation checks passed.
-The full Chromium browser suite passed 15 flows. Deterministic
+passed 193 tests with four opt-in skips.
+The existing Chromium suite and added Upwork UI check passed 16 flows in total. Deterministic
 browser/control fixtures are not quality measurements. [Verification history](docs/VERIFICATION.md).
 
 ## Submission status
@@ -126,7 +126,10 @@ content omitted: [proposal awaiting approval](https://smith.langchain.com/public
 See [trace evidence](evals/results/public-traces.json) and [tracing policy](docs/TRACING.md).
 The [56-call injection comparison](evals/results/injection-boundary-v2/README.md) is complete.
 It does not establish a security improvement; model failures and paired outcomes are reported.
-Official Upwork OAuth remains conditional on account access. The required video/GIF
+Real Upwork OAuth, account-scoped encrypted credentials and live job reads are verified.
+See [Upwork setup and limits](docs/UPWORK.md) and [sanitized live evidence](evals/results/upwork-live-verification.json).
+Provider-preview preparation is approval-gated and fixture-tested; no live write was
+attempted. Final submissions and direct message sending remain disabled. The required video/GIF
 is excluded from the current work at the user's request.
 
 [Portfolio MCP install instructions](mcp_servers/portfolio/README.md) Ã‚Â·

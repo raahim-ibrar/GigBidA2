@@ -295,6 +295,20 @@ class MarketplaceConnection(Base):
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
 
 
+class OAuthCredential(Base):
+    __tablename__ = "oauth_credentials"
+    user_id: Mapped[str] = mapped_column(
+        ForeignKey("users.id", ondelete="CASCADE"), primary_key=True
+    )
+    provider: Mapped[str] = mapped_column(String(30), primary_key=True)
+    encrypted_payload: Mapped[str] = mapped_column(Text)
+    generation: Mapped[str] = mapped_column(String(36), default=lambda: str(uuid4()))
+    connected: Mapped[bool] = mapped_column(default=False)
+    schema_snapshot: Mapped[list] = mapped_column(JSON, default=list)
+    capabilities: Mapped[dict] = mapped_column(JSON, default=dict)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
 class MarketplaceWrite(Base):
     __tablename__ = "marketplace_writes"
     __table_args__ = (UniqueConstraint("user_id", "idempotency_key", name="uq_marketplace_effect"),)

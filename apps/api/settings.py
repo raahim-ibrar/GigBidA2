@@ -22,6 +22,7 @@ class Settings(BaseSettings):
     groq_api_key: SecretStr = Field(default=SecretStr(""), repr=False)
     google_api_key: SecretStr = Field(default=SecretStr(""), repr=False)
     github_token: SecretStr = Field(default=SecretStr(""), repr=False)
+    oauth_encryption_key: SecretStr = Field(default=SecretStr(""), repr=False)
     langsmith_api_key: SecretStr = Field(default=SecretStr(""), repr=False)
     langsmith_project: str = "GigBid-A2"
     trace_export_enabled: bool = False

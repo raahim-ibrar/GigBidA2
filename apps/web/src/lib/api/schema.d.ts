@@ -210,6 +210,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/marketplace/upwork": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Disconnect Upwork */
+        delete: operations["disconnect_upwork_api_marketplace_upwork_delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/memory": {
         parameters: {
             query?: never;
@@ -922,10 +939,14 @@ export interface components {
             available: boolean;
             /** Balance */
             balance?: number | null;
+            /** Capabilities */
+            capabilities?: string[];
             /** Connected */
             connected: boolean;
             /** Error */
             error?: string | null;
+            /** Expires At */
+            expires_at?: string | null;
             /**
              * Label
              * @default Student-built simulator; not instructor GigSim
@@ -935,12 +956,24 @@ export interface components {
              * Mode
              * @enum {string}
              */
-            mode: "manual" | "student_sim";
+            mode: "manual" | "student_sim" | "upwork";
+            /**
+             * Reconnect Required
+             * @default false
+             */
+            reconnect_required: boolean;
             /**
              * Synthetic
              * @default true
              */
             synthetic: boolean;
+            /** Unavailable Capabilities */
+            unavailable_capabilities?: string[];
+            /**
+             * Upwork Connected
+             * @default false
+             */
+            upwork_connected: boolean;
         };
         /** ConnectionUpdate */
         ConnectionUpdate: {
@@ -948,7 +981,7 @@ export interface components {
              * Mode
              * @enum {string}
              */
-            mode: "manual" | "student_sim";
+            mode: "manual" | "student_sim" | "upwork";
         };
         /** ConversationView */
         ConversationView: {
@@ -1178,9 +1211,9 @@ export interface components {
             /**
              * Provider
              * @default student_sim
-             * @constant
+             * @enum {string}
              */
-            provider: "student_sim";
+            provider: "student_sim" | "upwork";
             /**
              * Synthetic
              * @default true
@@ -1730,11 +1763,17 @@ export interface components {
             /** Intent */
             intent?: ("question" | "negotiation" | "interview" | "scam") | null;
             job?: components["schemas"]["JobSpec"] | null;
+            /** Marketplace Provider */
+            marketplace_provider?: string | null;
             memory?: components["schemas"]["MemoryContext"] | null;
             preview?: components["schemas"]["WritePreview"] | null;
             price?: components["schemas"]["PriceQuote"] | null;
             /** Provider Conversation Id */
             provider_conversation_id?: string | null;
+            /** Provider Result */
+            provider_result?: {
+                [key: string]: unknown;
+            } | null;
             risk?: components["schemas"]["RiskReport"] | null;
             /** Source Revision */
             source_revision?: number | null;
@@ -2211,6 +2250,26 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["SyncResult"];
+                };
+            };
+        };
+    };
+    disconnect_upwork_api_marketplace_upwork_delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConnectionStatus"];
                 };
             };
         };

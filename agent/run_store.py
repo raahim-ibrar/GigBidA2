@@ -33,6 +33,7 @@ from apps.api.schemas.proposals import EventView, JobView, LocalDraftView, RunVi
 TERMINAL = {
     "drafted",
     "submitted",
+    "pending_provider_confirmation",
     "sent",
     "rejected",
     "skip",
@@ -463,7 +464,22 @@ class RunStore:
                 else None
             )
             if effect:
-                status = "submitted" if effect.tool == "submit_proposal" else "sent"
+                live_status = (
+                    effect.result.get("status")
+                    if effect.result.get("provider") == "upwork"
+                    else None
+                )
+                status = (
+                    (
+                        "pending_provider_confirmation"
+                        if live_status == "pending_provider_confirmation"
+                        else "needs_attention"
+                    )
+                    if live_status
+                    else ("submitted" if effect.tool == "submit_proposal" else "sent")
+                )
+                if live_status:
+                    run.snapshot = {**run.snapshot, "provider_result": effect.result}
                 run.snapshot = {**run.snapshot, "status": status}
                 run.status, run.review, run.resume, run.worker_token, run.error = (
                     status,

@@ -187,7 +187,9 @@ def append_research(body, sub, section, table, source, read):
             [
                 "Integration gaps",
                 "GitHub README ingestion and explicit audit-span export are implemented. "
-                "Actual Upwork OAuth and production-wide authentication limits remain incomplete.",
+                "Real Upwork OAuth/live reads are verified; preview writes are fixture-tested. "
+                "Final submissions/messages are disabled; production-wide auth limits "
+                "remain incomplete.",
             ],
             [
                 "Unmeasured requirements",

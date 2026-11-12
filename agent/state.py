@@ -22,6 +22,8 @@ class BidState(TypedDict, total=False):
     tenant_id: str
     job_id: str
     raw_job: dict
+    provider_result: dict
+    marketplace_provider: str
     run_id: str
     preferences: dict
     proposal_strategy: Literal["evidence_first", "problem_first"]

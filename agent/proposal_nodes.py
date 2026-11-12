@@ -115,12 +115,14 @@ class ProposalNodes:
 
     async def scout(self, state):
         raw = state["raw_job"]
-        if raw.get("source") == "student_sim":
+        if raw.get("source") in {"student_sim", "upwork"}:
             if not self.marketplace:
-                raise ReviewRequired("Connect the student simulator before analysing its jobs")
+                raise ReviewRequired("Connect this job's original marketplace before analysing it")
             current = await self.marketplace.job(raw["provider_job_id"])
             if current.get("id") != raw["provider_job_id"]:
-                raise ReviewRequired("Simulator job identity changed")
+                raise ReviewRequired("Marketplace job identity changed")
+            if raw.get("source") == "upwork":
+                raw = current
         elif raw.get("source") != "manual":
             raise ReviewRequired("This marketplace source is not supported")
         if not raw.get("title", "").strip() or not raw.get("description", "").strip():
@@ -128,7 +130,7 @@ class ProposalNodes:
         if len(json.dumps(raw)) > 20000:
             raise ReviewRequired("Shorten the job post before analysing it")
         memory = await self.load_memory() if self.load_memory else {}
-        return {"status": "analysing", "memory": memory, "events": ["job_loaded"]}
+        return {"status": "analysing", "raw_job": raw, "memory": memory, "events": ["job_loaded"]}
 
     async def analyst(self, state):
         job = await self.models.complete("analyst", {"job": state["raw_job"]}, JobSpec)
@@ -157,7 +159,13 @@ class ProposalNodes:
             {
                 "job": raw,
                 "client_history": history,
-                "history_status": "synthetic student simulator" if history else "unavailable",
+                "history_status": (
+                    "Upwork public client details"
+                    if raw.get("source") == "upwork"
+                    else "synthetic student simulator"
+                )
+                if history
+                else "unavailable",
             },
             RiskReport,
         )
@@ -174,7 +182,11 @@ class ProposalNodes:
                 flags=list(dict.fromkeys(flags)),
                 reasons=[
                     *report.reasons,
-                    "Client history is synthetic student-simulator data."
+                    (
+                        "Client history contains only available public Upwork fields."
+                        if raw.get("source") == "upwork"
+                        else "Client history is synthetic student-simulator data."
+                    )
                     if history
                     else "Client history is unavailable for a manually entered job.",
                 ],
@@ -191,6 +203,15 @@ class ProposalNodes:
             k=self.config.retrieval["top_k"],
             variant=self.config.retrieval["variant"],
         )
+        if raw.get("source") == "upwork":
+            evidence = [
+                item
+                for item in evidence
+                if not any(
+                    marker in item.text.casefold()
+                    for marker in ("synthetic persona", "fictional", "synthetic prototype")
+                )
+            ]
         return {"evidence": evidence, "events": ["portfolio_retrieved"]}
 
     async def decision(self, state):
@@ -260,7 +281,9 @@ class ProposalNodes:
         if self.marketplace:
             balance = await self.marketplace.balance()
             if not isinstance(connects, int) or connects < 0 or connects > balance["connects"]:
-                raise ReviewRequired("Student-simulator Connects balance is insufficient")
+                raise ReviewRequired(
+                    "Marketplace Connects cost is unknown or the balance is insufficient"
+                )
         return {
             "price": PriceQuote(
                 amount=float(amount),
@@ -269,8 +292,13 @@ class ProposalNodes:
                 rationale="Provisional quote from the entered client budget"
                 + (" and your hourly rate floor." if job.billing_type == "hourly" else ".")
                 + (
-                    " Connects cost and balance verified against the student simulator; "
-                    "market statistics remain synthetic."
+                    (
+                        " Connects cost and balance are from Upwork; "
+                        "missing market statistics remain unknown."
+                        if state["raw_job"].get("source") == "upwork"
+                        else " Connects cost and balance verified against the student simulator; "
+                        "market statistics remain synthetic."
+                    )
                     if self.marketplace
                     else " Market history and Connects cost are unavailable; "
                     "review scope and price manually."
@@ -508,6 +536,7 @@ class ProposalNodes:
                     idempotency_key=request.idempotency_key,
                 ),
                 "status": "awaiting_approval",
+                "marketplace_provider": state["raw_job"].get("source"),
                 "events": ["student_submission_previewed"],
             }
         return {
@@ -542,7 +571,17 @@ class ProposalNodes:
                 raise ReviewRequired("Proposal changed after approval")
             for item in state.get("evidence", []):
                 await self.portfolio.read(item.id)
-            await self.marketplace.proposal(request)
+            result = await self.marketplace.proposal(request)
+            if state["raw_job"].get("source") == "upwork":
+                if result.get("status") != "pending_provider_confirmation":
+                    raise ReviewRequired(
+                        "Upwork preparation has no verified pending-confirmation result"
+                    )
+                return {
+                    "status": "pending_provider_confirmation",
+                    "provider_result": result,
+                    "events": ["upwork_preview_prepared_not_submitted"],
+                }
             return {"status": "submitted", "events": ["student_proposal_submitted"]}
         if state["approval"].action != "approve" or preview.tool != "save_local_draft":
             raise ReviewRequired("Only an explicitly approved local draft can be saved")

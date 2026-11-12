@@ -1,0 +1,25 @@
+{
+  "date_pkt": "2026-11-12",
+  "authorization": "Real OAuth authorization-code/PKCE succeeded; credentials encrypted per account",
+  "official_server": "https://mcp.upwork.com/mcp",
+  "tools_discovered": 33,
+  "verified_live_reads": [
+    "tools/list",
+    "list_accounts",
+    "find_jobs.search",
+    "find_jobs.get",
+    "get_freelancer_financials.connects_balance"
+  ],
+  "application_adapter_search_verified": true,
+  "real_jobs_imported": 1,
+  "job_details_normalized": true,
+  "model_inference_calls": 0,
+  "provider_write_calls": 0,
+  "final_submission_enabled": false,
+  "direct_message_enabled": false,
+  "limitations": [
+    "Provider preview preparation tested with fixtures only; no live writes were attempted",
+    "No compatible lifecycle feed or confirmed-receipt mapping is enabled",
+    "Account identifiers, tokens, balance, messages and raw job text are intentionally omitted"
+  ]
+}
