@@ -22,7 +22,7 @@ jobs:
       - run: uv run python scripts/check_structure.py
       - run: uv run python scripts/render_graphs.py --check
       - run: uv run ruff check .
-      - run: uv run pytest
+      - run: uv run python -m pytest
       - run: uv run python scripts/export_openapi.py
       - run: git diff --exit-code -- docs/openapi.json
   web:
