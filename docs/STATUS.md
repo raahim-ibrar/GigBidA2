@@ -25,8 +25,13 @@ The instructor's follow-up permits student-built data/simulation, confirmed by t
 - Dark responsive frontend with purple accents, active navigation and actual overview counts.
 - Pinned approved Kaggle archive and reproducible preprocessing to 600 hybrid scenarios;
   separately labelled fictional demo portfolios and seed command.
-- Backend regression checkpoint: **162 passed, four opt-in skipped**. Later changes are
-  validated in targeted checks; consult VERIFICATION.md for the latest complete run.
+- Backend regression: **176 passed, five optional skipped**, plus two new trace
+  retry/isolation checks. Full browser regression: **15 passed**.
+- Public GitHub README ingestion through official read-only MCP, pinned to a commit.
+- Temporary public laptop-backed application and bearer-protected Portfolio MCP HTTP
+  endpoint, with Redis account rate limits and host-bound tenant identity.
+- Explicit metadata-only LangSmith audit export and three public synthetic traces,
+  each verified without authentication; private source text and secrets are omitted.
 
 ## Research and review completed
 
@@ -39,15 +44,19 @@ The instructor's follow-up permits student-built data/simulation, confirmed by t
 - Ten-page R&D PDF and 1,500-word technical narrative finalized with measured results and limitations.
 - Final architecture and intention-to-treat X2 analysis saved in `evals/results/gemini-orchestration-v1/analysis.json`.
 - Full browser regression: 15 passed; TypeScript passed. These control checks are distinct from model quality.
+- Paired injection-boundary comparison: 56 calls completed, including all model errors.
+  No security improvement was established; see `evals/results/injection-boundary-v2`.
 
 ## Remaining evidence or access requirements
 
-- Official Upwork OAuth/schema mapping and GitHub MCP ingestion are not implemented/connected.
+- Official Upwork OAuth/schema mapping is not implemented/connected.
   No user's real marketplace account has been authorised and no live client is contacted.
-- Marketplace HTTP MCP bearer endpoint, shared rate limiting and a tracing backend still need
-  completion/verification; current production agent transport is tenant-bound stdio.
-- Public hosting, reviewer credentials delivered privately, public repository/package/write-up,
-  final PDF and recorded demo have not yet been delivered. A local URL is not deployment.
+- The published MCP endpoint serves the read-only demo portfolio; graph capability
+  calls continue to use tenant-bound stdio. Production-wide authentication limits
+  remain incomplete. No public package-registry release is claimed.
+- The public app depends on the laptop and tunnel staying active. Always-on availability
+  until grading is not established. Reviewer connection files remain private. Report
+  and write-up PDFs are updated; the requested video/GIF remains a student deliverable.
 - The independent rule client is not the original GigSim/LLM client. Compatibility with an
   unseen grading simulator is not established. Hidden-test results cannot be reported in advance.
 
