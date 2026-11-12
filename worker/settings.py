@@ -13,7 +13,7 @@ from agent.memory.service import MemoryService
 from agent.run_store import RunStore
 from agent.runtime import process_bid
 from apps.api.database import make_engine
-from apps.api.models import PortfolioDocument, VectorCleanup, utcnow
+from apps.api.models import AgentRun, PortfolioDocument, VectorCleanup, utcnow
 from apps.api.settings import Settings
 from rag.runtime import build_portfolio
 from rag.service import MissingEvidence
@@ -81,7 +81,36 @@ async def reconcile_portfolio(ctx):
 
 
 async def run_bid(ctx, tenant_id: str, run_id: str):
-    return await process_bid(ctx["engine"], ctx["settings"], tenant_id, run_id)
+    try:
+        return await process_bid(ctx["engine"], ctx["settings"], tenant_id, run_id)
+    finally:
+        await export_trace(ctx, tenant_id, run_id)
+
+
+async def export_trace(ctx, tenant, run_id):
+    from agent.tracing import export_run
+
+    try:
+        await asyncio.to_thread(export_run, ctx["engine"], ctx["settings"], tenant, run_id)
+    except Exception:
+        # Observability failure must never change the run's approval/execution state.
+        import logging
+
+        logging.getLogger(__name__).warning("Trace export deferred for %s", run_id)
+
+
+async def reconcile_traces(ctx):
+    if not ctx["settings"].trace_export_enabled:
+        return
+    with Session(ctx["engine"]) as db:
+        rows = db.execute(
+            select(AgentRun.user_id, AgentRun.id)
+            .where(AgentRun.status.not_in(["queued", "running"]))
+            .order_by(AgentRun.updated_at.desc())
+            .limit(100)
+        ).all()
+    for tenant, run_id in rows:
+        await export_trace(ctx, tenant, run_id)
 
 
 async def reconcile_runs(ctx):
@@ -90,13 +119,14 @@ async def reconcile_runs(ctx):
 
 
 async def run_conversation(ctx, tenant_id: str, conversation_id: str):
-    return await process_bid(ctx["engine"], ctx["settings"], tenant_id, conversation_id)
+    return await run_bid(ctx, tenant_id, conversation_id)
 
 
 class WorkerSettings:
     handle_signals = os.name != "nt"
     functions = [index_portfolio, cleanup_portfolio, run_bid, run_conversation]
     cron_jobs = [
+        cron(reconcile_traces, second=50, run_at_startup=True),
         cron(reconcile_portfolio, second={0, 30}, run_at_startup=True),
         cron(reconcile_runs, second={10, 40}, run_at_startup=True),
         cron(check_search_schedules, second=20, run_at_startup=True),

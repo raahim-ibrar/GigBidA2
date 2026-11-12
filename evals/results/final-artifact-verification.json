@@ -4,13 +4,13 @@
     {
       "path": "output/pdf/GigBid_RnD_Report.pdf",
       "pages": 10,
-      "sha256": "0e0111fbcbc6aa17341f4294ea452d49bb181eab0117fd77e0708a71f0de51c3",
+      "sha256": "eace16ecc674e4e5188d470dadc9ad5647f36dead8ac17dbc7fd3fa49dd884d5",
       "rendered_and_visually_checked": true
     },
     {
       "path": "output/pdf/GigBid_Technical_Writeup.pdf",
       "pages": 4,
-      "sha256": "b40ee1f06fef6dd2ec4fa63c13c8b5fea8e50a7a14c2596e018087e89b4803b7",
+      "sha256": "4077ddf5ee63299a97dd73cc14f380be53603e67904ca6917d5963b7b35cfad2",
       "rendered_and_visually_checked": true
     }
   ],
@@ -22,5 +22,14 @@
   "classmate_pairs": 12,
   "research_targeted_tests_passed": 11,
   "secret_pattern_scan": "passed; .env ignored",
-  "limits": "Research/write-up complete; public deployment and integration gaps remain documented. Local files are not proof of GitHub publication."
+  "limits": "Research/write-up complete; public deployment and integration gaps remain documented. Local files are not proof of GitHub publication.",
+  "technical_narrative_words_current": 1509,
+  "latest_integration_verification": {
+    "backend_suite_passed": 176,
+    "additional_trace_tests_passed": 2,
+    "optional_skips": 5,
+    "browser_flows_passed": 15,
+    "public_traces_anonymous_verified": 3,
+    "injection_calls_completed": 56
+  }
 }

@@ -180,18 +180,20 @@ def append_research(body, sub, section, table, source, read):
             ],
             [
                 "Public delivery",
-                "Repository exists. Public app hosting, published MCP endpoint, "
-                "reviewer credentials and public trace links still require completion.",
+                "Public repository, temporary laptop-backed app and authenticated Portfolio MCP; "
+                "three public metadata-only LangSmith trace links verified. "
+                "Credentials stay private.",
             ],
             [
                 "Integration gaps",
-                "Actual Upwork OAuth, GitHub ingestion, full tracing backend "
-                "and production-wide authentication limits remain incomplete.",
+                "GitHub README ingestion and explicit audit-span export are implemented. "
+                "Actual Upwork OAuth and production-wide authentication limits remain incomplete.",
             ],
             [
                 "Unmeasured requirements",
-                "No hidden-test results, before/after injection-defence "
-                "experiment or observed instructor-policy-change implementation time is claimed.",
+                "Paired component-level injection-boundary study is recorded separately. "
+                "No hidden-test results or observed instructor-policy-change "
+                "implementation time is claimed.",
             ],
             [
                 "Video",

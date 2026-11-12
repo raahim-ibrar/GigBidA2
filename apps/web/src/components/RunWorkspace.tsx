@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
-import { ApiError, getAccount, type Account } from "@/lib/api/accounts";
+import { ApiError, apiRequest, getAccount, type Account } from "@/lib/api/accounts";
 import { getRun, getRunActivity, retryRun, reviewRun, type Draft, type Evidence, type Review, type Run } from "@/lib/api/proposals";
 type Progress = { id: number; kind: string; details: Record<string, unknown> };
 
@@ -25,6 +25,8 @@ export function RunWorkspace({ id, trace = false, onSaved }: { id: string; trace
   const [events, setEvents] = useState<Progress[]>([]); const [error, setError] = useState(""); const [signIn, setSignIn] = useState(false);
   const [edit, setEdit] = useState(""); const [reason, setReason] = useState(""); const [busy, setBusy] = useState(false);
   const [paragraph, setParagraph] = useState(0);
+  const [traceInfo, setTraceInfo] = useState<{ status: string; public_url: string | null; spans: number } | null>(null);
+  useEffect(() => { void apiRequest<{ status: string; public_url: string | null; spans: number }>(`/runs/${encodeURIComponent(id)}/trace`).then(setTraceInfo).catch(() => {}); }, [id, run?.status]);
   const cursor = useRef(0); const loaded = !!run; const active = !!run && ["queued", "running"].includes(run.status);
   const refresh = useCallback(async () => { setRun(await getRun(id)); }, [id]);
   useEffect(() => { if (run && ["drafted", "sent"].includes(run.status) && onSaved) void onSaved().catch(err => setError(err.message)); }, [run?.status, onSaved, run]);
@@ -100,6 +102,6 @@ export function RunWorkspace({ id, trace = false, onSaved }: { id: string; trace
         {!conversation && paragraphs.length > 0 && <><label htmlFor="regenerate-paragraph">Paragraph to regenerate</label><select id="regenerate-paragraph" value={paragraph} onChange={event => setParagraph(Number(event.target.value))}>{paragraphs.slice(0, 100).map((text, index) => <option key={index} value={index}>{index + 1}. {text.slice(0, 100)}</option>)}</select><p className="muted">Regeneration uses the verified draft above and preserves the other paragraphs. The result is checked and needs a new approval.</p><button className="secondary-button" disabled={busy} onClick={() => decide("regenerate")}>Regenerate selected paragraph</button></>}
         <label htmlFor="rejection-reason">Reason for rejection</label><textarea id="rejection-reason" rows={2} maxLength={1000} value={reason} onChange={event => setReason(event.target.value)} /><button className="secondary-button" disabled={busy} onClick={() => decide("reject")}>Reject draft</button></>}
     </section>}
-    {(trace || active) && <section className="card draft-panel"><h2>Run activity</h2><p className="muted">{run.steps} steps · {run.tokens} tokens charged or reserved. Local model costs exclude hardware and electricity.</p><ol className="run-events">{events.map(event => <li key={event.id}>{event.kind.replaceAll("_", " ")}{typeof event.details.node === "string" && ` · ${event.details.node}`}{typeof event.details.role === "string" && ` · ${event.details.role}`}</li>)}</ol></section>}
+    {(trace || active) && <section className="card draft-panel"><h2>Run activity</h2><p className="muted">{run.steps} steps · {run.tokens} tokens charged or reserved. Local model costs exclude hardware and electricity.</p><p className="muted">Trace ID: <code>{id}</code> · {traceInfo?.status ?? "not exported"}{traceInfo?.public_url && <> · <a href={traceInfo.public_url} target="_blank" rel="noreferrer">Open public trace</a></>}</p><ol className="run-events">{events.map(event => <li key={event.id}>{event.kind.replaceAll("_", " ")}{typeof event.details.node === "string" && ` · ${event.details.node}`}{typeof event.details.role === "string" && ` · ${event.details.role}`}</li>)}</ol></section>}
   </div>;
 }

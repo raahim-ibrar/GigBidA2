@@ -57,13 +57,16 @@ For a fresh checkout, install that binary in `work/demo-tools/cloudflared.exe`,
 prepare the existing local database/Redis/Qdrant services and Groq key, build
 `gigbid-demo-worker` using `infra/docker/worker.Dockerfile`, and build a standalone
 frontend with `API_INTERNAL_URL=http://127.0.0.1:8001` and
-`GIGBID_TEST_DIST=.next-demo` before starting the supervisor.
+`MCP_INTERNAL_URL=http://127.0.0.1:8104` and
+`GIGBID_TEST_DIST=.next-demo-v2` before starting the supervisor.
 
 ## Scope of proof
 
 This verifies a public laptop-backed demo during the recorded session. It is not
-evidence of an always-on cloud deployment, hidden-test performance, or completion
-of the remaining published-MCP/tracing/integration requirements. The original
+evidence of an always-on cloud deployment or hidden-test performance. The
+authenticated Portfolio MCP endpoint, GitHub README ingestion, and three public
+metadata-only LangSmith traces are verified separately in
+`evals/results/public-integrations.json` and `evals/results/public-traces.json`. The original
 assignment requests continued availability until grading; the user chose this
 temporary hosting mode. The optional capped-credit Azure/Vercel configuration
 remains documented in `DEPLOYMENT.md` for later use.

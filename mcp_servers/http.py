@@ -73,9 +73,24 @@ def configured_app():
     tenant, run_id = os.getenv("GIGBID_TENANT_ID", ""), os.getenv("GIGBID_RUN_ID")
     name, token = os.getenv("GIGBID_MCP_SERVER", "portfolio"), os.getenv("MCP_BEARER_TOKEN", "")
     if name == "portfolio":
+        from urllib.parse import urlparse
+
+        from mcp.server.transport_security import TransportSecuritySettings
+
         from mcp_servers.portfolio.factory import create_portfolio_server
 
-        server = create_portfolio_server(tenant_id=tenant)
+        origin = os.environ["WEB_ORIGIN"]
+        host = urlparse(origin).netloc
+        server = create_portfolio_server(
+            tenant_id=tenant,
+            json_response=True,
+            stateless_http=True,
+            transport_security=TransportSecuritySettings(
+                enable_dns_rebinding_protection=True,
+                allowed_hosts=[host, "127.0.0.1:*", "localhost:*"],
+                allowed_origins=[origin, "http://127.0.0.1:*", "http://localhost:*"],
+            ),
+        )
     elif name == "marketplace":
         from mcp_servers.marketplace.factory import create_marketplace_server
 

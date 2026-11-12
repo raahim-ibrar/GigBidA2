@@ -451,6 +451,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/portfolio/import/github": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Import Github */
+        post: operations["import_github_api_portfolio_import_github_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/portfolio/search": {
         parameters: {
             query?: never;
@@ -586,6 +603,23 @@ export interface paths {
         put?: never;
         /** Retry Run */
         post: operations["retry_run_api_runs__run_id__retry_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/runs/{run_id}/trace": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Trace */
+        get: operations["get_trace_api_runs__run_id__trace_get"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -1004,6 +1038,10 @@ export interface components {
             project: string;
             /** Skills */
             skills?: string[];
+            /** Source Commit */
+            source_commit?: string | null;
+            /** Source Url */
+            source_url?: string | null;
             /**
              * Type
              * @enum {string}
@@ -1113,6 +1151,20 @@ export interface components {
             };
             /** Score */
             score: number;
+        };
+        /** GitHubImport */
+        GitHubImport: {
+            /** Project */
+            project: string;
+            /**
+             * Ref
+             * @default HEAD
+             */
+            ref: string;
+            /** Repository Url */
+            repository_url: string;
+            /** Skills */
+            skills?: string[];
         };
         /** HTTPValidationError */
         HTTPValidationError: {
@@ -2635,6 +2687,39 @@ export interface operations {
             };
         };
     };
+    import_github_api_portfolio_import_github_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["GitHubImport"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DocumentView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     search_evidence_api_portfolio_search_post: {
         parameters: {
             query?: never;
@@ -2937,6 +3022,37 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["RunView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_trace_api_runs__run_id__trace_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
                 };
             };
             /** @description Validation Error */

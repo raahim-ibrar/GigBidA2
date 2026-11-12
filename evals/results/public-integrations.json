@@ -1,0 +1,24 @@
+{
+  "public_url": "https://interpreted-vid-recovered-estimation.trycloudflare.com",
+  "github_document_id": "32ddfca9-2dc7-4c02-b967-a4d67baafaa4",
+  "github_status": "ready",
+  "source_commit": "cd3352cc91825c9f2910592bbf0b8fc93bdf3a0f",
+  "mcp_unauthenticated_status": 401,
+  "tools": [
+    "search_evidence",
+    "get_case_study",
+    "list_skills"
+  ],
+  "resource_templates": [
+    "portfolio://case/{id}",
+    "portfolio://proposal/{id}"
+  ],
+  "prompts": [
+    "answer_screening_question"
+  ],
+  "skills_error": false,
+  "search_error": false,
+  "date_pkt": "2026-11-12",
+  "mcp_endpoint": "https://interpreted-vid-recovered-estimation.trycloudflare.com/mcp",
+  "transport": "Streamable HTTP; JSON responses; host-bound tenant; bearer protected"
+}

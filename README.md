@@ -101,20 +101,33 @@ npm run test:e2e
 ```
 
 Set `GIGBID_TEST_DATABASE_URL` for isolated Postgres schemas. The latest full backend run
-passed 162 tests with four opt-in skips. The full Chromium browser suite passed 15 flows. Deterministic
+passed 176 tests with five opt-in skips; two additional trace retry/isolation checks passed.
+The full Chromium browser suite passed 15 flows. Deterministic
 browser/control fixtures are not quality measurements. [Verification history](docs/VERIFICATION.md).
 
 ## Submission status
 
 Repository: [raahim-ibrar/GigBidA2](https://github.com/raahim-ibrar/GigBidA2).
-Temporary public demo: [open GigBid](https://contracting-sells-aud-entertainment.trycloudflare.com).
+Temporary public demo: [open GigBid](https://interpreted-vid-recovered-estimation.trycloudflare.com).
 It depends on the laptop, Docker and tunnel remaining running; the URL changes after restart.
 Actual verification: [demo results](evals/results/demo-deployment.json) and
 [demo hosting notes](docs/DEMO_HOSTING.md). Reviewer credentials are kept private.
 The optional [student-credit Azure/Vercel configuration](docs/DEPLOYMENT.md) is prepared
 but no Azure resources were provisioned.
-Official Upwork OAuth, GitHub ingestion, public trace links still need
-completion. The required video/GIF is excluded from the current work at the user's request.
+Public [Portfolio MCP](https://interpreted-vid-recovered-estimation.trycloudflare.com/mcp)
+is bearer-protected; private connection details are in `work/public-demo/MCP-CONNECTION.json`.
+GitHub import reads a public repository's README through the official read-only MCP server,
+pins the commit, and indexes it in the signed-in account's portfolio.
+
+Public LangSmith traces contain measured timings, token usage and MCP calls, with source
+content omitted: [proposal awaiting approval](https://smith.langchain.com/public/a2f56a69-3bde-4159-b994-cd81ed98a3f9/r),
+[scam rejected](https://smith.langchain.com/public/b55b89d4-881e-4c66-8516-cef09cba7cd2/r),
+[injection rejected](https://smith.langchain.com/public/06918fe8-f9e4-4551-a7d8-f1435f522869/r).
+See [trace evidence](evals/results/public-traces.json) and [tracing policy](docs/TRACING.md).
+The [56-call injection comparison](evals/results/injection-boundary-v2/README.md) is complete.
+It does not establish a security improvement; model failures and paired outcomes are reported.
+Official Upwork OAuth remains conditional on account access. The required video/GIF
+is excluded from the current work at the user's request.
 
 [Portfolio MCP install instructions](mcp_servers/portfolio/README.md) Ã‚Â·
 [Data provenance](docs/DATA_CARD.md) Ã‚Â· [AI assistance disclosure](docs/AI_USAGE.md).

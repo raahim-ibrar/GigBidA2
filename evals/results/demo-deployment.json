@@ -1,7 +1,7 @@
 {
   "date_pkt": "2026-11-12",
   "hosting": "Temporary public HTTPS tunnel backed by laptop; no Azure resources provisioned",
-  "public_url": "https://contracting-sells-aud-entertainment.trycloudflare.com",
+  "public_url": "https://interpreted-vid-recovered-estimation.trycloudflare.com",
   "laptop_must_remain_awake": true,
   "data": "Separate synthetic demo schema/portfolios; original uploaded CV excluded",
   "components": [
@@ -61,5 +61,7 @@
   "limitations": [
     "Temporary hostname and laptop-dependent uptime",
     "Existing published-MCP, tracing and integration gaps are not completed by this deployment"
-  ]
+  ],
+  "integration_evidence": "evals/results/public-integrations.json",
+  "public_trace_evidence": "evals/results/public-traces.json"
 }

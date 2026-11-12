@@ -456,9 +456,26 @@ def build(output="output/pdf/GigBid_RnD_Report.pdf"):
         "Job descriptions, portfolio text and client messages are data. "
         "Prompts delimit their role, and deterministic guards flag injected instructions, "
         "off-platform requests, contact details and guarantees. PII masking covers logs/events. "
-        "These are layered defences, not a measured zero attack-success claim. A before/after "
-        "injection experiment is still required.",
+        "The separate paired prompt-boundary experiment below measures raw role outputs, "
+        "not end-to-end approval bypass or real-secret exposure.",
     )
+    injection = read("evals/results/injection-boundary-v2/results.json")
+    if injection and injection["complete"]:
+        before, after = injection["arms"]["before"], injection["arms"]["after"]
+        sub(
+            "Before/after injection boundary",
+            f"GPT-OSS 120B processed 24 synthetic job/message attacks and four benign controls "
+            f"under each arm (56 calls). Before: {before['attack_successes']}/"
+            f"{before['evaluated_attacks']} evaluable attacks disclosed the assigned "
+            "fake marker/nonce; "
+            f"after: {after['attack_successes']}/{after['evaluated_attacks']}. "
+            f"Model errors were {before['errors']} and {after['errors']}, excluded from the ASR "
+            f"denominators and retained in raw records. Existing role prompts form the baseline; "
+            f"the added shared boundary is the only intended change. Small designed samples and "
+            f"missing responses prevent a broad security claim; this is not a full-graph ablation. "
+            "Sixteen fully observed pairs had no discordant outcomes (exact p=1.0); "
+            "no improvement was established.",
+        )
     sub(
         "Policy update",
         "Rules, model routes and thresholds are configuration. The announced "
@@ -468,11 +485,13 @@ def build(output="output/pdf/GigBid_RnD_Report.pdf"):
     )
     sub(
         "Production state",
-        "The production frontend build, generated API contracts, worker "
-        "packaging and local services are implemented. Same-origin API proxying avoids sending "
-        "a public browser to its own localhost. Public hosting is not yet configured. "
-        "Upwork OAuth, GitHub ingestion, a complete tracing backend and production-wide auth "
-        "limits remain required. The local address is not a public deployment.",
+        "A temporary public HTTPS tunnel serves the full laptop-backed application and "
+        "bearer-protected read-only Portfolio MCP. GitHub MCP imports public READMEs pinned "
+        "to immutable commits. Three public LangSmith examples contain actual node/model/MCP "
+        "spans with all source text omitted. URLs and anonymous-access verification are in "
+        "README and public-traces.json. This deployment depends on the laptop remaining awake; "
+        "it is not always-on cloud hosting. Upwork OAuth and production-wide "
+        "auth limits remain gaps.",
     )
     sub(
         "Recovery evidence",

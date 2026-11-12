@@ -19,7 +19,8 @@ const config: NextConfig = {
   allowedDevOrigins: ["127.0.0.1"],
   distDir: process.env.GIGBID_TEST_DIST ?? ".next",
   async rewrites() {
-    return [{ source: "/api/:path*", destination: `${api}/api/:path*` }];
+    return [{ source: "/api/:path*", destination: `${api}/api/:path*` },
+      ...(process.env.MCP_INTERNAL_URL ? [{ source: "/mcp/:path*", destination: `${process.env.MCP_INTERNAL_URL}/mcp/:path*` }] : [])];
   },
 };
 export default config;

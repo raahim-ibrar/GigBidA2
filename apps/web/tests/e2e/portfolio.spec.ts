@@ -11,7 +11,7 @@ test("upload source evidence, search it, and delete it", async ({ page }) => {
   await page.getByLabel("Portfolio file").setInputFiles({ name: "browser-fixture.md", mimeType: "text/markdown",
     buffer: Buffer.from("Built a Python FastAPI service with PostgreSQL for a retail client.") });
   await page.getByLabel("Project or portfolio title").fill("Browser development fixture");
-  await page.getByLabel("Skills (comma separated)").fill("Python, FastAPI, PostgreSQL");
+  await page.locator("#skills").fill("Python, FastAPI, PostgreSQL");
   await page.getByRole("button", { name: "Upload evidence" }).click();
   await expect(page.getByTestId("source-status")).toHaveText("ready");
   await page.getByLabel("Job requirement").fill("Python FastAPI API development");

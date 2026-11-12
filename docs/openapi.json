@@ -671,6 +671,30 @@
             "title": "Skills",
             "type": "array"
           },
+          "source_commit": {
+            "anyOf": [
+              {
+                "pattern": "^[0-9a-f]{40}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Commit"
+          },
+          "source_url": {
+            "anyOf": [
+              {
+                "maxLength": 1000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Url"
+          },
           "type": {
             "enum": [
               "cv",
@@ -1002,6 +1026,43 @@
           "requirement_evidence"
         ],
         "title": "FitReport",
+        "type": "object"
+      },
+      "GitHubImport": {
+        "additionalProperties": false,
+        "properties": {
+          "project": {
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Project",
+            "type": "string"
+          },
+          "ref": {
+            "default": "HEAD",
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Ref",
+            "type": "string"
+          },
+          "repository_url": {
+            "maxLength": 500,
+            "title": "Repository Url",
+            "type": "string"
+          },
+          "skills": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 50,
+            "title": "Skills",
+            "type": "array"
+          }
+        },
+        "required": [
+          "repository_url",
+          "project"
+        ],
+        "title": "GitHubImport",
         "type": "object"
       },
       "HTTPValidationError": {
@@ -3885,6 +3946,47 @@
         ]
       }
     },
+    "/api/portfolio/import/github": {
+      "post": {
+        "operationId": "import_github_api_portfolio_import_github_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GitHubImport"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Import Github",
+        "tags": [
+          "portfolio"
+        ]
+      }
+    },
     "/api/portfolio/search": {
       "post": {
         "operationId": "search_evidence_api_portfolio_search_post",
@@ -4334,6 +4436,46 @@
           }
         },
         "summary": "Retry Run",
+        "tags": [
+          "runs"
+        ]
+      }
+    },
+    "/api/runs/{run_id}/trace": {
+      "get": {
+        "operationId": "get_trace_api_runs__run_id__trace_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Trace",
         "tags": [
           "runs"
         ]

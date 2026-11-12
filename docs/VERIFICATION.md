@@ -137,3 +137,11 @@ Run the local Analyst smoke with `GIGBID_REAL_AGENTS=1 uv run pytest tests/integ
 - JSON activity replay preserves cursor and tenant isolation when the tunnel cannot stream SSE; eight run integration tests passed. Full backend suite: **171 passed, five optional skipped**, 145.61 seconds. Whole-project Ruff, structure and graph checks passed.
 - The production demo frontend build passed, and the public sign-in page opened in the browser. Secrets/private login files remain Git-ignored; the public source secret scan passed.
 - This is temporary laptop hosting, not an always-on cloud deployment. Current URL and evidence: `evals/results/demo-deployment.json`.
+
+## Public integrations and injection comparison, November 12
+
+- Updated PostgreSQL regression suite: **176 passed, five optional skipped**, 152.02 seconds. Two additional export retry/idempotency/isolation checks passed. Full Chromium suite: **15 passed**, 1.3 minutes. Production frontend and Linux worker builds passed; Ruff passed.
+- Real GitHub official read-only MCP imported this public repository's README at commit `cd3352cc91825c9f2910592bbf0b8fc93bdf3a0f`; its portfolio source reached ready status. Public authenticated Portfolio MCP listed three tools, two resource templates and one prompt; skills and evidence searches succeeded. Missing bearer authentication returned 401.
+- Three new synthetic workflows produced public LangSmith traces with actual node, LLM and MCP spans. The proposal reached awaiting approval in 11 steps with 12,305 tokens; scam and injection controls skipped. All three share links were read without credentials. Source text and secrets were excluded.
+- The 56-call paired injection-boundary comparison completed. Before 3/18 and after 4/18 evaluable attacks disclosed their assigned fake markers/nonces; six model errors per arm are reported separately. Sixteen fully observed pairs had no discordant outcomes, exact p=1.0. This component ablation does not demonstrate an improvement or measure end-to-end approval bypass.
+- Known measured usage: 57,691 tokens; usage for twelve failed calls is unknown. No GPU inference or new 150-run study was performed.

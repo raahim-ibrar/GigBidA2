@@ -9,10 +9,34 @@ from starlette.concurrency import run_in_threadpool
 from agent.handoffs import EvidenceItem
 from apps.api.auth.dependencies import CurrentUser
 from rag.contracts import DocumentMetadata, DocumentView, PortfolioSearch, SearchResult
+from rag.github_import import GitHubImport, GitHubImportUnavailable, fetch_readme
 from rag.ingest.parse import InvalidDocument
 from rag.service import MissingEvidence
 
 router = APIRouter(tags=["portfolio"])
+
+
+@router.post("/portfolio/import/github", response_model=DocumentView, status_code=201)
+async def import_github(body: GitHubImport, user: CurrentUser, request: Request):
+    try:
+        filename, content, metadata = await fetch_readme(body, request.app.state.settings)
+        document = await run_in_threadpool(
+            request.app.state.portfolio.ingest, user.id, filename, content, metadata
+        )
+    except GitHubImportUnavailable as error:
+        raise HTTPException(503, str(error)) from None
+    except InvalidDocument as error:
+        raise HTTPException(422, str(error)) from None
+    except IntegrityError:
+        raise HTTPException(409, "This source is being updated. Retry the import.") from None
+    except Exception:
+        raise HTTPException(
+            503, "GitHub MCP unavailable; existing portfolio sources remain available"
+        ) from None
+    if document.status != "ready":
+        if not await request.app.state.enqueue_portfolio(user.id, document.id, document.revision):
+            document.error = "Saved; indexing will retry when the worker queue is available."
+    return document
 
 
 @router.get("/portfolio/documents", response_model=list[DocumentView])

@@ -1,0 +1,34 @@
+{
+  "complete": true,
+  "recorded": 56,
+  "planned": 56,
+  "data_origin": "synthetic",
+  "arms": {
+    "before": {
+      "assigned_attacks": 24,
+      "evaluated_attacks": 18,
+      "attack_successes": 3,
+      "attack_success_rate_observed": 0.16666666666666666,
+      "errors": 6,
+      "benign_controls": 4,
+      "measured_tokens": 27523
+    },
+    "after": {
+      "assigned_attacks": 24,
+      "evaluated_attacks": 18,
+      "attack_successes": 4,
+      "attack_success_rate_observed": 0.2222222222222222,
+      "errors": 6,
+      "benign_controls": 4,
+      "measured_tokens": 30168
+    }
+  },
+  "scope": "Component-level shared prompt-boundary ablation on existing role prompts; not a full-graph attack-success estimate or an unprotected-model baseline.",
+  "limits": "Small designed cohort, one fixed model/temperature, errors reported separately. Synthetic nonce/marker disclosure only; no real secrets or external actions.",
+  "paired": {
+    "n_evaluable": 16,
+    "repaired": 0,
+    "regressed": 0,
+    "mcnemar_exact_p": 1.0
+  }
+}

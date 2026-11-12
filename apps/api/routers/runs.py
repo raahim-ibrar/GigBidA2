@@ -1,6 +1,6 @@
 import asyncio
 
-from fastapi import APIRouter, Header, HTTPException, Query, Request
+from fastapi import APIRouter, Header, HTTPException, Query, Request, Response
 from fastapi.responses import StreamingResponse
 from starlette.concurrency import run_in_threadpool
 
@@ -12,7 +12,7 @@ router = APIRouter(tags=["runs"])
 
 
 @router.post("/runs", response_model=RunView, status_code=202)
-async def start_run(body: CreateRun, user: CurrentUser, request: Request):
+async def start_run(body: CreateRun, user: CurrentUser, request: Request, response: Response):
     run = await run_in_threadpool(
         request.app.state.runs.create_run, user.id, str(body.job_id), str(body.idempotency_key)
     )
@@ -20,7 +20,15 @@ async def start_run(body: CreateRun, user: CurrentUser, request: Request):
         queued = await request.app.state.enqueue_run(user.id, run.id)
         if not queued:
             run.error = "Worker queue unavailable; the saved run will be retried automatically."
+    response.headers["X-GigBid-Trace-ID"] = run.id
     return run
+
+
+@router.get("/runs/{run_id}/trace")
+def get_trace(run_id: str, user: CurrentUser, request: Request):
+    from agent.tracing import trace_summary
+
+    return trace_summary(request.app.state.engine, user.id, run_id)
 
 
 @router.get("/runs", response_model=list[RunView])

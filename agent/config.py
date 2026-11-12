@@ -31,8 +31,9 @@ class AgentConfig:
             role: (ROOT / "prompts" / f"{role}.md").read_text(encoding="utf-8")
             for role in self.models
         }
+        self.security_boundary = (ROOT / "prompts/security_boundary.md").read_text(encoding="utf-8")
 
     def prompt(self, role: str) -> str:
         if role not in self.models:
             raise ValueError("Unknown agent role")
-        return self.prompts[role]
+        return self.prompts[role] + "\n\n" + self.security_boundary

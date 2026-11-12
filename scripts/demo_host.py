@@ -92,6 +92,7 @@ def main():
             if private.exists()
             else {"simulator_key": secrets.token_urlsafe(32)}
         )
+        saved.setdefault("mcp_token", secrets.token_urlsafe(40))
         private.write_text(json.dumps(saved), encoding="utf-8")
         env = {
             **os.environ,
@@ -99,6 +100,11 @@ def main():
             "REDIS_URL": redis,
             "MODEL_PROFILE": "hosted_open",
             "GROQ_API_KEY": settings.groq_api_key.get_secret_value(),
+            "GITHUB_TOKEN": settings.github_token.get_secret_value(),
+            "LANGSMITH_API_KEY": settings.langsmith_api_key.get_secret_value(),
+            "LANGSMITH_PROJECT": settings.langsmith_project,
+            "LANGSMITH_TRACING": "false",
+            "TRACE_EXPORT_ENABLED": "true",
             "STUDENT_SIM_URL": "http://127.0.0.1:8081",
             "STUDENT_SIM_API_KEY": saved["simulator_key"],
             "STUDENT_SIM_DATABASE": str(WORK / "simulator.sqlite"),
@@ -129,7 +135,8 @@ def main():
             env,
         )
         web_env = {**env, "PORT": "3001", "HOSTNAME": "127.0.0.1", "NODE_ENV": "production"}
-        start("web", ["node", "apps/web/.next-demo/standalone/server.js"], web_env)
+        dist = os.getenv("GIGBID_DEMO_DIST", ".next-demo-v2")
+        start("web", ["node", f"apps/web/{dist}/standalone/server.js"], web_env)
         wait_ready("http://127.0.0.1:3001/sign-in")
         start(
             "tunnel",
@@ -190,6 +197,10 @@ def main():
             "HF_HOME",
             "MODEL_PROFILE",
             "GROQ_API_KEY",
+            "LANGSMITH_API_KEY",
+            "LANGSMITH_PROJECT",
+            "LANGSMITH_TRACING",
+            "TRACE_EXPORT_ENABLED",
             "STUDENT_SIM_URL",
             "STUDENT_SIM_API_KEY",
             "APP_ENV",
@@ -223,6 +234,49 @@ def main():
         save("seeding_synthetic_accounts", public_url=public)
         wait_ready(public + "/api/status")
         seed(public, credentials_path=str(WORK / "accounts.json"), web_origin=public)
+        from sqlalchemy import select
+        from sqlalchemy.orm import Session
+
+        from apps.api.models import User
+
+        engine = make_engine(database)
+        with Session(engine) as db:
+            tenant = db.scalar(select(User.id).where(User.email == "demo-ai_ml@example.org"))
+        engine.dispose()
+        if not tenant:
+            raise RuntimeError("Seeded AI demo account not found")
+        start(
+            "portfolio_mcp",
+            [
+                sys.executable,
+                "-m",
+                "uvicorn",
+                "mcp_servers.http:configured_app",
+                "--factory",
+                "--host",
+                "127.0.0.1",
+                "--port",
+                "8104",
+            ],
+            {
+                **env,
+                "GIGBID_TENANT_ID": tenant,
+                "GIGBID_MCP_SERVER": "portfolio",
+                "MCP_BEARER_TOKEN": saved["mcp_token"],
+            },
+        )
+        (WORK / "MCP-CONNECTION.json").write_text(
+            json.dumps(
+                {
+                    "url": public + "/mcp",
+                    "headers": {"Authorization": "Bearer " + saved["mcp_token"]},
+                    "account": "AI synthetic demo",
+                    "tools": "read-only portfolio",
+                },
+                indent=2,
+            ),
+            encoding="utf-8",
+        )
         save(
             "ready",
             public_url=public,

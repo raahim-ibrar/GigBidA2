@@ -21,6 +21,10 @@ class Settings(BaseSettings):
     model_profile: str = "open"
     groq_api_key: SecretStr = Field(default=SecretStr(""), repr=False)
     google_api_key: SecretStr = Field(default=SecretStr(""), repr=False)
+    github_token: SecretStr = Field(default=SecretStr(""), repr=False)
+    langsmith_api_key: SecretStr = Field(default=SecretStr(""), repr=False)
+    langsmith_project: str = "GigBid-A2"
+    trace_export_enabled: bool = False
     groq_daily_token_cap: int = Field(default=200000, ge=1000, le=1000000)
     model_cache_dir: Path = Field(
         default_factory=lambda: Path(__file__).resolve().parents[2] / "work/models"

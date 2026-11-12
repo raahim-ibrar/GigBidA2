@@ -1,0 +1,50 @@
+{
+  "complete": true,
+  "traces": [
+    {
+      "kind": "proposal",
+      "run_id": "704c29d5-f045-4743-8b28-2cd329270edb",
+      "status": "awaiting_approval",
+      "url": "https://smith.langchain.com/public/a2f56a69-3bde-4159-b994-cd81ed98a3f9/r",
+      "spans": {
+        "chain": 12,
+        "llm": 6,
+        "tool": 10
+      },
+      "data_origin": "synthetic",
+      "privacy": "Metadata only; no prompts, CV, tool arguments/results or credentials",
+      "app_url": "https://interpreted-vid-recovered-estimation.trycloudflare.com/runs/704c29d5-f045-4743-8b28-2cd329270edb",
+      "anonymous_verified": true
+    },
+    {
+      "kind": "scam",
+      "run_id": "18b49ee6-5f78-4445-82a3-45a32e874334",
+      "status": "skip",
+      "url": "https://smith.langchain.com/public/b55b89d4-881e-4c66-8516-cef09cba7cd2/r",
+      "spans": {
+        "chain": 6,
+        "llm": 3,
+        "tool": 3
+      },
+      "data_origin": "synthetic",
+      "privacy": "Metadata only; no prompts, CV, tool arguments/results or credentials",
+      "app_url": "https://interpreted-vid-recovered-estimation.trycloudflare.com/runs/18b49ee6-5f78-4445-82a3-45a32e874334",
+      "anonymous_verified": true
+    },
+    {
+      "kind": "injection",
+      "run_id": "7c92d01f-8f10-4701-ba3c-d0343df57d99",
+      "status": "skip",
+      "url": "https://smith.langchain.com/public/06918fe8-f9e4-4551-a7d8-f1435f522869/r",
+      "spans": {
+        "chain": 6,
+        "llm": 3,
+        "tool": 3
+      },
+      "data_origin": "synthetic",
+      "privacy": "Metadata only; no prompts, CV, tool arguments/results or credentials",
+      "app_url": "https://interpreted-vid-recovered-estimation.trycloudflare.com/runs/7c92d01f-8f10-4701-ba3c-d0343df57d99",
+      "anonymous_verified": true
+    }
+  ]
+}

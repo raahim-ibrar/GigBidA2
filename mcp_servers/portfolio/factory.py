@@ -18,8 +18,8 @@ from rag.runtime import build_portfolio
 from rag.service import MissingEvidence
 
 
-def create_portfolio_server(service=None, tenant_id: str | None = None):
-    mcp = FastMCP("GigBid Portfolio")
+def create_portfolio_server(service=None, tenant_id: str | None = None, **transport_options):
+    mcp = FastMCP("GigBid Portfolio", **transport_options)
     read = ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True)
 
     def owner():

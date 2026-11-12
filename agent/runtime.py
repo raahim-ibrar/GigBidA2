@@ -23,6 +23,7 @@ from agent.model_client import BudgetExceeded, ModelUnavailable, OllamaModels
 from agent.portfolio_client import PortfolioMCP
 from agent.proposal_nodes import GroundingFailure, ProposalNodes, ReviewRequired
 from agent.run_store import LostWorkerLease, RunConflict, RunStore
+from agent.tracing import TracedSession
 from agent.workspace_client import WorkspaceMCP
 from mcp_servers.marketplace.adapters.student_sim import MarketplaceRejected, MarketplaceUnavailable
 
@@ -169,7 +170,14 @@ async def process_run(
                         }
                     )
                     marketplace = MarketplaceMCP(
-                        await stack.enter_async_context(market_client.session("marketplace"))
+                        TracedSession(
+                            await stack.enter_async_context(market_client.session("marketplace")),
+                            store,
+                            tenant,
+                            run_id,
+                            token,
+                            "marketplace",
+                        )
                     )
                 reader = portfolio_reader
                 if reader is None:
@@ -189,7 +197,14 @@ async def process_run(
                         }
                     )
                     reader = PortfolioMCP(
-                        await stack.enter_async_context(client.session("portfolio"))
+                        TracedSession(
+                            await stack.enter_async_context(client.session("portfolio")),
+                            store,
+                            tenant,
+                            run_id,
+                            token,
+                            "portfolio",
+                        )
                     )
                 if claimed["kind"] == "conversation":
                     workspace = workspace_reader
@@ -209,7 +224,16 @@ async def process_run(
                             }
                         )
                         workspace = WorkspaceMCP(
-                            await stack.enter_async_context(workspace_client.session("workspace"))
+                            TracedSession(
+                                await stack.enter_async_context(
+                                    workspace_client.session("workspace")
+                                ),
+                                store,
+                                tenant,
+                                run_id,
+                                token,
+                                "workspace",
+                            )
                         )
                     business = ConversationNodes(
                         models,

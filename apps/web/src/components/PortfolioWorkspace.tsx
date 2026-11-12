@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useState, type FormEvent } from "react";
 import { ApiError, getAccount, type Account } from "@/lib/api/accounts";
-import { deleteDocument, listDocuments, retryDocument, searchPortfolio, uploadDocument,
+import { deleteDocument, importGitHub, listDocuments, retryDocument, searchPortfolio, uploadDocument,
   type DocumentMetadata, type DocumentView, type PortfolioSearch, type SearchResult } from "@/lib/api/portfolio";
 
 export function PortfolioWorkspace() {
@@ -65,6 +65,20 @@ export function PortfolioWorkspace() {
     finally { setSearching(false); }
   }
 
+  async function importRepository(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault(); if (!account) return;
+    const form = event.currentTarget, data = new FormData(form);
+    setBusy(true); setError(""); setMessage("");
+    try {
+      const doc = await importGitHub({ repository_url: String(data.get("repository_url")),
+        ref: String(data.get("ref")) || "HEAD", project: String(data.get("github_project")),
+        skills: String(data.get("github_skills")).split(",").map(s => s.trim()).filter(Boolean) }, account.csrf_token);
+      setMessage(doc.error ?? "README saved at a fixed commit. Background indexing is queued.");
+      form.reset(); await load();
+    } catch (err) { setError(err instanceof Error ? err.message : "GitHub import failed."); }
+    finally { setBusy(false); }
+  }
+
   if (loading) return <p role="status">Loading your portfolio…</p>;
   if (needsSignIn) return <p className="notice">Sign in to manage your portfolio. <Link href="/sign-in">Sign in</Link></p>;
   if (!account) return <p role="alert" className="error">{error || "Portfolio unavailable."}</p>;
@@ -110,10 +124,21 @@ export function PortfolioWorkspace() {
         </article>)}
       </section>}
     </section></div>
+    <section className="card"><h2>Import a public GitHub project</h2>
+      <p className="muted">Import its README through GitHub MCP. The source is pinned to a commit; repository text alone does not establish authorship or client results.</p>
+      <form onSubmit={importRepository}>
+        <label htmlFor="github-url">Repository URL</label><input id="github-url" name="repository_url" type="url" placeholder="https://github.com/owner/project" required maxLength={500} />
+        <label htmlFor="github-project">Project title</label><input id="github-project" name="github_project" required maxLength={200} />
+        <label htmlFor="github-ref">Branch, tag or commit</label><input id="github-ref" name="ref" defaultValue="HEAD" maxLength={200} />
+        <label htmlFor="github-skills">Skills (comma separated)</label><input id="github-skills" name="github_skills" maxLength={2000} />
+        <button disabled={busy}>{busy ? "Saving…" : "Import README"}</button>
+      </form>
+    </section>
     <section className="card"><h2>Your sources</h2>
       {!documents.length && <p className="muted">No portfolio evidence yet. Add your first CV or case study above.</p>}
       {documents.map(doc => <article className="source-row" key={doc.id}>
         <div><strong>{doc.filename}</strong><p className="muted">{doc.details.project} · revision {doc.revision} · <span className={`source-status ${doc.status}`} data-testid="source-status">{doc.status}</span></p>
+          {doc.details.source_url && <p><a href={doc.details.source_url} target="_blank" rel="noreferrer">View pinned GitHub source</a></p>}
           {doc.error && <p className="error">{doc.error}</p>}</div>
         <div className="source-actions">{doc.status !== "indexing" && <button className="secondary-button" onClick={async () => {
           try { await retryDocument(doc.id, account.csrf_token); await load(); } catch (err) { setError((err as Error).message); }

@@ -17,6 +17,8 @@ class DocumentMetadata(Contract):
     date: Date | None = None
     client_industry: str | None = Field(default=None, max_length=200)
     outcome: Literal["won", "replied", "ignored"] | None = None
+    source_url: str | None = Field(default=None, max_length=1000)
+    source_commit: str | None = Field(default=None, pattern=r"^[0-9a-f]{40}$")
 
     @field_validator("skills")
     @classmethod

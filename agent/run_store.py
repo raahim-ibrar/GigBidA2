@@ -80,7 +80,11 @@ class RunStore:
         return run
 
     def _event(self, db, run, kind, details=None):
-        db.add(RunEvent(run_id=run.id, kind=kind, details=mask_pii(details or {})))
+        db.add(
+            RunEvent(
+                run_id=run.id, kind=kind, details=mask_pii({**(details or {}), "trace_id": run.id})
+            )
+        )
         run.updated_at = utcnow()
 
     def create_job(self, tenant, body):
