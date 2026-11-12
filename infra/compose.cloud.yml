@@ -1,0 +1,110 @@
+# Backend for one student-credit VM; frontend is a separate Vercel project.
+# docker compose --env-file .env.cloud -f infra/compose.cloud.yml up -d --build
+name: gigbid-cloud
+x-runtime: &runtime
+  APP_ENV: production
+  WEB_ORIGIN: ${WEB_ORIGIN:?Set the exact HTTPS Vercel production origin}
+  COOKIE_SECURE: "true"
+  DATABASE_URL: postgresql://gigbid:${POSTGRES_PASSWORD:?Set a random database password}@postgres:5432/gigbid
+  REDIS_URL: redis://redis:6379/0
+  QDRANT_URL: http://qdrant:6333
+  MODEL_CACHE_DIR: /app/work/models
+  HF_HOME: /app/work/models/hf
+  MODEL_PROFILE: hosted_open
+  GROQ_API_KEY: ${GROQ_API_KEY:?Set the existing Groq key privately on the server}
+  GROQ_DAILY_TOKEN_CAP: ${GROQ_DAILY_TOKEN_CAP:-200000}
+  STUDENT_SIM_URL: http://student-sim:8080
+  STUDENT_SIM_API_KEY: ${STUDENT_SIM_API_KEY:?Set a random simulator key}
+services:
+  api:
+    build: {context: .., dockerfile: infra/docker/api.Dockerfile}
+    environment: *runtime
+    volumes: ["model-cache:/app/work/models"]
+    restart: unless-stopped
+    depends_on:
+      postgres: {condition: service_healthy}
+      redis: {condition: service_healthy}
+      migrate: {condition: service_completed_successfully}
+      qdrant: {condition: service_started}
+    healthcheck:
+      test: ["CMD", ".venv/bin/python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health/ready',timeout=4)"]
+      interval: 30s
+      timeout: 6s
+      start_period: 90s
+      retries: 4
+  migrate:
+    build: {context: .., dockerfile: infra/docker/api.Dockerfile}
+    environment: *runtime
+    command: [".venv/bin/alembic", "upgrade", "head"]
+    depends_on:
+      postgres: {condition: service_healthy}
+  worker:
+    build: {context: .., dockerfile: infra/docker/worker.Dockerfile}
+    environment: *runtime
+    volumes: ["model-cache:/app/work/models"]
+    restart: unless-stopped
+    depends_on:
+      api: {condition: service_healthy}
+      student-sim: {condition: service_healthy}
+      redis: {condition: service_healthy}
+  postgres:
+    image: postgres:16.6-alpine
+    environment:
+      POSTGRES_USER: gigbid
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set a random database password}
+      POSTGRES_DB: gigbid
+    volumes: ["postgres-data:/var/lib/postgresql/data"]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gigbid -d gigbid"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+  redis:
+    image: redis:7.4.1-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes: ["redis-data:/data"]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+  qdrant:
+    image: qdrant/qdrant:v1.20.0
+    volumes: ["qdrant-data:/qdrant/storage"]
+    restart: unless-stopped
+  student-sim:
+    build: {context: .., dockerfile: infra/docker/api.Dockerfile}
+    command: [".venv/bin/uvicorn", "simulator.app:app", "--host", "0.0.0.0", "--port", "8080"]
+    environment:
+      STUDENT_SIM_API_KEY: ${STUDENT_SIM_API_KEY:?Set a random simulator key}
+      STUDENT_SIM_DATABASE: /app/work/simulator/student-sim.sqlite
+      STUDENT_SIM_CLIENT_MODE: rule
+    volumes: ["student-sim-data:/app/work/simulator"]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", ".venv/bin/python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/health',timeout=4)"]
+      interval: 20s
+      timeout: 6s
+      retries: 5
+  proxy:
+    image: caddy:2-alpine
+    environment:
+      API_DOMAIN: ${API_DOMAIN:?Set the VM public DNS hostname}
+    ports: ["80:80", "443:443", "443:443/udp"]
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    restart: unless-stopped
+    depends_on:
+      api: {condition: service_healthy}
+volumes:
+  postgres-data:
+  redis-data:
+  qdrant-data:
+  student-sim-data:
+  model-cache:
+  caddy-data:
+  caddy-config:

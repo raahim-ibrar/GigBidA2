@@ -1,0 +1,204 @@
+{
+  "items": [
+    {
+      "id": "student-4016-ai_ml-004:react",
+      "quality": 4,
+      "labels": [
+        {
+          "index": 0,
+          "label": "supported",
+          "reason": "claim references Python, embeddings, retrieval pipeline from coursework"
+        },
+        {
+          "index": 1,
+          "label": "supported",
+          "reason": "claim describes cleaning, chunking, embeddings for semantic search"
+        },
+        {
+          "index": 2,
+          "label": "supported",
+          "reason": "claim states Python-based retrieval pipeline with unit tests and handover guide"
+        },
+        {
+          "index": 3,
+          "label": "supported",
+          "reason": "claim cites coursework prototype using Python, embeddings, retrieval"
+        },
+        {
+          "index": 4,
+          "label": "not_factual",
+          "reason": "confidence statement without evidence of delivery outcome"
+        },
+        {
+          "index": 5,
+          "label": "supported",
+          "reason": "claim lists validation steps: quality, format, query types, evaluation metrics"
+        }
+      ]
+    },
+    {
+      "id": "student-4016-ai_ml-005:react",
+      "quality": 4,
+      "labels": [
+        {
+          "index": 0,
+          "label": "supported",
+          "reason": "claim states EDA for stationarity, seasonality, outliers"
+        },
+        {
+          "index": 1,
+          "label": "supported",
+          "reason": "claim describes modular Python pipeline using pandas"
+        },
+        {
+          "index": 2,
+          "label": "supported",
+          "reason": "claim promises backtesting and unit tests for preprocessing"
+        },
+        {
+          "index": 3,
+          "label": "supported",
+          "reason": "claim references coursework forecasting prototype"
+        },
+        {
+          "index": 4,
+          "label": "supported",
+          "reason": "claim enumerates validation steps: data integrity, stationarity, seasonality"
+        },
+        {
+          "index": 5,
+          "label": "supported",
+          "reason": "claim defines evaluation metrics and baseline model"
+        }
+      ]
+    },
+    {
+      "id": "student-4016-ai_ml-005:hand_graph",
+      "quality": 4,
+      "labels": [
+        {
+          "index": 0,
+          "label": "supported",
+          "reason": "claim mentions EDA using pandas for data quality and time series characteristics"
+        },
+        {
+          "index": 1,
+          "label": "supported",
+          "reason": "claim references experience building Python forecasting prototypes with rolling features, seasonal baselines, backtesting"
+        },
+        {
+          "index": 2,
+          "label": "supported",
+          "reason": "claim intends to deliver documented codebase with automated tests and handover guide"
+        },
+        {
+          "index": 3,
+          "label": "supported",
+          "reason": "claim acknowledges Python forecasting experience and tailoring steps to requirements"
+        },
+        {
+          "index": 4,
+          "label": "supported",
+          "reason": "claim lists validation steps: missing values, outliers, malformed entries"
+        },
+        {
+          "index": 5,
+          "label": "supported",
+          "reason": "claim analyzes stationarity and seasonal pattern alignment"
+        }
+      ]
+    },
+    {
+      "id": "student-4016-ai_ml-006:hand_graph",
+      "quality": 4,
+      "labels": [
+        {
+          "index": 0,
+          "label": "supported",
+          "reason": "claim cites prior classification project using Python, scikit-learn, precision/recall, tests, handover"
+        },
+        {
+          "index": 1,
+          "label": "supported",
+          "reason": "claim states structured approach using scikit-learn for preprocessing and model development"
+        },
+        {
+          "index": 2,
+          "label": "supported",
+          "reason": "claim describes EDA using scikit-learn utilities to validate input quality and class distribution"
+        },
+        {
+          "index": 3,
+          "label": "supported",
+          "reason": "claim promises developing baseline model, documenting assumptions, providing tests and handover"
+        },
+        {
+          "index": 4,
+          "label": "supported",
+          "reason": "claim lists validation steps: malformed inputs, missing values, class imbalances"
+        },
+        {
+          "index": 5,
+          "label": "supported",
+          "reason": "claim confirms target variable definition, appropriate feature set, avoids data leakage"
+        },
+        {
+          "index": 6,
+          "label": "supported",
+          "reason": "claim validates data quality: missing values, class imbalances, potential data leakage"
+        },
+        {
+          "index": 7,
+          "label": "supported",
+          "reason": "claim performs EDA for feature distributions and input format consistency"
+        }
+      ]
+    },
+    {
+      "id": "student-4016-ai_ml-006:react",
+      "quality": 4,
+      "labels": [
+        {
+          "index": 0,
+          "label": "supported",
+          "reason": "claim references coursework ticket classification using Python and scikit-learn"
+        },
+        {
+          "index": 1,
+          "label": "supported",
+          "reason": "claim describes cleaning labeled data, training classifier, evaluating with precision and recall"
+        },
+        {
+          "index": 2,
+          "label": "supported",
+          "reason": "claim implemented input validation, reproducible tests, handover guide for maintainability"
+        },
+        {
+          "index": 3,
+          "label": "supported",
+          "reason": "claim will apply same rigorous approach ensuring baseline well-documented, tested, easy to interpret"
+        },
+        {
+          "index": 4,
+          "label": "not_factual",
+          "reason": "confidence statement without evidence of delivery outcome"
+        },
+        {
+          "index": 5,
+          "label": "not_factual",
+          "reason": "statement about discussing data structure is a greeting/invite, not a factual claim"
+        },
+        {
+          "index": 6,
+          "label": "supported",
+          "reason": "claim validates data quality: missing values, class imbalances, potential data leakage"
+        },
+        {
+          "index": 7,
+          "label": "supported",
+          "reason": "claim performs EDA for feature distributions and input format consistency"
+        }
+      ]
+    }
+  ]
+}

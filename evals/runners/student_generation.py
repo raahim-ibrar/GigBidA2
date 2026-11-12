@@ -4,6 +4,7 @@ import argparse
 import asyncio
 import hashlib
 import json
+import re
 import time
 from pathlib import Path
 from uuid import NAMESPACE_URL, uuid5
@@ -40,11 +41,13 @@ from scripts.student_personas import TOPICS, documents
 from simulator.app import create_app
 
 
-async def run(models, per_persona, output):
+async def run(models, per_persona, output, *, profile="open", study_id="v3"):
     output = Path(output)
     output.mkdir(parents=True, exist_ok=True)
     settings = Settings()
-    schema = "gigbid_student_generation_v3"
+    if not re.fullmatch(r"[a-z0-9_]{1,24}", study_id):
+        raise ValueError("Use a short lowercase study identifier")
+    schema = "gigbid_student_generation_" + study_id
     admin = make_engine(settings.database_url)
     with admin.begin() as connection:
         connection.execute(CreateSchema(schema, if_not_exists=True))
@@ -75,6 +78,13 @@ async def run(models, per_persona, output):
     plan = {
         "schema": schema,
         "models": models,
+        "profile": profile,
+        "planned_per_model": len(cohort),
+        "runtime_overrides": {
+            "token_budget": 32000,
+            "fallback": None,
+            "retrieval": "v0" if profile == "open" else "configured",
+        },
         "job_ids": [row["id"] for row in cohort],
         "assignments": assignments,
         "seed": 4016,
@@ -85,9 +95,15 @@ async def run(models, per_persona, output):
         "limits": "Uncalibrated model claim checks; human calibration/panel not collected",
         "source_hashes": {
             str(path): hashlib.sha256(path.read_bytes()).hexdigest()
-            for path in sorted([*Path("agent").glob("*.py"), *Path("agent/prompts").glob("*.md")])
+            for path in sorted(
+                [
+                    *Path("agent").rglob("*.py"),
+                    *Path("agent/prompts").rglob("*.md"),
+                    Path("evals/runners/student_generation.py"),
+                ]
+            )
         },
-        "configuration": AgentConfig().data,
+        "configuration": AgentConfig(profile_name=profile).data,
     }
     plan_path = output / "plan.json"
     if plan_path.exists() and json.loads(plan_path.read_text(encoding="utf-8")) != plan:
@@ -96,13 +112,17 @@ async def run(models, per_persona, output):
     store, accounts = RunStore(engine), MarketplaceAccounts(engine, settings)
     try:
         for model in models:
-            config = AgentConfig()
-            config.models = {role: model for role in config.models}
+            config = AgentConfig(profile_name=profile)
+            if model != "routed":
+                config.models = {role: model for role in config.models}
             config.fallback = None  # Compare the declared models without hidden fallback.
             config.budgets.max_tokens_per_thread = 32000
             config.timeout = 180
-            config.retrieval = {**config.retrieval, "variant": "v0"}
-            label = model.replace(":", "-").replace("/", "-")
+            if profile == "open":
+                config.retrieval = {**config.retrieval, "variant": "v0"}
+            label = (profile + "-" if model == "routed" else "") + model.replace(":", "-").replace(
+                "/", "-"
+            )
             target = output / f"{label}.jsonl"
             recorded = (
                 [json.loads(line) for line in target.read_text(encoding="utf-8").splitlines()]
@@ -111,7 +131,7 @@ async def run(models, per_persona, output):
             )
             done = {row["id"] for row in recorded}
             for persona in TOPICS:
-                tenant = str(uuid5(NAMESPACE_URL, f"research-v3:{model}:{persona}"))
+                tenant = str(uuid5(NAMESPACE_URL, f"research-{study_id}:{model}:{persona}"))
                 with Session(engine) as db, db.begin():
                     if not db.get(User, tenant):
                         db.add(
@@ -291,6 +311,16 @@ if __name__ == "__main__":
     parser.add_argument("--models", nargs="+", default=["qwen3.5:4b", "qwen3:8b"])
     parser.add_argument("--per-persona", type=int, default=10)
     parser.add_argument("--output", default="work/generation-study-v3")
+    parser.add_argument("--profile", default="open")
+    parser.add_argument("--study-id", default="v3")
     args = parser.parse_args()
     with asyncio.Runner(loop_factory=asyncio.SelectorEventLoop) as runner:
-        runner.run(run(args.models, args.per_persona, args.output))
+        runner.run(
+            run(
+                args.models,
+                args.per_persona,
+                args.output,
+                profile=args.profile,
+                study_id=args.study_id,
+            )
+        )

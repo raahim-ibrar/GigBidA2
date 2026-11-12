@@ -1,0 +1,22 @@
+{
+  "data_origin": "synthetic",
+  "results": [
+    {
+      "run_id": "c76e26ea-221e-4894-8971-bcaacd996233",
+      "before": "needs_attention",
+      "after": "awaiting_approval",
+      "model_calls": 0,
+      "additional_tokens": 0,
+      "approval_still_required": true
+    },
+    {
+      "run_id": "63d6855b-7bdc-4c76-b2ad-25637bf956de",
+      "before": "needs_attention",
+      "after": "awaiting_approval",
+      "model_calls": 0,
+      "additional_tokens": 0,
+      "approval_still_required": true
+    }
+  ],
+  "scope": "Guard-fix recovery, not new model-quality trials"
+}

@@ -6,7 +6,7 @@ from starlette.concurrency import run_in_threadpool
 
 from agent.run_store import TERMINAL
 from apps.api.auth.dependencies import CurrentUser
-from apps.api.schemas.proposals import CreateRun, RetryRun, RunView
+from apps.api.schemas.proposals import CreateRun, EventView, RetryRun, RunView
 
 router = APIRouter(tags=["runs"])
 
@@ -78,3 +78,11 @@ async def run_events(
         media_type="text/event-stream",
         headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
     )
+
+
+@router.get("/runs/{run_id}/activity", response_model=list[EventView])
+def run_activity(
+    run_id: str, user: CurrentUser, request: Request, after: int = Query(default=0, ge=0)
+):
+    """Bounded durable replay for networks that cannot carry an SSE response."""
+    return request.app.state.runs.events(user.id, run_id, after)

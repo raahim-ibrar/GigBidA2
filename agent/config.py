@@ -14,10 +14,10 @@ class Budgets(BaseModel):
 
 
 class AgentConfig:
-    def __init__(self, path: Path | None = None):
+    def __init__(self, path: Path | None = None, *, profile_name: str | None = None):
         self.data = yaml.safe_load((path or ROOT / "config.yaml").read_text(encoding="utf-8"))
-        self.profile = self.data["profiles"][self.data["active_profile"]]
-        if self.profile.get("provider") != "ollama":
+        self.profile = self.data["profiles"][profile_name or self.data["active_profile"]]
+        if self.profile.get("provider") not in {"ollama", "groq", "gemini"}:
             raise ValueError("Configure the supported local open profile before running agents")
         self.budgets = Budgets.model_validate(self.data["budgets"])
         self.models = self.profile["models"]

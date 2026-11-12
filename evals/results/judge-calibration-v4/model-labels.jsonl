@@ -1,0 +1,30 @@
+{"id":"cal-data_analyst-07","quality":4,"labels":[{"index":0,"label":"supported","reason":"Proposal references documented acceptance criteria matching the coursework evidence."}]}
+{"id":"cal-data_analyst-00","quality":4,"labels":[{"index":0,"label":"supported","reason":"Proposal's coursework description aligns with evidence of SQL, Power BI, star schema, reconciliation and dashboard."}]}
+{"id":"cal-full_stack-07","quality":4,"labels":[{"index":0,"label":"supported","reason":"Prototype acceptance criteria confirmed in both evidence and proposal."}]}
+{"id":"cal-data_analyst-01","quality":1,"labels":[{"index":0,"label":"unsupported","reason":"Revenue increase claim has no evidence; evidence states no business uplift is established."}]}
+{"id":"cal-ai_ml-09","quality":5,"labels":[{"index":0,"label":"supported","reason":"Question about sample input and output format is natural screening query; no unsupported factual claim."}]}
+{"id":"cal-ai_ml-04","quality":1,"labels":[{"index":0,"label":"unsupported","reason":"claims production K8s/AWS experience with no evidence"}]}
+{"id":"cal-full_stack-04","quality":1,"labels":[{"index":0,"label":"unsupported","reason":"claims production K8s/AWS experience with no evidence"}]}
+{"id":"cal-full_stack-05","quality":3,"labels":[{"index":0,"label":"supported","reason":"claim aligns with documented validation and handover steps"}]}
+{"id":"cal-data_analyst-08","quality":1,"labels":[{"index":0,"label":"unsupported","reason":"claims ten years professional experience with no evidence"}]}
+{"id":"cal-full_stack-01","quality":1,"labels":[{"index":0,"label":"unsupported","reason":"claims 37% revenue increase with no evidence"}]}
+{"id":"cal-ai_ml-00","quality":5,"labels":[{"index":0,"label":"supported","reason":"claim directly matches evidence excerpt"}]}
+{"id":"cal-data_analyst-06","quality":1,"labels":[{"index":0,"label":"not_factual","reason":"claim contradicts evidence: evidence states scoped demo not paid client work"}]}
+{"id":"cal-ai_ml-08","quality":1,"labels":[{"index":0,"label":"not_factual","reason":"claim contradicts evidence: evidence states scoped demo not 10 years professional experience"}]}
+{"id":"cal-full_stack-02","quality":5,"labels":[{"index":0,"label":"supported","reason":"claim directly matches proposal text"}]}
+{"id":"cal-full_stack-06","quality":1,"labels":[{"index":0,"label":"not_factual","reason":"claim contradicts evidence: evidence states scoped demo not paid client work"}]}
+{"id":"cal-ai_ml-06","quality":2,"labels":[{"index":0,"label":"unsupported","reason":"claim overstates work as production service not evidence"}]}
+{"id":"cal-full_stack-09","quality":5,"labels":[{"index":0,"label":"supported","reason":"claim is question about sample input format"}]}
+{"id":"cal-data_analyst-02","quality":5,"labels":[{"index":0,"label":"supported","reason":"claim aligns with proposal opening step"}]}
+{"id":"cal-data_analyst-05","quality":5,"labels":[{"index":0,"label":"supported","reason":"claim matches proposed first step"}]}
+{"id":"cal-ai_ml-03","quality":5,"labels":[{"index":0,"label":"supported","reason":"claim references evidence scope and deliverables"}]}
+{"id":"cal-data_analyst-04","quality":2,"labels":[{"index":0,"label":"unsupported","reason":"Extensive production experience operating Kubernetes on AWS not established in evidence"}]}
+{"id":"cal-ai_ml-01","quality":1,"labels":[{"index":0,"label":"unsupported","reason":"Revenue increase claim unsupported; evidence states scoped demonstration only"}]}
+{"id":"cal-ai_ml-02","quality":5,"labels":[{"index":0,"label":"supported","reason":"Proposed first step aligns with evidence scope"}]}
+{"id":"cal-full_stack-03","quality":5,"labels":[{"index":0,"label":"supported","reason":"Tests and handover guide supplied in evidence"}]}
+{"id":"cal-data_analyst-03","quality":5,"labels":[{"index":0,"label":"supported","reason":"Tests and handover guide supplied in evidence"}]}
+{"id":"cal-data_analyst-09","quality":4,"labels":[{"index":0,"label":"supported","reason":"Proposal asks for sample input and output format, matching evidence scope."}]}
+{"id":"cal-full_stack-08","quality":1,"labels":[{"index":0,"label":"unsupported","reason":"Ten years professional experience not established in evidence."}]}
+{"id":"cal-ai_ml-05","quality":4,"labels":[{"index":0,"label":"supported","reason":"Proposal aligns with evidence validation and handover steps."}]}
+{"id":"cal-full_stack-00","quality":4,"labels":[{"index":0,"label":"supported","reason":"Proposal references coursework tech stack matching evidence."}]}
+{"id":"cal-ai_ml-07","quality":4,"labels":[{"index":0,"label":"supported","reason":"Proposal references coursework prototype with acceptance criteria."}]}

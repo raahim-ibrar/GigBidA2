@@ -1,0 +1,4 @@
+condition,n_drafts,mean_quality_1_to_5,unsupported_per_factual_claim,drafts_with_unsupported_claim
+react,40,3.65,0.08558558558558559,14
+supervisor,20,3.75,0.11428571428571428,6
+hand_graph,43,3.883720930232558,0.05238095238095238,8

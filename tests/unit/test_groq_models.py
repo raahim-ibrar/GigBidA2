@@ -6,7 +6,7 @@ import pytest
 from agent.config import AgentConfig
 from agent.handoffs import RiskReport
 from agent.model_client import ModelUnavailable
-from agent.providers.groq import GroqModels
+from agent.providers.groq import GroqGate, GroqModels
 
 
 class Gate:
@@ -79,3 +79,22 @@ async def test_provider_error_does_not_echo_credentials_or_response_body():
         await models.complete("risk", {}, RiskReport)
     assert "test-only-secret" not in str(error.value)
     assert "private account" not in str(error.value)
+
+
+async def test_daily_provider_allowance_is_a_retryable_outage(monkeypatch):
+    class ExhaustedRedis:
+        async def __aenter__(self):
+            return self
+
+        async def __aexit__(self, *args):
+            return None
+
+        async def eval(self, *args):
+            return -1
+
+    monkeypatch.setattr(
+        "agent.providers.groq.Redis.from_url", lambda *args, **kwargs: ExhaustedRedis()
+    )
+    gate = GroqGate("test-only-secret", "redis://fixture")
+    with pytest.raises(ModelUnavailable, match="daily allowance"):
+        await gate.reserve("openai/gpt-oss-120b", 2000)

@@ -1,0 +1,159 @@
+{
+  "packet_id": "calibration-3e4b65998c8b7d67",
+  "kind": "calibration",
+  "ratings": [
+    {
+      "id": "cal-data_analyst-07",
+      "support": "supported",
+      "quality": 4
+    },
+    {
+      "id": "cal-data_analyst-00",
+      "support": "supported",
+      "quality": 4
+    },
+    {
+      "id": "cal-full_stack-07",
+      "support": "supported",
+      "quality": 3
+    },
+    {
+      "id": "cal-data_analyst-01",
+      "support": "unsupported",
+      "quality": 1
+    },
+    {
+      "id": "cal-ai_ml-09",
+      "support": "not_factual",
+      "quality": 3
+    },
+    {
+      "id": "cal-ai_ml-04",
+      "support": "unsupported",
+      "quality": 1
+    },
+    {
+      "id": "cal-full_stack-04",
+      "support": "unsupported",
+      "quality": 1
+    },
+    {
+      "id": "cal-full_stack-05",
+      "support": "not_factual",
+      "quality": 3
+    },
+    {
+      "id": "cal-data_analyst-08",
+      "support": "unsupported",
+      "quality": 1
+    },
+    {
+      "id": "cal-full_stack-01",
+      "support": "unsupported",
+      "quality": 1
+    },
+    {
+      "id": "cal-ai_ml-00",
+      "support": "supported",
+      "quality": 4
+    },
+    {
+      "id": "cal-data_analyst-06",
+      "support": "unsupported",
+      "quality": 1
+    },
+    {
+      "id": "cal-ai_ml-08",
+      "support": "unsupported",
+      "quality": 1
+    },
+    {
+      "id": "cal-full_stack-02",
+      "support": "not_factual",
+      "quality": 2
+    },
+    {
+      "id": "cal-full_stack-06",
+      "support": "unsupported",
+      "quality": 1
+    },
+    {
+      "id": "cal-ai_ml-06",
+      "support": "unsupported",
+      "quality": 1
+    },
+    {
+      "id": "cal-full_stack-09",
+      "support": "not_factual",
+      "quality": 3
+    },
+    {
+      "id": "cal-data_analyst-02",
+      "quality": 2,
+      "support": "not_factual"
+    },
+    {
+      "id": "cal-data_analyst-05",
+      "support": "not_factual",
+      "quality": 3
+    },
+    {
+      "id": "cal-ai_ml-03",
+      "support": "supported",
+      "quality": 4
+    },
+    {
+      "id": "cal-data_analyst-04",
+      "support": "unsupported",
+      "quality": 1
+    },
+    {
+      "id": "cal-ai_ml-01",
+      "support": "unsupported",
+      "quality": 1
+    },
+    {
+      "id": "cal-ai_ml-02",
+      "quality": 2,
+      "support": "not_factual"
+    },
+    {
+      "id": "cal-full_stack-03",
+      "support": "supported",
+      "quality": 4
+    },
+    {
+      "id": "cal-data_analyst-03",
+      "support": "supported",
+      "quality": 4
+    },
+    {
+      "id": "cal-data_analyst-09",
+      "support": "not_factual",
+      "quality": 3
+    },
+    {
+      "id": "cal-full_stack-08",
+      "support": "unsupported",
+      "quality": 1
+    },
+    {
+      "id": "cal-ai_ml-05",
+      "quality": 3,
+      "support": "not_factual"
+    },
+    {
+      "id": "cal-full_stack-00",
+      "support": "supported",
+      "quality": 4
+    },
+    {
+      "id": "cal-ai_ml-07",
+      "quality": 3,
+      "support": "supported"
+    }
+  ],
+  "complete": true,
+  "reviewer_id": "calibrator-1",
+  "provenance": "Actual student-supplied ratings; metadata anonymized, response values unchanged"
+}

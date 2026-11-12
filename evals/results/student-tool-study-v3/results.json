@@ -1,0 +1,28 @@
+{
+  "data_origin": "synthetic",
+  "model": "openai/gpt-oss-120b",
+  "results": {
+    "fine": {
+      "n": 40,
+      "tool_accuracy": 1.0,
+      "argument_accuracy": 1.0,
+      "tokens_per_task": 617.675,
+      "usage_coverage": 1.0
+    },
+    "coarse": {
+      "n": 40,
+      "tool_accuracy": 1.0,
+      "argument_accuracy": 1.0,
+      "tokens_per_task": 988.75,
+      "usage_coverage": 1.0
+    },
+    "rewritten": {
+      "n": 40,
+      "tool_accuracy": 1.0,
+      "argument_accuracy": 1.0,
+      "tokens_per_task": 690.575,
+      "usage_coverage": 1.0
+    }
+  },
+  "complete": true
+}

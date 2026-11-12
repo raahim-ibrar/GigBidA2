@@ -3,7 +3,7 @@
 from langgraph.types import interrupt
 
 from agent.handoffs import ApprovalDecision, ProposalDraft
-from agent.proposal_nodes import draft_digest
+from agent.proposal_nodes import claim_is_verified, draft_digest
 
 
 def missing_node(name):
@@ -18,10 +18,7 @@ def approval_gate(state):
     draft = state.get("draft")
     if not compliance or not compliance.allowed or not draft or not state.get("preview"):
         raise ValueError("Approval requires a draft, successful compliance and a dry-run preview")
-    if any(
-        claim.verdict != "supported" or (claim.kind == "experience" and not claim.evidence_ids)
-        for claim in draft.claims
-    ):
+    if any(not claim_is_verified(claim) for claim in draft.claims):
         raise ValueError("All claims must be verified before approval")
     answer = ApprovalDecision.model_validate(
         interrupt(

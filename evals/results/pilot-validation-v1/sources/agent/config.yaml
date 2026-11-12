@@ -1,0 +1,68 @@
+# Candidate defaults, not a measured model or retrieval selection.
+active_profile: open
+marketplace: gigsim
+profiles:
+  open:
+    provider: ollama
+    fallback_model: llama3.2:1b
+    timeout_seconds: 90
+    context_size: 8192
+    output_tokens: 1500
+    models:
+      scout: qwen3.5:4b
+      analyst: qwen3.5:4b
+      risk: qwen3.5:4b
+      matcher: qwen3.5:4b
+      pricing: qwen3.5:4b
+      writer: qwen3:8b
+      critic: qwen3:8b
+      verifier: qwen3.5:4b
+      compliance: qwen3.5:4b
+      liaison: qwen3:8b
+    comparison_candidate: qwen3:8b
+  hosted_open:
+    provider: groq
+    fallback_model: null
+    timeout_seconds: 180
+    context_size: 16384
+    output_tokens: 2000
+    models:
+      scout: openai/gpt-oss-20b
+      analyst: openai/gpt-oss-20b
+      risk: openai/gpt-oss-20b
+      matcher: openai/gpt-oss-20b
+      pricing: openai/gpt-oss-20b
+      writer: openai/gpt-oss-120b
+      critic: openai/gpt-oss-120b
+      verifier: openai/gpt-oss-120b
+      compliance: openai/gpt-oss-20b
+      liaison: openai/gpt-oss-120b
+  paid:
+    enabled: false
+    provider: null
+    models: {}
+retrieval:
+  variant: v3
+  embedding_model: BAAI/bge-small-en-v1.5
+  reranker_model: Xenova/ms-marco-MiniLM-L-6-v2
+  top_k: 5
+  correction_threshold: 0.0
+  max_corrections: 2
+budgets:
+  max_steps: 40
+  max_tokens_per_thread: 16000
+  max_critic_revisions: 2
+  target_p95_analysis_seconds: 60
+  target_p95_proposal_seconds: 120
+  target_usd_per_analysis: 0.02
+  target_usd_per_proposal: 0.05
+# These are provisional targets. No measurements exist yet.
+policy:
+  version: unconfigured
+  requires_human_approval: true
+  max_weekly_connects: 100
+  minimum_hourly_rate_usd: 15
+  live_scout_interval_minutes: 360
+  change_request: null
+  minimum_fit: 0.5
+  maximum_risk: 0.7

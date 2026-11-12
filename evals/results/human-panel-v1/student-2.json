@@ -1,0 +1,57 @@
+{
+  "packet_id": "panel-8c0cb9a6a6847b61",
+  "reviewer_id": "student-2",
+  "kind": "panel",
+  "ratings": [
+    {
+      "id": "pair-fec0cfa498",
+      "preference": "a"
+    },
+    {
+      "id": "pair-3809fd809e",
+      "preference": "b"
+    },
+    {
+      "id": "pair-2720b10d06",
+      "preference": "b"
+    },
+    {
+      "id": "pair-73a0e16b0a",
+      "preference": "b"
+    },
+    {
+      "id": "pair-0647c476a3",
+      "preference": "a"
+    },
+    {
+      "id": "pair-0610f8e249",
+      "preference": "a"
+    },
+    {
+      "id": "pair-8d96105f1e",
+      "preference": "a"
+    },
+    {
+      "id": "pair-f4b09e2578",
+      "preference": "b"
+    },
+    {
+      "id": "pair-0c0d91d6da",
+      "preference": "b"
+    },
+    {
+      "id": "pair-1477290ff7",
+      "preference": "a"
+    },
+    {
+      "id": "pair-dbc9cab02c",
+      "preference": "b"
+    },
+    {
+      "id": "pair-1d7a572b93",
+      "preference": "b"
+    }
+  ],
+  "complete": true,
+  "provenance": "Transcribed from user-supplied reviewer responses; student-2 reconstructed from the explicitly stated last-pair change."
+}

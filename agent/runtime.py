@@ -58,7 +58,19 @@ async def process_run(
     marketplace_reader=None,
     config=None,
 ):
-    store, token, config = RunStore(engine), str(uuid4()), config or AgentConfig()
+    store, token, config = (
+        RunStore(engine),
+        str(uuid4()),
+        config or AgentConfig(profile_name=settings.model_profile),
+    )
+    if models_factory is OllamaModels and config.profile.get("provider") == "groq":
+        from agent.providers.groq import GroqModels
+
+        models_factory = GroqModels
+    if models_factory is OllamaModels and config.profile.get("provider") == "gemini":
+        from agent.providers.gemini import GeminiModels
+
+        models_factory = GeminiModels
     dsn = settings.database_url.replace("postgresql+psycopg://", "postgresql://", 1)
     thread = {
         "configurable": {"thread_id": f"{tenant}:{run_id}"},

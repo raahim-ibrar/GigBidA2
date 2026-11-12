@@ -6,7 +6,7 @@ Checked on 5 November 2026. These checks establish working behavior, not graded 
 
 - Full Python suite passed with Postgres plus the opt-in real-model tests enabled: 59 tests.
 - Real runtime checks used the CPU BGE embedding model, MiniLM cross-encoder, Qdrant, Redis/Arq and a separate stdio MCP process. Test sources/accounts were development fixtures and were cleaned up.
-- At that milestone, browser checks covered account/profile persistence, navigation and portfolio upload → search → deletion. Later proposal checks are recorded below.
+- At that milestone, browser checks covered account/profile persistence, navigation and portfolio upload â†’ search â†’ deletion. Later proposal checks are recorded below.
 - TypeScript checks, the frontend production build, Python lint, required-path checks and Compose configuration validation passed.
 - The Linux worker and migration images built successfully and the worker started against the local Postgres/Redis/Qdrant services.
 - A live API upload was indexed by the Docker worker, retrieved through the API and standalone MCP, then deleted. Its development account was removed; the user's account was untouched.
@@ -94,3 +94,46 @@ Run the local Analyst smoke with `GIGBID_REAL_AGENTS=1 uv run pytest tests/integ
   It is a controlled synthetic-corpus experiment, not a fixture test or real-job gold set.
 - Model experiments are ongoing and include grounding failures. A passing regression suite
   does not establish that the selected LLM reliably writes acceptable proposals.
+
+## November 11 follow-up regression and Settings layout
+
+- Full Postgres-backed Python suite: **156 passed, 4 optional checks skipped**, in 151.16 seconds.
+- Full Chromium browser suite: **15 passed**, reported duration 1.4 minutes. This includes the simulator outage/retry/submission/client-reply flow.
+- Python lint, TypeScript, required scaffold paths and the rebuilt production frontend passed.
+- Settings now uses an explicit 24px grid gap and consistent section widths. Chromium measurements and screenshot inspection covered signed-out desktop, signed-in desktop (1440px) and signed-in phone (390px), with no page overflow.
+- The resumed native-tool research study remains separate from these regression tests; partial calls are not reported as a completed experiment.
+
+## Site-wide spacing review
+
+- Reviewed all 14 page routes at 1440px and 390px (28 screenshots), including job, proposal studio, run activity and conversation detail. Detail layouts used explicit read-only fictional browser fixtures; no proposals or approvals were created.
+- Added shared page/section spacing, padded proposal navigation, content-height analysis cards, compact analytics controls and consistent card trailing spacing. Measurements found no horizontal page overflow or unexpected gaps in the page/section stacks.
+- Production build passed. Screenshot contact sheets and individual views were inspected; the full browser regression passed again after these shared layout edits: **15 passed**, reported duration 1.3 minutes.
+
+## Live CSV proposal recovery
+
+- A user-authorized live hosted-model check exposed an overly strict job-fit policy: relevant skills were treated as insufficient without an identical past task. Updated matching, writing and critique guidance to distinguish future capability from factual past-work claims. A basic CSV case gained evidence coverage; a specialist-platform negative control remained unsupported.
+- The first full attempt then exposed critic revision and local API allowance exhaustion. Those failed attempts were retained. The internal shared application allowance is now configurable (default 200000 per model/day), and quota exhaustion is classified as a retryable service outage; graph token/step caps were preserved.
+- A fresh run on the same user job completed through the normal queue, Docker worker, MCP, real Groq inference, claim verification, critic, compliance and preview, reaching **awaiting approval** in 11 steps with 9888 charged tokens. All retained claims passed the host verification predicate, a review payload existed, and no approval was granted. This manually entered job previews a local draft save, not an external submission.
+- Focused model transport, quota and proposal regressions: **30 passed**. These development checks do not replace the frozen model-comparison baseline or establish general proposal quality. Private CV text, evidence IDs and draft content are excluded from public research artifacts.
+
+## Orchestration pilot repair
+
+- ReAct, the real langgraph-supervisor baseline, and the production hand-built graph each completed the same separate fictional pilot job with GPT-OSS 120B and no runtime error. The application graph reached its approval interrupt without a fabricated approval; candidate scoring used only the isolated research simulator.
+- Five focused control regressions verify termination, tool-call mode, shared budgets and narrow tool-name normalization. The related provider/model regressions also passed; see work/pilot-final-tests.log for the combined run.
+- Raw pilot records, the plan and as-run source snapshots are saved under evals/results/pilot-validation-v1. This one-job check is not the required fifty-job study. The 150-run comparison was not started.
+
+## November 12 final research verification
+
+- Gemini optional architecture study: 150/150 cases across fifty matched jobs, 102 error-free and 48 failures; frozen source snapshot hashes verified. No additional GPU runs.
+- Independent Nvidia proposal judge: all 103 available drafts have exact validated claim indices; accepted labels are never replaced based on score. Earlier invalid-format and unavailable-model attempts remain separate. Calibration has 30 actual human labels, support kappa 0.402985 and quality weighted kappa 0.681128.
+- Statistics/human review/Gemini provider targeted regressions: **11 passed**, 2.48 seconds (`work/final-research-tests.log`). Earlier Gemini/Groq/real graph control regressions: **12 passed**, four dependency deprecation warnings.
+- Final analysis asserts the exact 150 unique job-condition keys and validates every judge item and claim index. The A/B analysis retains all 50 assigned hand-graph jobs and reports the null-compatible result.
+- R&D report is ten A4 pages. Technical narrative is within the required 1,200-1,800-word range. PDFs were rendered and visually inspected; detailed final artifact verification is saved in `evals/results/final-artifact-verification.json`.
+
+## Public laptop-backed demo, November 12
+
+- Public HTTPS sign-in, Secure cookies, synthetic portfolio uploads and real CPU indexing verified. Three fictional accounts were seeded in a separate database schema.
+- Actual Groq custom-graph Document Search proposal reached awaiting approval in 11 steps with 13,717 charged tokens; no approval was granted. Two real negative controls skipped scam and injection requests with risk 1.0.
+- JSON activity replay preserves cursor and tenant isolation when the tunnel cannot stream SSE; eight run integration tests passed. Full backend suite: **171 passed, five optional skipped**, 145.61 seconds. Whole-project Ruff, structure and graph checks passed.
+- The production demo frontend build passed, and the public sign-in page opened in the browser. Secrets/private login files remain Git-ignored; the public source secret scan passed.
+- This is temporary laptop hosting, not an always-on cloud deployment. Current URL and evidence: `evals/results/demo-deployment.json`.

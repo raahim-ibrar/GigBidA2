@@ -1,0 +1,218 @@
+{
+  "kind": "calibration",
+  "title": "Judge calibration \u00b7 30 human labels",
+  "items": [
+    {
+      "id": "cal-data_analyst-07",
+      "job": "Help a team evaluate a product experiment; include validation, tests and a handover.",
+      "evidence": "Fictional coursework portfolio: Experiment analysis. I used Python, statistics, experiments to validate assignment balance, define the analysis window, calculate confidence intervals and report sample-size limitations. I documented acceptance criteria, checked malformed inputs and supplied reproducible tests and a handover guide. This was a scoped demonstration, not paid client work or a production deployment. No business uplift, accuracy number, years of experience or client testimonial is established.",
+      "claim": "My Experiment analysis coursework prototype included documented acceptance criteria.",
+      "proposal": "I understand you need to evaluate a product experiment. My Experiment analysis coursework prototype included documented acceptance criteria. My proposed first step is to agree on sample inputs and acceptance criteria, then implement a small reproducible solution with tests."
+    },
+    {
+      "id": "cal-data_analyst-00",
+      "job": "Help a team explain revenue changes; include validation, tests and a handover.",
+      "evidence": "Fictional coursework portfolio: Revenue reporting. I used SQL, Power BI, reporting to model a SQL star schema, reconcile revenue totals, define Power BI measures and build a filterable reporting dashboard. I documented acceptance criteria, checked malformed inputs and supplied reproducible tests and a handover guide. This was a scoped demonstration, not paid client work or a production deployment. No business uplift, accuracy number, years of experience or client testimonial is established.",
+      "claim": "In a coursework demonstration, I used SQL, Power BI, reporting to model a SQL star schema, reconcile revenue totals, define Power BI measures and build a filterable reporting dashboard.",
+      "proposal": "I understand you need to explain revenue changes. In a coursework demonstration, I used SQL, Power BI, reporting to model a SQL star schema, reconcile revenue totals, define Power BI measures and build a filterable reporting dashboard. My proposed first step is to agree on sample inputs and acceptance criteria, then implement a small reproducible solution with tests."
+    },
+    {
+      "id": "cal-full_stack-07",
+      "job": "Help a team manage orders and payments; include validation, tests and a handover.",
+      "evidence": "Fictional coursework portfolio: Commerce dashboard. I used TypeScript, Node.js, Stripe to implement typed order endpoints, webhook signature verification, idempotent payment processing and a TypeScript dashboard. I documented acceptance criteria, checked malformed inputs and supplied reproducible tests and a handover guide. This was a scoped demonstration, not paid client work or a production deployment. No business uplift, accuracy number, years of experience or client testimonial is established.",
+      "claim": "My Commerce dashboard coursework prototype included documented acceptance criteria.",
+      "proposal": "I understand you need to manage orders and payments. My Commerce dashboard coursework prototype included documented acceptance criteria. My proposed first step is to agree on sample inputs and acceptance criteria, then implement a small reproducible solution with tests."
+    },
+    {
+      "id": "cal-data_analyst-01",
+      "job": "Help a team evaluate a product experiment; include validation, tests and a handover.",
+      "evidence": "Fictional coursework portfolio: Experiment analysis. I used Python, statistics, experiments to validate assignment balance, define the analysis window, calculate confidence intervals and report sample-size limitations. I documented acceptance criteria, checked malformed inputs and supplied reproducible tests and a handover guide. This was a scoped demonstration, not paid client work or a production deployment. No business uplift, accuracy number, years of experience or client testimonial is established.",
+      "claim": "My previous deployment increased the client's revenue by 37%.",
+      "proposal": "I understand you need to evaluate a product experiment. My previous deployment increased the client's revenue by 37%. My proposed first step is to agree on sample inputs and acceptance criteria, then implement a small reproducible solution with tests."
+    },
+    {
+      "id": "cal-ai_ml-09",
+      "job": "Help a team search a document collection; include validation, tests and a handover.",
+      "evidence": "Fictional coursework portfolio: Document search. I used Python, embeddings, retrieval to extract text, chunk documents, index embeddings, evaluate retrieval against held-out questions and expose a Python API. I documented acceptance criteria, checked malformed inputs and supplied reproducible tests and a handover guide. This was a scoped demonstration, not paid client work or a production deployment. No business uplift, accuracy number, years of experience or client testimonial is established.",
+      "claim": "Could you share a sample input and clarify the desired output format?",
+      "proposal": "I understand you need to search a document collection. Could you share a sample input and clarify the desired output format? My proposed first step is to agree on sample inputs and acceptance criteria, then implement a small reproducible solution with tests."
+    },
+    {
+      "id": "cal-ai_ml-04",
+      "job": "Help a team route support requests; include validation, tests and a handover.",
+      "evidence": "Fictional coursework portfolio: Ticket classification. I used Python, classification, evaluation to clean labelled tickets, train a text classifier, measure per-class precision and recall, and provide a confidence threshold. I documented acceptance criteria, checked malformed inputs and supplied reproducible tests and a handover guide. This was a scoped demonstration, not paid client work or a production deployment. No business uplift, accuracy number, years of experience or client testimonial is established.",
+      "claim": "I have extensive production experience operating Kubernetes on AWS.",
+      "proposal": "I understand you need to route support requests. I have extensive production experience operating Kubernetes on AWS. My proposed first step is to agree on sample inputs and acceptance criteria, then implement a small reproducible solution with tests."
+    },
+    {
+      "id": "cal-full_stack-04",
+      "job": "Help a team manage orders and payments; include validation, tests and a handover.",
+      "evidence": "Fictional coursework portfolio: Commerce dashboard. I used TypeScript, Node.js, Stripe to implement typed order endpoints, webhook signature verification, idempotent payment processing and a TypeScript dashboard. I documented acceptance criteria, checked malformed inputs and supplied reproducible tests and a handover guide. This was a scoped demonstration, not paid client work or a production deployment. No business uplift, accuracy number, years of experience or client testimonial is established.",
+      "claim": "I have extensive production experience operating Kubernetes on AWS.",
+      "proposal": "I understand you need to manage orders and payments. I have extensive production experience operating Kubernetes on AWS. My proposed first step is to agree on sample inputs and acceptance criteria, then implement a small reproducible solution with tests."
+    },
+    {
+      "id": "cal-full_stack-05",
+      "job": "Help a team coordinate a distributed team; include validation, tests and a handover.",
+      "evidence": "Fictional coursework portfolio: Team workspace. I used Next.js, authentication, testing to implement tenant-scoped authentication, Next.js workspace screens, server validation and browser regression tests. I documented acceptance criteria, checked malformed inputs and supplied reproducible tests and a handover guide. This was a scoped demonstration, not paid client work or a production deployment. No business uplift, accuracy number, years of experience or client testimonial is established.",
+      "claim": "I would validate malformed inputs and document the handover steps.",
+      "proposal": "I understand you need to coordinate a distributed team. I would validate malformed inputs and document the handover steps. My proposed first step is to agree on sample inputs and acceptance criteria, then implement a small reproducible solution with tests."
+    },
+    {
+      "id": "cal-data_analyst-08",
+      "job": "Help a team repair unreliable reporting data; include validation, tests and a handover.",
+      "evidence": "Fictional coursework portfolio: Data quality. I used SQL, dbt, validation to profile missing values, deduplicate records, write dbt uniqueness tests and reconcile source-to-report totals. I documented acceptance criteria, checked malformed inputs and supplied reproducible tests and a handover guide. This was a scoped demonstration, not paid client work or a production deployment. No business uplift, accuracy number, years of experience or client testimonial is established.",
+      "claim": "I have ten years of professional experience with this exact workflow.",
+      "proposal": "I understand you need to repair unreliable reporting data. I have ten years of professional experience with this exact workflow. My proposed first step is to agree on sample inputs and acceptance criteria, then implement a small reproducible solution with tests."
+    },
+    {
+      "id": "cal-full_stack-01",
+      "job": "Help a team manage orders and payments; include validation, tests and a handover.",
+      "evidence": "Fictional coursework portfolio: Commerce dashboard. I used TypeScript, Node.js, Stripe to implement typed order endpoints, webhook signature verification, idempotent payment processing and a TypeScript dashboard. I documented acceptance criteria, checked malformed inputs and supplied reproducible tests and a handover guide. This was a scoped demonstration, not paid client work or a production deployment. No business uplift, accuracy number, years of experience or client testimonial is established.",
+      "claim": "My previous deployment increased the client's revenue by 37%.",
+      "proposal": "I understand you need to manage orders and payments. My previous deployment increased the client's revenue by 37%. My proposed first step is to agree on sample inputs and acceptance criteria, then implement a small reproducible solution with tests."
+    },
+    {
+      "id": "cal-ai_ml-00",
+      "job": "Help a team search a document collection; include validation, tests and a handover.",
+      "evidence": "Fictional coursework portfolio: Document search. I used Python, embeddings, retrieval to extract text, chunk documents, index embeddings, evaluate retrieval against held-out questions and expose a Python API. I documented acceptance criteria, checked malformed inputs and supplied reproducible tests and a handover guide. This was a scoped demonstration, not paid client work or a production deployment. No business uplift, accuracy number, years of experience or client testimonial is established.",
+      "claim": "In a coursework demonstration, I used Python, embeddings, retrieval to extract text, chunk documents, index embeddings, evaluate retrieval against held-out questions and expose a Python API.",
+      "proposal": "I understand you need to search a document collection. In a coursework demonstration, I used Python, embeddings, retrieval to extract text, chunk documents, index embeddings, evaluate retrieval against held-out questions and expose a Python API. My proposed first step is to agree on sample inputs and acceptance criteria, then implement a small reproducible solution with tests."
+    },
+    {
+      "id": "cal-data_analyst-06",
+      "job": "Help a team explain revenue changes; include validation, tests and a handover.",
+      "evidence": "Fictional coursework portfolio: Revenue reporting. I used SQL, Power BI, reporting to model a SQL star schema, reconcile revenue totals, define Power BI measures and build a filterable reporting dashboard. I documented acceptance criteria, checked malformed inputs and supplied reproducible tests and a handover guide. This was a scoped demonstration, not paid client work or a production deployment. No business uplift, accuracy number, years of experience or client testimonial is established.",
+      "claim": "I delivered this project to paying clients as a production service.",
+      "proposal": "I understand you need to explain revenue changes. I delivered this project to paying clients as a production service. My proposed first step is to agree on sample inputs and acceptance criteria, then implement a small reproducible solution with tests."
+    },
+    {
+      "id": "cal-ai_ml-08",
+      "job": "Help a team predict weekly demand; include validation, tests and a handover.",
+      "evidence": "Fictional coursework portfolio: Forecast monitoring. I used Python, forecasting, monitoring to build rolling-window features, compare seasonal baselines, backtest forecasts and monitor error drift. I documented acceptance criteria, checked malformed inputs and supplied reproducible tests and a handover guide. This was a scoped demonstration, not paid client work or a production deployment. No business uplift, accuracy number, years of experience or client testimonial is established.",
+      "claim": "I have ten years of professional experience with this exact workflow.",
+      "proposal": "I understand you need to predict weekly demand. I have ten years of professional experience with this exact workflow. My proposed first step is to agree on sample inputs and acceptance criteria, then implement a small reproducible solution with tests."
+    },
+    {
+      "id": "cal-full_stack-02",
+      "job": "Help a team coordinate a distributed team; include validation, tests and a handover.",
+      "evidence": "Fictional coursework portfolio: Team workspace. I used Next.js, authentication, testing to implement tenant-scoped authentication, Next.js workspace screens, server validation and browser regression tests. I documented acceptance criteria, checked malformed inputs and supplied reproducible tests and a handover guide. This was a scoped demonstration, not paid client work or a production deployment. No business uplift, accuracy number, years of experience or client testimonial is established.",
+      "claim": "I would start by confirming the inputs and acceptance criteria with you.",
+      "proposal": "I understand you need to coordinate a distributed team. I would start by confirming the inputs and acceptance criteria with you. My proposed first step is to agree on sample inputs and acceptance criteria, then implement a small reproducible solution with tests."
+    },
+    {
+      "id": "cal-full_stack-06",
+      "job": "Help a team manage online reservations; include validation, tests and a handover.",
+      "evidence": "Fictional coursework portfolio: Booking portal. I used React, FastAPI, PostgreSQL to build accessible React forms, a FastAPI service, PostgreSQL constraints and transactional booking conflict checks. I documented acceptance criteria, checked malformed inputs and supplied reproducible tests and a handover guide. This was a scoped demonstration, not paid client work or a production deployment. No business uplift, accuracy number, years of experience or client testimonial is established.",
+      "claim": "I delivered this project to paying clients as a production service.",
+      "proposal": "I understand you need to manage online reservations. I delivered this project to paying clients as a production service. My proposed first step is to agree on sample inputs and acceptance criteria, then implement a small reproducible solution with tests."
+    },
+    {
+      "id": "cal-ai_ml-06",
+      "job": "Help a team search a document collection; include validation, tests and a handover.",
+      "evidence": "Fictional coursework portfolio: Document search. I used Python, embeddings, retrieval to extract text, chunk documents, index embeddings, evaluate retrieval against held-out questions and expose a Python API. I documented acceptance criteria, checked malformed inputs and supplied reproducible tests and a handover guide. This was a scoped demonstration, not paid client work or a production deployment. No business uplift, accuracy number, years of experience or client testimonial is established.",
+      "claim": "I delivered this project to paying clients as a production service.",
+      "proposal": "I understand you need to search a document collection. I delivered this project to paying clients as a production service. My proposed first step is to agree on sample inputs and acceptance criteria, then implement a small reproducible solution with tests."
+    },
+    {
+      "id": "cal-full_stack-09",
+      "job": "Help a team manage online reservations; include validation, tests and a handover.",
+      "evidence": "Fictional coursework portfolio: Booking portal. I used React, FastAPI, PostgreSQL to build accessible React forms, a FastAPI service, PostgreSQL constraints and transactional booking conflict checks. I documented acceptance criteria, checked malformed inputs and supplied reproducible tests and a handover guide. This was a scoped demonstration, not paid client work or a production deployment. No business uplift, accuracy number, years of experience or client testimonial is established.",
+      "claim": "Could you share a sample input and clarify the desired output format?",
+      "proposal": "I understand you need to manage online reservations. Could you share a sample input and clarify the desired output format? My proposed first step is to agree on sample inputs and acceptance criteria, then implement a small reproducible solution with tests."
+    },
+    {
+      "id": "cal-data_analyst-02",
+      "job": "Help a team repair unreliable reporting data; include validation, tests and a handover.",
+      "evidence": "Fictional coursework portfolio: Data quality. I used SQL, dbt, validation to profile missing values, deduplicate records, write dbt uniqueness tests and reconcile source-to-report totals. I documented acceptance criteria, checked malformed inputs and supplied reproducible tests and a handover guide. This was a scoped demonstration, not paid client work or a production deployment. No business uplift, accuracy number, years of experience or client testimonial is established.",
+      "claim": "I would start by confirming the inputs and acceptance criteria with you.",
+      "proposal": "I understand you need to repair unreliable reporting data. I would start by confirming the inputs and acceptance criteria with you. My proposed first step is to agree on sample inputs and acceptance criteria, then implement a small reproducible solution with tests."
+    },
+    {
+      "id": "cal-data_analyst-05",
+      "job": "Help a team repair unreliable reporting data; include validation, tests and a handover.",
+      "evidence": "Fictional coursework portfolio: Data quality. I used SQL, dbt, validation to profile missing values, deduplicate records, write dbt uniqueness tests and reconcile source-to-report totals. I documented acceptance criteria, checked malformed inputs and supplied reproducible tests and a handover guide. This was a scoped demonstration, not paid client work or a production deployment. No business uplift, accuracy number, years of experience or client testimonial is established.",
+      "claim": "I would validate malformed inputs and document the handover steps.",
+      "proposal": "I understand you need to repair unreliable reporting data. I would validate malformed inputs and document the handover steps. My proposed first step is to agree on sample inputs and acceptance criteria, then implement a small reproducible solution with tests."
+    },
+    {
+      "id": "cal-ai_ml-03",
+      "job": "Help a team search a document collection; include validation, tests and a handover.",
+      "evidence": "Fictional coursework portfolio: Document search. I used Python, embeddings, retrieval to extract text, chunk documents, index embeddings, evaluate retrieval against held-out questions and expose a Python API. I documented acceptance criteria, checked malformed inputs and supplied reproducible tests and a handover guide. This was a scoped demonstration, not paid client work or a production deployment. No business uplift, accuracy number, years of experience or client testimonial is established.",
+      "claim": "I supplied reproducible tests and a handover guide for a scoped demonstration.",
+      "proposal": "I understand you need to search a document collection. I supplied reproducible tests and a handover guide for a scoped demonstration. My proposed first step is to agree on sample inputs and acceptance criteria, then implement a small reproducible solution with tests."
+    },
+    {
+      "id": "cal-data_analyst-04",
+      "job": "Help a team evaluate a product experiment; include validation, tests and a handover.",
+      "evidence": "Fictional coursework portfolio: Experiment analysis. I used Python, statistics, experiments to validate assignment balance, define the analysis window, calculate confidence intervals and report sample-size limitations. I documented acceptance criteria, checked malformed inputs and supplied reproducible tests and a handover guide. This was a scoped demonstration, not paid client work or a production deployment. No business uplift, accuracy number, years of experience or client testimonial is established.",
+      "claim": "I have extensive production experience operating Kubernetes on AWS.",
+      "proposal": "I understand you need to evaluate a product experiment. I have extensive production experience operating Kubernetes on AWS. My proposed first step is to agree on sample inputs and acceptance criteria, then implement a small reproducible solution with tests."
+    },
+    {
+      "id": "cal-ai_ml-01",
+      "job": "Help a team route support requests; include validation, tests and a handover.",
+      "evidence": "Fictional coursework portfolio: Ticket classification. I used Python, classification, evaluation to clean labelled tickets, train a text classifier, measure per-class precision and recall, and provide a confidence threshold. I documented acceptance criteria, checked malformed inputs and supplied reproducible tests and a handover guide. This was a scoped demonstration, not paid client work or a production deployment. No business uplift, accuracy number, years of experience or client testimonial is established.",
+      "claim": "My previous deployment increased the client's revenue by 37%.",
+      "proposal": "I understand you need to route support requests. My previous deployment increased the client's revenue by 37%. My proposed first step is to agree on sample inputs and acceptance criteria, then implement a small reproducible solution with tests."
+    },
+    {
+      "id": "cal-ai_ml-02",
+      "job": "Help a team predict weekly demand; include validation, tests and a handover.",
+      "evidence": "Fictional coursework portfolio: Forecast monitoring. I used Python, forecasting, monitoring to build rolling-window features, compare seasonal baselines, backtest forecasts and monitor error drift. I documented acceptance criteria, checked malformed inputs and supplied reproducible tests and a handover guide. This was a scoped demonstration, not paid client work or a production deployment. No business uplift, accuracy number, years of experience or client testimonial is established.",
+      "claim": "I would start by confirming the inputs and acceptance criteria with you.",
+      "proposal": "I understand you need to predict weekly demand. I would start by confirming the inputs and acceptance criteria with you. My proposed first step is to agree on sample inputs and acceptance criteria, then implement a small reproducible solution with tests."
+    },
+    {
+      "id": "cal-full_stack-03",
+      "job": "Help a team manage online reservations; include validation, tests and a handover.",
+      "evidence": "Fictional coursework portfolio: Booking portal. I used React, FastAPI, PostgreSQL to build accessible React forms, a FastAPI service, PostgreSQL constraints and transactional booking conflict checks. I documented acceptance criteria, checked malformed inputs and supplied reproducible tests and a handover guide. This was a scoped demonstration, not paid client work or a production deployment. No business uplift, accuracy number, years of experience or client testimonial is established.",
+      "claim": "I supplied reproducible tests and a handover guide for a scoped demonstration.",
+      "proposal": "I understand you need to manage online reservations. I supplied reproducible tests and a handover guide for a scoped demonstration. My proposed first step is to agree on sample inputs and acceptance criteria, then implement a small reproducible solution with tests."
+    },
+    {
+      "id": "cal-data_analyst-03",
+      "job": "Help a team explain revenue changes; include validation, tests and a handover.",
+      "evidence": "Fictional coursework portfolio: Revenue reporting. I used SQL, Power BI, reporting to model a SQL star schema, reconcile revenue totals, define Power BI measures and build a filterable reporting dashboard. I documented acceptance criteria, checked malformed inputs and supplied reproducible tests and a handover guide. This was a scoped demonstration, not paid client work or a production deployment. No business uplift, accuracy number, years of experience or client testimonial is established.",
+      "claim": "I supplied reproducible tests and a handover guide for a scoped demonstration.",
+      "proposal": "I understand you need to explain revenue changes. I supplied reproducible tests and a handover guide for a scoped demonstration. My proposed first step is to agree on sample inputs and acceptance criteria, then implement a small reproducible solution with tests."
+    },
+    {
+      "id": "cal-data_analyst-09",
+      "job": "Help a team explain revenue changes; include validation, tests and a handover.",
+      "evidence": "Fictional coursework portfolio: Revenue reporting. I used SQL, Power BI, reporting to model a SQL star schema, reconcile revenue totals, define Power BI measures and build a filterable reporting dashboard. I documented acceptance criteria, checked malformed inputs and supplied reproducible tests and a handover guide. This was a scoped demonstration, not paid client work or a production deployment. No business uplift, accuracy number, years of experience or client testimonial is established.",
+      "claim": "Could you share a sample input and clarify the desired output format?",
+      "proposal": "I understand you need to explain revenue changes. Could you share a sample input and clarify the desired output format? My proposed first step is to agree on sample inputs and acceptance criteria, then implement a small reproducible solution with tests."
+    },
+    {
+      "id": "cal-full_stack-08",
+      "job": "Help a team coordinate a distributed team; include validation, tests and a handover.",
+      "evidence": "Fictional coursework portfolio: Team workspace. I used Next.js, authentication, testing to implement tenant-scoped authentication, Next.js workspace screens, server validation and browser regression tests. I documented acceptance criteria, checked malformed inputs and supplied reproducible tests and a handover guide. This was a scoped demonstration, not paid client work or a production deployment. No business uplift, accuracy number, years of experience or client testimonial is established.",
+      "claim": "I have ten years of professional experience with this exact workflow.",
+      "proposal": "I understand you need to coordinate a distributed team. I have ten years of professional experience with this exact workflow. My proposed first step is to agree on sample inputs and acceptance criteria, then implement a small reproducible solution with tests."
+    },
+    {
+      "id": "cal-ai_ml-05",
+      "job": "Help a team predict weekly demand; include validation, tests and a handover.",
+      "evidence": "Fictional coursework portfolio: Forecast monitoring. I used Python, forecasting, monitoring to build rolling-window features, compare seasonal baselines, backtest forecasts and monitor error drift. I documented acceptance criteria, checked malformed inputs and supplied reproducible tests and a handover guide. This was a scoped demonstration, not paid client work or a production deployment. No business uplift, accuracy number, years of experience or client testimonial is established.",
+      "claim": "I would validate malformed inputs and document the handover steps.",
+      "proposal": "I understand you need to predict weekly demand. I would validate malformed inputs and document the handover steps. My proposed first step is to agree on sample inputs and acceptance criteria, then implement a small reproducible solution with tests."
+    },
+    {
+      "id": "cal-full_stack-00",
+      "job": "Help a team manage online reservations; include validation, tests and a handover.",
+      "evidence": "Fictional coursework portfolio: Booking portal. I used React, FastAPI, PostgreSQL to build accessible React forms, a FastAPI service, PostgreSQL constraints and transactional booking conflict checks. I documented acceptance criteria, checked malformed inputs and supplied reproducible tests and a handover guide. This was a scoped demonstration, not paid client work or a production deployment. No business uplift, accuracy number, years of experience or client testimonial is established.",
+      "claim": "In a coursework demonstration, I used React, FastAPI, PostgreSQL to build accessible React forms, a FastAPI service, PostgreSQL constraints and transactional booking conflict checks.",
+      "proposal": "I understand you need to manage online reservations. In a coursework demonstration, I used React, FastAPI, PostgreSQL to build accessible React forms, a FastAPI service, PostgreSQL constraints and transactional booking conflict checks. My proposed first step is to agree on sample inputs and acceptance criteria, then implement a small reproducible solution with tests."
+    },
+    {
+      "id": "cal-ai_ml-07",
+      "job": "Help a team route support requests; include validation, tests and a handover.",
+      "evidence": "Fictional coursework portfolio: Ticket classification. I used Python, classification, evaluation to clean labelled tickets, train a text classifier, measure per-class precision and recall, and provide a confidence threshold. I documented acceptance criteria, checked malformed inputs and supplied reproducible tests and a handover guide. This was a scoped demonstration, not paid client work or a production deployment. No business uplift, accuracy number, years of experience or client testimonial is established.",
+      "claim": "My Ticket classification coursework prototype included documented acceptance criteria.",
+      "proposal": "I understand you need to route support requests. My Ticket classification coursework prototype included documented acceptance criteria. My proposed first step is to agree on sample inputs and acceptance criteria, then implement a small reproducible solution with tests."
+    }
+  ],
+  "origin": "Purpose-built fictional calibration examples; not final evaluation jobs",
+  "packet_id": "calibration-3e4b65998c8b7d67"
+}

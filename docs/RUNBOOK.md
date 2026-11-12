@@ -96,3 +96,9 @@ Do not run destructive volume resets when investigating failures. Postgres data 
 - Use conservative live polling. The provisional interval in config is not yet justified by actual rate limits.
 - Declare cost and latency targets, measure p50/p95, and keep the deployment live through grading.
 - Validate a crash while waiting for approval, a crash after authorization, and a crash during external execution.
+
+## Job fit and hosted API allowances
+
+A watch decision means the current source evidence does not support enough requirements; it is not an indexing error by itself. Check that sources are ready and inspect the requirement matrix. Fit measures relevant capability for proposed work. It does not establish that the user has completed an identical job before. Specialist platforms, required credentials and claimed past results still need direct support; proposal claims are independently verified.
+
+Hosted application calls share a conservative per-key/model Redis allowance. `GROQ_DAILY_TOKEN_CAP` defaults to 200000 accounted tokens per model/day for the app; the standalone study gate retains its 150000 default. These are local limits, not provider quotas or verified billing limits. Calls share the same counters; the app allowance is not an extra independent pool. Exhaustion is a retryable provider outage; the graph token/step caps remain independent. Groq may reject calls earlier under its own limits.

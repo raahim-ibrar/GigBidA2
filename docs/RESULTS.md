@@ -14,7 +14,7 @@ Real BGE-small embeddings and MiniLM reranking; 60 answerable synthetic tasks an
 
 H1 was not supported: V3 did not increase Recall@5 over V0; both reached 1.000 on this easy controlled cohort. V1 lost recall when generic requirements dominated the fusion. V3 improved ordering, while V8 abstained on the six unrelated tasks at greater latency.
 
-The predeclared selection rule (Recall@5, then nDCG@10, then p95) selects **V3**. V8 has better abstention but is slower. This is a limited synthetic-corpus choice, not proof of better real-job outcomes. V3→V2 removes reranking; V2→V0 removes lexical fusion; V8→V3 removes correction. The raw per-persona metrics and rankings remain in `evals/results/student-retrieval/`.
+The predeclared selection rule (Recall@5, then nDCG@10, then p95) selects **V3**. V8 has better abstention but is slower. This is a limited synthetic-corpus choice, not proof of better real-job outcomes. V3â†’V2 removes reranking; V2â†’V0 removes lexical fusion; V8â†’V3 removes correction. The raw per-persona metrics and rankings remain in `evals/results/student-retrieval/`.
 
 ## Open-model graph study
 
@@ -51,6 +51,44 @@ Errors and skips stay in the cohort. The small-model runs often fail grounding; 
 
 Diagnostic fixes before frozen v3: exclude exact trusted source UUIDs from numerical-achievement checks, keep source IDs out of prose, and request concise verifier reasons. Earlier setup/diagnostic runs are retained locally. Failures that remain in v3 are not erased or counted as improvements. These changes have not been isolated in a causal ablation.
 
-## Still missing
+## Tool design: 120 native calls
 
-Human calibration (30 items), a blind human panel, the 40-task tool-design comparison, and the 50-job ReAct/supervisor/hand-graph study are not completed here. No result is invented for them. Hidden-test measurements are unavailable before grading.
+Forty known-call tasks were run with fine, coarse and rewritten tools using GPT-OSS 120B. Each condition scored 100% tool-selection and argument accuracy. Mean tokens/task were 617.675, 988.750 and 690.575 respectively. This easy synthetic cohort has a ceiling effect. Evidence: `evals/results/student-tool-study-v3/results.json`.
+
+## Completed 150-run architecture comparison
+
+Fifty identical fully fictional jobs, matched model assignment per job (Gemini 3.1/3.5 Flash-Lite), 20,000-token caps. This optional closed-model experiment does not replace the open-weight configurations above. All 150 observations remain, including 48 failures. Frozen source snapshots were hash-verified.
+
+| Architecture | Error-free / 50 | Correct intermediate decisions / 50 | Error-free correct decisions / 50 | Simulator submissions | Replies / 50 | p95 seconds | Mean measured tokens/job | Scam rejection / 6 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| react | 41 | 36 | 36 | 40 | 35 | 138.55 | 8376.96 | 1 |
+| supervisor | 24 | 24 | 23 | 19 | 18 | 186.13 | 10330.04 | 5 |
+| hand_graph | 37 | 49 | 36 | 30 | 29 | 178.69 | 8662.28 | 6 |
+
+The custom graph's 98% intermediate decision accuracy is not 98% completion: thirteen runs failed later. ReAct's higher completion rate includes five scam-control submissions to the isolated research simulator; supervisor had one, custom graph zero. No application approval was forged and no real client was contacted. Zero final draft policy flags must not be misreported as zero attack success.
+
+Failure taxonomy: 39 budget stops, four timeouts, three provider/structured-output failures, and two other stops. Successful-call tokens total 1,368,464; 58 native calls have unknown usage. API billing is unknown. Latency includes waits within attempts but not all between-attempt daily-quota waits. Baselines, models, retrieval, step limits, prompts and API outages are part of the systems comparison, not an isolated model-size effect. Source: `evals/results/gemini-orchestration-v1/{analysis,plan,progress}.json`, `runs.jsonl`, and `source-snapshot/`. The earlier incomplete Groq run remains separate.
+
+## Independent proposal judge and actual human calibration
+
+The frozen Nvidia Nemotron 3.5 Lightning rubric was compared with thirty actual student labels: support agreement 60%, Cohen kappa 0.402985; quality exact agreement 46.7%, quadratic weighted kappa 0.681128. These are limited single-human calibration results, not objective gold. The final protocol preserves validated assessments and retries only malformed items; no accepted label was replaced based on score. Earlier invalid array/keyed-output trials and unavailable Google trials remain diagnostic records. The final rubric is unchanged.
+
+| All available drafts, including failures | Drafts | Mean quality / 5 | Unsupported / factual claims | Drafts with unsupported claim |
+|---|---:|---:|---:|---:|
+| react | 40 | 3.650 | 19/222 | 14 |
+| supervisor | 20 | 3.750 | 12/105 | 6 |
+| hand_graph | 43 | 3.884 | 11/210 | 8 |
+
+All 103 nonempty drafts were assessed. The remaining 47 runs have no draft and remain in failure/outcome denominators; missing drafts are not silently assigned a quality score. Submitted-only results are also saved. Model-judge estimates remain uncertain given claim agreement of only 60%. Evidence: `evals/results/judge-proposals-final/{plan,model-labels,results}.json*` and `judge-calibration-v4/{agreement,human-labels}.json`.
+
+## Classmate blind panel
+
+Two user-supplied reviewers, twelve blinded raw local-model pairs, 24 ratings: 4B received 13 votes and 8B 11. Agreement 11/12, kappa 0.833333. A convenience panel of twelve repeated jobs cannot establish a population winner. The second response was reconstructed from the user's stated last-choice difference; identities and independence were not verified. This panel does not evaluate the later Gemini generators. Evidence: `evals/results/human-panel-v1/results.json`.
+
+## X2: intention-to-treat opening strategy
+
+The hand-graph jobs were preassigned 25 per arm: evidence-first had 12 replies (48%), problem-first 17 (68%). Difference -20 percentage points; two-sided Fisher p=0.251590; conservative 95% Hoeffding interval [-79.208, +39.208] percentage points. No significant strategy benefit is established. Non-submissions count as no reply. The pooled test ignores assignment strata; per-persona counts and model/condition tables are retained in `analysis.json`. All replies are rule-simulator outcomes, not real-client behavior.
+
+## Limits and unmeasured requirements
+
+Hidden-test performance, real-client response, a before/after injection-defence ablation and instructor-policy-change implementation timing remain unmeasured. Public hosting, live Upwork OAuth, GitHub ingestion and public traces remain separate delivery gaps. The local hardware inventory was captured after the study, not as an as-run trace: see `evals/results/local-hardware-inventory.json`. Local output throughput was 79.324 tokens/s for Qwen4B and 64.396 for Qwen8B; API cost was zero for local inference but hardware/electricity was not priced.

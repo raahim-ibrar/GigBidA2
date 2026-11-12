@@ -538,6 +538,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/runs/{run_id}/activity": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Run Activity
+         * @description Bounded durable replay for networks that cannot carry an SSE response.
+         */
+        get: operations["run_activity_api_runs__run_id__activity_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/runs/{run_id}/events": {
         parameters: {
             query?: never;
@@ -837,7 +857,7 @@ export interface components {
              * Verdict
              * @enum {string}
              */
-            verdict: "supported" | "partly_supported" | "unsupported";
+            verdict: "supported" | "partly_supported" | "unsupported" | "not_applicable";
         };
         /** ComplianceVerdict */
         ComplianceVerdict: {
@@ -1033,6 +1053,22 @@ export interface components {
             diff: string;
             /** Run Id */
             run_id: string;
+        };
+        /** EventView */
+        EventView: {
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Details */
+            details: {
+                [key: string]: unknown;
+            };
+            /** Id */
+            id: number;
+            /** Kind */
+            kind: string;
         };
         /** EvidenceHit */
         EvidenceHit: {
@@ -2798,6 +2834,39 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["RunView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    run_activity_api_runs__run_id__activity_get: {
+        parameters: {
+            query?: {
+                after?: number;
+            };
+            header?: never;
+            path: {
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EventView"][];
                 };
             };
             /** @description Validation Error */

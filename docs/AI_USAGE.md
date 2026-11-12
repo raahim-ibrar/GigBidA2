@@ -31,3 +31,7 @@ test session was released. SQLite verification also exposed lost timezone inform
 on an idempotent draft response; that read contract now normalizes timestamps to UTC.
 
 | 2026-11-11 | Codex | Student-built simulator, approval-gated Marketplace MCP, event/message reconciliation, scheduled imports, dark purple frontend, approved Kaggle preprocessing, fictional persona generator, controlled retrieval experiments, model-study runner, regression tests and documentation. Model failures and missing human/external evidence are retained. |
+
+## November 11-12 research completion
+
+Codex prepared calibration and blinded panel packets, implemented and repaired the real orchestration baselines and optional Gemini transport, ran the recorded studies, and calculated agreement and intention-to-treat outcomes. Raahim supplied 30 calibration ratings and reported two classmate responses. The second classmate response was reconstructed from the user-stated final-choice difference; reviewer identity/independence was not verified. No AI-generated rating is represented as human. Earlier statements about no generated research apply to their dated development checkpoints, not these later explicitly labelled synthetic experiments. Failed API/output-format pilots remain separate. Codex drafted the final report and technical narrative from saved measurements.

@@ -1,0 +1,77 @@
+{
+  "planned_jobs": 50,
+  "planned_runs": 150,
+  "recorded_runs": 150,
+  "complete": true,
+  "data_origin": "synthetic",
+  "conditions": {
+    "react": {
+      "recorded": 50,
+      "decisions_measured": 41,
+      "decision_accuracy_observed": 0.8780487804878049,
+      "decision_accuracy_all_recorded": 0.72,
+      "submissions": 40,
+      "replies": 35,
+      "reply_rate_per_assigned_job": 0.7,
+      "reply_rate_per_submission": 0.875,
+      "measured_tokens": 418848,
+      "tokens_with_unknown_usage": 22,
+      "policy_violations_caught": 0,
+      "errors": 9,
+      "proposal_quality": "Pending independent calibrated judge; not substituted with gate success"
+    },
+    "supervisor": {
+      "recorded": 50,
+      "decisions_measured": 25,
+      "decision_accuracy_observed": 0.96,
+      "decision_accuracy_all_recorded": 0.48,
+      "submissions": 19,
+      "replies": 18,
+      "reply_rate_per_assigned_job": 0.36,
+      "reply_rate_per_submission": 0.9473684210526315,
+      "measured_tokens": 516502,
+      "tokens_with_unknown_usage": 36,
+      "policy_violations_caught": 0,
+      "errors": 26,
+      "proposal_quality": "Pending independent calibrated judge; not substituted with gate success"
+    },
+    "hand_graph": {
+      "recorded": 50,
+      "decisions_measured": 50,
+      "decision_accuracy_observed": 0.98,
+      "decision_accuracy_all_recorded": 0.98,
+      "submissions": 30,
+      "replies": 29,
+      "reply_rate_per_assigned_job": 0.58,
+      "reply_rate_per_submission": 0.9666666666666667,
+      "measured_tokens": 433114,
+      "tokens_with_unknown_usage": 0,
+      "policy_violations_caught": 0,
+      "errors": 13,
+      "proposal_quality": "Pending independent calibrated judge; not substituted with gate success"
+    }
+  },
+  "x2": {
+    "arms": {
+      "evidence_first": {
+        "replies": 12,
+        "n": 25,
+        "reply_rate": 0.48
+      },
+      "problem_first": {
+        "replies": 17,
+        "n": 25,
+        "reply_rate": 0.68
+      }
+    },
+    "difference_evidence_minus_problem": -0.20000000000000007,
+    "fisher_two_sided_p": 0.25159039322537385,
+    "alpha": 0.05,
+    "difference_interval": [
+      -0.7920828749203194,
+      0.39208287492031924
+    ],
+    "interval_method": "Hoeffding union-bound; conservative independent-observation interval",
+    "randomization_warning": "Pooled Fisher test is unadjusted for strata; inspect per-stratum effects. Repeated clients or interacting jobs violate independence assumptions."
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "date_pkt": "2026-11-12",
+  "artifacts": [
+    {
+      "path": "output/pdf/GigBid_RnD_Report.pdf",
+      "pages": 10,
+      "sha256": "0e0111fbcbc6aa17341f4294ea452d49bb181eab0117fd77e0708a71f0de51c3",
+      "rendered_and_visually_checked": true
+    },
+    {
+      "path": "output/pdf/GigBid_Technical_Writeup.pdf",
+      "pages": 4,
+      "sha256": "b40ee1f06fef6dd2ec4fa63c13c8b5fea8e50a7a14c2596e018087e89b4803b7",
+      "rendered_and_visually_checked": true
+    }
+  ],
+  "technical_narrative_words_excluding_references": 1512,
+  "architecture_runs": 150,
+  "judged_nonempty_drafts": 103,
+  "human_calibration_items": 30,
+  "classmate_reviewers_user_reported": 2,
+  "classmate_pairs": 12,
+  "research_targeted_tests_passed": 11,
+  "secret_pattern_scan": "passed; .env ignored",
+  "limits": "Research/write-up complete; public deployment and integration gaps remain documented. Local files are not proof of GitHub publication."
+}

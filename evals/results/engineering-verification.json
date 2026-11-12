@@ -2,22 +2,38 @@
   "data_origin": "development-control-fixtures",
   "date_pkt": "2026-11-11",
   "backend": {
-    "passed": 149,
+    "passed": 162,
     "skipped": 4,
-    "seconds": 151.38,
+    "seconds": 140.12,
     "database": "isolated Postgres schemas"
   },
   "browser": {
-    "suite_passed": 14,
-    "additional_targeted_passed": 1,
-    "targeted_seconds": 43.1
+    "suite_passed": 15,
+    "additional_targeted_passed": 0,
+    "reported_duration": "1.5 minutes",
+    "after_site_spacing_changes": true
   },
   "frontend": {
     "typescript": "passed",
     "production_build": "passed",
     "desktop_width": 1440,
     "mobile_width": 390,
-    "horizontal_overflow": false
+    "horizontal_overflow": false,
+    "settings_card_gap_px": 24,
+    "settings_equal_widths": true,
+    "settings_signed_in_and_out_checked": true,
+    "site_layout_audit": {
+      "routes": 14,
+      "viewports": [
+        1440,
+        390
+      ],
+      "screenshots": 28,
+      "horizontal_overflow": false,
+      "unexpected_section_gaps": 0,
+      "detail_content": "read-only fictional browser fixtures; no model calls or approval actions"
+    }
   },
-  "limits": "Control/integration tests are not model quality measurements. Subsequent deployment-proxy edits require renewed browser/build checks."
+  "limits": "Control/integration tests are not model quality measurements. Latest backend, full browser suite, production build, and desktop/mobile Settings layout checks passed; API-based research comparisons remain separate.",
+  "verification_checkpoint": "work/unattended-checks/20261111T164939Z"
 }

@@ -1,0 +1,179 @@
+{
+  "packet_id": "panel-8c0cb9a6a6847b61",
+  "data_origin": "human-ratings-of-synthetic-portfolio-candidates",
+  "reviewers": 2,
+  "pairs": 12,
+  "ratings": 24,
+  "provenance": "User-supplied responses; reviewer identities and independence not independently verified",
+  "model_votes": {
+    "qwen3-8b": 11,
+    "qwen3.5-4b": 13
+  },
+  "by_reviewer": {
+    "student-1": {
+      "qwen3-8b": 6,
+      "qwen3.5-4b": 6
+    },
+    "student-2": {
+      "qwen3-8b": 5,
+      "qwen3.5-4b": 7
+    }
+  },
+  "pairwise_preference_agreement": {
+    "n": 12,
+    "agreement": 0.9166666666666666,
+    "kappa": 0.8333333333333334,
+    "method": "Cohen kappa"
+  },
+  "limits": [
+    "Small convenience panel, not a population estimate",
+    "Same twelve jobs are rated twice: 24 ratings are not 24 independent jobs",
+    "Panel compares raw candidates from the original two local-model configurations, including drafts that failed app verification; not current hosted-model or architecture quality"
+  ],
+  "ratings_decoded": [
+    {
+      "reviewer_id": "student-1",
+      "pair_id": "pair-fec0cfa498",
+      "preference": "a",
+      "preferred_model": "qwen3-8b"
+    },
+    {
+      "reviewer_id": "student-1",
+      "pair_id": "pair-3809fd809e",
+      "preference": "b",
+      "preferred_model": "qwen3.5-4b"
+    },
+    {
+      "reviewer_id": "student-1",
+      "pair_id": "pair-2720b10d06",
+      "preference": "b",
+      "preferred_model": "qwen3-8b"
+    },
+    {
+      "reviewer_id": "student-1",
+      "pair_id": "pair-73a0e16b0a",
+      "preference": "b",
+      "preferred_model": "qwen3-8b"
+    },
+    {
+      "reviewer_id": "student-1",
+      "pair_id": "pair-0647c476a3",
+      "preference": "a",
+      "preferred_model": "qwen3.5-4b"
+    },
+    {
+      "reviewer_id": "student-1",
+      "pair_id": "pair-0610f8e249",
+      "preference": "a",
+      "preferred_model": "qwen3-8b"
+    },
+    {
+      "reviewer_id": "student-1",
+      "pair_id": "pair-8d96105f1e",
+      "preference": "a",
+      "preferred_model": "qwen3.5-4b"
+    },
+    {
+      "reviewer_id": "student-1",
+      "pair_id": "pair-f4b09e2578",
+      "preference": "b",
+      "preferred_model": "qwen3.5-4b"
+    },
+    {
+      "reviewer_id": "student-1",
+      "pair_id": "pair-0c0d91d6da",
+      "preference": "b",
+      "preferred_model": "qwen3.5-4b"
+    },
+    {
+      "reviewer_id": "student-1",
+      "pair_id": "pair-1477290ff7",
+      "preference": "a",
+      "preferred_model": "qwen3-8b"
+    },
+    {
+      "reviewer_id": "student-1",
+      "pair_id": "pair-dbc9cab02c",
+      "preference": "b",
+      "preferred_model": "qwen3.5-4b"
+    },
+    {
+      "reviewer_id": "student-1",
+      "pair_id": "pair-1d7a572b93",
+      "preference": "a",
+      "preferred_model": "qwen3-8b"
+    },
+    {
+      "reviewer_id": "student-2",
+      "pair_id": "pair-fec0cfa498",
+      "preference": "a",
+      "preferred_model": "qwen3-8b"
+    },
+    {
+      "reviewer_id": "student-2",
+      "pair_id": "pair-3809fd809e",
+      "preference": "b",
+      "preferred_model": "qwen3.5-4b"
+    },
+    {
+      "reviewer_id": "student-2",
+      "pair_id": "pair-2720b10d06",
+      "preference": "b",
+      "preferred_model": "qwen3-8b"
+    },
+    {
+      "reviewer_id": "student-2",
+      "pair_id": "pair-73a0e16b0a",
+      "preference": "b",
+      "preferred_model": "qwen3-8b"
+    },
+    {
+      "reviewer_id": "student-2",
+      "pair_id": "pair-0647c476a3",
+      "preference": "a",
+      "preferred_model": "qwen3.5-4b"
+    },
+    {
+      "reviewer_id": "student-2",
+      "pair_id": "pair-0610f8e249",
+      "preference": "a",
+      "preferred_model": "qwen3-8b"
+    },
+    {
+      "reviewer_id": "student-2",
+      "pair_id": "pair-8d96105f1e",
+      "preference": "a",
+      "preferred_model": "qwen3.5-4b"
+    },
+    {
+      "reviewer_id": "student-2",
+      "pair_id": "pair-f4b09e2578",
+      "preference": "b",
+      "preferred_model": "qwen3.5-4b"
+    },
+    {
+      "reviewer_id": "student-2",
+      "pair_id": "pair-0c0d91d6da",
+      "preference": "b",
+      "preferred_model": "qwen3.5-4b"
+    },
+    {
+      "reviewer_id": "student-2",
+      "pair_id": "pair-1477290ff7",
+      "preference": "a",
+      "preferred_model": "qwen3-8b"
+    },
+    {
+      "reviewer_id": "student-2",
+      "pair_id": "pair-dbc9cab02c",
+      "preference": "b",
+      "preferred_model": "qwen3.5-4b"
+    },
+    {
+      "reviewer_id": "student-2",
+      "pair_id": "pair-1d7a572b93",
+      "preference": "b",
+      "preferred_model": "qwen3.5-4b"
+    }
+  ]
+}

@@ -1,0 +1,140 @@
+{
+  "judge": "nvidia/nemotron-3.5-lightning:free",
+  "generator_models": [
+    "gemini-3.1-flash-lite",
+    "gemini-3.5-flash-lite"
+  ],
+  "data_origin": "synthetic",
+  "all_available_drafts_including_failures": {
+    "react": {
+      "n_drafts": 40,
+      "mean_quality_1_to_5": 3.65,
+      "quality_distribution": {
+        "3": 14,
+        "4": 26
+      },
+      "claim_counts": {
+        "supported": 203,
+        "unsupported": 19,
+        "not_factual": 26
+      },
+      "unsupported_per_factual_claim": 0.08558558558558559,
+      "unsupported_per_all_claims": 0.07661290322580645,
+      "drafts_with_unsupported_claim": 14
+    },
+    "supervisor": {
+      "n_drafts": 20,
+      "mean_quality_1_to_5": 3.75,
+      "quality_distribution": {
+        "3": 5,
+        "4": 15
+      },
+      "claim_counts": {
+        "supported": 93,
+        "unsupported": 12,
+        "not_factual": 16
+      },
+      "unsupported_per_factual_claim": 0.11428571428571428,
+      "unsupported_per_all_claims": 0.09917355371900827,
+      "drafts_with_unsupported_claim": 6
+    },
+    "hand_graph": {
+      "n_drafts": 43,
+      "mean_quality_1_to_5": 3.883720930232558,
+      "quality_distribution": {
+        "4": 32,
+        "3": 8,
+        "5": 3
+      },
+      "claim_counts": {
+        "supported": 199,
+        "unsupported": 11,
+        "not_factual": 2
+      },
+      "unsupported_per_factual_claim": 0.05238095238095238,
+      "unsupported_per_all_claims": 0.05188679245283019,
+      "drafts_with_unsupported_claim": 8
+    }
+  },
+  "research_submitted_drafts": {
+    "react": {
+      "n_drafts": 40,
+      "mean_quality_1_to_5": 3.65,
+      "quality_distribution": {
+        "3": 14,
+        "4": 26
+      },
+      "claim_counts": {
+        "supported": 203,
+        "unsupported": 19,
+        "not_factual": 26
+      },
+      "unsupported_per_factual_claim": 0.08558558558558559,
+      "unsupported_per_all_claims": 0.07661290322580645,
+      "drafts_with_unsupported_claim": 14
+    },
+    "supervisor": {
+      "n_drafts": 19,
+      "mean_quality_1_to_5": 3.736842105263158,
+      "quality_distribution": {
+        "3": 5,
+        "4": 14
+      },
+      "claim_counts": {
+        "supported": 87,
+        "unsupported": 12,
+        "not_factual": 15
+      },
+      "unsupported_per_factual_claim": 0.12121212121212122,
+      "unsupported_per_all_claims": 0.10526315789473684,
+      "drafts_with_unsupported_claim": 6
+    },
+    "hand_graph": {
+      "n_drafts": 30,
+      "mean_quality_1_to_5": 4,
+      "quality_distribution": {
+        "4": 24,
+        "3": 3,
+        "5": 3
+      },
+      "claim_counts": {
+        "supported": 133,
+        "unsupported": 6,
+        "not_factual": 1
+      },
+      "unsupported_per_factual_claim": 0.04316546762589928,
+      "unsupported_per_all_claims": 0.04285714285714286,
+      "drafts_with_unsupported_claim": 4
+    }
+  },
+  "calibration": {
+    "packet_id": "calibration-3e4b65998c8b7d67",
+    "model": "nvidia/nemotron-3.5-lightning:free",
+    "support": {
+      "n": 30,
+      "agreement": 0.6,
+      "kappa": 0.4029850746268656,
+      "method": "Cohen kappa"
+    },
+    "quality": {
+      "n": 30,
+      "agreement": 0.4666666666666667,
+      "kappa": 0.6811279826464208,
+      "method": "quadratic weighted Cohen kappa"
+    },
+    "human_raters": 1,
+    "data_origin": "synthetic",
+    "limits": "Single human, purpose-built calibration examples; agreement is not proof of correctness or transfer to real jobs",
+    "human_response_sha256": "65bfe678ffef748e0ae32dd0fdcc0895a85ee7b221df1f857830860fff9d121f",
+    "prompt_sha256": "16c35646c36bfd95b4417d36beee006f57afa804a84381ea1a6a873b1f4512f6",
+    "anonymized_human_labels": "human-labels.json",
+    "anonymized_human_sha256": "b06f4410f60bf5d8cc9426bd599813a7f127b6340389c8bbf01c567db07fdf2e"
+  },
+  "limits": [
+    "Judge predictions are proxy measurements, not ground truth: claim-label agreement with the single human is 60%, Cohen kappa about 0.403.",
+    "Quality weighted kappa is about 0.681 on 30 purpose-built examples; this does not establish transfer to full architecture drafts.",
+    "Only runs with nonempty drafts can be scored; missing drafts remain failures in the 150-run outcome tables, not zero-quality observations.",
+    "Raw retained drafts from later-failing runs are scored separately from simulator-submitted drafts; the research does not forge app approval.",
+    "Different generators and judge reduce direct self-evaluation but do not establish statistical independence or objective truth."
+  ]
+}

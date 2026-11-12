@@ -10,6 +10,7 @@ __pycache__/
 node_modules/
 .next/
 .next-e2e/
+.next-*/
 *.tsbuildinfo
 playwright-report/
 test-results/
@@ -19,3 +20,4 @@ work/
 *.sqlite
 *.sqlite3
 *.db
+.vercel/

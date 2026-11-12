@@ -1,0 +1,55 @@
+{
+  "items": [
+    {
+      "id": "cal-ai_ml-06",
+      "quality": 1,
+      "labels": [
+        {
+          "index": 0,
+          "label": "unsupported",
+          "reason": "claims production service without evidence of client work"
+        }
+      ]
+    },
+    {
+      "id": "cal-full_stack-09",
+      "quality": 3,
+      "labels": [
+        {
+          "index": 0,
+          "label": "supported",
+          "reason": "question asks for sample input and output format"
+        }
+    },
+    {
+      "id": "cal-data_analyst-02",
+      "quality": 3,
+      "labels": [
+        {
+          "index": 0,
+          "label": "supported",
+          "reason": "proposes confirming inputs and acceptance criteria"
+        }
+    },
+    {
+      "id": "cal-data_analyst-05",
+      "quality": 3,
+      "labels": [
+        {
+          "index": 0,
+          "label": "supported",
+          "reason": "proposes validating malformed inputs"
+        }
+    },
+    {
+      "id": "cal-ai_ml-03",
+      "quality": 3,
+      "labels": [
+        {
+          "index": 0,
+          "label": "supported",
+          "reason": "references scoped demonstration tests and handover"
+        }
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 # Implementation status
 
-Updated November 11, 2026. This file supersedes older notes about waiting for GigSim.
+Updated November 12, 2026. This file supersedes older notes about waiting for GigSim.
 The instructor's follow-up permits student-built data/simulation, confirmed by the user.
 
 ## Implemented and verified
@@ -25,14 +25,20 @@ The instructor's follow-up permits student-built data/simulation, confirmed by t
 - Dark responsive frontend with purple accents, active navigation and actual overview counts.
 - Pinned approved Kaggle archive and reproducible preprocessing to 600 hybrid scenarios;
   separately labelled fictional demo portfolios and seed command.
-- Backend regression checkpoint: **145 passed, four opt-in skipped**. Later changes are
+- Backend regression checkpoint: **162 passed, four opt-in skipped**. Later changes are
   validated in targeted checks; consult VERIFICATION.md for the latest complete run.
 
-## In progress
+## Research and review completed
 
-- Browser regression including marketplace outage → checkpoint retry → submit → client reply.
-- Actual retrieval/model/simulator experiments and final report; no unmeasured results claimed.
-- Docker worker/simulator rebuild, seeded live inference demonstration and documentation.
+- Five real retrieval variants evaluated on 66 synthetic tasks; V3 selected by the declared rule.
+- Two open-weight local configurations, 30 jobs each, completed with negative grounding results preserved.
+- 40 known-call tasks across three tool designs: 120 actual GPT-OSS 120B calls recorded.
+- 50 synthetic jobs across ReAct, real langgraph-supervisor and custom graph: 150 Gemini executions recorded, 102 error-free and 48 failures. This optional closed-model experiment is distinct from the open configurations.
+- Thirty actual student calibration labels and two user-supplied blind classmate panels saved; agreement and limitations documented.
+- All 103 available architecture drafts independently judged using the calibrated Nvidia rubric; no-draft and later-failing runs remain visible.
+- Ten-page R&D PDF and 1,500-word technical narrative finalized with measured results and limitations.
+- Final architecture and intention-to-treat X2 analysis saved in `evals/results/gemini-orchestration-v1/analysis.json`.
+- Full browser regression: 15 passed; TypeScript passed. These control checks are distinct from model quality.
 
 ## Remaining evidence or access requirements
 
@@ -40,9 +46,6 @@ The instructor's follow-up permits student-built data/simulation, confirmed by t
   No user's real marketplace account has been authorised and no live client is contacted.
 - Marketplace HTTP MCP bearer endpoint, shared rate limiting and a tracing backend still need
   completion/verification; current production agent transport is tenant-bound stdio.
-- Required real ReAct/supervisor/hand-graph and 40-task tool-design comparisons remain to run.
-- A person must label judge calibration items, and classmates must supply blind ratings.
-  Synthetic or model labels cannot honestly substitute for those observations.
 - Public hosting, reviewer credentials delivered privately, public repository/package/write-up,
   final PDF and recorded demo have not yet been delivered. A local URL is not deployment.
 - The independent rule client is not the original GigSim/LLM client. Compatibility with an

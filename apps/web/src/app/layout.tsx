@@ -35,7 +35,7 @@ export default function RootLayout({
             </header>
             <main id="main">
               <MarketplaceBanner />
-              {children}
+              <div className="page-content">{children}</div>
             </main>
             <footer className="app-footer">
               <span>GigBid · Your experience. Your voice.</span>

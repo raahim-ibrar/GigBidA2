@@ -54,6 +54,13 @@ def draft_digest(draft: ProposalDraft) -> str:
     ).hexdigest()
 
 
+def claim_is_verified(claim: Claim) -> bool:
+    factual = claim.kind == "experience" or bool(EXPERIENCE.search(claim.text))
+    if factual:
+        return claim.verdict == "supported" and bool(claim.evidence_ids)
+    return claim.verdict in {"supported", "not_applicable"}
+
+
 def paragraph_spans(text):
     return [match.span() for match in re.finditer(r"\S[\s\S]*?(?=\n[ \t\r]*\n|\Z)", text)]
 
@@ -305,6 +312,7 @@ class ProposalNodes:
         draft = await self.models.complete(
             "writer",
             {
+                "task": "draft_proposal",
                 "job": state["job"].model_dump(),
                 "fit": state["fit"].model_dump(),
                 "evidence": [item.model_dump() for item in state.get("evidence", [])],
@@ -364,12 +372,16 @@ class ProposalNodes:
             checked = by_index[index]
             ids = list(dict.fromkeys(item for item in checked.evidence_ids if item in valid))
             kind = "experience" if EXPERIENCE.search(text) else checked.kind
+            if kind == "non_experience" and checked.verdict == "not_applicable":
+                ids = []
             if kind == "experience" and checked.verdict == "supported" and not ids:
                 # Models sometimes omit IDs even for verbatim excerpts. Bind only an
                 # exact normalized substring of an actual source, never a free-text
                 # citation in the model's explanation or an inferred paraphrase.
                 ids = [item.id for item in evidence if normalized(text) in normalized(item.text)]
-            supported = checked.verdict == "supported" and (kind != "experience" or bool(ids))
+            supported = (
+                checked.verdict == "supported" and (kind != "experience" or bool(ids))
+            ) or (kind == "non_experience" and checked.verdict == "not_applicable")
             reason = checked.reason
             if supported and kind == "experience":
                 cited = " ".join(item.text for item in evidence if item.id in ids)
@@ -399,7 +411,9 @@ class ProposalNodes:
                     text=text,
                     evidence_ids=ids,
                     kind=kind,
-                    verdict="supported",
+                    verdict="not_applicable"
+                    if checked.verdict == "not_applicable"
+                    else "supported",
                     reason=checked.reason,
                 )
             )

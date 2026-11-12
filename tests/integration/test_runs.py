@@ -253,3 +253,15 @@ def test_concurrent_approval_requests_have_one_winner(run_fixture):
     with ThreadPoolExecutor(max_workers=2) as pool:
         results = list(pool.map(lambda _: attempt(), range(2)))
     assert sorted(results) == ["accepted", "stale"]
+
+
+def test_activity_polling_replays_cursor_and_preserves_tenant_boundary(client, run_fixture):
+    _, store, run, _, _, _ = run_fixture
+    response = client.get(f"/api/runs/{run.id}/activity")
+    assert response.status_code == 200
+    events = response.json()
+    assert events and [event["id"] for event in events] == sorted(event["id"] for event in events)
+    assert client.get(f"/api/runs/{run.id}/activity?after={events[-1]['id']}").json() == []
+    assert client.get(f"/api/runs/{run.id}/activity?after=-1").status_code == 422
+    register(client, "other-polling-tenant@example.org")
+    assert client.get(f"/api/runs/{run.id}/activity").status_code == 404

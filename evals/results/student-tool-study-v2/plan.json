@@ -1,0 +1,729 @@
+{
+  "seed": 4016,
+  "model": "openai/gpt-oss-20b",
+  "output_token_limit": 512,
+  "provider": "groq",
+  "tasks": [
+    {
+      "id": "tool-00",
+      "task": "Search for Python API 0 jobs, returning at most 5 results.",
+      "expected": {
+        "name": "search_jobs",
+        "arguments": {
+          "request": {
+            "query": "Python API 0",
+            "limit": 5
+          }
+        }
+      }
+    },
+    {
+      "id": "tool-01",
+      "task": "Read the full details of job job-0.",
+      "expected": {
+        "name": "get_job",
+        "arguments": {
+          "job_id": "job-0"
+        }
+      }
+    },
+    {
+      "id": "tool-02",
+      "task": "Inspect client-0's hiring and payment history.",
+      "expected": {
+        "name": "get_client_history",
+        "arguments": {
+          "client_id": "client-0"
+        }
+      }
+    },
+    {
+      "id": "tool-03",
+      "task": "Read my current Connects balance.",
+      "expected": {
+        "name": "get_connects_balance",
+        "arguments": {}
+      }
+    },
+    {
+      "id": "tool-04",
+      "task": "Read client messages in thread-0.",
+      "expected": {
+        "name": "list_messages",
+        "arguments": {
+          "conversation_id": "thread-0"
+        }
+      }
+    },
+    {
+      "id": "tool-05",
+      "task": "Preview, without spending, this proposal: {\"job_id\": \"job-0\", \"text\": \"I would validate milestone 1 before implementation.\", \"bid_amount\": 100, \"idempotency_key\": \"request-key-0\", \"dry_run\": true}",
+      "expected": {
+        "name": "create_proposal_draft",
+        "arguments": {
+          "request": {
+            "job_id": "job-0",
+            "text": "I would validate milestone 1 before implementation.",
+            "bid_amount": 100,
+            "idempotency_key": "request-key-0",
+            "dry_run": true
+          }
+        }
+      }
+    },
+    {
+      "id": "tool-06",
+      "task": "A matching human approval is persisted. Submit this exact approved proposal: {\"job_id\": \"job-0\", \"text\": \"I would validate milestone 1 before implementation.\", \"bid_amount\": 100, \"idempotency_key\": \"request-key-0\", \"dry_run\": false}",
+      "expected": {
+        "name": "submit_proposal",
+        "arguments": {
+          "request": {
+            "job_id": "job-0",
+            "text": "I would validate milestone 1 before implementation.",
+            "bid_amount": 100,
+            "idempotency_key": "request-key-0",
+            "dry_run": false
+          }
+        }
+      }
+    },
+    {
+      "id": "tool-07",
+      "task": "A matching human approval is already persisted. Send this exact message: {\"conversation_id\": \"thread-0\", \"text\": \"I would validate milestone 1 before implementation.\", \"idempotency_key\": \"request-key-0\", \"dry_run\": false}",
+      "expected": {
+        "name": "send_message",
+        "arguments": {
+          "request": {
+            "conversation_id": "thread-0",
+            "text": "I would validate milestone 1 before implementation.",
+            "idempotency_key": "request-key-0",
+            "dry_run": false
+          }
+        }
+      }
+    },
+    {
+      "id": "tool-08",
+      "task": "Search for Python API 1 jobs, returning at most 5 results.",
+      "expected": {
+        "name": "search_jobs",
+        "arguments": {
+          "request": {
+            "query": "Python API 1",
+            "limit": 5
+          }
+        }
+      }
+    },
+    {
+      "id": "tool-09",
+      "task": "Read the full details of job job-1.",
+      "expected": {
+        "name": "get_job",
+        "arguments": {
+          "job_id": "job-1"
+        }
+      }
+    },
+    {
+      "id": "tool-10",
+      "task": "Inspect client-1's hiring and payment history.",
+      "expected": {
+        "name": "get_client_history",
+        "arguments": {
+          "client_id": "client-1"
+        }
+      }
+    },
+    {
+      "id": "tool-11",
+      "task": "Read my current Connects balance.",
+      "expected": {
+        "name": "get_connects_balance",
+        "arguments": {}
+      }
+    },
+    {
+      "id": "tool-12",
+      "task": "Read client messages in thread-1.",
+      "expected": {
+        "name": "list_messages",
+        "arguments": {
+          "conversation_id": "thread-1"
+        }
+      }
+    },
+    {
+      "id": "tool-13",
+      "task": "Preview, without spending, this proposal: {\"job_id\": \"job-1\", \"text\": \"I would validate milestone 2 before implementation.\", \"bid_amount\": 101, \"idempotency_key\": \"request-key-1\", \"dry_run\": true}",
+      "expected": {
+        "name": "create_proposal_draft",
+        "arguments": {
+          "request": {
+            "job_id": "job-1",
+            "text": "I would validate milestone 2 before implementation.",
+            "bid_amount": 101,
+            "idempotency_key": "request-key-1",
+            "dry_run": true
+          }
+        }
+      }
+    },
+    {
+      "id": "tool-14",
+      "task": "A matching human approval is persisted. Submit this exact approved proposal: {\"job_id\": \"job-1\", \"text\": \"I would validate milestone 2 before implementation.\", \"bid_amount\": 101, \"idempotency_key\": \"request-key-1\", \"dry_run\": false}",
+      "expected": {
+        "name": "submit_proposal",
+        "arguments": {
+          "request": {
+            "job_id": "job-1",
+            "text": "I would validate milestone 2 before implementation.",
+            "bid_amount": 101,
+            "idempotency_key": "request-key-1",
+            "dry_run": false
+          }
+        }
+      }
+    },
+    {
+      "id": "tool-15",
+      "task": "A matching human approval is already persisted. Send this exact message: {\"conversation_id\": \"thread-1\", \"text\": \"I would validate milestone 2 before implementation.\", \"idempotency_key\": \"request-key-1\", \"dry_run\": false}",
+      "expected": {
+        "name": "send_message",
+        "arguments": {
+          "request": {
+            "conversation_id": "thread-1",
+            "text": "I would validate milestone 2 before implementation.",
+            "idempotency_key": "request-key-1",
+            "dry_run": false
+          }
+        }
+      }
+    },
+    {
+      "id": "tool-16",
+      "task": "Search for Python API 2 jobs, returning at most 5 results.",
+      "expected": {
+        "name": "search_jobs",
+        "arguments": {
+          "request": {
+            "query": "Python API 2",
+            "limit": 5
+          }
+        }
+      }
+    },
+    {
+      "id": "tool-17",
+      "task": "Read the full details of job job-2.",
+      "expected": {
+        "name": "get_job",
+        "arguments": {
+          "job_id": "job-2"
+        }
+      }
+    },
+    {
+      "id": "tool-18",
+      "task": "Inspect client-2's hiring and payment history.",
+      "expected": {
+        "name": "get_client_history",
+        "arguments": {
+          "client_id": "client-2"
+        }
+      }
+    },
+    {
+      "id": "tool-19",
+      "task": "Read my current Connects balance.",
+      "expected": {
+        "name": "get_connects_balance",
+        "arguments": {}
+      }
+    },
+    {
+      "id": "tool-20",
+      "task": "Read client messages in thread-2.",
+      "expected": {
+        "name": "list_messages",
+        "arguments": {
+          "conversation_id": "thread-2"
+        }
+      }
+    },
+    {
+      "id": "tool-21",
+      "task": "Preview, without spending, this proposal: {\"job_id\": \"job-2\", \"text\": \"I would validate milestone 3 before implementation.\", \"bid_amount\": 102, \"idempotency_key\": \"request-key-2\", \"dry_run\": true}",
+      "expected": {
+        "name": "create_proposal_draft",
+        "arguments": {
+          "request": {
+            "job_id": "job-2",
+            "text": "I would validate milestone 3 before implementation.",
+            "bid_amount": 102,
+            "idempotency_key": "request-key-2",
+            "dry_run": true
+          }
+        }
+      }
+    },
+    {
+      "id": "tool-22",
+      "task": "A matching human approval is persisted. Submit this exact approved proposal: {\"job_id\": \"job-2\", \"text\": \"I would validate milestone 3 before implementation.\", \"bid_amount\": 102, \"idempotency_key\": \"request-key-2\", \"dry_run\": false}",
+      "expected": {
+        "name": "submit_proposal",
+        "arguments": {
+          "request": {
+            "job_id": "job-2",
+            "text": "I would validate milestone 3 before implementation.",
+            "bid_amount": 102,
+            "idempotency_key": "request-key-2",
+            "dry_run": false
+          }
+        }
+      }
+    },
+    {
+      "id": "tool-23",
+      "task": "A matching human approval is already persisted. Send this exact message: {\"conversation_id\": \"thread-2\", \"text\": \"I would validate milestone 3 before implementation.\", \"idempotency_key\": \"request-key-2\", \"dry_run\": false}",
+      "expected": {
+        "name": "send_message",
+        "arguments": {
+          "request": {
+            "conversation_id": "thread-2",
+            "text": "I would validate milestone 3 before implementation.",
+            "idempotency_key": "request-key-2",
+            "dry_run": false
+          }
+        }
+      }
+    },
+    {
+      "id": "tool-24",
+      "task": "Search for Python API 3 jobs, returning at most 5 results.",
+      "expected": {
+        "name": "search_jobs",
+        "arguments": {
+          "request": {
+            "query": "Python API 3",
+            "limit": 5
+          }
+        }
+      }
+    },
+    {
+      "id": "tool-25",
+      "task": "Read the full details of job job-3.",
+      "expected": {
+        "name": "get_job",
+        "arguments": {
+          "job_id": "job-3"
+        }
+      }
+    },
+    {
+      "id": "tool-26",
+      "task": "Inspect client-3's hiring and payment history.",
+      "expected": {
+        "name": "get_client_history",
+        "arguments": {
+          "client_id": "client-3"
+        }
+      }
+    },
+    {
+      "id": "tool-27",
+      "task": "Read my current Connects balance.",
+      "expected": {
+        "name": "get_connects_balance",
+        "arguments": {}
+      }
+    },
+    {
+      "id": "tool-28",
+      "task": "Read client messages in thread-3.",
+      "expected": {
+        "name": "list_messages",
+        "arguments": {
+          "conversation_id": "thread-3"
+        }
+      }
+    },
+    {
+      "id": "tool-29",
+      "task": "Preview, without spending, this proposal: {\"job_id\": \"job-3\", \"text\": \"I would validate milestone 4 before implementation.\", \"bid_amount\": 103, \"idempotency_key\": \"request-key-3\", \"dry_run\": true}",
+      "expected": {
+        "name": "create_proposal_draft",
+        "arguments": {
+          "request": {
+            "job_id": "job-3",
+            "text": "I would validate milestone 4 before implementation.",
+            "bid_amount": 103,
+            "idempotency_key": "request-key-3",
+            "dry_run": true
+          }
+        }
+      }
+    },
+    {
+      "id": "tool-30",
+      "task": "A matching human approval is persisted. Submit this exact approved proposal: {\"job_id\": \"job-3\", \"text\": \"I would validate milestone 4 before implementation.\", \"bid_amount\": 103, \"idempotency_key\": \"request-key-3\", \"dry_run\": false}",
+      "expected": {
+        "name": "submit_proposal",
+        "arguments": {
+          "request": {
+            "job_id": "job-3",
+            "text": "I would validate milestone 4 before implementation.",
+            "bid_amount": 103,
+            "idempotency_key": "request-key-3",
+            "dry_run": false
+          }
+        }
+      }
+    },
+    {
+      "id": "tool-31",
+      "task": "A matching human approval is already persisted. Send this exact message: {\"conversation_id\": \"thread-3\", \"text\": \"I would validate milestone 4 before implementation.\", \"idempotency_key\": \"request-key-3\", \"dry_run\": false}",
+      "expected": {
+        "name": "send_message",
+        "arguments": {
+          "request": {
+            "conversation_id": "thread-3",
+            "text": "I would validate milestone 4 before implementation.",
+            "idempotency_key": "request-key-3",
+            "dry_run": false
+          }
+        }
+      }
+    },
+    {
+      "id": "tool-32",
+      "task": "Search for Python API 4 jobs, returning at most 5 results.",
+      "expected": {
+        "name": "search_jobs",
+        "arguments": {
+          "request": {
+            "query": "Python API 4",
+            "limit": 5
+          }
+        }
+      }
+    },
+    {
+      "id": "tool-33",
+      "task": "Read the full details of job job-4.",
+      "expected": {
+        "name": "get_job",
+        "arguments": {
+          "job_id": "job-4"
+        }
+      }
+    },
+    {
+      "id": "tool-34",
+      "task": "Inspect client-4's hiring and payment history.",
+      "expected": {
+        "name": "get_client_history",
+        "arguments": {
+          "client_id": "client-4"
+        }
+      }
+    },
+    {
+      "id": "tool-35",
+      "task": "Read my current Connects balance.",
+      "expected": {
+        "name": "get_connects_balance",
+        "arguments": {}
+      }
+    },
+    {
+      "id": "tool-36",
+      "task": "Read client messages in thread-4.",
+      "expected": {
+        "name": "list_messages",
+        "arguments": {
+          "conversation_id": "thread-4"
+        }
+      }
+    },
+    {
+      "id": "tool-37",
+      "task": "Preview, without spending, this proposal: {\"job_id\": \"job-4\", \"text\": \"I would validate milestone 5 before implementation.\", \"bid_amount\": 104, \"idempotency_key\": \"request-key-4\", \"dry_run\": true}",
+      "expected": {
+        "name": "create_proposal_draft",
+        "arguments": {
+          "request": {
+            "job_id": "job-4",
+            "text": "I would validate milestone 5 before implementation.",
+            "bid_amount": 104,
+            "idempotency_key": "request-key-4",
+            "dry_run": true
+          }
+        }
+      }
+    },
+    {
+      "id": "tool-38",
+      "task": "A matching human approval is persisted. Submit this exact approved proposal: {\"job_id\": \"job-4\", \"text\": \"I would validate milestone 5 before implementation.\", \"bid_amount\": 104, \"idempotency_key\": \"request-key-4\", \"dry_run\": false}",
+      "expected": {
+        "name": "submit_proposal",
+        "arguments": {
+          "request": {
+            "job_id": "job-4",
+            "text": "I would validate milestone 5 before implementation.",
+            "bid_amount": 104,
+            "idempotency_key": "request-key-4",
+            "dry_run": false
+          }
+        }
+      }
+    },
+    {
+      "id": "tool-39",
+      "task": "A matching human approval is already persisted. Send this exact message: {\"conversation_id\": \"thread-4\", \"text\": \"I would validate milestone 5 before implementation.\", \"idempotency_key\": \"request-key-4\", \"dry_run\": false}",
+      "expected": {
+        "name": "send_message",
+        "arguments": {
+          "request": {
+            "conversation_id": "thread-4",
+            "text": "I would validate milestone 5 before implementation.",
+            "idempotency_key": "request-key-4",
+            "dry_run": false
+          }
+        }
+      }
+    }
+  ],
+  "tools": {
+    "fine": [
+      {
+        "name": "search_jobs",
+        "description": "Search job listings",
+        "argument_structure_example": {
+          "request": {
+            "query": "Python API 0",
+            "limit": 5
+          }
+        }
+      },
+      {
+        "name": "get_job",
+        "description": "Get a job",
+        "argument_structure_example": {
+          "job_id": "job-0"
+        }
+      },
+      {
+        "name": "get_client_history",
+        "description": "Get client history",
+        "argument_structure_example": {
+          "client_id": "client-0"
+        }
+      },
+      {
+        "name": "get_connects_balance",
+        "description": "Get balance",
+        "argument_structure_example": {}
+      },
+      {
+        "name": "list_messages",
+        "description": "List messages",
+        "argument_structure_example": {
+          "conversation_id": "thread-0"
+        }
+      },
+      {
+        "name": "create_proposal_draft",
+        "description": "Create draft",
+        "argument_structure_example": {
+          "request": {
+            "job_id": "job-0",
+            "text": "I would validate milestone 1 before implementation.",
+            "bid_amount": 100,
+            "idempotency_key": "request-key-0",
+            "dry_run": true
+          }
+        }
+      },
+      {
+        "name": "submit_proposal",
+        "description": "Submit proposal",
+        "argument_structure_example": {
+          "request": {
+            "job_id": "job-0",
+            "text": "I would validate milestone 1 before implementation.",
+            "bid_amount": 100,
+            "idempotency_key": "request-key-0",
+            "dry_run": false
+          }
+        }
+      },
+      {
+        "name": "send_message",
+        "description": "Send message",
+        "argument_structure_example": {
+          "request": {
+            "conversation_id": "thread-0",
+            "text": "I would validate milestone 1 before implementation.",
+            "idempotency_key": "request-key-0",
+            "dry_run": false
+          }
+        }
+      }
+    ],
+    "coarse": [
+      {
+        "name": "marketplace_read",
+        "operations": [
+          "search_jobs",
+          "get_job",
+          "get_client_history",
+          "get_connects_balance",
+          "list_messages"
+        ],
+        "payload_structures": {
+          "search_jobs": {
+            "request": {
+              "query": "Python API 0",
+              "limit": 5
+            }
+          },
+          "get_job": {
+            "job_id": "job-0"
+          },
+          "get_client_history": {
+            "client_id": "client-0"
+          },
+          "get_connects_balance": {},
+          "list_messages": {
+            "conversation_id": "thread-0"
+          }
+        },
+        "arguments": {
+          "operation": "one operation name",
+          "payload": "that operation's fine-tool arguments"
+        }
+      },
+      {
+        "name": "marketplace_write",
+        "operations": [
+          "create_proposal_draft",
+          "submit_proposal",
+          "send_message"
+        ],
+        "payload_structures": {
+          "create_proposal_draft": {
+            "request": {
+              "job_id": "job-0",
+              "text": "I would validate milestone 1 before implementation.",
+              "bid_amount": 100,
+              "idempotency_key": "request-key-0",
+              "dry_run": true
+            }
+          },
+          "submit_proposal": {
+            "request": {
+              "job_id": "job-0",
+              "text": "I would validate milestone 1 before implementation.",
+              "bid_amount": 100,
+              "idempotency_key": "request-key-0",
+              "dry_run": false
+            }
+          },
+          "send_message": {
+            "request": {
+              "conversation_id": "thread-0",
+              "text": "I would validate milestone 1 before implementation.",
+              "idempotency_key": "request-key-0",
+              "dry_run": false
+            }
+          }
+        },
+        "arguments": {
+          "operation": "one operation name",
+          "payload": "that operation's fine-tool arguments"
+        }
+      }
+    ],
+    "rewritten": [
+      {
+        "name": "search_jobs",
+        "description": "Use for discovering jobs by query; not for loading a known job ID.",
+        "argument_structure_example": {
+          "request": {
+            "query": "Python API 0",
+            "limit": 5
+          }
+        }
+      },
+      {
+        "name": "get_job",
+        "description": "Use for full details of one known job_id; never use client_id here.",
+        "argument_structure_example": {
+          "job_id": "job-0"
+        }
+      },
+      {
+        "name": "get_client_history",
+        "description": "Use for the hiring/payment history of a known client_id.",
+        "argument_structure_example": {
+          "client_id": "client-0"
+        }
+      },
+      {
+        "name": "get_connects_balance",
+        "description": "Read Connects remaining; no arguments and no spending.",
+        "argument_structure_example": {}
+      },
+      {
+        "name": "list_messages",
+        "description": "Read a known conversation_id; never send or modify messages.",
+        "argument_structure_example": {
+          "conversation_id": "thread-0"
+        }
+      },
+      {
+        "name": "create_proposal_draft",
+        "description": "Preview without debit; dry_run true. Use submit_proposal for approved submission.",
+        "argument_structure_example": {
+          "request": {
+            "job_id": "job-0",
+            "text": "I would validate milestone 1 before implementation.",
+            "bid_amount": 100,
+            "idempotency_key": "request-key-0",
+            "dry_run": true
+          }
+        }
+      },
+      {
+        "name": "submit_proposal",
+        "description": "Submit the exact approved proposal; dry_run false only with stated approval.",
+        "argument_structure_example": {
+          "request": {
+            "job_id": "job-0",
+            "text": "I would validate milestone 1 before implementation.",
+            "bid_amount": 100,
+            "idempotency_key": "request-key-0",
+            "dry_run": false
+          }
+        }
+      },
+      {
+        "name": "send_message",
+        "description": "Send an approved reply with conversation_id, text, idempotency_key and dry_run.",
+        "argument_structure_example": {
+          "request": {
+            "conversation_id": "thread-0",
+            "text": "I would validate milestone 1 before implementation.",
+            "idempotency_key": "request-key-0",
+            "dry_run": false
+          }
+        }
+      }
+    ]
+  },
+  "prompt_sha256": "ed58cf5f56502bd3ce8c08b5cfb9af5b80c2a414717fd6b9c3ee360dc8a0a6c1",
+  "hypothesis": "Rewritten descriptions improve logical tool selection over fine baseline",
+  "limits": "Synthetic call predictions; no execution or real-world outcome inference"
+}

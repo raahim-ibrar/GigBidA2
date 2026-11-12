@@ -12,7 +12,7 @@ from sqlalchemy.orm import Session
 from agent.handoffs import ApprovalDecision, ProposalDraft
 from agent.memory.edits import edit_observation
 from agent.model_client import BudgetExceeded
-from agent.proposal_nodes import ReviewRequired, draft_digest, paragraph_spans
+from agent.proposal_nodes import ReviewRequired, claim_is_verified, draft_digest, paragraph_spans
 from agent.safety import mask_pii
 from apps.api.models import (
     AgentRun,
@@ -363,10 +363,7 @@ class RunStore:
 
     def _check_evidence(self, db, tenant, draft):
         ids = {item for claim in draft.claims for item in claim.evidence_ids}
-        if any(
-            claim.verdict != "supported" or (claim.kind == "experience" and not claim.evidence_ids)
-            for claim in draft.claims
-        ):
+        if any(not claim_is_verified(claim) for claim in draft.claims):
             raise ReviewRequired("The draft contains an unverified claim")
         if not ids:
             return

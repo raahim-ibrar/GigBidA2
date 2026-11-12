@@ -36,7 +36,10 @@ class BrowserModels:
                 if payload.get("task") == "regenerate_one_paragraph"
                 else "I built a Python API. Could we discuss scope?"
             }
-            if "synthetic project" in job["title"] and not payload.get("task"):
+            if (
+                "synthetic project" in job["title"]
+                and payload.get("task") != "regenerate_one_paragraph"
+            ):
                 outputs[role] = {
                     "text": "I built a Python API. I would validate the inputs, implement "
                     "embeddings and retrieval, and test the first milestone before handover.",
@@ -58,7 +61,7 @@ class BrowserModels:
                     {
                         "index": item["index"],
                         "kind": "experience" if "built" in item["text"] else "non_experience",
-                        "verdict": "supported",
+                        "verdict": "supported" if "built" in item["text"] else "not_applicable",
                         "evidence_ids": [item["id"] for item in payload["evidence"]],
                         "reason": "Deterministic browser fixture",
                     }

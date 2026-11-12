@@ -13,7 +13,16 @@ OFF_PLATFORM = re.compile(
     r"\b(?:telegram|whatsapp|pay outside|off.platform payment|unpaid test|free sample work)\b", re.I
 )
 EXPERIENCE = re.compile(
-    r"\b(?:I|we|my|our)\b.*\b(?:built|developed|worked|years|experience|implemented|delivered|created|trained|deployed|led|achieved)\b",
+    # Backstop explicit first-person past claims, not any past participle later
+    # in a future plan ("I would check the index can be built"). The model still
+    # assesses other experience assertions; this is not a complete grammar parser.
+    r"\b(?:I|we)\s+(?:(?:have|had)\s+)?"
+    r"(?:(?:previously|recently|successfully|personally|already|actually)\s+){0,3}"
+    r"(?:built|developed|worked|implemented|delivered|created|trained|deployed|led|achieved)\b"
+    r"|\b(?:I|we)\s+(?:have|bring|offer|possess)\b[^.!?]{0,80}\b(?:years|experience|expertise)\b"
+    r"|\b(?:my|our)\s+(?:(?:prior|previous|extensive|professional|relevant)\s+){0,3}"
+    r"(?:experience|expertise|background)\b"
+    r"|\b(?:my|our)\s+(?:past|prior|previous)\s+(?:work|projects|results)\b",
     re.I,
 )
 SECRET_KEYS = {

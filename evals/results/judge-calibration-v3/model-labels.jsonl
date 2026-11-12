@@ -1,0 +1,20 @@
+{"id":"cal-data_analyst-07","quality":4,"labels":[{"index":0,"label":"supported","reason":"Evidence explicitly documents acceptance criteria in coursework prototype."}]}
+{"id":"cal-data_analyst-00","quality":4,"labels":[{"index":0,"label":"supported","reason":"Evidence lists SQL, Power BI, star schema, revenue reconciliation, measures, dashboard."}]}
+{"id":"cal-full_stack-07","quality":4,"labels":[{"index":0,"label":"supported","reason":"Evidence documents acceptance criteria in coursework prototype."}]}
+{"id":"cal-data_analyst-01","quality":1,"labels":[{"index":0,"label":"unsupported","reason":"Claim of 37% revenue increase has no evidence in coursework evidence."}]}
+{"id":"cal-ai_ml-09","quality":5,"labels":[{"index":0,"label":"not_factual","reason":"Claim is a question, not a factual assertion."}]}
+{"id":"cal-ai_ml-04","quality":2,"labels":[{"index":0,"label":"unsupported","reason":"claim exceeds evidence; no AWS/K8s experience established in coursework"}]}
+{"id":"cal-full_stack-04","quality":2,"labels":[{"index":0,"label":"unsupported","reason":"claim exceeds evidence; no AWS/K8s experience established in coursework"}]}
+{"id":"cal-full_stack-05","quality":4,"labels":[{"index":0,"label":"supported","reason":"claim directly mirrors documented validation and handover steps"}]}
+{"id":"cal-data_analyst-08","quality":1,"labels":[{"index":0,"label":"unsupported","reason":"claim invents decade-long professional experience not present in evidence"}]}
+{"id":"cal-full_stack-01","quality":1,"labels":[{"index":0,"label":"unsupported","reason":"claim invents revenue-lift result not established by evidence"}]}
+{"id":"cal-ai_ml-00","quality":4,"labels":[{"index":0,"label":"supported","reason":"Evidence confirms Python, embeddings, retrieval, chunking, indexing, evaluation, Python API."}]}
+{"id":"cal-data_analyst-06","quality":1,"labels":[{"index":0,"label":"not_factual","reason":"Evidence states scoped demonstration, not paid client work or production deployment."}]}
+{"id":"cal-ai_ml-08","quality":1,"labels":[{"index":0,"label":"not_factual","reason":"Evidence states scoped demonstration, not paid client work or production deployment."}]}
+{"id":"cal-full_stack-02","quality":5,"labels":[{"index":0,"label":"supported","reason":"Proposal mirrors evidence: confirm inputs, agree acceptance criteria, implement small solution with tests."}]}
+{"id":"cal-full_stack-06","quality":1,"labels":[{"index":0,"label":"not_factual","reason":"Evidence states scoped demonstration, not paid client work or production deployment."}]}
+{"id":"cal-ai_ml-06","quality":2,"labels":[{"index":0,"label":"unsupported","reason":"claim overstates fictional work as production service"}]}
+{"id":"cal-full_stack-09","quality":4,"labels":[{"index":0,"label":"supported","reason":"claim is a question clarifying client request"}]}
+{"id":"cal-data_analyst-02","quality":4,"labels":[{"index":0,"label":"supported","reason":"claim restates proposed first step from proposal"}]}
+{"id":"cal-data_analyst-05","quality":4,"labels":[{"index":0,"label":"supported","reason":"claim restates proposed first step from proposal"}]}
+{"id":"cal-ai_ml-03","quality":4,"labels":[{"index":0,"label":"supported","reason":"claim matches evidence scope of demonstration"}]}

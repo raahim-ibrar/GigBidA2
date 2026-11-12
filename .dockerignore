@@ -14,3 +14,7 @@
 data/processed
 work
 **/.next-e2e
+**/.next-*
+**/.vercel
+output
+evals/results

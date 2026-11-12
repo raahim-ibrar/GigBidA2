@@ -1,0 +1,65 @@
+{
+  "items": [
+    {
+      "id": "cal-data_analyst-04",
+      "quality": 2,
+      "labels": [
+        {
+          "index": 0,
+          "label": "unsupported",
+          "reason": "claims extensive production experience but evidence shows only fictional coursework"
+        }
+      ]
+    },
+    {
+      "id": "cal-ai_ml-01",
+      "quality": 1,
+      "labels": [
+        {
+          "index": 0,
+          "label": "unsupported",
+          "reason": "claims revenue increase but evidence contains no business uplift or deployment data"
+        }
+      ]
+    },
+    {
+      "id": "cal-ai_ml-02",
+      "quality": 4,
+      "labels": [
+        {
+          "index": 0,
+          "label": "supported",
+          "reason": "proposed step aligns with evidence of confirming inputs and acceptance criteria"
+        }
+      ]
+    },
+    {
+      "id": "cal-full_stack-03",
+      "quality": 4,
+      "labels": [
+        {
+          "index": 0,
+          "label": "supported",
+          "reason": "claim references supplied tests and handover guide from evidence"
+        }
+    ,
+      {
+        "index": 1,
+        "label": "not_factual",
+        "reason": "proposal references scoped demonstration not production deployment"
+      }
+      ]
+    },
+    {
+      "id": "cal-data_analyst-03",
+      "quality": 4,
+      "labels": [
+        {
+          "index": 0,
+          "label": "supported",
+          "reason": "claim references supplied tests and handover guide from evidence"
+        }
+      ]
+    }
+  ]
+}

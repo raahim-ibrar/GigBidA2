@@ -18,7 +18,10 @@ class Settings(BaseSettings):
     redis_url: str = "redis://127.0.0.1:6379/0"
     qdrant_url: str = "http://127.0.0.1:6333"
     ollama_base_url: str = "http://127.0.0.1:11434"
+    model_profile: str = "open"
     groq_api_key: SecretStr = Field(default=SecretStr(""), repr=False)
+    google_api_key: SecretStr = Field(default=SecretStr(""), repr=False)
+    groq_daily_token_cap: int = Field(default=200000, ge=1000, le=1000000)
     model_cache_dir: Path = Field(
         default_factory=lambda: Path(__file__).resolve().parents[2] / "work/models"
     )

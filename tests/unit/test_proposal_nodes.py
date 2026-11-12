@@ -245,6 +245,87 @@ async def test_numeric_guard_requires_complete_numbers_not_substrings(setup_node
         await nodes.verifier(state)
 
 
+async def test_future_plan_has_explicit_non_factual_verdict(setup_nodes):
+    nodes, state, portfolio, models, _ = setup_nodes
+    state["evidence"] = [portfolio.evidence]
+    state["draft"] = ProposalDraft(text="I would first validate your input schema.")
+    models.reviews = [
+        {
+            "index": 0,
+            "kind": "non_experience",
+            "verdict": "not_applicable",
+            "evidence_ids": [],
+            "reason": "Proposed future action",
+        }
+    ]
+    result = await nodes.verifier(state)
+    assert result["draft"].text == state["draft"].text
+    assert result["draft"].claims[0].verdict == "not_applicable"
+
+
+async def test_non_factual_verdict_cannot_bypass_past_experience_guard(setup_nodes):
+    nodes, state, portfolio, models, _ = setup_nodes
+    state["evidence"] = [portfolio.evidence]
+    state["draft"] = ProposalDraft(text="I built 100 Python APIs.")
+    models.reviews = [
+        {
+            "index": 0,
+            "kind": "non_experience",
+            "verdict": "not_applicable",
+            "evidence_ids": [],
+            "reason": "Misclassified fixture",
+        }
+    ]
+    with pytest.raises(GroundingFailure):
+        await nodes.verifier(state)
+
+
+async def test_future_passive_built_is_not_a_past_experience_claim(setup_nodes):
+    nodes, state, portfolio, models, _ = setup_nodes
+    state["evidence"] = [portfolio.evidence]
+    text = "I would check that the retrieval index can be built without errors."
+    state["draft"] = ProposalDraft(text=text, screening_answers={"First step?": text})
+    models.reviews = [
+        {
+            "index": i,
+            "kind": "non_experience",
+            "verdict": "not_applicable",
+            "evidence_ids": [],
+            "reason": "Future validation plan",
+        }
+        for i in range(2)
+    ]
+    result = await nodes.verifier(state)
+    assert result["draft"].text == text
+    assert result["draft"].screening_answers["First step?"] == text
+
+
+async def test_non_factual_plan_reaches_the_actual_graph_approval_interrupt(setup_nodes):
+    nodes, state, _, models, saved = setup_nodes
+    text = "I would check that the retrieval index can be built without errors."
+    original = models.complete
+
+    async def complete(role, payload, schema):
+        if role == "writer":
+            return schema(text=text)
+        return await original(role, payload, schema)
+
+    models.complete = complete
+    models.reviews = [
+        {
+            "index": 0,
+            "kind": "non_experience",
+            "verdict": "not_applicable",
+            "evidence_ids": [],
+            "reason": "Proposed validation",
+        }
+    ]
+    graph = build_bid_graph(checkpointer=InMemorySaver(), nodes=nodes.mapping())
+    result = await graph.ainvoke(state, {"configurable": {"thread_id": str(uuid4())}})
+    assert result["status"] == "awaiting_approval" and "__interrupt__" in result
+    assert not saved
+
+
 async def test_trusted_source_uuid_is_not_mistaken_for_a_numerical_achievement(setup_nodes):
     nodes, state, portfolio, models, _ = setup_nodes
     source_id = str(uuid4())

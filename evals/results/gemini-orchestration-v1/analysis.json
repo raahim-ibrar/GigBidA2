@@ -1,0 +1,925 @@
+{
+  "data_origin": "fully synthetic research jobs, portfolios and rule-client outcomes",
+  "n_jobs": 50,
+  "n_runs": 150,
+  "source_snapshot_verified": true,
+  "raw_sha256": "27a0a91b9d463dbc0a79cc5e3fc47d93ea448057b2af534cb93d82bbb2685423",
+  "conditions": {
+    "react": {
+      "n": 50,
+      "error_free": 41,
+      "errors": 9,
+      "error_categories": {
+        "token_or_step_budget": 7,
+        "provider_or_structured_output": 2
+      },
+      "decision_observed_n": 41,
+      "decision_stage_correct_n": 36,
+      "decision_stage_accuracy_all_assigned": 0.72,
+      "error_free_correct_decision_n": 36,
+      "error_free_correct_decision_rate_all_assigned": 0.72,
+      "submissions": 40,
+      "replies": 35,
+      "drafts_available": 40,
+      "measured_tokens_total": 418848,
+      "measured_tokens_mean": 8376.96,
+      "unknown_usage_calls": 22,
+      "wall_seconds_median": 32.599749600001815,
+      "wall_seconds_p95_nearest_rank": 138.55266409999967,
+      "draft_policy_flags": 0,
+      "scam_controls_n": 6,
+      "scam_controls_rejected": 1,
+      "scam_control_submissions": 5
+    },
+    "supervisor": {
+      "n": 50,
+      "error_free": 24,
+      "errors": 26,
+      "error_categories": {
+        "token_or_step_budget": 22,
+        "provider_timeout": 4
+      },
+      "decision_observed_n": 25,
+      "decision_stage_correct_n": 24,
+      "decision_stage_accuracy_all_assigned": 0.48,
+      "error_free_correct_decision_n": 23,
+      "error_free_correct_decision_rate_all_assigned": 0.46,
+      "submissions": 19,
+      "replies": 18,
+      "drafts_available": 20,
+      "measured_tokens_total": 516502,
+      "measured_tokens_mean": 10330.04,
+      "unknown_usage_calls": 36,
+      "wall_seconds_median": 60.35194215000047,
+      "wall_seconds_p95_nearest_rank": 186.1275046999981,
+      "draft_policy_flags": 0,
+      "scam_controls_n": 6,
+      "scam_controls_rejected": 5,
+      "scam_control_submissions": 1
+    },
+    "hand_graph": {
+      "n": 50,
+      "error_free": 37,
+      "errors": 13,
+      "error_categories": {
+        "token_or_step_budget": 10,
+        "other_observed_stop": 2,
+        "provider_or_structured_output": 1
+      },
+      "decision_observed_n": 50,
+      "decision_stage_correct_n": 49,
+      "decision_stage_accuracy_all_assigned": 0.98,
+      "error_free_correct_decision_n": 36,
+      "error_free_correct_decision_rate_all_assigned": 0.72,
+      "submissions": 30,
+      "replies": 29,
+      "drafts_available": 43,
+      "measured_tokens_total": 433114,
+      "measured_tokens_mean": 8662.28,
+      "unknown_usage_calls": 0,
+      "wall_seconds_median": 49.29862460000004,
+      "wall_seconds_p95_nearest_rank": 178.69293079999989,
+      "draft_policy_flags": 0,
+      "scam_controls_n": 6,
+      "scam_controls_rejected": 6,
+      "scam_control_submissions": 0
+    }
+  },
+  "by_model_and_condition": {
+    "gemini-3.1-flash-lite": {
+      "react": {
+        "n": 26,
+        "error_free": 26,
+        "errors": 0,
+        "error_categories": {},
+        "decision_observed_n": 26,
+        "decision_stage_correct_n": 21,
+        "decision_stage_accuracy_all_assigned": 0.8076923076923077,
+        "error_free_correct_decision_n": 21,
+        "error_free_correct_decision_rate_all_assigned": 0.8076923076923077,
+        "submissions": 26,
+        "replies": 21,
+        "drafts_available": 26,
+        "measured_tokens_total": 195966,
+        "measured_tokens_mean": 7537.153846153846,
+        "unknown_usage_calls": 2,
+        "wall_seconds_median": 27.951896399998077,
+        "wall_seconds_p95_nearest_rank": 176.81145560000004,
+        "draft_policy_flags": 0,
+        "scam_controls_n": 5,
+        "scam_controls_rejected": 0,
+        "scam_control_submissions": 5
+      },
+      "supervisor": {
+        "n": 26,
+        "error_free": 18,
+        "errors": 8,
+        "error_categories": {
+          "token_or_step_budget": 4,
+          "provider_timeout": 4
+        },
+        "decision_observed_n": 19,
+        "decision_stage_correct_n": 18,
+        "decision_stage_accuracy_all_assigned": 0.6923076923076923,
+        "error_free_correct_decision_n": 17,
+        "error_free_correct_decision_rate_all_assigned": 0.6538461538461539,
+        "submissions": 14,
+        "replies": 13,
+        "drafts_available": 15,
+        "measured_tokens_total": 253634,
+        "measured_tokens_mean": 9755.153846153846,
+        "unknown_usage_calls": 10,
+        "wall_seconds_median": 63.99968135000199,
+        "wall_seconds_p95_nearest_rank": 187.58780800000022,
+        "draft_policy_flags": 0,
+        "scam_controls_n": 5,
+        "scam_controls_rejected": 4,
+        "scam_control_submissions": 1
+      },
+      "hand_graph": {
+        "n": 26,
+        "error_free": 16,
+        "errors": 10,
+        "error_categories": {
+          "token_or_step_budget": 9,
+          "other_observed_stop": 1
+        },
+        "decision_observed_n": 26,
+        "decision_stage_correct_n": 26,
+        "decision_stage_accuracy_all_assigned": 1.0,
+        "error_free_correct_decision_n": 16,
+        "error_free_correct_decision_rate_all_assigned": 0.6153846153846154,
+        "submissions": 11,
+        "replies": 11,
+        "drafts_available": 21,
+        "measured_tokens_total": 252393,
+        "measured_tokens_mean": 9707.423076923076,
+        "unknown_usage_calls": 0,
+        "wall_seconds_median": 61.6215550500001,
+        "wall_seconds_p95_nearest_rank": 215.90570070000103,
+        "draft_policy_flags": 0,
+        "scam_controls_n": 5,
+        "scam_controls_rejected": 5,
+        "scam_control_submissions": 0
+      }
+    },
+    "gemini-3.5-flash-lite": {
+      "react": {
+        "n": 24,
+        "error_free": 15,
+        "errors": 9,
+        "error_categories": {
+          "token_or_step_budget": 7,
+          "provider_or_structured_output": 2
+        },
+        "decision_observed_n": 15,
+        "decision_stage_correct_n": 15,
+        "decision_stage_accuracy_all_assigned": 0.625,
+        "error_free_correct_decision_n": 15,
+        "error_free_correct_decision_rate_all_assigned": 0.625,
+        "submissions": 14,
+        "replies": 14,
+        "drafts_available": 14,
+        "measured_tokens_total": 222882,
+        "measured_tokens_mean": 9286.75,
+        "unknown_usage_calls": 20,
+        "wall_seconds_median": 39.98336269999891,
+        "wall_seconds_p95_nearest_rank": 54.166619899999205,
+        "draft_policy_flags": 0,
+        "scam_controls_n": 1,
+        "scam_controls_rejected": 1,
+        "scam_control_submissions": 0
+      },
+      "supervisor": {
+        "n": 24,
+        "error_free": 6,
+        "errors": 18,
+        "error_categories": {
+          "token_or_step_budget": 18
+        },
+        "decision_observed_n": 6,
+        "decision_stage_correct_n": 6,
+        "decision_stage_accuracy_all_assigned": 0.25,
+        "error_free_correct_decision_n": 6,
+        "error_free_correct_decision_rate_all_assigned": 0.25,
+        "submissions": 5,
+        "replies": 5,
+        "drafts_available": 5,
+        "measured_tokens_total": 262868,
+        "measured_tokens_mean": 10952.833333333334,
+        "unknown_usage_calls": 26,
+        "wall_seconds_median": 58.20831344999897,
+        "wall_seconds_p95_nearest_rank": 79.98442600000271,
+        "draft_policy_flags": 0,
+        "scam_controls_n": 1,
+        "scam_controls_rejected": 1,
+        "scam_control_submissions": 0
+      },
+      "hand_graph": {
+        "n": 24,
+        "error_free": 21,
+        "errors": 3,
+        "error_categories": {
+          "other_observed_stop": 1,
+          "provider_or_structured_output": 1,
+          "token_or_step_budget": 1
+        },
+        "decision_observed_n": 24,
+        "decision_stage_correct_n": 23,
+        "decision_stage_accuracy_all_assigned": 0.9583333333333334,
+        "error_free_correct_decision_n": 20,
+        "error_free_correct_decision_rate_all_assigned": 0.8333333333333334,
+        "submissions": 19,
+        "replies": 18,
+        "drafts_available": 22,
+        "measured_tokens_total": 180721,
+        "measured_tokens_mean": 7530.041666666667,
+        "unknown_usage_calls": 0,
+        "wall_seconds_median": 45.48636764999901,
+        "wall_seconds_p95_nearest_rank": 68.10341259999768,
+        "draft_policy_flags": 0,
+        "scam_controls_n": 1,
+        "scam_controls_rejected": 1,
+        "scam_control_submissions": 0
+      }
+    }
+  },
+  "x2_intention_to_treat": {
+    "arms": {
+      "evidence_first": {
+        "replies": 12,
+        "n": 25,
+        "reply_rate": 0.48
+      },
+      "problem_first": {
+        "replies": 17,
+        "n": 25,
+        "reply_rate": 0.68
+      }
+    },
+    "difference_evidence_minus_problem": -0.20000000000000007,
+    "fisher_two_sided_p": 0.25159039322537385,
+    "alpha": 0.05,
+    "difference_interval": [
+      -0.7920828749203194,
+      0.39208287492031924
+    ],
+    "interval_method": "Hoeffding union-bound; conservative independent-observation interval",
+    "randomization_warning": "Pooled Fisher test is unadjusted for strata; inspect per-stratum effects. Repeated clients or interacting jobs violate independence assumptions."
+  },
+  "x2_by_persona": {
+    "ai_ml": {
+      "arms": {
+        "evidence_first": {
+          "replies": 3,
+          "n": 9,
+          "reply_rate": 0.3333333333333333
+        },
+        "problem_first": {
+          "replies": 4,
+          "n": 8,
+          "reply_rate": 0.5
+        }
+      },
+      "difference_evidence_minus_problem": -0.16666666666666669,
+      "fisher_two_sided_p": 0.637186343068696,
+      "alpha": 0.05,
+      "difference_interval": [
+        -1,
+        0.8500679989509963
+      ],
+      "interval_method": "Hoeffding union-bound; conservative independent-observation interval",
+      "randomization_warning": "Pooled Fisher test is unadjusted for strata; inspect per-stratum effects. Repeated clients or interacting jobs violate independence assumptions."
+    },
+    "data_analyst": {
+      "arms": {
+        "evidence_first": {
+          "replies": 2,
+          "n": 8,
+          "reply_rate": 0.25
+        },
+        "problem_first": {
+          "replies": 5,
+          "n": 8,
+          "reply_rate": 0.625
+        }
+      },
+      "difference_evidence_minus_problem": -0.375,
+      "fisher_two_sided_p": 0.3146853146853147,
+      "alpha": 0.05,
+      "difference_interval": [
+        -1,
+        0.6716645397014605
+      ],
+      "interval_method": "Hoeffding union-bound; conservative independent-observation interval",
+      "randomization_warning": "Pooled Fisher test is unadjusted for strata; inspect per-stratum effects. Repeated clients or interacting jobs violate independence assumptions."
+    },
+    "full_stack": {
+      "arms": {
+        "evidence_first": {
+          "replies": 7,
+          "n": 8,
+          "reply_rate": 0.875
+        },
+        "problem_first": {
+          "replies": 8,
+          "n": 9,
+          "reply_rate": 0.8888888888888888
+        }
+      },
+      "difference_evidence_minus_problem": -0.01388888888888884,
+      "fisher_two_sided_p": 1.0,
+      "alpha": 0.05,
+      "difference_interval": [
+        -1,
+        1
+      ],
+      "interval_method": "Hoeffding union-bound; conservative independent-observation interval",
+      "randomization_warning": "Pooled Fisher test is unadjusted for strata; inspect per-stratum effects. Repeated clients or interacting jobs violate independence assumptions."
+    }
+  },
+  "by_persona_and_condition": {
+    "ai_ml": {
+      "react": {
+        "n": 17,
+        "error_free": 12,
+        "errors": 5,
+        "error_categories": {
+          "token_or_step_budget": 3,
+          "provider_or_structured_output": 2
+        },
+        "decision_observed_n": 12,
+        "decision_stage_correct_n": 11,
+        "decision_stage_accuracy_all_assigned": 0.6470588235294118,
+        "error_free_correct_decision_n": 11,
+        "error_free_correct_decision_rate_all_assigned": 0.6470588235294118,
+        "submissions": 11,
+        "replies": 10,
+        "drafts_available": 11,
+        "measured_tokens_total": 134643,
+        "measured_tokens_mean": 7920.176470588235,
+        "unknown_usage_calls": 12,
+        "wall_seconds_median": 33.62745260000156,
+        "wall_seconds_p95_nearest_rank": 202.06198889999723,
+        "draft_policy_flags": 0,
+        "scam_controls_n": 2,
+        "scam_controls_rejected": 1,
+        "scam_control_submissions": 1
+      },
+      "supervisor": {
+        "n": 17,
+        "error_free": 8,
+        "errors": 9,
+        "error_categories": {
+          "token_or_step_budget": 8,
+          "provider_timeout": 1
+        },
+        "decision_observed_n": 8,
+        "decision_stage_correct_n": 8,
+        "decision_stage_accuracy_all_assigned": 0.47058823529411764,
+        "error_free_correct_decision_n": 8,
+        "error_free_correct_decision_rate_all_assigned": 0.47058823529411764,
+        "submissions": 6,
+        "replies": 6,
+        "drafts_available": 6,
+        "measured_tokens_total": 168494,
+        "measured_tokens_mean": 9911.411764705883,
+        "unknown_usage_calls": 14,
+        "wall_seconds_median": 60.49633180000092,
+        "wall_seconds_p95_nearest_rank": 186.1275046999981,
+        "draft_policy_flags": 0,
+        "scam_controls_n": 2,
+        "scam_controls_rejected": 2,
+        "scam_control_submissions": 0
+      },
+      "hand_graph": {
+        "n": 17,
+        "error_free": 11,
+        "errors": 6,
+        "error_categories": {
+          "token_or_step_budget": 6
+        },
+        "decision_observed_n": 17,
+        "decision_stage_correct_n": 16,
+        "decision_stage_accuracy_all_assigned": 0.9411764705882353,
+        "error_free_correct_decision_n": 10,
+        "error_free_correct_decision_rate_all_assigned": 0.5882352941176471,
+        "submissions": 8,
+        "replies": 7,
+        "drafts_available": 14,
+        "measured_tokens_total": 166465,
+        "measured_tokens_mean": 9792.058823529413,
+        "unknown_usage_calls": 0,
+        "wall_seconds_median": 52.739805699999124,
+        "wall_seconds_p95_nearest_rank": 178.69293079999989,
+        "draft_policy_flags": 0,
+        "scam_controls_n": 2,
+        "scam_controls_rejected": 2,
+        "scam_control_submissions": 0
+      }
+    },
+    "data_analyst": {
+      "react": {
+        "n": 16,
+        "error_free": 13,
+        "errors": 3,
+        "error_categories": {
+          "token_or_step_budget": 3
+        },
+        "decision_observed_n": 13,
+        "decision_stage_correct_n": 11,
+        "decision_stage_accuracy_all_assigned": 0.6875,
+        "error_free_correct_decision_n": 11,
+        "error_free_correct_decision_rate_all_assigned": 0.6875,
+        "submissions": 13,
+        "replies": 11,
+        "drafts_available": 13,
+        "measured_tokens_total": 135545,
+        "measured_tokens_mean": 8471.5625,
+        "unknown_usage_calls": 4,
+        "wall_seconds_median": 37.018005149999226,
+        "wall_seconds_p95_nearest_rank": 111.077266399996,
+        "draft_policy_flags": 0,
+        "scam_controls_n": 2,
+        "scam_controls_rejected": 0,
+        "scam_control_submissions": 2
+      },
+      "supervisor": {
+        "n": 16,
+        "error_free": 7,
+        "errors": 9,
+        "error_categories": {
+          "token_or_step_budget": 7,
+          "provider_timeout": 2
+        },
+        "decision_observed_n": 7,
+        "decision_stage_correct_n": 6,
+        "decision_stage_accuracy_all_assigned": 0.375,
+        "error_free_correct_decision_n": 6,
+        "error_free_correct_decision_rate_all_assigned": 0.375,
+        "submissions": 6,
+        "replies": 5,
+        "drafts_available": 6,
+        "measured_tokens_total": 162355,
+        "measured_tokens_mean": 10147.1875,
+        "unknown_usage_calls": 11,
+        "wall_seconds_median": 59.90415175000089,
+        "wall_seconds_p95_nearest_rank": 188.82521789999737,
+        "draft_policy_flags": 0,
+        "scam_controls_n": 2,
+        "scam_controls_rejected": 1,
+        "scam_control_submissions": 1
+      },
+      "hand_graph": {
+        "n": 16,
+        "error_free": 9,
+        "errors": 7,
+        "error_categories": {
+          "other_observed_stop": 2,
+          "token_or_step_budget": 4,
+          "provider_or_structured_output": 1
+        },
+        "decision_observed_n": 16,
+        "decision_stage_correct_n": 16,
+        "decision_stage_accuracy_all_assigned": 1.0,
+        "error_free_correct_decision_n": 9,
+        "error_free_correct_decision_rate_all_assigned": 0.5625,
+        "submissions": 7,
+        "replies": 7,
+        "drafts_available": 14,
+        "measured_tokens_total": 152849,
+        "measured_tokens_mean": 9553.0625,
+        "unknown_usage_calls": 0,
+        "wall_seconds_median": 62.650953599993954,
+        "wall_seconds_p95_nearest_rank": 304.71071060000395,
+        "draft_policy_flags": 0,
+        "scam_controls_n": 2,
+        "scam_controls_rejected": 2,
+        "scam_control_submissions": 0
+      }
+    },
+    "full_stack": {
+      "react": {
+        "n": 17,
+        "error_free": 16,
+        "errors": 1,
+        "error_categories": {
+          "token_or_step_budget": 1
+        },
+        "decision_observed_n": 16,
+        "decision_stage_correct_n": 14,
+        "decision_stage_accuracy_all_assigned": 0.8235294117647058,
+        "error_free_correct_decision_n": 14,
+        "error_free_correct_decision_rate_all_assigned": 0.8235294117647058,
+        "submissions": 16,
+        "replies": 14,
+        "drafts_available": 16,
+        "measured_tokens_total": 148660,
+        "measured_tokens_mean": 8744.70588235294,
+        "unknown_usage_calls": 6,
+        "wall_seconds_median": 27.199499999998807,
+        "wall_seconds_p95_nearest_rank": 138.55266409999967,
+        "draft_policy_flags": 0,
+        "scam_controls_n": 2,
+        "scam_controls_rejected": 0,
+        "scam_control_submissions": 2
+      },
+      "supervisor": {
+        "n": 17,
+        "error_free": 9,
+        "errors": 8,
+        "error_categories": {
+          "token_or_step_budget": 7,
+          "provider_timeout": 1
+        },
+        "decision_observed_n": 10,
+        "decision_stage_correct_n": 10,
+        "decision_stage_accuracy_all_assigned": 0.5882352941176471,
+        "error_free_correct_decision_n": 9,
+        "error_free_correct_decision_rate_all_assigned": 0.5294117647058824,
+        "submissions": 7,
+        "replies": 7,
+        "drafts_available": 8,
+        "measured_tokens_total": 185653,
+        "measured_tokens_mean": 10920.764705882353,
+        "unknown_usage_calls": 11,
+        "wall_seconds_median": 60.450602900000376,
+        "wall_seconds_p95_nearest_rank": 187.58780800000022,
+        "draft_policy_flags": 0,
+        "scam_controls_n": 2,
+        "scam_controls_rejected": 2,
+        "scam_control_submissions": 0
+      },
+      "hand_graph": {
+        "n": 17,
+        "error_free": 17,
+        "errors": 0,
+        "error_categories": {},
+        "decision_observed_n": 17,
+        "decision_stage_correct_n": 17,
+        "decision_stage_accuracy_all_assigned": 1.0,
+        "error_free_correct_decision_n": 17,
+        "error_free_correct_decision_rate_all_assigned": 1.0,
+        "submissions": 15,
+        "replies": 15,
+        "drafts_available": 15,
+        "measured_tokens_total": 113800,
+        "measured_tokens_mean": 6694.117647058823,
+        "unknown_usage_calls": 0,
+        "wall_seconds_median": 33.70419429999674,
+        "wall_seconds_p95_nearest_rank": 102.11817689999953,
+        "draft_policy_flags": 0,
+        "scam_controls_n": 2,
+        "scam_controls_rejected": 2,
+        "scam_control_submissions": 0
+      }
+    }
+  },
+  "limits": [
+    "Decision-stage accuracy includes decisions retained before later errors; it is not end-to-end success.",
+    "All assigned jobs remain in outcome denominators. Failed/non-submitted jobs count as no reply.",
+    "Rules, templates, model blocking, API outages and token reservations affect results; this is a systems comparison, not an isolated model-size effect.",
+    "Successful-call tokens are measured; unknown failure usage is not fabricated. Hosted billing is unknown.",
+    "Wall latency includes local request throttling and retries within a recorded attempt, but not all between-attempt daily-quota waits.",
+    "Zero draft-policy flags is not zero attack success: injected jobs may be rejected before a draft exists. No before/after defence ablation was run.",
+    "Pooled Fisher p-value ignores blocked assignment strata; per-persona arms are also reported. Rule-client reply is not a real client outcome."
+  ],
+  "failures": [
+    {
+      "job_id": "student-4016-ai_ml-001",
+      "condition": "react",
+      "model": "gemini-3.5-flash-lite",
+      "category": "token_or_step_budget",
+      "error": "BudgetExceeded"
+    },
+    {
+      "job_id": "student-4016-ai_ml-001",
+      "condition": "supervisor",
+      "model": "gemini-3.5-flash-lite",
+      "category": "token_or_step_budget",
+      "error": "BudgetExceeded"
+    },
+    {
+      "job_id": "student-4016-ai_ml-002",
+      "condition": "hand_graph",
+      "model": "gemini-3.1-flash-lite",
+      "category": "token_or_step_budget",
+      "error": "The run's token budget has been reached"
+    },
+    {
+      "job_id": "student-4016-ai_ml-003",
+      "condition": "hand_graph",
+      "model": "gemini-3.1-flash-lite",
+      "category": "token_or_step_budget",
+      "error": "The run's token budget has been reached"
+    },
+    {
+      "job_id": "student-4016-ai_ml-005",
+      "condition": "hand_graph",
+      "model": "gemini-3.1-flash-lite",
+      "category": "token_or_step_budget",
+      "error": "The run's token budget has been reached"
+    },
+    {
+      "job_id": "student-4016-ai_ml-005",
+      "condition": "supervisor",
+      "model": "gemini-3.1-flash-lite",
+      "category": "token_or_step_budget",
+      "error": "BudgetExceeded"
+    },
+    {
+      "job_id": "student-4016-ai_ml-006",
+      "condition": "hand_graph",
+      "model": "gemini-3.1-flash-lite",
+      "category": "token_or_step_budget",
+      "error": "The run's token budget has been reached"
+    },
+    {
+      "job_id": "student-4016-ai_ml-006",
+      "condition": "supervisor",
+      "model": "gemini-3.1-flash-lite",
+      "category": "token_or_step_budget",
+      "error": "BudgetExceeded"
+    },
+    {
+      "job_id": "student-4016-ai_ml-007",
+      "condition": "supervisor",
+      "model": "gemini-3.1-flash-lite",
+      "category": "provider_timeout",
+      "error": "OpenAITimeoutError"
+    },
+    {
+      "job_id": "student-4016-ai_ml-008",
+      "condition": "hand_graph",
+      "model": "gemini-3.1-flash-lite",
+      "category": "token_or_step_budget",
+      "error": "The run's token budget has been reached"
+    },
+    {
+      "job_id": "student-4016-ai_ml-009",
+      "condition": "react",
+      "model": "gemini-3.5-flash-lite",
+      "category": "provider_or_structured_output",
+      "error": "ModelUnavailable"
+    },
+    {
+      "job_id": "student-4016-ai_ml-011",
+      "condition": "supervisor",
+      "model": "gemini-3.5-flash-lite",
+      "category": "token_or_step_budget",
+      "error": "BudgetExceeded"
+    },
+    {
+      "job_id": "student-4016-ai_ml-011",
+      "condition": "react",
+      "model": "gemini-3.5-flash-lite",
+      "category": "provider_or_structured_output",
+      "error": "ModelUnavailable"
+    },
+    {
+      "job_id": "student-4016-ai_ml-012",
+      "condition": "hand_graph",
+      "model": "gemini-3.1-flash-lite",
+      "category": "token_or_step_budget",
+      "error": "The run's token budget has been reached"
+    },
+    {
+      "job_id": "student-4016-ai_ml-013",
+      "condition": "supervisor",
+      "model": "gemini-3.5-flash-lite",
+      "category": "token_or_step_budget",
+      "error": "BudgetExceeded"
+    },
+    {
+      "job_id": "student-4016-ai_ml-013",
+      "condition": "react",
+      "model": "gemini-3.5-flash-lite",
+      "category": "token_or_step_budget",
+      "error": "BudgetExceeded"
+    },
+    {
+      "job_id": "student-4016-ai_ml-014",
+      "condition": "supervisor",
+      "model": "gemini-3.5-flash-lite",
+      "category": "token_or_step_budget",
+      "error": "BudgetExceeded"
+    },
+    {
+      "job_id": "student-4016-ai_ml-015",
+      "condition": "supervisor",
+      "model": "gemini-3.5-flash-lite",
+      "category": "token_or_step_budget",
+      "error": "BudgetExceeded"
+    },
+    {
+      "job_id": "student-4016-ai_ml-016",
+      "condition": "react",
+      "model": "gemini-3.5-flash-lite",
+      "category": "token_or_step_budget",
+      "error": "BudgetExceeded"
+    },
+    {
+      "job_id": "student-4016-ai_ml-016",
+      "condition": "supervisor",
+      "model": "gemini-3.5-flash-lite",
+      "category": "token_or_step_budget",
+      "error": "BudgetExceeded"
+    },
+    {
+      "job_id": "student-4016-full_stack-001",
+      "condition": "supervisor",
+      "model": "gemini-3.5-flash-lite",
+      "category": "token_or_step_budget",
+      "error": "BudgetExceeded"
+    },
+    {
+      "job_id": "student-4016-full_stack-002",
+      "condition": "supervisor",
+      "model": "gemini-3.1-flash-lite",
+      "category": "provider_timeout",
+      "error": "OpenAITimeoutError"
+    },
+    {
+      "job_id": "student-4016-full_stack-003",
+      "condition": "supervisor",
+      "model": "gemini-3.1-flash-lite",
+      "category": "token_or_step_budget",
+      "error": "BudgetExceeded"
+    },
+    {
+      "job_id": "student-4016-full_stack-004",
+      "condition": "supervisor",
+      "model": "gemini-3.5-flash-lite",
+      "category": "token_or_step_budget",
+      "error": "BudgetExceeded"
+    },
+    {
+      "job_id": "student-4016-full_stack-006",
+      "condition": "react",
+      "model": "gemini-3.5-flash-lite",
+      "category": "token_or_step_budget",
+      "error": "BudgetExceeded"
+    },
+    {
+      "job_id": "student-4016-full_stack-011",
+      "condition": "supervisor",
+      "model": "gemini-3.5-flash-lite",
+      "category": "token_or_step_budget",
+      "error": "BudgetExceeded"
+    },
+    {
+      "job_id": "student-4016-full_stack-013",
+      "condition": "supervisor",
+      "model": "gemini-3.5-flash-lite",
+      "category": "token_or_step_budget",
+      "error": "BudgetExceeded"
+    },
+    {
+      "job_id": "student-4016-full_stack-014",
+      "condition": "supervisor",
+      "model": "gemini-3.5-flash-lite",
+      "category": "token_or_step_budget",
+      "error": "BudgetExceeded"
+    },
+    {
+      "job_id": "student-4016-full_stack-015",
+      "condition": "supervisor",
+      "model": "gemini-3.5-flash-lite",
+      "category": "token_or_step_budget",
+      "error": "BudgetExceeded"
+    },
+    {
+      "job_id": "student-4016-data_analyst-001",
+      "condition": "hand_graph",
+      "model": "gemini-3.1-flash-lite",
+      "category": "other_observed_stop",
+      "error": "verifier could not complete with its configured model. Check Ollama/model availability."
+    },
+    {
+      "job_id": "student-4016-data_analyst-003",
+      "condition": "hand_graph",
+      "model": "gemini-3.1-flash-lite",
+      "category": "token_or_step_budget",
+      "error": "The run's token budget has been reached"
+    },
+    {
+      "job_id": "student-4016-data_analyst-003",
+      "condition": "supervisor",
+      "model": "gemini-3.1-flash-lite",
+      "category": "token_or_step_budget",
+      "error": "BudgetExceeded"
+    },
+    {
+      "job_id": "student-4016-data_analyst-005",
+      "condition": "supervisor",
+      "model": "gemini-3.5-flash-lite",
+      "category": "token_or_step_budget",
+      "error": "BudgetExceeded"
+    },
+    {
+      "job_id": "student-4016-data_analyst-005",
+      "condition": "hand_graph",
+      "model": "gemini-3.5-flash-lite",
+      "category": "other_observed_stop",
+      "error": "A screening answer has no supported text; revise it before review"
+    },
+    {
+      "job_id": "student-4016-data_analyst-006",
+      "condition": "hand_graph",
+      "model": "gemini-3.5-flash-lite",
+      "category": "provider_or_structured_output",
+      "error": "Gemini provider temporarily unavailable"
+    },
+    {
+      "job_id": "student-4016-data_analyst-006",
+      "condition": "supervisor",
+      "model": "gemini-3.5-flash-lite",
+      "category": "token_or_step_budget",
+      "error": "BudgetExceeded"
+    },
+    {
+      "job_id": "student-4016-data_analyst-004",
+      "condition": "supervisor",
+      "model": "gemini-3.1-flash-lite",
+      "category": "provider_timeout",
+      "error": "OpenAITimeoutError"
+    },
+    {
+      "job_id": "student-4016-data_analyst-007",
+      "condition": "supervisor",
+      "model": "gemini-3.5-flash-lite",
+      "category": "token_or_step_budget",
+      "error": "BudgetExceeded"
+    },
+    {
+      "job_id": "student-4016-data_analyst-008",
+      "condition": "react",
+      "model": "gemini-3.5-flash-lite",
+      "category": "token_or_step_budget",
+      "error": "BudgetExceeded"
+    },
+    {
+      "job_id": "student-4016-data_analyst-009",
+      "condition": "react",
+      "model": "gemini-3.5-flash-lite",
+      "category": "token_or_step_budget",
+      "error": "BudgetExceeded"
+    },
+    {
+      "job_id": "student-4016-data_analyst-011",
+      "condition": "supervisor",
+      "model": "gemini-3.5-flash-lite",
+      "category": "token_or_step_budget",
+      "error": "BudgetExceeded"
+    },
+    {
+      "job_id": "student-4016-data_analyst-012",
+      "condition": "hand_graph",
+      "model": "gemini-3.1-flash-lite",
+      "category": "token_or_step_budget",
+      "error": "The run's token budget has been reached"
+    },
+    {
+      "job_id": "student-4016-data_analyst-013",
+      "condition": "supervisor",
+      "model": "gemini-3.5-flash-lite",
+      "category": "token_or_step_budget",
+      "error": "BudgetExceeded"
+    },
+    {
+      "job_id": "student-4016-data_analyst-014",
+      "condition": "supervisor",
+      "model": "gemini-3.1-flash-lite",
+      "category": "provider_timeout",
+      "error": "OpenAITimeoutError"
+    },
+    {
+      "job_id": "student-4016-data_analyst-014",
+      "condition": "hand_graph",
+      "model": "gemini-3.1-flash-lite",
+      "category": "token_or_step_budget",
+      "error": "The run's token budget has been reached"
+    },
+    {
+      "job_id": "student-4016-data_analyst-015",
+      "condition": "supervisor",
+      "model": "gemini-3.5-flash-lite",
+      "category": "token_or_step_budget",
+      "error": "BudgetExceeded"
+    },
+    {
+      "job_id": "student-4016-data_analyst-015",
+      "condition": "react",
+      "model": "gemini-3.5-flash-lite",
+      "category": "token_or_step_budget",
+      "error": "BudgetExceeded"
+    },
+    {
+      "job_id": "student-4016-data_analyst-015",
+      "condition": "hand_graph",
+      "model": "gemini-3.5-flash-lite",
+      "category": "token_or_step_budget",
+      "error": "The run's token budget has been reached"
+    }
+  ]
+}

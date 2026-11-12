@@ -1,0 +1,19 @@
+{
+  "date_pkt": "2026-11-12",
+  "live_deployment": false,
+  "frontend_target": "Vercel Hobby",
+  "backend_target": "Azure for Students capped-credit VM, eligibility and credit must be activated/verified",
+  "checks": {
+    "vercel_production_build": "passed using isolated output and a non-live placeholder origin",
+    "missing_backend_guard": "passed",
+    "local_standalone_and_proxy": "preserved",
+    "cloud_compose_config": "passed with dummy secrets; no services started"
+  },
+  "secrets": "No real credentials written to committed deployment files",
+  "blockers": [
+    "Azure student subscription activation and credit verification",
+    "Vercel account/project authentication",
+    "Actual VM hostname and frontend production URL",
+    "Live deployment and end-to-end verification"
+  ]
+}

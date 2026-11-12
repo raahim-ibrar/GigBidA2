@@ -1,0 +1,56 @@
+{
+  "purpose": "Technical pilot only; not the fifty-job research comparison",
+  "cases": 3,
+  "jobs": 1,
+  "model": "openai/gpt-oss-120b",
+  "passed": true,
+  "unit_regressions_passed": 5,
+  "full_study_started": false,
+  "results": [
+    {
+      "condition": "hand_graph",
+      "decision": "bid",
+      "error": null,
+      "measured_tokens": 16548,
+      "elapsed_seconds": 184.51595149999775,
+      "simulator_submitted": true,
+      "tool_calls": [],
+      "host_normalized_tool_calls": 0
+    },
+    {
+      "condition": "supervisor",
+      "decision": "bid",
+      "error": null,
+      "measured_tokens": 6069,
+      "elapsed_seconds": 62.47081310000067,
+      "simulator_submitted": true,
+      "tool_calls": [
+        "get_job",
+        "search_evidence",
+        "report_analysis",
+        "finalize_candidate",
+        "finish_research"
+      ],
+      "host_normalized_tool_calls": 0
+    },
+    {
+      "condition": "react",
+      "decision": "bid",
+      "error": null,
+      "measured_tokens": 3577,
+      "elapsed_seconds": 58.22657419999814,
+      "simulator_submitted": true,
+      "tool_calls": [
+        "get_job",
+        "search_evidence",
+        "finalize_candidate"
+      ],
+      "host_normalized_tool_calls": 0
+    }
+  ],
+  "limits": [
+    "One benign fictional job; establishes connectivity and termination, not comparative model quality",
+    "Smaller-model failures retained separately; the verified default is GPT-OSS 120B",
+    "Only research simulator candidates were scored; no application approval was forged"
+  ]
+}

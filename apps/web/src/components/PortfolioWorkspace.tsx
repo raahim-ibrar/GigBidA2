@@ -110,7 +110,7 @@ export function PortfolioWorkspace() {
         </article>)}
       </section>}
     </section></div>
-    <section className="card" style={{ marginTop: 24 }}><h2>Your sources</h2>
+    <section className="card"><h2>Your sources</h2>
       {!documents.length && <p className="muted">No portfolio evidence yet. Add your first CV or case study above.</p>}
       {documents.map(doc => <article className="source-row" key={doc.id}>
         <div><strong>{doc.filename}</strong><p className="muted">{doc.details.project} · revision {doc.revision} · <span className={`source-status ${doc.status}`} data-testid="source-status">{doc.status}</span></p>

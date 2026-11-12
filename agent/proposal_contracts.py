@@ -13,7 +13,7 @@ class FitAssessment(Contract):
 class ClaimReview(Contract):
     index: int = Field(ge=0)
     kind: Literal["experience", "non_experience"]
-    verdict: Literal["supported", "partly_supported", "unsupported"]
+    verdict: Literal["supported", "partly_supported", "unsupported", "not_applicable"]
     evidence_ids: list[str] = Field(default_factory=list)
     reason: str
 

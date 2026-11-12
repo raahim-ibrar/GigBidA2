@@ -33,6 +33,13 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest==9.2.0", "pytest-asyncio==1.4.1.post1", "ruff==0.17.3"]
+research = [
+    "langchain-openai==1.7.4",
+    "langgraph-supervisor==0.0.31",
+]
+
+[project.scripts]
+gigbid-portfolio = "mcp_servers.portfolio.server:main"
 
 [tool.setuptools.packages.find]
 include = ["agent*", "apps*", "mcp_servers*", "rag*", "worker*", "evals*", "simulator*"]
@@ -51,6 +58,7 @@ asyncio_default_fixture_loop_scope = "function"
 [tool.ruff]
 line-length = 100
 target-version = "py311"
+extend-exclude = ["evals/results", "output"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP"]

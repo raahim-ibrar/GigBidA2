@@ -1,0 +1,199 @@
+{
+  "items": [
+    {
+      "id": "student-4016-ai_ml-007:hand_graph",
+      "quality": 3,
+      "labels": [
+        {
+          "index": 0,
+          "label": "supported",
+          "reason": "proposal states intent to define and document data processing assumptions"
+        },
+        {
+          "index": 1,
+          "label": "supported",
+          "reason": "proposal explicitly defines chunking strategies and input validation"
+        },
+        {
+          "index": 2,
+          "label": "supported",
+          "reason": "proposal implements search using Python embeddings retrieval"
+        },
+        {
+          "index": 3,
+          "label": "supported",
+          "reason": "proposal commits to handover guide for maintainability"
+        },
+        {
+          "index": 4,
+          "label": "supported",
+          "reason": "proposal references developing similar search prototypes"
+        },
+        {
+          "index": 5,
+          "label": "supported",
+          "reason": "screening answer validates document quality format and malformed inputs"
+        }
+      ]
+    },
+    {
+      "id": "student-4016-ai_ml-007:react",
+      "quality": 3,
+      "labels": [
+        {
+          "index": 0,
+          "label": "supported",
+          "reason": "proposal emphasizes data quality retrieval accuracy"
+        },
+        {
+          "index": 1,
+          "label": "supported",
+          "reason": "proposal validates document structure cleans input text"
+        },
+        {
+          "index": 2,
+          "label": "supported",
+          "reason": "proposal chunks documents generates embeddings retrieval pipeline"
+        },
+        {
+          "index": 3,
+          "label": "supported",
+          "reason": "proposal provides complete handover guide with assumptions test cases"
+        },
+        {
+          "index": 4,
+          "label": "supported",
+          "reason": "proposal references coursework prototype using Python"
+        },
+        {
+          "index": 5,
+          "label": "supported",
+          "reason": "screening answer validates document structure encoding data quality"
+        },
+        {
+          "index": 6,
+          "label": "supported",
+          "reason": "screening answer defines evaluation metrics test cases ground-truth queries"
+        }
+      ]
+    },
+    {
+      "id": "student-4016-ai_ml-008:hand_graph",
+      "quality": 3,
+      "labels": [
+        {
+          "index": 0,
+          "label": "supported",
+          "reason": "proposal references previous forecasting demonstration"
+        },
+        {
+          "index": 1,
+          "label": "supported",
+          "reason": "proposal states extensive pandas usage in Python workflows"
+        },
+        {
+          "index": 2,
+          "label": "supported",
+          "reason": "proposal applies experience to project using pandas for data execution"
+        },
+        {
+          "index": 3,
+          "label": "supported",
+          "reason": "proposal commits to initial data audit missing stationarity"
+        },
+        {
+          "index": 4,
+          "label": "supported",
+          "reason": "screening answer validates data integrity malformed inputs stationarity"
+        },
+        {
+          "index": 5,
+          "label": "supported",
+          "reason": "screening answer confirms alignment seasonal baselines historical patterns"
+        }
+      ]
+    },
+    {
+      "id": "student-4016-ai_ml-008:react",
+      "quality": 3,
+      "labels": [
+        {
+          "index": 0,
+          "label": "supported",
+          "reason": "proposal states coursework developed forecasting prototype"
+        },
+        {
+          "index": 1,
+          "label": "supported",
+          "reason": "proposal implemented rolling-window features seasonal baselines backtesting"
+        },
+        {
+          "index": 2,
+          "label": "supported",
+          "reason": "proposal includes rigorous validation documented assumptions handover guide"
+        },
+        {
+          "index": 3,
+          "label": "supported",
+          "reason": "proposal confidently applies same standards to project"
+        },
+        {
+          "index": 4,
+          "label": "supported",
+          "reason": "proposal prioritizes clear documentation modular code"
+        },
+        {
+          "index": 5,
+          "label": "supported",
+          "reason": "screening answer validates data quality missing values stationarity"
+        },
+        {
+          "index": 6,
+          "label": "supported",
+          "reason": "screening answer defines evaluation metrics baseline model improvement"
+        },
+        {
+          "index": 7,
+          "label": "supported",
+          "reason": "screening answer verifies time index integrity performs EDA seasonality trends"
+        }
+      ]
+    },
+    {
+      "id": "student-4016-ai_ml-008:supervisor",
+      "quality": 3,
+      "labels": [
+        {
+          "index": 0,
+          "label": "supported",
+          "reason": "proposal states coursework developed forecasting prototype"
+        },
+        {
+          "index": 1,
+          "label": "supported",
+          "reason": "proposal implemented rolling-window features compared baselines backtesting"
+        },
+        {
+          "index": 2,
+          "label": "supported",
+          "reason": "proposal experienced documenting assumptions handling malformed inputs"
+        },
+        {
+          "index": 3,
+          "label": "supported",
+          "reason": "proposal will apply rigorous standards ensure results reliable documented"
+        },
+        {
+          "index": 3,
+          "label": "supported",
+          "reason": "proposal confident delivers high-quality reproducible experiment"
+        },
+        {
+          "index": 4,
+          "label": "supported",
+          "reason": "proposal confident meets specific requirements"
+        }
+      ]
+    }
+  ]
+}

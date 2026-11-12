@@ -71,7 +71,7 @@ class PriceQuote(Contract):
 class Claim(Contract):
     text: str = Field(min_length=1)
     evidence_ids: list[str] = Field(default_factory=list)
-    verdict: Literal["supported", "partly_supported", "unsupported"]
+    verdict: Literal["supported", "partly_supported", "unsupported", "not_applicable"]
     kind: Literal["experience", "non_experience"] = "experience"
     reason: str | None = None
 

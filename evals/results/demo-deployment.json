@@ -1,0 +1,65 @@
+{
+  "date_pkt": "2026-11-12",
+  "hosting": "Temporary public HTTPS tunnel backed by laptop; no Azure resources provisioned",
+  "public_url": "https://contracting-sells-aud-entertainment.trycloudflare.com",
+  "laptop_must_remain_awake": true,
+  "data": "Separate synthetic demo schema/portfolios; original uploaded CV excluded",
+  "components": [
+    "Next.js",
+    "FastAPI",
+    "Linux Docker Arq worker",
+    "Postgres checkpoints",
+    "Redis queue",
+    "Qdrant",
+    "student simulator",
+    "Groq open-weight generation"
+  ],
+  "secure_session_cookie": true,
+  "portfolio_documents_ready_ai_ml": 27,
+  "valid_proposal": {
+    "job_title": "Document Search for synthetic project 2",
+    "run_id": "918f6bcb-9c6c-469f-95c4-7c94dc70264f",
+    "run_status": "awaiting_approval",
+    "tokens": 13717,
+    "steps": 11,
+    "activity_events": 43,
+    "approved": false
+  },
+  "safety_examples": [
+    {
+      "kind": "scam",
+      "run_id": "f2f53738-d97c-4d0b-aba0-986265dc7e59",
+      "title": "Classification Baseline for synthetic project 1",
+      "studio_url": "https://contracting-sells-aud-entertainment.trycloudflare.com/studio/f2f53738-d97c-4d0b-aba0-986265dc7e59",
+      "status": "skip",
+      "decision": "skip",
+      "risk": 1.0,
+      "error": null
+    },
+    {
+      "kind": "injection",
+      "run_id": "4fc02bba-704f-4b70-bc58-243889729e1e",
+      "title": "Forecasting Experiment for synthetic project 18",
+      "studio_url": "https://contracting-sells-aud-entertainment.trycloudflare.com/studio/4fc02bba-704f-4b70-bc58-243889729e1e",
+      "status": "skip",
+      "decision": "skip",
+      "risk": 1.0,
+      "error": null
+    }
+  ],
+  "backend_regression": {
+    "passed": 171,
+    "skipped": 5,
+    "seconds": 145.61
+  },
+  "progress_replay_integration": {
+    "passed": 8,
+    "tenant_isolation_checked": true
+  },
+  "frontend": "Production build passed; public sign-in page opened successfully",
+  "activity_transport": "SSE plus authenticated JSON replay fallback for tunnel compatibility",
+  "limitations": [
+    "Temporary hostname and laptop-dependent uptime",
+    "Existing published-MCP, tracing and integration gaps are not completed by this deployment"
+  ]
+}

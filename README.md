@@ -7,7 +7,7 @@ reviewing every outgoing action. Built with LangGraph, MCP, FastAPI and Next.js.
 
 **Working locally:** accounts, portfolios, durable proposal/reply review, the student-built
 marketplace simulator, scheduled job imports, pipeline, analytics and a responsive dark UI.
-Public deployment and parts of the research programme remain unfinished. No real Upwork
+A temporary public laptop-backed demo is available; stable hosting and some integrations remain unfinished. No real Upwork
 client is contacted, and simulated replies or hires are not real business outcomes.
 
 ## Run
@@ -57,7 +57,7 @@ The Analyst, Risk Assessor and Matcher branches run in parallel. Typed handoffs,
 re-reads, bounded Critic loops, token/step limits and checkpointed approvals govern execution.
 An approval binds a version, interrupt ID, digest and exact write payload. The simulator's
 idempotency receipt prevents duplicate debits; SQL reconciliation preserves observed effects.
-[Rendered graphs](docs/GRAPHS.md) · [Architecture](docs/ARCHITECTURE.md) · [Tools](docs/TOOLS.md).
+[Rendered graphs](docs/GRAPHS.md) Ã‚Â· [Architecture](docs/ARCHITECTURE.md) Ã‚Â· [Tools](docs/TOOLS.md).
 
 ## Measured retrieval
 
@@ -77,11 +77,15 @@ The hypothesis that reranking improves recall over V0 was not supported here. V3
 ordering; V8 improved abstention at greater latency. The declared recall/ordering/latency
 selection rule chooses V3. This does not establish better client reply rates.
 
-The two-model graph study is ongoing. The small all-role configuration failed grounding on
-most positive jobs; those failures are retained. See [measured results](docs/RESULTS.md),
+The two open-model cohorts are complete (30 jobs each); grounding failures are retained.
+The 150-run optional Gemini architecture comparison is complete: ReAct had 41/50
+error-free runs, supervisor 24/50, and the custom graph 37/50. Intermediate decision
+accuracy must not be confused with full-run success. The 40-task tool study, 30-item
+human calibration and twelve-pair classmate panel are also recorded. X2 reply rates
+were 48% versus 68%, Fisher p=0.252: no significant strategy benefit established.
+See [measured results](docs/RESULTS.md), [technical narrative](docs/TECHNICAL_WRITEUP.md),
 [study plan](evals/STUDENT_RESEARCH_PLAN.md), and [evaluation guide](docs/EVALUATION.md).
-The 40-task tool-design and 50-job orchestration comparisons are not yet completed.
-Human judge calibration, blind classmate ratings and hidden-test results are not fabricated.
+Hidden-test results are unavailable before grading.
 
 ## Verification
 
@@ -97,16 +101,20 @@ npm run test:e2e
 ```
 
 Set `GIGBID_TEST_DATABASE_URL` for isolated Postgres schemas. The latest full backend run
-passed 149 tests with four opt-in skips. Browser checks passed the 14 existing flows and
-then the added simulator outage-to-reply flow in a separate targeted run. Deterministic
+passed 162 tests with four opt-in skips. The full Chromium browser suite passed 15 flows. Deterministic
 browser/control fixtures are not quality measurements. [Verification history](docs/VERIFICATION.md).
 
 ## Submission status
 
 Repository: [raahim-ibrar/GigBidA2](https://github.com/raahim-ibrar/GigBidA2).
-No public live URL yet. Reviewer details must be supplied privately after deployment.
-Official Upwork OAuth, GitHub ingestion, public trace links and remaining studies still need
+Temporary public demo: [open GigBid](https://contracting-sells-aud-entertainment.trycloudflare.com).
+It depends on the laptop, Docker and tunnel remaining running; the URL changes after restart.
+Actual verification: [demo results](evals/results/demo-deployment.json) and
+[demo hosting notes](docs/DEMO_HOSTING.md). Reviewer credentials are kept private.
+The optional [student-credit Azure/Vercel configuration](docs/DEPLOYMENT.md) is prepared
+but no Azure resources were provisioned.
+Official Upwork OAuth, GitHub ingestion, public trace links still need
 completion. The required video/GIF is excluded from the current work at the user's request.
 
-[Portfolio MCP install instructions](mcp_servers/portfolio/README.md) ·
-[Data provenance](docs/DATA_CARD.md) · [AI assistance disclosure](docs/AI_USAGE.md).
+[Portfolio MCP install instructions](mcp_servers/portfolio/README.md) Ã‚Â·
+[Data provenance](docs/DATA_CARD.md) Ã‚Â· [AI assistance disclosure](docs/AI_USAGE.md).

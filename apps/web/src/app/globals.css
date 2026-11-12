@@ -442,6 +442,9 @@ button:disabled {
   gap: 22px;
   margin-top: 24px;
 }
+.cards:not(.metric-cards) {
+  align-items: start;
+}
 .card {
   background: var(--surface);
   padding: 25px;
@@ -457,6 +460,23 @@ button:disabled {
 }
 .form-card {
   max-width: 600px;
+}
+.settings-stack {
+  display: grid;
+  gap: 24px;
+  max-width: 1120px;
+  min-width: 0;
+}
+.settings-stack > *,
+.settings-stack > .draft-panel {
+  margin: 0;
+  min-width: 0;
+}
+.settings-stack > .form-card {
+  max-width: none;
+}
+.settings-stack > .draft-panel > h2:first-child {
+  margin-top: 0;
 }
 form {
   display: grid;
@@ -687,6 +707,68 @@ details {
 summary {
   cursor: pointer;
   color: var(--purple);
+}
+.page-content,
+.section-stack {
+  display: grid;
+  gap: 24px;
+  min-width: 0;
+}
+.page-content > *,
+.section-stack > * {
+  margin-block: 0;
+  min-width: 0;
+}
+.page-content > .eyebrow + h1 {
+  margin-top: -16px;
+}
+.page-content > h1 + .muted {
+  margin-top: -12px;
+}
+.page-content > button,
+.section-stack > button {
+  justify-self: start;
+}
+.card > :last-child,
+.evidence-hit > :last-child,
+.source-row p:last-child {
+  margin-bottom: 0;
+}
+.run-nav {
+  gap: 8px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.run-nav a {
+  padding: 9px 13px;
+  border-radius: 7px;
+  color: #c7bbda;
+  text-decoration: none;
+  background: #1a1623;
+}
+.run-nav a:hover {
+  background: #2a203a;
+  color: var(--purple);
+}
+.run-workspace .card {
+  overflow-wrap: anywhere;
+}
+.run-workspace .run-events:empty {
+  display: none;
+}
+.dashboard-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: end;
+}
+.dashboard-controls label {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+}
+.dashboard-controls select {
+  min-width: 180px;
 }
 .overview-hero {
   display: grid;

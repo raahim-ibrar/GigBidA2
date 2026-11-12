@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { ApiError, getAccount, type Account } from "@/lib/api/accounts";
-import { getRun, retryRun, reviewRun, type Draft, type Evidence, type Review, type Run } from "@/lib/api/proposals";
+import { getRun, getRunActivity, retryRun, reviewRun, type Draft, type Evidence, type Review, type Run } from "@/lib/api/proposals";
 type Progress = { id: number; kind: string; details: Record<string, unknown> };
 
 function ClaimLine({ text, draft, evidence }: { text: string; draft: Draft; evidence: Evidence[] }) {
@@ -34,14 +34,26 @@ export function RunWorkspace({ id, trace = false, onSaved }: { id: string; trace
   }, [id]);
   useEffect(() => { if (run?.status === "awaiting_approval") { setEdit(run.snapshot.draft?.text ?? ""); setParagraph(0); } }, [run?.version, run?.status, run?.snapshot.draft?.text]);
   useEffect(() => { if (!loaded || signIn) return;
+    let mounted = true;
+    const ingest = (incoming: Progress[]) => { if (!mounted || !incoming.length) return;
+      cursor.current = Math.max(cursor.current, ...incoming.map(item => item.id));
+      setEvents(previous => Array.from(new Map([...previous, ...incoming].map(item => [item.id, item])).values()).sort((a, b) => a.id - b.id).slice(-100));
+    };
+    const replay = async () => { for (let page = 0; page < 5 && mounted; page += 1) {
+      const items = await getRunActivity(id, cursor.current); ingest(items); if (items.length < 200) break;
+    } };
+    void replay().catch(() => { /* SSE remains available when replay is temporarily unavailable. */ });
     const base = process.env.NEXT_PUBLIC_API_URL ?? "";
     const source = new EventSource(`${base}/api/runs/${encodeURIComponent(id)}/events?after=${cursor.current}`, { withCredentials: true });
     source.addEventListener("progress", event => { try { const item = JSON.parse((event as MessageEvent).data) as Progress;
-      if (item.id > cursor.current) { cursor.current = item.id; setEvents(previous => [...previous, item].slice(-100)); }
+      ingest([item]);
     } catch { /* Malformed progress cannot authorize or modify a run. */ } });
     source.addEventListener("done", () => { source.close(); void refresh().catch(err => setError(err.message)); });
-    const timer = active ? setInterval(() => refresh().catch(err => setError(err.message)), 3000) : undefined;
-    return () => { source.close(); if (timer) clearInterval(timer); };
+    const timer = active ? setInterval(() => {
+      void refresh().catch(err => setError(err.message));
+      void replay().catch(() => { /* The next poll or SSE reconnect retries durable progress. */ });
+    }, 3000) : undefined;
+    return () => { mounted = false; source.close(); if (timer) clearInterval(timer); };
   }, [id, active, loaded, signIn, refresh]);
   async function decide(action: Review["action"]) { if (!run || !account) return;
     const digest = run.review?.draft_digest ?? run.snapshot.preview?.arguments.draft_digest;
@@ -67,7 +79,7 @@ export function RunWorkspace({ id, trace = false, onSaved }: { id: string; trace
   const completed = ["drafted", "submitted", "sent"].includes(run.status);
   const completedTitle = run.status === "submitted" ? "Submitted to student simulator" : run.status === "sent" ? "Reply sent to student simulator" : conversation ? "Saved local email draft" : "Saved local draft";
   const paragraphs = draft?.text.match(/\S[\s\S]*?(?=\n[ \t\r]*\n|$)/g) ?? [];
-  return <><div className="source-actions"><Link href={`/jobs/${run.job_id}`}>Job detail</Link><Link href={conversation ? `/messages/${state.conversation_id}` : `/studio/${id}`}>{conversation ? "Conversation" : "Proposal review"}</Link><Link href={`/runs/${id}`}>Run activity</Link></div>
+  return <div className="section-stack run-workspace"><nav className="source-actions run-nav" aria-label="Proposal navigation"><Link href={`/jobs/${run.job_id}`}>Job detail</Link><Link href={conversation ? `/messages/${state.conversation_id}` : `/studio/${id}`}>{conversation ? "Conversation" : "Proposal review"}</Link><Link href={`/runs/${id}`}>Run activity</Link></nav>
     <p role="status" className="notice">Status: <strong>{run.status.replaceAll("_", " ")}</strong>{active && " · Working in the background; you can leave this page."}</p>
     {error && <p role="alert" className="error">{error}</p>}{run.error && <p role="alert" className="error">{run.error}</p>}{state.job && <h2>{state.job.title}</h2>}
     {["needs_attention", "failed"].includes(run.status) && <section className="card"><h2>{run.status === "failed" ? "Retries exhausted" : "Run needs attention"}</h2><p>{run.retry_count ?? 0} of 3 retries used. Previous token charges and step counts are preserved.</p>
@@ -89,5 +101,5 @@ export function RunWorkspace({ id, trace = false, onSaved }: { id: string; trace
         <label htmlFor="rejection-reason">Reason for rejection</label><textarea id="rejection-reason" rows={2} maxLength={1000} value={reason} onChange={event => setReason(event.target.value)} /><button className="secondary-button" disabled={busy} onClick={() => decide("reject")}>Reject draft</button></>}
     </section>}
     {(trace || active) && <section className="card draft-panel"><h2>Run activity</h2><p className="muted">{run.steps} steps · {run.tokens} tokens charged or reserved. Local model costs exclude hardware and electricity.</p><ol className="run-events">{events.map(event => <li key={event.id}>{event.kind.replaceAll("_", " ")}{typeof event.details.node === "string" && ` · ${event.details.node}`}{typeof event.details.role === "string" && ` · ${event.details.role}`}</li>)}</ol></section>}
-  </>;
+  </div>;
 }

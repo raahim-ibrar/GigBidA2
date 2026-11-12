@@ -1,0 +1,54 @@
+{
+  "planned_jobs": 1,
+  "planned_runs": 3,
+  "recorded_runs": 3,
+  "complete": true,
+  "data_origin": "synthetic",
+  "conditions": {
+    "react": {
+      "recorded": 1,
+      "decisions_measured": 1,
+      "decision_accuracy_observed": 1.0,
+      "decision_accuracy_all_recorded": 1.0,
+      "submissions": 1,
+      "replies": 1,
+      "reply_rate_per_assigned_job": 1.0,
+      "reply_rate_per_submission": 1.0,
+      "measured_tokens": 3577,
+      "tokens_with_unknown_usage": 0,
+      "policy_violations_caught": 0,
+      "errors": 0,
+      "proposal_quality": "Pending independent calibrated judge; not substituted with gate success"
+    },
+    "supervisor": {
+      "recorded": 1,
+      "decisions_measured": 1,
+      "decision_accuracy_observed": 1.0,
+      "decision_accuracy_all_recorded": 1.0,
+      "submissions": 1,
+      "replies": 1,
+      "reply_rate_per_assigned_job": 1.0,
+      "reply_rate_per_submission": 1.0,
+      "measured_tokens": 6069,
+      "tokens_with_unknown_usage": 0,
+      "policy_violations_caught": 0,
+      "errors": 0,
+      "proposal_quality": "Pending independent calibrated judge; not substituted with gate success"
+    },
+    "hand_graph": {
+      "recorded": 1,
+      "decisions_measured": 1,
+      "decision_accuracy_observed": 1.0,
+      "decision_accuracy_all_recorded": 1.0,
+      "submissions": 1,
+      "replies": 1,
+      "reply_rate_per_assigned_job": 1.0,
+      "reply_rate_per_submission": 1.0,
+      "measured_tokens": 16548,
+      "tokens_with_unknown_usage": 0,
+      "policy_violations_caught": 0,
+      "errors": 0,
+      "proposal_quality": "Pending independent calibrated judge; not substituted with gate success"
+    }
+  }
+}

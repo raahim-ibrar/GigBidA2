@@ -1,0 +1,7 @@
+{
+  "provenance": "Read-only inventory captured after the local study on this laptop; not a timed inference measurement.",
+  "gpu_inventory": "NVIDIA GeForce RTX 3070 Ti Laptop GPU, 8192, 621.01",
+  "ram_gib": 15.2,
+  "cpu": "AMD Ryzen 9 6900HX with Radeon Graphics        ",
+  "captured_pkt": "2026-11-12T15:12:02.1559731+05:00"
+}

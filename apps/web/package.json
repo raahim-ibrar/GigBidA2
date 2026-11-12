@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev --hostname 0.0.0.0",
     "build": "next build",
-    "start": "next start --hostname 0.0.0.0",
+    "postbuild": "node scripts/prepare-standalone.mjs",
+    "start": "node .next/standalone/server.js",
     "typecheck": "tsc --noEmit",
     "test:e2e": "playwright test",
     "generate:api": "openapi-typescript ../../docs/openapi.json -o src/lib/api/schema.d.ts"
