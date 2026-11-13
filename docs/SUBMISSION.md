@@ -27,6 +27,10 @@ snapshots omit private content and retain the original application correlation I
   accurately; compatibility with an unseen grader is unverified.
 - Upwork OAuth, discovery and job reads were verified. Preview writes are fixture-tested;
   no real proposals/messages were sent. Final submission/direct messages remain disabled.
+  The November 13 live-preview check reached the real Pricing/MCP preflight, which
+  blocked insufficient Connects on the checked account/jobs. No provider preview
+  was created; [sanitized evidence](../evals/results/upwork-preview-verification-2026-11-13.json)
+  records this remaining limitation without claiming a successful live write.
 - Reviewer credentials and all keys stay in ignored local files. Share reviewer details
   privately only when a demo session is running; do not publish the credentials.
 

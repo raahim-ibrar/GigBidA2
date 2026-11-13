@@ -1,0 +1,18 @@
+{
+  "date_pkt": "2026-11-13",
+  "status": "blocked_insufficient_connects",
+  "official_server": "https://mcp.upwork.com/mcp",
+  "saved_authorization_revalidated": true,
+  "official_mcp_read_receipts": 9,
+  "jobs_checked": 4,
+  "all_checked_jobs_cannot_apply": true,
+  "production_pricing_node_and_marketplace_mcp_verified": true,
+  "provider_preview_prepared": false,
+  "provider_write_calls": 0,
+  "model_inference_calls": 0,
+  "connects_balance_unchanged": true,
+  "final_submission_enabled": false,
+  "direct_message_enabled": false,
+  "next_requirement": "An eligible job and account state that passes the existing Connects preflight; no guard bypass or balance purchase was performed.",
+  "privacy": "Account identifiers, actual balances, job text, OAuth secrets and raw provider responses omitted."
+}

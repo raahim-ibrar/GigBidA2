@@ -8,6 +8,17 @@ account. No model inference, proposal preparation, submission or message send wa
 performed during live verification. Sanitized evidence is in
 `evals/results/upwork-live-verification.json`.
 
+On November 13, 2026, the saved authorization was revalidated with nine audited
+official MCP reads. Four jobs were checked; all returned `can_apply=false` and
+Connects costs above the available account balance. The actual production Pricing
+node, through Marketplace MCP, stopped with the insufficient-balance review gate.
+The balance was unchanged afterward. **Live provider-preview preparation remains
+unverified**: no provider write was called, no preview was created and no approval
+gate was bypassed. This establishes an application preflight blocker; it does not
+claim that Upwork itself charges for generating a preview. Finishing the existing
+flow needs an eligible job/account state that passes its Connects checks. Evidence:
+[`upwork-preview-verification-2026-11-13.json`](../evals/results/upwork-preview-verification-2026-11-13.json).
+
 ## Connect on the host laptop
 
 1. Install the pinned Python dependencies and run `alembic upgrade head`.
