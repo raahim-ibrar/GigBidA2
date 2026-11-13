@@ -144,6 +144,14 @@ def create_app(
             "synthetic": True,
         }
 
+    @app.get("/jobs/{job_id}/pricing-statistics")
+    def pricing_statistics(job_id: str, tenant=Depends(account)):
+        from agent.pricing import budget_statistics
+
+        if job_id not in app.state.store.jobs:
+            raise HTTPException(404, "Job not found")
+        return budget_statistics(app.state.store.jobs[job_id], catalogue, provider="student_sim")
+
     @app.get("/balance")
     def balance(tenant=Depends(account)):
         return {"connects": app.state.store.balance(tenant), "source": "student_sim"}

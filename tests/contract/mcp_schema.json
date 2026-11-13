@@ -156,6 +156,48 @@
         "idempotentHint": true,
         "readOnlyHint": true
       },
+      "description": "Host-computed comparable USD posted-budget statistics; not actual earnings.",
+      "inputSchema": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "job_id"
+        ],
+        "title": "get_pricing_statisticsArguments",
+        "type": "object"
+      },
+      "name": "get_pricing_statistics",
+      "outputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "additionalProperties": true,
+            "title": "Data",
+            "type": "object"
+          },
+          "provider": {
+            "title": "Provider",
+            "type": "string"
+          }
+        },
+        "required": [
+          "provider",
+          "data"
+        ],
+        "title": "MarketplaceResult",
+        "type": "object"
+      }
+    },
+    {
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "readOnlyHint": true
+      },
       "description": "Read this host-bound account's provider Connects balance.",
       "inputSchema": {
         "properties": {},

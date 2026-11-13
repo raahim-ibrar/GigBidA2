@@ -65,6 +65,46 @@ class MarketplaceService:
         await asyncio.to_thread(self.connected)
         return await getattr(self.adapter, name)(*args)
 
+    async def pricing_statistics(self, job_id):
+        """Our own host MCP capability, not an invented Upwork tool."""
+        import json
+
+        from agent.marketplace_port import MarketplaceResult
+        from agent.pricing import budget_statistics
+
+        await asyncio.to_thread(self.connected)
+        if self.provider == "student_sim":
+            from urllib.parse import quote
+
+            return await self.adapter.request(
+                "GET", "/jobs/" + quote(job_id, safe="") + "/pricing-statistics"
+            )
+        job = (await self.adapter.get_job(job_id)).data
+
+        def historical():
+            path = self.settings.pricing_catalogue_path
+            if not path.is_file():
+                return []
+            try:
+                rows = json.loads(path.read_text(encoding="utf-8"))
+                return (
+                    [
+                        r
+                        for r in rows
+                        if isinstance(r, dict)
+                        and isinstance(r.get("provenance"), dict)
+                        and r["provenance"].get("base_text") == "real_historical_job"
+                    ]
+                    if isinstance(rows, list)
+                    else []
+                )
+            except (OSError, ValueError, TypeError):
+                return []
+
+        data = budget_statistics(job, await asyncio.to_thread(historical), provider="upwork")
+        data["client"]["source"] = "unavailable_live_client_price_history"
+        return MarketplaceResult(provider="upwork", data=data)
+
     def _run(self, db, *, lock=False):
         query = select(AgentRun).where(AgentRun.id == self.run_id, AgentRun.user_id == self.tenant)
         run = db.scalar(query.with_for_update() if lock else query)

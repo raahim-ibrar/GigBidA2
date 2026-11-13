@@ -9,7 +9,7 @@ TOOL_ALLOWLISTS = {
     "analyst": set(),
     "risk": {"get_client_history"},
     "matcher": {"search_evidence", "get_case_study", "list_skills"},
-    "pricing": {"get_client_history", "get_connects_balance"},
+    "pricing": {"get_client_history", "get_connects_balance", "get_pricing_statistics"},
     "writer": {"search_evidence", "get_case_study"},
     "critic": {"search_evidence", "get_case_study"},
     "compliance": set(),

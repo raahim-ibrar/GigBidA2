@@ -97,6 +97,11 @@ async def test_actual_mcp_approval_idempotency_and_commit_recovery(market):
     async with create_connected_server_and_client_session(server) as session:
         reader = MarketplaceMCP(session)
         assert (await reader.balance())["connects"] == 100
+        statistics = await reader.pricing_statistics(request.job_id)
+        assert statistics["currency"] == "USD"
+        assert statistics["market"]["source"] == "synthetic_posted_budgets"
+        assert statistics["client"]["count"] == 0
+        assert (await reader.balance())["connects"] == 100  # Read tool never spends.
         with pytest.raises(MarketplaceRejected, match="approval"):
             await reader.proposal(request.model_copy(update={"dry_run": False}))
         approved = await approve(market)

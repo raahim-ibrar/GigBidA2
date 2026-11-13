@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     marketplace_mode: str = "gigsim"
     student_sim_url: str = "http://127.0.0.1:8080"
     student_sim_api_key: str = "student_sim_local_only"
+    pricing_catalogue_path: Path = Path("data/processed/student_jobs.json")
     database_url: str = "postgresql+psycopg://gigbid:gigbid_local_only@127.0.0.1:5432/gigbid"
     session_cookie_name: str = "gigbid_session"
     session_lifetime_hours: int = Field(default=168, ge=1, le=720)

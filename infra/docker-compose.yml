@@ -26,7 +26,7 @@ services:
       GROQ_DAILY_TOKEN_CAP: ${GROQ_DAILY_TOKEN_CAP:-200000}
       STUDENT_SIM_URL: http://student-sim:8080
       STUDENT_SIM_API_KEY: ${STUDENT_SIM_API_KEY:-student_sim_local_only}
-    volumes: ["model-cache:/app/work/models"]
+    volumes: ["model-cache:/app/work/models", "./data/processed:/app/data/processed:ro"]
     ports: ["127.0.0.1:8000:8000"]
     depends_on:
       postgres: {condition: service_healthy}
@@ -58,7 +58,7 @@ services:
       STUDENT_SIM_URL: ${WORKER_STUDENT_SIM_URL:-http://student-sim:8080}
       GROQ_DAILY_TOKEN_CAP: ${GROQ_DAILY_TOKEN_CAP:-200000}
       STUDENT_SIM_API_KEY: ${STUDENT_SIM_API_KEY:-student_sim_local_only}
-    volumes: ["model-cache:/app/work/models"]
+    volumes: ["model-cache:/app/work/models", "./data/processed:/app/data/processed:ro"]
     depends_on:
       postgres: {condition: service_healthy}
       redis: {condition: service_healthy}

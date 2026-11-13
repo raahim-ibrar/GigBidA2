@@ -33,4 +33,10 @@ snapshots omit private content and retain the original application correlation I
 
 The primary evaluation now uses LLM-driven simulator outcomes and a matched nine-job
 V0/V3 retrieval/proposal cohort. See `evals/results/evaluation-fidelity-v1/README.md`.
-This does not change the separate deployment, pricing, cost or live-mode limitations.
+This does not change the separate deployment, cost or live-mode limitations.
+
+Budget-based pricing now uses comparable posted-budget medians/IQRs and a bounded
+client-history adjustment when enough simulator-client records exist. See
+[pricing method and limitations](PRICING.md). Historical budgets are not verified
+earnings; unavailable live client price history remains explicit. Existing research
+results predate this pricing change and have not been rewritten.

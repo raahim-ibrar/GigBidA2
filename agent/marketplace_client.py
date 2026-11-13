@@ -38,6 +38,9 @@ class MarketplaceMCP:
     async def balance(self):
         return await self.call("get_connects_balance")
 
+    async def pricing_statistics(self, job_id):
+        return await self.call("get_pricing_statistics", {"job_id": job_id})
+
     async def messages(self, id):
         return await self.call("list_messages", {"conversation_id": id})
 

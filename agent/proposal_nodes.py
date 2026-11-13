@@ -268,19 +268,61 @@ class ProposalNodes:
             raise ReviewRequired("Specify whether this job is hourly or fixed price")
         if job.budget_max is None or job.budget_max <= 0:
             raise ReviewRequired("Enter the client's budget before requesting a quote")
+        if state["raw_job"].get("currency", "USD") != "USD":
+            raise ReviewRequired(
+                "USD pricing requires a USD budget; currency conversion is unavailable"
+            )
         floor = max(
             Decimal(str(state.get("preferences", {}).get("hourly_floor", 15))),
             Decimal(str(self.config.policy["minimum_hourly_rate_usd"])),
         )
-        amount = Decimal(str(job.budget_min or job.budget_max))
+        # Work in whole cents while preserving fractional configured rate floors.
+        floor = floor.quantize(Decimal("0.01"), rounding="ROUND_CEILING")
+        lower = Decimal(str(job.budget_min or 0))
         if job.billing_type == "hourly":
-            amount = max(amount, floor)
-        if amount > Decimal(str(job.budget_max)):
-            raise ReviewRequired("The client's hourly budget is below your minimum rate")
+            lower = max(lower, floor)
+        lower = lower.quantize(Decimal("0.01"), rounding="ROUND_CEILING")
+        upper = Decimal(str(job.budget_max)).quantize(Decimal("0.01"), rounding="ROUND_DOWN")
+        if lower > upper:
+            raise ReviewRequired(
+                "The client's budget cannot meet your minimum rate or price precision"
+            )
+        from agent.pricing import reference_price
+        from mcp_servers.marketplace.adapters.student_sim import (
+            MarketplaceRejected,
+            MarketplaceUnavailable,
+        )
+
+        reference, rationale = (
+            None,
+            "Market and client price history unavailable; using the entered budget.",
+        )
+        if self.marketplace:
+            try:
+                statistics = await self.marketplace.pricing_statistics(
+                    state["raw_job"]["provider_job_id"]
+                )
+                reference, rationale = reference_price(statistics, job.billing_type)
+            except (MarketplaceUnavailable, MarketplaceRejected):
+                rationale = "Pricing statistics temporarily unavailable; using the entered budget."
+        amount = Decimal(
+            str(reference if reference is not None else job.budget_min or job.budget_max)
+        )
+        amount = min(max(amount, lower), upper)
+        amount = amount.quantize(Decimal("0.01"), rounding="ROUND_DOWN")
+        if amount <= 0 or (job.billing_type == "hourly" and amount < floor):
+            raise ReviewRequired(
+                "No valid cent-denominated quote meets your minimum rate and budget"
+            )
         connects = state["raw_job"].get("connects_cost") if self.marketplace else None
         if self.marketplace:
             balance = await self.marketplace.balance()
-            if not isinstance(connects, int) or connects < 0 or connects > balance["connects"]:
+            if (
+                type(connects) is not int
+                or connects < 0
+                or type(balance.get("connects")) is not int
+                or connects > balance["connects"]
+            ):
                 raise ReviewRequired(
                     "Marketplace Connects cost is unknown or the balance is insufficient"
                 )
@@ -289,19 +331,17 @@ class ProposalNodes:
                 amount=float(amount),
                 billing_type=job.billing_type,
                 connects=connects,
-                rationale="Provisional quote from the entered client budget"
-                + (" and your hourly rate floor." if job.billing_type == "hourly" else ".")
+                rationale=rationale
+                + " Quote constrained to the posted budget"
                 + (
-                    (
-                        " Connects cost and balance are from Upwork; "
-                        "missing market statistics remain unknown."
-                        if state["raw_job"].get("source") == "upwork"
-                        else " Connects cost and balance verified against the student simulator; "
-                        "market statistics remain synthetic."
-                    )
+                    " and your hourly rate floor."
+                    if job.billing_type == "hourly"
+                    else "; fixed scope/effort still needs review."
+                )
+                + (
+                    " Provider Connects cost and balance checked."
                     if self.marketplace
-                    else " Market history and Connects cost are unavailable; "
-                    "review scope and price manually."
+                    else " Connects cost unavailable for manual jobs."
                 ),
             ),
             "events": ["price_proposed"],

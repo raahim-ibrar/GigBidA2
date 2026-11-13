@@ -56,6 +56,11 @@ def create_marketplace_server(service=None, tenant_id=None, run_id=None):
         return await result(owner().read("get_client_history", client_id))
 
     @mcp.tool(annotations=read)
+    async def get_pricing_statistics(job_id: str) -> MarketplaceResult:
+        """Host-computed comparable USD posted-budget statistics; not actual earnings."""
+        return await result(owner().pricing_statistics(job_id))
+
+    @mcp.tool(annotations=read)
     async def get_connects_balance() -> MarketplaceResult:
         """Read this host-bound account's provider Connects balance."""
         return await result(owner().read("get_connects_balance"))
