@@ -1,0 +1,33 @@
+{
+  "kind": "documentation metadata and declared configuration, not observed performance",
+  "assignment": "AI-4016",
+  "report_month": "November 2026",
+  "local_ports": {
+    "web": 3000,
+    "ollama": 11434
+  },
+  "targets": {
+    "analysis_seconds": 60,
+    "proposal_seconds": 120,
+    "analysis_usd": 0.02,
+    "proposal_usd": 0.05
+  },
+  "definitions": {
+    "recall_and_mrr_cutoff": 5,
+    "ndcg_cutoff": 10,
+    "quality_scale": [
+      1,
+      5
+    ]
+  },
+  "scope": "Page/section numbers, model/variant identifiers, URLs and declared targets are not empirical successes.",
+  "config_source": "agent/config.yaml",
+  "config_sha256": "c43e3f1485608d4b5cd220abe30110e9e16f4ae7d57f10d688e35c54558a4ca0",
+  "unchanged_prompt_content_sha256": {
+    "agent/prompts/experiments/native_bid.md": "7a02fac69f29896cb91d11d03a35313c0e9c3e30f8eb4d82c63471260ee591ae",
+    "agent/prompts/experiments/native_analyst.md": "f94e9274748385cca42aa42fbbd285cc0b390d86834d3d0e0b86ad72517e0d41",
+    "agent/prompts/experiments/native_writer.md": "0c253d1011f5860da26ed7f3b450530df5e771a9f32cd631082c3a89953e7b98",
+    "agent/prompts/experiments/native_supervisor.md": "af41a20b76dbd8a4855ded673c780906f5a561fe746ab7e09719dcbdee1b807a",
+    "agent/prompts/experiments/simulator_client.md": "7b0b150fc29d097d09222d9dcb80c9a5685d1bdc40bad13e2d0de129b835a3a7"
+  }
+}

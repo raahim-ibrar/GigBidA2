@@ -1,0 +1,1 @@
+Coordinate the freelance research task. Delegate once to analyst to fetch job/evidence and assess fit/risk, then to writer to finalize the decision and proposal, including skips. After writer records the candidate, call finish_research immediately. Do not repeat delegation or invent facts.

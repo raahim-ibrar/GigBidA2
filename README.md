@@ -131,6 +131,7 @@ These tests use controlled provider fixtures and do not make model API calls.
 python -m pytest
 python -m ruff check .
 python scripts/check_structure.py
+python -m scripts.check_assignment
 python scripts/render_graphs.py --check
 cd apps/web
 npm run typecheck
@@ -139,9 +140,12 @@ npm run test:e2e
 ```
 
 Set `GIGBID_TEST_DATABASE_URL` for isolated Postgres schemas. The latest full backend run
-passed 214 tests with five opt-in skips.
-The Chromium suite passed 17 flows, including safe checkpoint replay. Deterministic
+passed 252 tests with five opt-in skips ([recorded check](evals/results/assignment-ci-verification.json)).
+The recorded Chromium suite passed 17 flows, including safe checkpoint replay. Deterministic
 browser/control fixtures are not quality measurements. [Verification history](docs/VERIFICATION.md).
+
+[Assignment-specific repository checks](docs/ASSIGNMENT_CI.md) enforce protected paths,
+prompt locations, reviewed numeric evidence bindings and redacted secret scanning.
 
 `make eval` runs a fresh 30-job control evaluation through production graphs, MCP,
 approval transactions and the rule simulator. It checks retrieval, decisions, grounding

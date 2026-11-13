@@ -1,0 +1,776 @@
+{
+  "policy": "reviewed section/page numeric-token coverage and evidence hashes; not automatic semantic validation",
+  "documents": {
+    "README.md": {
+      "## Run": {
+        "text_sha256": "ed30db7475daa50d3985304e786209c4a78b23f05da451b873d3b95eeb3e9e25",
+        "numeric_tokens": [
+          "600",
+          "11434"
+        ],
+        "scope": "Recorded study values and separately declared metadata/targets; historical milestones are not current completion claims.",
+        "sources": [
+          {
+            "path": "evals/results/assignment-ci-context.json",
+            "sha256": "31602fef1696426e877bd8616260a47df14546ce8ff43c7fe62fd218187b1a15"
+          },
+          {
+            "path": "evals/results/student-data-manifest.json",
+            "sha256": "a32c85307be9f997c92adb2ba00b2d707c14092ecf0bd6fae75eb2577c94525b"
+          }
+        ]
+      },
+      "## Measured retrieval": {
+        "text_sha256": "3bea4ec4fe01f991e9fb8d4a0cf438368a5d6a2c80d86270cb4b1df8ea7c7602",
+        "numeric_tokens": [
+          "60",
+          "5",
+          "5",
+          "10",
+          "1.000",
+          "0.987",
+          "0.990",
+          "0.050",
+          "6",
+          "6",
+          "0.725",
+          "0.529",
+          "0.631",
+          "0.068",
+          "6",
+          "6",
+          "0.983",
+          "0.858",
+          "0.894",
+          "0.061",
+          "6",
+          "6",
+          "1.000",
+          "1.000",
+          "1.000",
+          "3.342",
+          "6",
+          "6",
+          "1.000",
+          "1.000",
+          "1.000",
+          "10.715",
+          "0",
+          "6",
+          "5",
+          "10",
+          "5",
+          "0.358",
+          "0.623",
+          "0.00",
+          "5",
+          "3.80",
+          "2",
+          "2",
+          "368.16",
+          "0.488",
+          "0.891",
+          "0.00",
+          "2",
+          "4.00",
+          "1",
+          "1",
+          "124.43",
+          "5",
+          "10,",
+          "2",
+          "9",
+          "1",
+          "30",
+          "150",
+          "41",
+          "50",
+          "24",
+          "50,",
+          "37",
+          "40",
+          "30",
+          "48%",
+          "56%",
+          "0.778",
+          "50",
+          "41",
+          "36",
+          "40",
+          "25",
+          "138.55",
+          "24",
+          "24",
+          "19",
+          "12",
+          "186.13",
+          "37",
+          "49",
+          "30",
+          "26",
+          "178.69",
+          "89"
+        ],
+        "scope": "Recorded study values and separately declared metadata/targets; historical milestones are not current completion claims.",
+        "sources": [
+          {
+            "path": "evals/results/assignment-ci-context.json",
+            "sha256": "31602fef1696426e877bd8616260a47df14546ce8ff43c7fe62fd218187b1a15"
+          },
+          {
+            "path": "evals/results/student-retrieval/results.json",
+            "sha256": "cef2d89441666436f57f97a2bbb8a679f3d4283ea44b6b5d715183594d1ad320"
+          },
+          {
+            "path": "evals/results/evaluation-fidelity-v1/summary.json",
+            "sha256": "48598c7f510c0c425d49ead39f367d7beb3bbac5aa277fb5a66e734e230d816a"
+          },
+          {
+            "path": "evals/results/student-generation-v3/progress.json",
+            "sha256": "43c622688cb11fc30f35bdb280abacca923dfb9149613296fafb4188342d2288"
+          },
+          {
+            "path": "evals/results/student-generation-v3/failures.json",
+            "sha256": "677ccb25bb07a9bd652e907672ef835bc8ec41c846b61899476165ae9806c391"
+          },
+          {
+            "path": "evals/results/gemini-orchestration-v1/analysis.json",
+            "sha256": "97f21f3a8e7e8b6eac23b26bab521257afd2c6d98f79bd3e70d12599c77bdf5b"
+          },
+          {
+            "path": "evals/results/gemini-orchestration-v1/plan.json",
+            "sha256": "72a2f032d933f9bb0f5ac89dfe9cc33ad03d60e5239262f18909c1f51b03ad54"
+          },
+          {
+            "path": "evals/results/student-tool-study-v3/results.json",
+            "sha256": "3f1a600365349ed3ba6aac852da7ed4eb5cf55fbc9852cdc1b091a399de108f0"
+          },
+          {
+            "path": "evals/results/judge-calibration-v4/agreement.json",
+            "sha256": "70ddadfd4466451e8685795532d7d5e2cd3535bfa6a991cb6d94e9a7342d6d5c"
+          },
+          {
+            "path": "evals/results/judge-proposals-final/results.json",
+            "sha256": "1ccce10fd62e996a06098f21bf17bdc4d2456b522014c2187524a9eddaa9a337"
+          },
+          {
+            "path": "evals/results/human-panel-v1/results.json",
+            "sha256": "6829f7de0f2fc7d384ca2e2a3fcc7d575b98487c4ef8efbee6ace380d95ab834"
+          }
+        ]
+      },
+      "## Verification": {
+        "text_sha256": "6cd666dc36fc7ee5fa91b2e3c1a43a1e464549b8781fcac661139b53cfe43eda",
+        "numeric_tokens": [
+          "252",
+          "17",
+          "30",
+          "30"
+        ],
+        "scope": "Recorded study values and separately declared metadata/targets; historical milestones are not current completion claims.",
+        "sources": [
+          {
+            "path": "evals/results/assignment-ci-context.json",
+            "sha256": "31602fef1696426e877bd8616260a47df14546ce8ff43c7fe62fd218187b1a15"
+          },
+          {
+            "path": "evals/results/engineering-verification.json",
+            "sha256": "4c1215e25adb933bb1da5f2750cfa7565e5c7781c9a4b17174230b67c5913a7e"
+          },
+          {
+            "path": "evals/results/ci-control-30/summary.json",
+            "sha256": "dfca9a041c27ef0d874a0e7fbef80b7be1476d430f1b4b3894fef671735618da"
+          },
+          {
+            "path": "evals/results/assignment-ci-verification.json",
+            "sha256": "2f02e8c81d173783da87943361f602d2ccc868ba1d10cae3a0f82ce6e9c5d171"
+          }
+        ]
+      },
+      "## Submission status": {
+        "text_sha256": "063deeb78c8ebb088510afc7439b7bd08f705d608b75a1268cdad7e3076b9a70",
+        "numeric_tokens": [
+          "56"
+        ],
+        "scope": "Recorded study values and separately declared metadata/targets; historical milestones are not current completion claims.",
+        "sources": [
+          {
+            "path": "evals/results/assignment-ci-context.json",
+            "sha256": "31602fef1696426e877bd8616260a47df14546ce8ff43c7fe62fd218187b1a15"
+          },
+          {
+            "path": "evals/results/public-traces.json",
+            "sha256": "672b5e13dcec5bec03aef4a0f304e5896534284a6f248999b1cb1fbc1f9708f5"
+          },
+          {
+            "path": "evals/results/injection-boundary-v2/results.json",
+            "sha256": "a216db778356ed9a02ce2c774b7736ef54b49001dc269853732305359a8e9f3c"
+          },
+          {
+            "path": "evals/results/demo-recording.json",
+            "sha256": "d0a5e88599db742fa7428398d5971dd9f2530a0cec9ab84f99960f02bef31c8e"
+          },
+          {
+            "path": "evals/results/upwork-live-verification.json",
+            "sha256": "98ef3072f9be80003d2e0fd1190d8795d6ddc8c565c38231b9dbf8a73276e5eb"
+          }
+        ]
+      }
+    },
+    "output/pdf/GigBid_RnD_Report.pdf": {
+      "page-1": {
+        "text_sha256": "c7ccece591b081e575cd104c43543323c01543ab58cf56a6e0378ab4a094e9cd",
+        "numeric_tokens": [
+          "4016",
+          "1",
+          "01",
+          "4016",
+          "2026",
+          "60",
+          "120",
+          "0.02",
+          "0.05",
+          "214",
+          "60",
+          "30"
+        ],
+        "scope": "Recorded study values and separately declared metadata/targets; historical milestones are not current completion claims.",
+        "sources": [
+          {
+            "path": "evals/results/assignment-ci-context.json",
+            "sha256": "31602fef1696426e877bd8616260a47df14546ce8ff43c7fe62fd218187b1a15"
+          },
+          {
+            "path": "evals/results/engineering-verification.json",
+            "sha256": "4c1215e25adb933bb1da5f2750cfa7565e5c7781c9a4b17174230b67c5913a7e"
+          },
+          {
+            "path": "evals/results/student-retrieval/results.json",
+            "sha256": "cef2d89441666436f57f97a2bbb8a679f3d4283ea44b6b5d715183594d1ad320"
+          },
+          {
+            "path": "evals/results/student-generation-v3/progress.json",
+            "sha256": "43c622688cb11fc30f35bdb280abacca923dfb9149613296fafb4188342d2288"
+          },
+          {
+            "path": "evals/results/student-generation-v3/failures.json",
+            "sha256": "677ccb25bb07a9bd652e907672ef835bc8ec41c846b61899476165ae9806c391"
+          }
+        ]
+      },
+      "page-2": {
+        "text_sha256": "9382748732026927aaae6f02a688e85a9108ba835675bedecdd92d131edd1650",
+        "numeric_tokens": [
+          "4016",
+          "2",
+          "02"
+        ],
+        "scope": "Recorded study values and separately declared metadata/targets; historical milestones are not current completion claims.",
+        "sources": [
+          {
+            "path": "evals/results/assignment-ci-context.json",
+            "sha256": "31602fef1696426e877bd8616260a47df14546ce8ff43c7fe62fd218187b1a15"
+          },
+          {
+            "path": "evals/results/engineering-verification.json",
+            "sha256": "4c1215e25adb933bb1da5f2750cfa7565e5c7781c9a4b17174230b67c5913a7e"
+          }
+        ]
+      },
+      "page-3": {
+        "text_sha256": "ddf162e1c05e0a147b34e1003688e6f0758bf88bf846c839aeb6b9a84b7029bb",
+        "numeric_tokens": [
+          "4016",
+          "3",
+          "03",
+          "2024,",
+          "1,",
+          "53058",
+          "200",
+          "200",
+          "200",
+          "8196",
+          "101",
+          "23",
+          "20",
+          "150"
+        ],
+        "scope": "Recorded study values and separately declared metadata/targets; historical milestones are not current completion claims.",
+        "sources": [
+          {
+            "path": "evals/results/assignment-ci-context.json",
+            "sha256": "31602fef1696426e877bd8616260a47df14546ce8ff43c7fe62fd218187b1a15"
+          },
+          {
+            "path": "evals/results/student-data-manifest.json",
+            "sha256": "a32c85307be9f997c92adb2ba00b2d707c14092ecf0bd6fae75eb2577c94525b"
+          }
+        ]
+      },
+      "page-4": {
+        "text_sha256": "d2bfa696a754f8af4f0125a458be2cd09317043066044beb92c0742386d54d81",
+        "numeric_tokens": [
+          "4016",
+          "4",
+          "04",
+          "5",
+          "5",
+          "5",
+          "10",
+          "1.000",
+          "0.987",
+          "0.990",
+          "0.050",
+          "6",
+          "6",
+          "0.725",
+          "0.529",
+          "0.631",
+          "0.068",
+          "6",
+          "6",
+          "0.983",
+          "0.858",
+          "0.894",
+          "0.061",
+          "6",
+          "6",
+          "1.000",
+          "1.000",
+          "1.000",
+          "3.342",
+          "6",
+          "6",
+          "1.000",
+          "1.000",
+          "1.000",
+          "10.715",
+          "0",
+          "6",
+          "5",
+          "10",
+          "5",
+          "0.358",
+          "0.623",
+          "0.00",
+          "5",
+          "3.80",
+          "2",
+          "2",
+          "368.2",
+          "0.488",
+          "0.891",
+          "0.00",
+          "2",
+          "4.00",
+          "1",
+          "1",
+          "124.4",
+          "5",
+          "10",
+          "32,000",
+          "2",
+          "9,",
+          "1",
+          "2",
+          "22",
+          "9.1%",
+          "1",
+          "13",
+          "7.7%",
+          "3.75",
+          "54",
+          "272"
+        ],
+        "scope": "Recorded study values and separately declared metadata/targets; historical milestones are not current completion claims.",
+        "sources": [
+          {
+            "path": "evals/results/assignment-ci-context.json",
+            "sha256": "31602fef1696426e877bd8616260a47df14546ce8ff43c7fe62fd218187b1a15"
+          },
+          {
+            "path": "evals/results/student-retrieval/results.json",
+            "sha256": "cef2d89441666436f57f97a2bbb8a679f3d4283ea44b6b5d715183594d1ad320"
+          },
+          {
+            "path": "evals/results/evaluation-fidelity-v1/summary.json",
+            "sha256": "48598c7f510c0c425d49ead39f367d7beb3bbac5aa277fb5a66e734e230d816a"
+          },
+          {
+            "path": "evals/results/verification-changed-v1/analysis.json",
+            "sha256": "921c88d2d72f4f1baf3eb4edd0a5b7492675c6e65adfb921228c7c431768e717"
+          },
+          {
+            "path": "evals/results/verification-before-after-v1/analysis.json",
+            "sha256": "62edf08159a0f78f851c534defee2bc0e785c27c3025bad55f29709ecf4ebf51"
+          }
+        ]
+      },
+      "page-5": {
+        "text_sha256": "155bb9baf3593866f8aa77c9a196e68c05a25eb3926dc8222022e0e36e30efef",
+        "numeric_tokens": [
+          "4016",
+          "5",
+          "05",
+          "3.5",
+          "3",
+          "30",
+          "30",
+          "3,",
+          "26,",
+          "1",
+          "35.7",
+          "0",
+          "30",
+          "3,",
+          "27",
+          "30.3",
+          "0",
+          "79.3",
+          "64.4",
+          "3070",
+          "8",
+          "9",
+          "15.2"
+        ],
+        "scope": "Recorded study values and separately declared metadata/targets; historical milestones are not current completion claims.",
+        "sources": [
+          {
+            "path": "evals/results/assignment-ci-context.json",
+            "sha256": "31602fef1696426e877bd8616260a47df14546ce8ff43c7fe62fd218187b1a15"
+          },
+          {
+            "path": "evals/results/student-generation-v3/progress.json",
+            "sha256": "43c622688cb11fc30f35bdb280abacca923dfb9149613296fafb4188342d2288"
+          },
+          {
+            "path": "evals/results/student-generation-v3/failures.json",
+            "sha256": "677ccb25bb07a9bd652e907672ef835bc8ec41c846b61899476165ae9806c391"
+          },
+          {
+            "path": "evals/results/local-hardware-inventory.json",
+            "sha256": "88be1e0c0f0c8fa841b310676cdd709415b47451aab318651343162b1ddc3d3c"
+          }
+        ]
+      },
+      "page-6": {
+        "text_sha256": "0fd96f9997e181b843df46b53fda89adeddeba8392ae62662d59003f1f2bc051",
+        "numeric_tokens": [
+          "4016",
+          "6",
+          "06",
+          "4016",
+          "001",
+          "4016",
+          "002",
+          "4016",
+          "003",
+          "4016",
+          "004",
+          "4016",
+          "005",
+          "4016",
+          "006",
+          "4016",
+          "007",
+          "4016",
+          "008",
+          "4016",
+          "009",
+          "4016",
+          "001"
+        ],
+        "scope": "Recorded study values and separately declared metadata/targets; historical milestones are not current completion claims.",
+        "sources": [
+          {
+            "path": "evals/results/assignment-ci-context.json",
+            "sha256": "31602fef1696426e877bd8616260a47df14546ce8ff43c7fe62fd218187b1a15"
+          },
+          {
+            "path": "evals/results/student-generation-v3/progress.json",
+            "sha256": "43c622688cb11fc30f35bdb280abacca923dfb9149613296fafb4188342d2288"
+          },
+          {
+            "path": "evals/results/student-generation-v3/failures.json",
+            "sha256": "677ccb25bb07a9bd652e907672ef835bc8ec41c846b61899476165ae9806c391"
+          }
+        ]
+      },
+      "page-7": {
+        "text_sha256": "787510f0b76144c687852b187c848926cd0141fc6675a67e7c9db6686a093414",
+        "numeric_tokens": [
+          "4016",
+          "7",
+          "07",
+          "24",
+          "56",
+          "3",
+          "18",
+          "4",
+          "6",
+          "6,",
+          "1.0"
+        ],
+        "scope": "Recorded study values and separately declared metadata/targets; historical milestones are not current completion claims.",
+        "sources": [
+          {
+            "path": "evals/results/assignment-ci-context.json",
+            "sha256": "31602fef1696426e877bd8616260a47df14546ce8ff43c7fe62fd218187b1a15"
+          },
+          {
+            "path": "evals/results/public-traces.json",
+            "sha256": "672b5e13dcec5bec03aef4a0f304e5896534284a6f248999b1cb1fbc1f9708f5"
+          },
+          {
+            "path": "evals/results/injection-boundary-v2/results.json",
+            "sha256": "a216db778356ed9a02ce2c774b7736ef54b49001dc269853732305359a8e9f3c"
+          },
+          {
+            "path": "evals/results/demo-recording.json",
+            "sha256": "d0a5e88599db742fa7428398d5971dd9f2530a0cec9ab84f99960f02bef31c8e"
+          },
+          {
+            "path": "evals/results/upwork-live-verification.json",
+            "sha256": "98ef3072f9be80003d2e0fd1190d8795d6ddc8c565c38231b9dbf8a73276e5eb"
+          },
+          {
+            "path": "evals/results/engineering-verification.json",
+            "sha256": "4c1215e25adb933bb1da5f2750cfa7565e5c7781c9a4b17174230b67c5913a7e"
+          }
+        ]
+      },
+      "page-8": {
+        "text_sha256": "32e98d1b3285ee147228b6521d42e668a92e97a0f92b29eaf18a238db209d0eb",
+        "numeric_tokens": [
+          "4016",
+          "8",
+          "08",
+          "150",
+          "3.1",
+          "3.5",
+          "20,000",
+          "30",
+          "40,",
+          "89",
+          "12",
+          "41",
+          "50",
+          "36",
+          "50",
+          "40",
+          "50",
+          "25",
+          "50",
+          "8377",
+          "138.6",
+          "24",
+          "50",
+          "24",
+          "50",
+          "19",
+          "50",
+          "12",
+          "50",
+          "10330",
+          "186.1",
+          "37",
+          "50",
+          "49",
+          "50",
+          "30",
+          "50",
+          "26",
+          "50",
+          "8662",
+          "178.7",
+          "49",
+          "50",
+          "13",
+          "36",
+          "50",
+          "23",
+          "50",
+          "36",
+          "50",
+          "24",
+          "50",
+          "41",
+          "50,",
+          "37",
+          "1",
+          "6",
+          "5",
+          "6",
+          "6",
+          "6",
+          "48",
+          "39",
+          "1,368,464",
+          "58",
+          "60",
+          "40",
+          "100%",
+          "100%",
+          "617.7",
+          "100%",
+          "100%",
+          "988.8",
+          "100%",
+          "100%",
+          "690.6",
+          "120"
+        ],
+        "scope": "Recorded study values and separately declared metadata/targets; historical milestones are not current completion claims.",
+        "sources": [
+          {
+            "path": "evals/results/assignment-ci-context.json",
+            "sha256": "31602fef1696426e877bd8616260a47df14546ce8ff43c7fe62fd218187b1a15"
+          },
+          {
+            "path": "evals/results/gemini-orchestration-v1/analysis.json",
+            "sha256": "97f21f3a8e7e8b6eac23b26bab521257afd2c6d98f79bd3e70d12599c77bdf5b"
+          },
+          {
+            "path": "evals/results/gemini-orchestration-v1/plan.json",
+            "sha256": "72a2f032d933f9bb0f5ac89dfe9cc33ad03d60e5239262f18909c1f51b03ad54"
+          },
+          {
+            "path": "evals/results/student-tool-study-v3/results.json",
+            "sha256": "3f1a600365349ed3ba6aac852da7ed4eb5cf55fbc9852cdc1b091a399de108f0"
+          },
+          {
+            "path": "evals/results/evaluation-fidelity-v1/summary.json",
+            "sha256": "48598c7f510c0c425d49ead39f367d7beb3bbac5aa277fb5a66e734e230d816a"
+          }
+        ]
+      },
+      "page-9": {
+        "text_sha256": "fb7427d0d84ad4c6d6a158d649d694df30081d211107d71d1b2c8df172c45a0c",
+        "numeric_tokens": [
+          "4016",
+          "9",
+          "09",
+          "3.5",
+          "30",
+          "60%",
+          "0.403",
+          "1",
+          "5",
+          "46.7%",
+          "0.681",
+          "5",
+          "40",
+          "3.65",
+          "19",
+          "222",
+          "14",
+          "20",
+          "3.75",
+          "12",
+          "105",
+          "6",
+          "43",
+          "3.88",
+          "11",
+          "210",
+          "8",
+          "13",
+          "11",
+          "11",
+          "12",
+          "0.833",
+          "2",
+          "25",
+          "12",
+          "25",
+          "14",
+          "8.0%",
+          "95%",
+          "67.2%",
+          "51.2%"
+        ],
+        "scope": "Recorded study values and separately declared metadata/targets; historical milestones are not current completion claims.",
+        "sources": [
+          {
+            "path": "evals/results/assignment-ci-context.json",
+            "sha256": "31602fef1696426e877bd8616260a47df14546ce8ff43c7fe62fd218187b1a15"
+          },
+          {
+            "path": "evals/results/judge-calibration-v4/agreement.json",
+            "sha256": "70ddadfd4466451e8685795532d7d5e2cd3535bfa6a991cb6d94e9a7342d6d5c"
+          },
+          {
+            "path": "evals/results/judge-proposals-final/results.json",
+            "sha256": "1ccce10fd62e996a06098f21bf17bdc4d2456b522014c2187524a9eddaa9a337"
+          },
+          {
+            "path": "evals/results/human-panel-v1/results.json",
+            "sha256": "6829f7de0f2fc7d384ca2e2a3fcc7d575b98487c4ef8efbee6ace380d95ab834"
+          },
+          {
+            "path": "evals/results/evaluation-fidelity-v1/summary.json",
+            "sha256": "48598c7f510c0c425d49ead39f367d7beb3bbac5aa277fb5a66e734e230d816a"
+          }
+        ]
+      },
+      "page-10": {
+        "text_sha256": "59715a93a82753e4c2e2a58444225230a5b7d30509a7fa0c4c29e7af3ce0c86f",
+        "numeric_tokens": [
+          "4016",
+          "10",
+          "10",
+          "150",
+          "30",
+          "30"
+        ],
+        "scope": "Recorded study values and separately declared metadata/targets; historical milestones are not current completion claims.",
+        "sources": [
+          {
+            "path": "evals/results/assignment-ci-context.json",
+            "sha256": "31602fef1696426e877bd8616260a47df14546ce8ff43c7fe62fd218187b1a15"
+          },
+          {
+            "path": "evals/results/engineering-verification.json",
+            "sha256": "4c1215e25adb933bb1da5f2750cfa7565e5c7781c9a4b17174230b67c5913a7e"
+          },
+          {
+            "path": "evals/results/gemini-orchestration-v1/analysis.json",
+            "sha256": "97f21f3a8e7e8b6eac23b26bab521257afd2c6d98f79bd3e70d12599c77bdf5b"
+          },
+          {
+            "path": "evals/results/gemini-orchestration-v1/plan.json",
+            "sha256": "72a2f032d933f9bb0f5ac89dfe9cc33ad03d60e5239262f18909c1f51b03ad54"
+          },
+          {
+            "path": "evals/results/judge-calibration-v4/agreement.json",
+            "sha256": "70ddadfd4466451e8685795532d7d5e2cd3535bfa6a991cb6d94e9a7342d6d5c"
+          },
+          {
+            "path": "evals/results/judge-proposals-final/results.json",
+            "sha256": "1ccce10fd62e996a06098f21bf17bdc4d2456b522014c2187524a9eddaa9a337"
+          },
+          {
+            "path": "evals/results/human-panel-v1/results.json",
+            "sha256": "6829f7de0f2fc7d384ca2e2a3fcc7d575b98487c4ef8efbee6ace380d95ab834"
+          },
+          {
+            "path": "evals/results/public-traces.json",
+            "sha256": "672b5e13dcec5bec03aef4a0f304e5896534284a6f248999b1cb1fbc1f9708f5"
+          },
+          {
+            "path": "evals/results/injection-boundary-v2/results.json",
+            "sha256": "a216db778356ed9a02ce2c774b7736ef54b49001dc269853732305359a8e9f3c"
+          },
+          {
+            "path": "evals/results/demo-recording.json",
+            "sha256": "d0a5e88599db742fa7428398d5971dd9f2530a0cec9ab84f99960f02bef31c8e"
+          },
+          {
+            "path": "evals/results/upwork-live-verification.json",
+            "sha256": "98ef3072f9be80003d2e0fd1190d8795d6ddc8c565c38231b9dbf8a73276e5eb"
+          }
+        ]
+      }
+    }
+  }
+}

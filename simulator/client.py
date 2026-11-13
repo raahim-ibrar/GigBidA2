@@ -52,7 +52,9 @@ async def decide(claim):
                 "messages": [
                     {
                         "role": "system",
-                        "content": (root / "client_prompt.md").read_text(encoding="utf-8"),
+                        "content": (
+                            root.parent / "agent/prompts/experiments/simulator_client.md"
+                        ).read_text(encoding="utf-8"),
                     },
                     {"role": "user", "content": json.dumps(payload)},
                 ],

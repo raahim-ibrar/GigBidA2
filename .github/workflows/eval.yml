@@ -29,7 +29,7 @@ jobs:
       - run: uv sync --frozen --extra dev
       # Fresh production graphs/MCP/approval/simulator runs. Deterministic model and
       # embedding fixtures: a control-regression gate, not an LLM research score.
-      - run: uv run python -m evals.runners.ci_smoke
+      - run: make eval PYTHON="uv run python" EVAL_ARGS="--output evals/results/ci-smoke"
       - uses: actions/upload-artifact@v4
         if: always()
         with: {name: fresh-ci-smoke-30, path: evals/results/ci-smoke}

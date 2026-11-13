@@ -56,3 +56,9 @@ provider rates and measured input/output tokens. Per-run and Analytics views
 separate partial list-price estimates from unverified hosted bills and zero local
 API fees. Missing usage, reservations and unknown model rates are not treated as
 free. Historical research outputs have not been repriced or rewritten.
+
+[Assignment-specific CI rules](ASSIGNMENT_CI.md) now check secret patterns/history,
+the protected `gigsim/` tree, prompt placement and reviewed numeric evidence
+bindings. The existing MCP schema, browser/backend and fresh control gates remain
+enabled. Traceability checks do not establish statistical truth or replace the
+remaining external limitations above.

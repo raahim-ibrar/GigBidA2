@@ -1,0 +1,21 @@
+{
+  "date_pkt": "2026-11-13",
+  "kind": "engineering control verification, not model-quality research",
+  "backend": {
+    "passed": 252,
+    "skipped": 5,
+    "seconds": 203.49,
+    "database": "isolated Postgres schemas",
+    "command": "GIGBID_TEST_DATABASE_URL=<local test database> python -m pytest -q"
+  },
+  "policy_negative_controls": 7,
+  "numeric_evidence_blocks": 14,
+  "gitleaks_version": "8.30.1",
+  "publishable_tree_scan": "passed",
+  "full_git_history_scan": "passed",
+  "prompt_relocations_verified_unchanged": 5,
+  "lint": "passed",
+  "model_api_calls": 0,
+  "gpu_experiments": 0,
+  "limitations": "Local verification is not a GitHub Actions result, hidden-test result, or semantic/statistical validation of every claim. Numeric evidence is a reviewed coverage/hash gate."
+}

@@ -1,7 +1,7 @@
 PYTHON ?= python
 COMPOSE = docker compose --project-directory . -f infra/docker-compose.yml
 
-.PHONY: dev test eval eval-recorded seed demo lint api schema graphs
+.PHONY: dev test eval eval-recorded seed demo lint api schema graphs check-assignment
 dev:
 	$(COMPOSE) up --build
 test:
@@ -24,3 +24,6 @@ schema:
 	cd apps/web && npm run generate:api
 graphs:
 	$(PYTHON) scripts/render_graphs.py
+check-assignment:
+	$(PYTHON) -m scripts.check_assignment
+	$(PYTHON) -m scripts.scan_repository_secrets
