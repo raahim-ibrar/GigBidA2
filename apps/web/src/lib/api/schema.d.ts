@@ -629,6 +629,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/runs/{run_id}/cost": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Run Cost */
+        get: operations["run_cost_api_runs__run_id__cost_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/runs/{run_id}/events": {
         parameters: {
             query?: never;
@@ -866,6 +883,7 @@ export interface components {
             charged_or_reserved_tokens: number;
             /** Connects Spent */
             connects_spent: number | null;
+            costs: components["schemas"]["CostSummary"];
             /** Days */
             days: number;
             /** Inference Api Usd */
@@ -1067,6 +1085,56 @@ export interface components {
             run_id: string;
             /** Title */
             title: string;
+        };
+        /** CostGroup */
+        CostGroup: {
+            /** Calls */
+            calls: number;
+            /** Estimated Usd */
+            estimated_usd: number | null;
+            /** Input Tokens */
+            input_tokens: number;
+            /** Model */
+            model: string;
+            /** Output Tokens */
+            output_tokens: number;
+            /** Provider */
+            provider: string;
+            /** Role */
+            role: string;
+            /** Unknown Cost Calls */
+            unknown_cost_calls: number;
+        };
+        /** CostSummary */
+        CostSummary: {
+            /** Actual Api Usd */
+            actual_api_usd: number | null;
+            /**
+             * Basis
+             * @default Recorded standard list-price subtotal, not actual billing. Free-tier charges may be zero; local hardware/electricity excluded. Unknown usage and reservations are not priced.
+             */
+            basis: string;
+            /** Calls */
+            calls: number;
+            /** Complete */
+            complete: boolean;
+            /**
+             * Currency
+             * @default USD
+             */
+            currency: string;
+            /** Estimated Usd */
+            estimated_usd: number | null;
+            /** Groups */
+            groups: components["schemas"]["CostGroup"][];
+            /** Input Tokens */
+            input_tokens: number;
+            /** Output Tokens */
+            output_tokens: number;
+            /** Unaccounted Tokens */
+            unaccounted_tokens: number;
+            /** Unknown Cost Calls */
+            unknown_cost_calls: number;
         };
         /** CreateConversation */
         CreateConversation: {
@@ -1686,6 +1754,7 @@ export interface components {
         RunMeasurement: {
             /** Charged Or Reserved Tokens */
             charged_or_reserved_tokens: number;
+            costs: components["schemas"]["CostSummary"];
             /** Inference Api Usd */
             inference_api_usd: number | null;
             /** Job Title */
@@ -3195,6 +3264,37 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["CheckpointView"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    run_cost_api_runs__run_id__cost_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CostSummary"];
                 };
             };
             /** @description Validation Error */

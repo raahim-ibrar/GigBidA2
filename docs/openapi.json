@@ -70,6 +70,9 @@
             ],
             "title": "Connects Spent"
           },
+          "costs": {
+            "$ref": "#/components/schemas/CostSummary"
+          },
           "days": {
             "title": "Days",
             "type": "integer"
@@ -149,7 +152,8 @@
           "category_rates",
           "rejection_reasons",
           "measurements",
-          "measurements_truncated"
+          "measurements_truncated",
+          "costs"
         ],
         "title": "AnalyticsView",
         "type": "object"
@@ -582,6 +586,143 @@
           "created_at"
         ],
         "title": "ConversationView",
+        "type": "object"
+      },
+      "CostGroup": {
+        "additionalProperties": false,
+        "properties": {
+          "calls": {
+            "title": "Calls",
+            "type": "integer"
+          },
+          "estimated_usd": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Estimated Usd"
+          },
+          "input_tokens": {
+            "title": "Input Tokens",
+            "type": "integer"
+          },
+          "model": {
+            "title": "Model",
+            "type": "string"
+          },
+          "output_tokens": {
+            "title": "Output Tokens",
+            "type": "integer"
+          },
+          "provider": {
+            "title": "Provider",
+            "type": "string"
+          },
+          "role": {
+            "title": "Role",
+            "type": "string"
+          },
+          "unknown_cost_calls": {
+            "title": "Unknown Cost Calls",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "provider",
+          "model",
+          "role",
+          "calls",
+          "input_tokens",
+          "output_tokens",
+          "estimated_usd",
+          "unknown_cost_calls"
+        ],
+        "title": "CostGroup",
+        "type": "object"
+      },
+      "CostSummary": {
+        "additionalProperties": false,
+        "properties": {
+          "actual_api_usd": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Actual Api Usd"
+          },
+          "basis": {
+            "default": "Recorded standard list-price subtotal, not actual billing. Free-tier charges may be zero; local hardware/electricity excluded. Unknown usage and reservations are not priced.",
+            "title": "Basis",
+            "type": "string"
+          },
+          "calls": {
+            "title": "Calls",
+            "type": "integer"
+          },
+          "complete": {
+            "title": "Complete",
+            "type": "boolean"
+          },
+          "currency": {
+            "default": "USD",
+            "title": "Currency",
+            "type": "string"
+          },
+          "estimated_usd": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Estimated Usd"
+          },
+          "groups": {
+            "items": {
+              "$ref": "#/components/schemas/CostGroup"
+            },
+            "title": "Groups",
+            "type": "array"
+          },
+          "input_tokens": {
+            "title": "Input Tokens",
+            "type": "integer"
+          },
+          "output_tokens": {
+            "title": "Output Tokens",
+            "type": "integer"
+          },
+          "unaccounted_tokens": {
+            "title": "Unaccounted Tokens",
+            "type": "integer"
+          },
+          "unknown_cost_calls": {
+            "title": "Unknown Cost Calls",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "calls",
+          "input_tokens",
+          "output_tokens",
+          "estimated_usd",
+          "actual_api_usd",
+          "unknown_cost_calls",
+          "unaccounted_tokens",
+          "complete",
+          "groups"
+        ],
+        "title": "CostSummary",
         "type": "object"
       },
       "CreateConversation": {
@@ -2266,6 +2407,9 @@
             "title": "Charged Or Reserved Tokens",
             "type": "integer"
           },
+          "costs": {
+            "$ref": "#/components/schemas/CostSummary"
+          },
           "inference_api_usd": {
             "anyOf": [
               {
@@ -2336,7 +2480,8 @@
           "measured_model_tokens",
           "model_call_seconds",
           "inference_api_usd",
-          "measured_worker_seconds"
+          "measured_worker_seconds",
+          "costs"
         ],
         "title": "RunMeasurement",
         "type": "object"
@@ -4717,6 +4862,48 @@
           }
         },
         "summary": "Checkpoint History",
+        "tags": [
+          "runs"
+        ]
+      }
+    },
+    "/api/runs/{run_id}/cost": {
+      "get": {
+        "operationId": "run_cost_api_runs__run_id__cost_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CostSummary"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Run Cost",
         "tags": [
           "runs"
         ]

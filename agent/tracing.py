@@ -11,6 +11,7 @@ from uuid import UUID, uuid5
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from agent.costs import money, valid_tokens
 from agent.run_store import RunNotFound
 from apps.api.models import AgentRun, RunEvent
 
@@ -155,19 +156,25 @@ def build_spans(run, events):
         outputs = {"ok": details.get("ok", True)}
         if is_llm:
             inputs, output = (
-                int(details.get("input_tokens", 0)),
-                int(details.get("output_tokens", 0)),
+                details["input_tokens"] if valid_tokens(details) else 0,
+                details["output_tokens"] if valid_tokens(details) else 0,
             )
             metadata.update(
                 ls_provider=details.get("provider", "unknown"),
                 ls_model_name=details.get("model", "unknown"),
-                cost_known=False,
+                cost_known=money(details.get("usd")) is not None,
+                estimated_cost_known=money(details.get("estimated_usd")) is not None,
             )
-            outputs["usage_metadata"] = {
-                "input_tokens": inputs,
-                "output_tokens": output,
-                "total_tokens": inputs + output,
-            }
+            if valid_tokens(details):
+                outputs["usage_metadata"] = {
+                    "input_tokens": inputs,
+                    "output_tokens": output,
+                    "total_tokens": inputs + output,
+                }
+            outputs["usage_known"] = valid_tokens(details)
+            for field in ("usd", "estimated_usd"):
+                amount = money(details.get(field))
+                outputs[field] = float(amount) if amount is not None else None
         spans.append(
             {
                 "id": identity,

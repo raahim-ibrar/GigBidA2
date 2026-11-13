@@ -14,6 +14,7 @@ from uuid import uuid4
 import httpx
 from redis.asyncio import Redis
 
+from agent.costs import priced_usage
 from agent.model_client import BudgetExceeded, ModelUnavailable, OllamaModels
 
 OPEN_MODELS = {"openai/gpt-oss-120b", "openai/gpt-oss-20b", "qwen/qwen3.8-27b"}
@@ -151,7 +152,12 @@ class GroqTransport(httpx.AsyncBaseTransport):
             )
         body = response.json()
         usage = body.get("usage", {})
-        actual = usage.get("prompt_tokens", 0) + usage.get("completion_tokens", 0)
+        if not isinstance(usage, dict) or any(
+            type(usage.get(k)) is not int or usage[k] < 0
+            for k in ("prompt_tokens", "completion_tokens")
+        ):
+            raise ModelUnavailable("Groq did not return valid measured usage")
+        actual = usage["prompt_tokens"] + usage["completion_tokens"]
         await self.gate.settle(daily, amount, actual)
         if output_ticket:
             await self.gate.settle(output_ticket, maximum, usage.get("completion_tokens", 0))
@@ -201,13 +207,15 @@ class GroqModels(OllamaModels):
         async def record_hosted(metrics):
             if record:
                 await record(
-                    {
-                        **metrics,
-                        "provider": "groq",
-                        "usd": None,
-                        "generation_seconds": None,
-                        "cost_basis": "Actual billing not verified; inspect Groq usage",
-                    }
+                    priced_usage(
+                        {
+                            **metrics,
+                            "provider": "groq",
+                            "usd": None,
+                            "generation_seconds": None,
+                            "cost_basis": "Actual billing not verified; inspect Groq usage",
+                        }
+                    )
                 )
 
         super().__init__(

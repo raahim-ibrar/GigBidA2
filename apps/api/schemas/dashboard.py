@@ -3,6 +3,7 @@ from typing import Literal
 
 from pydantic import Field, field_validator, model_validator
 
+from agent.costs import CostSummary
 from agent.handoffs import Contract
 
 Stage = Literal["submitted", "viewed", "replied", "interview", "hired", "lost"]
@@ -55,6 +56,7 @@ class RunMeasurement(Contract):
     model_call_seconds: float | None
     inference_api_usd: float | None
     measured_worker_seconds: float | None
+    costs: CostSummary
 
 
 class CategoryRate(Contract):
@@ -87,3 +89,4 @@ class AnalyticsView(Contract):
     measurements: list[RunMeasurement]
     measurements_truncated: bool
     provider_connected: bool = False
+    costs: CostSummary

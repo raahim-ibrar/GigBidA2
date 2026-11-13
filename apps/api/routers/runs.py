@@ -2,10 +2,14 @@ import asyncio
 
 from fastapi import APIRouter, Header, HTTPException, Query, Request, Response
 from fastapi.responses import StreamingResponse
+from sqlalchemy import select
+from sqlalchemy.orm import Session
 from starlette.concurrency import run_in_threadpool
 
+from agent.costs import CostSummary, cost_summary
 from agent.run_store import TERMINAL
 from apps.api.auth.dependencies import CurrentUser
+from apps.api.models import AgentRun, RunEvent
 from apps.api.schemas.proposals import (
     CheckpointView,
     CreateRun,
@@ -16,6 +20,27 @@ from apps.api.schemas.proposals import (
 )
 
 router = APIRouter(tags=["runs"])
+
+
+@router.get("/runs/{run_id}/cost", response_model=CostSummary)
+def run_cost(run_id: str, user: CurrentUser, request: Request):
+    run = request.app.state.runs.run(user.id, run_id)
+    with Session(request.app.state.engine) as db:
+        metrics = [
+            event.details
+            for event in db.scalars(
+                select(RunEvent)
+                .join(AgentRun)
+                .where(
+                    AgentRun.user_id == user.id,
+                    RunEvent.run_id == run_id,
+                    RunEvent.kind == "model_usage",
+                )
+            )
+        ]
+    return cost_summary(
+        metrics, charged_tokens=run.tokens, active=run.status in {"queued", "running"}
+    )
 
 
 @router.get("/runs/{run_id}/checkpoints", response_model=list[CheckpointView])

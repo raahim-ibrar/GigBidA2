@@ -56,6 +56,7 @@ async def test_hosted_open_model_preserves_schema_budgets_and_truthful_cost_reco
     assert len(calls) == 1 and models.tokens == 15
     assert gate.settlements[0][2] == 15
     assert recorded[0]["provider"] == "groq" and recorded[0]["usd"] is None
+    assert recorded[0]["estimated_usd"] == 0.0000045
     assert "test-only-secret" not in json.dumps(recorded)
 
 

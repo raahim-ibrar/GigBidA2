@@ -11,6 +11,7 @@ from zoneinfo import ZoneInfo
 import httpx
 from redis.asyncio import Redis
 
+from agent.costs import priced_usage
 from agent.model_client import ModelUnavailable, OllamaModels
 
 GEMINI_MODELS = {"gemini-3.1-flash-lite", "gemini-3.5-flash-lite"}
@@ -61,9 +62,12 @@ class GeminiGate:
 
 
 class GeminiChatTransport(httpx.AsyncBaseTransport):
-    def __init__(self, key, gate, *, records=None, budget=None, upstream=None, timeout=180):
+    def __init__(
+        self, key, gate, *, records=None, budget=None, upstream=None, timeout=180, retry_record=None
+    ):
         self.key, self.gate, self.records, self.budget = key, gate, records, budget
         self.upstream, self.timeout, self.signatures = upstream, timeout, {}
+        self.retry_record = retry_record
 
     async def handle_async_request(self, request):
         if request.url.host != "generativelanguage.googleapis.com":
@@ -112,6 +116,19 @@ class GeminiChatTransport(httpx.AsyncBaseTransport):
                         # Unknown failed-call usage remains conservatively charged.
                         await self.budget.reserve(reservation)
                         reserved_total += reservation
+                    if self.retry_record:
+                        await self.retry_record(
+                            {
+                                "provider": "gemini",
+                                "model": body["model"],
+                                "role": "transport_retry",
+                                "usage_known": False,
+                                "input_tokens": None,
+                                "output_tokens": None,
+                                "reserved_tokens": reservation,
+                                "http_status": response.status_code,
+                            }
+                        )
                     failed_charge += reservation
                     await asyncio.sleep(2 ** (attempt + 1))
             if response.status_code != 200:
@@ -224,16 +241,20 @@ class GeminiModels(OllamaModels):
         async def record_hosted(metrics):
             if record:
                 await record(
-                    {
-                        **metrics,
-                        "provider": "gemini",
-                        "usd": None,
-                        "generation_seconds": None,
-                        "cost_basis": "Gemini API; actual billing not verified",
-                    }
+                    priced_usage(
+                        {
+                            **metrics,
+                            "provider": "gemini",
+                            "usd": None,
+                            "generation_seconds": None,
+                            "cost_basis": "Gemini API; actual billing not verified",
+                        }
+                    )
                 )
 
-        chat = GeminiChatTransport(key, gate, upstream=upstream, timeout=config.timeout)
+        chat = GeminiChatTransport(
+            key, gate, upstream=upstream, timeout=config.timeout, retry_record=record_hosted
+        )
         super().__init__(
             "http://gemini-translation",
             config,

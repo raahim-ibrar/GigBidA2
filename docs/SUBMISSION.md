@@ -46,3 +46,9 @@ including standalone server calls and GitHub/Upwork provider reads. Owner-only
 inspection is available at `GET /api/mcp/read-audits`; public tracing still exports
 metadata only. Historical calls and SDK validation failures before dispatch are
 not retroactively represented as audited executions.
+
+[USD inference estimates and reporting](INFERENCE_COSTS.md) now use dated official
+provider rates and measured input/output tokens. Per-run and Analytics views
+separate partial list-price estimates from unverified hosted bills and zero local
+API fees. Missing usage, reservations and unknown model rates are not treated as
+free. Historical research outputs have not been repriced or rewritten.

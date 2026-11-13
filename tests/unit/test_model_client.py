@@ -46,6 +46,22 @@ async def test_real_response_usage_is_recorded_without_prompt_content():
     assert records[0]["usd"] == 0 and "electricity excluded" in records[0]["cost_basis"]
 
 
+async def test_failed_usage_recording_does_not_leak_token_reservations():
+    async def unavailable_record(metrics):
+        assert metrics["usage_known"] is False
+        raise RuntimeError("Fixture usage store unavailable")
+
+    models = OllamaModels(
+        "http://fixture",
+        AgentConfig(),
+        record=unavailable_record,
+        transport=httpx.MockTransport(lambda request: httpx.Response(503)),
+    )
+    with pytest.raises(RuntimeError, match="store unavailable"):
+        await models.complete("risk", {}, RiskReport)
+    assert models._reserved == 0 and models.tokens > 0
+
+
 async def test_cheap_role_fallback_charges_failed_request_conservatively():
     attempted = []
 

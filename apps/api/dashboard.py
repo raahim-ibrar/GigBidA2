@@ -7,6 +7,7 @@ from datetime import UTC, timedelta
 from sqlalchemy import or_, select
 from sqlalchemy.orm import Session
 
+from agent.costs import cost_summary
 from agent.run_store import TERMINAL, RunConflict, RunNotFound
 from agent.safety import mask_pii
 from apps.api.models import (
@@ -234,18 +235,19 @@ class Dashboard:
                 for item in measurements
                 if item.measured_model_tokens is not None
             ]
-            known_costs = [
-                item.inference_api_usd
-                for item in measurements
-                if item.inference_api_usd is not None
-            ]
+            report = cost_summary(
+                [e.details for group in events.values() for e in group if e.kind == "model_usage"],
+                charged_tokens=sum(run.tokens for run, _ in rows),
+                active=any(run.status in {"queued", "running"} for run, _ in rows),
+            )
             return AnalyticsView(
+                costs=report,
                 days=days,
                 run_count=len(rows),
                 local_drafts=local_count,
                 charged_or_reserved_tokens=sum(run.tokens for run, _ in rows),
                 measured_model_tokens=sum(known_tokens) if known_tokens else None,
-                inference_api_usd=sum(known_costs) if known_costs else None,
+                inference_api_usd=report.actual_api_usd,
                 connects_spent=sum(spend) if spend else None,
                 submissions_with_known_spend=len(spend),
                 provider_submissions=sum(item["submitted"] for item in categories.values()),
@@ -271,7 +273,7 @@ class Dashboard:
             )
 
     def _measurement(self, run, job, events):
-        tokens, durations, costs, segments = [], [], [], []
+        tokens, durations, segments = [], [], []
         started = None
         for event in events:
             data = event.details
@@ -283,8 +285,6 @@ class Dashboard:
                     tokens.append(data["input_tokens"] + data["output_tokens"])
                 if number(data.get("elapsed_seconds")):
                     durations.append(data["elapsed_seconds"])
-                if number(data.get("usd")):
-                    costs.append(data["usd"])
             if event.kind == "worker_started":
                 started = utc(event.created_at)
             if started and (
@@ -297,7 +297,13 @@ class Dashboard:
             ):
                 segments.append(max(0, (utc(event.created_at) - started).total_seconds()))
                 started = None
+        report = cost_summary(
+            [e.details for e in events if e.kind == "model_usage"],
+            charged_tokens=run.tokens,
+            active=run.status in {"queued", "running"},
+        )
         return RunMeasurement(
+            costs=report,
             run_id=run.id,
             job_title=job.title,
             kind=run.kind,
@@ -305,6 +311,6 @@ class Dashboard:
             charged_or_reserved_tokens=run.tokens,
             measured_model_tokens=sum(tokens) if tokens else None,
             model_call_seconds=round(sum(durations), 4) if durations else None,
-            inference_api_usd=sum(costs) if costs else None,
+            inference_api_usd=report.actual_api_usd,
             measured_worker_seconds=round(sum(segments), 4) if segments else None,
         )

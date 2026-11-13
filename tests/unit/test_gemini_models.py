@@ -44,6 +44,43 @@ async def test_gemini_schema_handoff_and_usage_remain_validated_without_logging_
     assert (await model.complete("risk", {"job": "fictional"}, RiskReport)).score == 0
     assert model.tokens == 15 and recorded[0]["provider"] == "gemini"
     assert recorded[0]["usd"] is None and "test-secret" not in json.dumps(recorded)
+    assert recorded[0]["estimated_usd"] == 0.00001
+
+
+async def test_hidden_transient_retries_are_reported_as_unknown_cost(monkeypatch):
+    recorded, attempts = [], []
+
+    async def record(row):
+        recorded.append(row)
+
+    async def no_sleep(seconds):
+        pass
+
+    monkeypatch.setattr("agent.providers.gemini.asyncio.sleep", no_sleep)
+
+    def provider(request):
+        attempts.append(True)
+        if len(attempts) == 1:
+            return httpx.Response(503)
+        return httpx.Response(
+            200,
+            json={
+                "choices": [{"finish_reason": "stop", "message": {"content": '{"score":0}'}}],
+                "usage": {"prompt_tokens": 10, "completion_tokens": 5},
+            },
+        )
+
+    model = GeminiModels(
+        "unused",
+        AgentConfig(profile_name="paid"),
+        api_key="test-secret",
+        gate=Gate(),
+        upstream=httpx.MockTransport(provider),
+        record=record,
+    )
+    await model.complete("risk", {}, RiskReport)
+    assert len(recorded) == 2 and recorded[0]["estimated_usd"] is None
+    assert recorded[0]["role"] == "transport_retry" and recorded[1]["estimated_usd"] == 0.00001
 
 
 async def test_multi_turn_tool_signature_survives_client_normalization():

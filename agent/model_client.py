@@ -10,6 +10,7 @@ import httpx
 from pydantic import BaseModel, ValidationError
 
 from agent.config import AgentConfig
+from agent.costs import priced_usage
 
 T = TypeVar("T", bound=BaseModel)
 
@@ -75,6 +76,7 @@ class OllamaModels:
                 self._reserved += reserve
             started = time.monotonic()
             charged = reserve
+            recorded = False
             try:
                 async with httpx.AsyncClient(
                     timeout=self.config.timeout,
@@ -105,19 +107,23 @@ class OllamaModels:
                 if any(type(count) is not int or count < 0 for count in counts):
                     raise ValueError("Invalid model usage")
                 charged = sum(counts)
-                metrics = {
-                    "role": role,
-                    "model": model,
-                    "provider": "ollama",
-                    "attempt": attempt + 1,
-                    "input_tokens": result.get("prompt_eval_count", 0),
-                    "output_tokens": result.get("eval_count", 0),
-                    "elapsed_seconds": round(time.monotonic() - started, 4),
-                    "generation_seconds": result.get("eval_duration", 0) / 1e9,
-                    "usd": 0.0,
-                    "cost_basis": "local inference; hardware and electricity excluded",
-                }
+                metrics = priced_usage(
+                    {
+                        "role": role,
+                        "model": model,
+                        "provider": "ollama",
+                        "attempt": attempt + 1,
+                        "input_tokens": result.get("prompt_eval_count", 0),
+                        "output_tokens": result.get("eval_count", 0),
+                        "elapsed_seconds": round(time.monotonic() - started, 4),
+                        "generation_seconds": result.get("eval_duration", 0) / 1e9,
+                        "usd": 0.0,
+                        "cost_basis": "local inference; hardware and electricity excluded",
+                        "usage_known": True,
+                    }
+                )
                 if self.record:
+                    recorded = True
                     await self.record(metrics)
                 if self.tokens + charged > self.config.budgets.max_tokens_per_thread:
                     raise BudgetExceeded("The run's token budget has been reached")
@@ -129,9 +135,28 @@ class OllamaModels:
                         "Check Ollama/model availability."
                     ) from None
             finally:
-                async with self._lock:
-                    self.tokens += charged
-                    self._reserved -= reserve
-                    if self.settle_budget:
-                        await self.settle_budget(reserve, charged)
+                try:
+                    if self.record and not recorded:
+                        # Reservations are not measured token usage or billing.
+                        await self.record(
+                            priced_usage(
+                                {
+                                    "role": role,
+                                    "model": model,
+                                    "provider": "ollama",
+                                    "attempt": attempt + 1,
+                                    "input_tokens": None,
+                                    "output_tokens": None,
+                                    "usage_known": False,
+                                    "reserved_tokens": reserve,
+                                    "elapsed_seconds": round(time.monotonic() - started, 4),
+                                }
+                            )
+                        )
+                finally:
+                    async with self._lock:
+                        self.tokens += charged
+                        self._reserved -= reserve
+                        if self.settle_budget:
+                            await self.settle_budget(reserve, charged)
         raise ModelUnavailable("No model is configured")

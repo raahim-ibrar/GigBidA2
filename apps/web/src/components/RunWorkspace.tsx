@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { CheckpointReplay } from "./CheckpointReplay";
+import { RunCostReport } from "./CostReport";
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { ApiError, apiRequest, getAccount, type Account } from "@/lib/api/accounts";
 import { getRun, getRunActivity, retryRun, reviewRun, type Draft, type Evidence, type Review, type Run } from "@/lib/api/proposals";
@@ -105,6 +106,7 @@ export function RunWorkspace({ id, trace = false, onSaved }: { id: string; trace
         <label htmlFor="rejection-reason">Reason for rejection</label><textarea id="rejection-reason" rows={2} maxLength={1000} value={reason} onChange={event => setReason(event.target.value)} /><button className="secondary-button" disabled={busy} onClick={() => decide("reject")}>Reject draft</button></>}
     </section>}
     {run.status === "pending_provider_confirmation" && <section className="card"><h2>Final confirmation remains on Upwork</h2><p>No proposal was submitted and no Connects were spent. Final confirmation is disabled in GigBid.</p><p>Provider preview ID: <code>{String(state.provider_result?.preview_id ?? "unavailable")}</code></p><p className="muted">This is a server preview, not a confirmed application. Review it through an authorized Upwork client or prepare the application manually on Upwork. A provider preview may expire.</p></section>}
+    <RunCostReport runId={id} revision={`${run.status}:${run.tokens}:${run.steps}`} />
     {trace && account && run.kind === "bid" && <CheckpointReplay runId={id} csrf={account.csrf_token} />}
     {(trace || active) && <section className="card draft-panel"><h2>Run activity</h2><p className="muted">{run.steps} steps Â· {run.tokens} tokens charged or reserved. Local model costs exclude hardware and electricity.</p><p className="muted">Trace ID: <code>{id}</code> Â· {traceInfo?.status ?? "not exported"}{traceInfo?.public_url && <> Â· <a href={traceInfo.public_url} target="_blank" rel="noreferrer">Open public trace</a></>}</p><ol className="run-events">{events.map(event => <li key={event.id}>{event.kind.replaceAll("_", " ")}{typeof event.details.node === "string" && ` Â· ${event.details.node}`}{typeof event.details.role === "string" && ` Â· ${event.details.role}`}</li>)}</ol></section>}
   </div>;

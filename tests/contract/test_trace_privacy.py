@@ -115,3 +115,34 @@ async def test_mcp_trace_records_no_arguments_or_results():
     await wrapped.call_tool("search_evidence", {"query": "PRIVATE_QUERY"})
     assert calls[0][3] == "mcp_call" and calls[0][4]["ok"]
     assert "PRIVATE_QUERY" not in repr(calls) and "PRIVATE_RESULT" not in repr(calls)
+
+
+def test_unknown_model_usage_is_not_exported_as_zero_tokens():
+    start = datetime.now(UTC)
+    run = SimpleNamespace(
+        id=str(uuid4()),
+        kind="bid",
+        created_at=start,
+        updated_at=start,
+        status="needs_attention",
+        steps=1,
+        tokens=100,
+    )
+    event = SimpleNamespace(
+        id=1,
+        kind="model_usage",
+        created_at=start,
+        details={
+            "provider": "groq",
+            "model": "fixture",
+            "role": "writer",
+            "usage_known": False,
+            "input_tokens": None,
+            "output_tokens": None,
+            "usd": None,
+            "estimated_usd": None,
+        },
+    )
+    output = build_spans(run, [event])[-1]["outputs"]
+    assert output["usage_known"] is False and "usage_metadata" not in output
+    assert output["usd"] is None and output["estimated_usd"] is None

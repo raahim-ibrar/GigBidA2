@@ -48,7 +48,7 @@ include = ["agent*", "apps*", "mcp_servers*", "rag*", "worker*", "evals*", "simu
 namespaces = false
 
 [tool.setuptools.package-data]
-agent = ["config.yaml", "prompts/*.md"]
+agent = ["config.yaml", "cost_rates.json", "prompts/*.md"]
 simulator = ["*.yaml", "*.md"]
 
 [tool.pytest.ini_options]

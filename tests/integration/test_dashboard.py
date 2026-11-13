@@ -5,6 +5,7 @@ import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
+from agent.costs import priced_usage
 from agent.run_store import RunConflict, RunStore
 from apps.api.models import AgentRun, ApprovalAudit, JobRecord, LocalDraftArtifact, RunEvent, utcnow
 from apps.api.schemas.dashboard import ProviderReceipt
@@ -44,6 +45,43 @@ def provider_job(store, run):
     with Session(store.engine) as db, db.begin():
         job = db.get(JobRecord, run.job_id)
         job.raw = {**job.raw, "source": "gigsim", "category": "full_stack"}
+
+
+def test_cost_reports_are_owner_scoped_and_mark_partial_totals(dashboard, client):
+    user, store, run, service = dashboard
+    metrics = priced_usage(
+        {
+            "provider": "groq",
+            "model": "openai/gpt-oss-120b",
+            "role": "writer",
+            "input_tokens": 1000,
+            "output_tokens": 200,
+        }
+    )
+    with Session(store.engine) as db, db.begin():
+        db.get(AgentRun, run.id).tokens = 1600
+        db.add(RunEvent(run_id=run.id, kind="model_usage", details=metrics))
+        db.add(
+            RunEvent(
+                run_id=run.id,
+                kind="model_usage",
+                details={
+                    "provider": "groq",
+                    "role": "risk",
+                    "usage_known": False,
+                },
+            )
+        )
+    report = client.get(f"/api/runs/{run.id}/cost").json()
+    assert report["estimated_usd"] == 0.00027 and report["actual_api_usd"] is None
+    assert report["unknown_cost_calls"] == 1 and report["unaccounted_tokens"] == 400
+    assert not report["complete"]
+    assert client.get("/api/analytics").json()["costs"] == report
+    client.post("/api/auth/logout", headers={"X-CSRF-Token": user["csrf_token"]})
+    assert client.get(f"/api/runs/{run.id}/cost").status_code == 401
+    register(client, "cost-other@example.org")
+    assert client.get(f"/api/runs/{run.id}/cost").status_code == 404
+    assert client.get("/api/analytics").json()["costs"]["calls"] == 0
 
 
 def test_local_draft_is_not_submission_and_unknown_metrics_stay_null(dashboard, client):
@@ -141,7 +179,9 @@ def test_actual_usage_worker_segments_and_private_rejection_reasons(dashboard):
     summary = service.analytics(user["id"], 30)
     item = summary.measurements[0]
     assert item.charged_or_reserved_tokens == 100 and item.measured_model_tokens == 15
-    assert item.model_call_seconds == 2.5 and item.inference_api_usd == 0
+    assert item.model_call_seconds == 2.5
+    assert item.inference_api_usd is None  # 85 tokens are unmatched; zero is not a full bill.
+    assert item.costs.unaccounted_tokens == 85 and not item.costs.complete
     assert item.measured_worker_seconds == 5  # Human review delay is excluded.
     assert "private@example.org" not in summary.rejection_reasons[0].reason
     with Session(store.engine) as db, db.begin():
