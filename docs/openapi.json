@@ -1316,6 +1316,7 @@
         "title": "JobView",
         "type": "object"
       },
+      "JsonValue": {},
       "LocalDraftView": {
         "additionalProperties": false,
         "properties": {
@@ -1340,6 +1341,92 @@
           "created_at"
         ],
         "title": "LocalDraftView",
+        "type": "object"
+      },
+      "MCPReadAuditView": {
+        "properties": {
+          "arguments": {
+            "$ref": "#/components/schemas/JsonValue"
+          },
+          "elapsed_seconds": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Elapsed Seconds"
+          },
+          "finished_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Finished At"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "result": {
+            "$ref": "#/components/schemas/JsonValue"
+          },
+          "run_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Run Id"
+          },
+          "server": {
+            "title": "Server",
+            "type": "string"
+          },
+          "started_at": {
+            "format": "date-time",
+            "title": "Started At",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "started",
+              "completed",
+              "tool_error",
+              "exception",
+              "cancelled"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "tool": {
+            "title": "Tool",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "run_id",
+          "server",
+          "tool",
+          "status",
+          "arguments",
+          "result",
+          "elapsed_seconds",
+          "started_at",
+          "finished_at"
+        ],
+        "title": "MCPReadAuditView",
         "type": "object"
       },
       "ManualJob": {
@@ -3511,6 +3598,83 @@
         "summary": "Disconnect Upwork",
         "tags": [
           "marketplace"
+        ]
+      }
+    },
+    "/api/mcp/read-audits": {
+      "get": {
+        "description": "Owner-only redacted local receipts. No credentials, prompts or source bodies.",
+        "operationId": "read_audits_api_mcp_read_audits_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "run_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Run Id"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "maximum": 200,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/MCPReadAuditView"
+                  },
+                  "title": "Response Read Audits Api Mcp Read Audits Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Read Audits",
+        "tags": [
+          "mcp-audits"
         ]
       }
     },

@@ -54,7 +54,13 @@ def test_export_contains_measured_spans_and_no_source_payload():
             id=identity,
             kind=kind,
             created_at=start + timedelta(seconds=second),
-            details={**details, "prompt": "PRIVATE_CV_CANARY", "key": "API_KEY_CANARY"},
+            details={
+                **details,
+                "prompt": "PRIVATE_CV_CANARY",
+                "key": "API_KEY_CANARY",
+                "arguments": {"query": "PRIVATE_CV_CANARY"},
+                "result": {"text": "PRIVATE_CV_CANARY"},
+            },
         )
 
     spans = build_spans(

@@ -16,6 +16,7 @@ from uuid import uuid4
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from agent.mcp_audit import ReadAuditor
 from apps.api.auth.token_store import EncryptedTokenStorage, OAuthUnavailable
 from apps.api.database import make_engine
 from apps.api.models import MarketplaceConnection, OAuthCredential, SearchSchedule, User
@@ -131,9 +132,14 @@ async def connect(email=None):
                 verified_capabilities,
             )
 
-            accounts = parse_result(await session.call_tool("upwork__list_accounts", {})).get(
-                "accounts", []
-            )
+            accounts = parse_result(
+                await ReadAuditor(engine, tenant).invoke(
+                    "upwork",
+                    "upwork__list_accounts",
+                    {},
+                    lambda: session.call_tool("upwork__list_accounts", {}),
+                )
+            ).get("accounts", [])
             freelancers = [a for a in accounts if a.get("role") == "TALENT"]
             if len(freelancers) != 1:
                 raise OAuthUnavailable("Select exactly one freelancer account before proceeding")

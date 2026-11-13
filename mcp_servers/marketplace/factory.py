@@ -4,6 +4,7 @@ from mcp.server.fastmcp import FastMCP
 from mcp.types import ToolAnnotations
 
 from agent.marketplace_port import MarketplaceResult, MessageWrite, ProposalWrite, SearchJobs
+from agent.mcp_audit import audit_read
 from agent.run_store import RunConflict, RunNotFound
 from apps.api.database import make_engine
 from apps.api.settings import Settings
@@ -41,31 +42,37 @@ def create_marketplace_server(service=None, tenant_id=None, run_id=None):
         return service
 
     @mcp.tool(annotations=read)
+    @audit_read(owner, tenant_id, "marketplace", run_id)
     async def search_jobs(request: SearchJobs) -> MarketplaceResult:
         """Search the connected marketplace; this cannot submit or spend."""
         return await result(owner().read("search_jobs", request))
 
     @mcp.tool(annotations=read)
+    @audit_read(owner, tenant_id, "marketplace", run_id)
     async def get_job(job_id: str) -> MarketplaceResult:
         """Read a job from this account's connected provider; no private scenario labels."""
         return await result(owner().read("get_job", job_id))
 
     @mcp.tool(annotations=read)
+    @audit_read(owner, tenant_id, "marketplace", run_id)
     async def get_client_history(client_id: str) -> MarketplaceResult:
         """Read client context; synthetic in the simulator, possibly incomplete on Upwork."""
         return await result(owner().read("get_client_history", client_id))
 
     @mcp.tool(annotations=read)
+    @audit_read(owner, tenant_id, "marketplace", run_id)
     async def get_pricing_statistics(job_id: str) -> MarketplaceResult:
         """Host-computed comparable USD posted-budget statistics; not actual earnings."""
         return await result(owner().pricing_statistics(job_id))
 
     @mcp.tool(annotations=read)
+    @audit_read(owner, tenant_id, "marketplace", run_id)
     async def get_connects_balance() -> MarketplaceResult:
         """Read this host-bound account's provider Connects balance."""
         return await result(owner().read("get_connects_balance"))
 
     @mcp.tool(annotations=read)
+    @audit_read(owner, tenant_id, "marketplace", run_id)
     async def list_messages(conversation_id: str) -> MarketplaceResult:
         """Read only this account's connected marketplace conversation messages."""
         return await result(owner().read("list_messages", conversation_id))

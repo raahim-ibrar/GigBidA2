@@ -227,6 +227,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/mcp/read-audits": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Read Audits
+         * @description Owner-only redacted local receipts. No credentials, prompts or source bodies.
+         */
+        get: operations["read_audits_api_mcp_read_audits_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/memory": {
         parameters: {
             query?: never;
@@ -1311,6 +1331,7 @@ export interface components {
             /** Title */
             title: string;
         };
+        JsonValue: unknown;
         /** LocalDraftView */
         LocalDraftView: {
             /**
@@ -1324,6 +1345,33 @@ export interface components {
             };
             /** Run Id */
             run_id: string;
+        };
+        /** MCPReadAuditView */
+        MCPReadAuditView: {
+            arguments: components["schemas"]["JsonValue"];
+            /** Elapsed Seconds */
+            elapsed_seconds: number | null;
+            /** Finished At */
+            finished_at: string | null;
+            /** Id */
+            id: string;
+            result: components["schemas"]["JsonValue"];
+            /** Run Id */
+            run_id: string | null;
+            /** Server */
+            server: string;
+            /**
+             * Started At
+             * Format: date-time
+             */
+            started_at: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "started" | "completed" | "tool_error" | "exception" | "cancelled";
+            /** Tool */
+            tool: string;
         };
         /** ManualJob */
         ManualJob: {
@@ -2342,6 +2390,39 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ConnectionStatus"];
+                };
+            };
+        };
+    };
+    read_audits_api_mcp_read_audits_get: {
+        parameters: {
+            query?: {
+                run_id?: string | null;
+                limit?: number;
+                offset?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MCPReadAuditView"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };

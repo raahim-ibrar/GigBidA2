@@ -5,6 +5,7 @@ import asyncio
 from mcp.server.fastmcp import FastMCP
 from mcp.types import ToolAnnotations
 
+from agent.mcp_audit import audit_read
 from apps.api.database import make_engine
 from apps.api.settings import Settings
 from mcp_servers.workspace.service import WorkspaceService
@@ -25,6 +26,7 @@ def create_workspace_server(service=None, tenant_id=None, run_id=None):
         return service
 
     @mcp.tool(annotations=read)
+    @audit_read(owner, tenant_id, "workspace", run_id)
     async def free_calendar_slots(request: SlotRequest) -> WorkspaceResult:
         """Find slots inside declared local availability, excluding this account's holds."""
         return WorkspaceResult(data=await asyncio.to_thread(owner().free_slots, tenant_id, request))

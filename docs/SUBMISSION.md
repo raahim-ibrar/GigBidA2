@@ -40,3 +40,9 @@ client-history adjustment when enough simulator-client records exist. See
 [pricing method and limitations](PRICING.md). Historical budgets are not verified
 earnings; unavailable live client price history remains explicit. Existing research
 results predate this pricing change and have not been rewritten.
+
+MCP reads now have [redacted local argument/result receipts](MCP_READ_AUDITS.md),
+including standalone server calls and GitHub/Upwork provider reads. Owner-only
+inspection is available at `GET /api/mcp/read-audits`; public tracing still exports
+metadata only. Historical calls and SDK validation failures before dispatch are
+not retroactively represented as audited executions.

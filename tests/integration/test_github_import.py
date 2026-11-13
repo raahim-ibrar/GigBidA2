@@ -25,7 +25,7 @@ def test_rejects_noncanonical_repository_url(url):
 
 
 def test_import_is_authenticated_csrf_scoped_and_indexed(account_app, portfolio, monkeypatch):
-    async def fetch(body, settings):
+    async def fetch(body, settings, *, auditor):
         return (
             "github-a-b-README.md",
             b"Built a Python API for fictional coursework.",
@@ -61,8 +61,13 @@ def test_import_is_authenticated_csrf_scoped_and_indexed(account_app, portfolio,
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("path,kind", [("README.md", "readme"), ("src/my api.py", "code")])
-async def test_github_mcp_pins_commit_and_reads_embedded_resource(monkeypatch, path, kind):
+async def test_github_mcp_pins_commit_and_reads_embedded_resource(
+    monkeypatch, path, kind, client, account_app
+):
+    from agent.mcp_audit import ReadAuditor
     from rag.github_import import fetch_readme
+
+    user = account(client)
 
     calls = []
 
@@ -103,6 +108,7 @@ async def test_github_mcp_pins_commit_and_reads_embedded_resource(monkeypatch, p
     _, text, metadata = await fetch_readme(
         GitHubImport(repository_url="https://github.com/a/b.git", project="Test", path=path),
         settings,
+        auditor=ReadAuditor(account_app.state.engine, user["id"]),
     )
     assert b"Actual README" in text and metadata.source_commit == "a" * 40
     assert calls[-1][1]["sha"] == "a" * 40
@@ -111,6 +117,15 @@ async def test_github_mcp_pins_commit_and_reads_embedded_resource(monkeypatch, p
     assert metadata.source_url.endswith(path.replace(" ", "%20"))
     if kind == "code":
         assert b"```\nActual README\n```" in text
+    receipts = client.get("/api/mcp/read-audits").json()
+    assert len(receipts) == 3
+    assert {r["tool"] for r in receipts} == {
+        "search_repositories",
+        "get_commit",
+        "get_file_contents",
+    }
+    assert all(r["server"] == "github" and r["status"] == "completed" for r in receipts)
+    assert "Actual README" not in repr(receipts) and "fake-test-key" not in repr(receipts)
 
 
 @pytest.mark.parametrize(

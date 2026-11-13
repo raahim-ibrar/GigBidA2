@@ -8,6 +8,7 @@ from urllib.parse import urlparse
 from sqlalchemy.orm import Session
 
 from agent.marketplace_port import MarketplaceResult
+from agent.mcp_audit import ReadAuditor
 from apps.api.auth.token_store import EncryptedTokenStorage, OAuthUnavailable
 from apps.api.models import OAuthCredential
 from mcp_servers.marketplace.adapters.student_sim import MarketplaceRejected, MarketplaceUnavailable
@@ -194,7 +195,16 @@ class UpworkLiveAdapter:
                     "org_uid": account["org_uid"],
                     "params": params or {},
                 }
-                return parse_result(await session.call_tool(name, arguments))
+                if prepare:
+                    result = await session.call_tool(name, arguments)
+                else:
+                    result = await ReadAuditor(self.engine, self.tenant).invoke(
+                        "upwork",
+                        name,
+                        arguments,
+                        lambda: session.call_tool(name, arguments),
+                    )
+                return parse_result(result)
         except (MarketplaceRejected, MarketplaceUnavailable):
             raise
         except Exception:

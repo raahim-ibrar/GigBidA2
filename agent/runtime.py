@@ -198,6 +198,7 @@ async def process_run(
                                     "GIGBID_TENANT_ID": tenant,
                                     "DATABASE_URL": settings.database_url,
                                     "QDRANT_URL": settings.qdrant_url,
+                                    "GIGBID_RUN_ID": run_id,
                                     "MODEL_CACHE_DIR": str(settings.model_cache_dir),
                                 },
                             }

@@ -9,10 +9,11 @@ from cryptography.fernet import Fernet
 from mcp.shared.auth import OAuthToken
 from mcp.types import Tool
 from pydantic import SecretStr
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from apps.api.auth.token_store import EncryptedTokenStorage, OAuthUnavailable
-from apps.api.models import OAuthCredential
+from apps.api.models import MCPReadAudit, OAuthCredential
 from mcp_servers.marketplace.adapters.student_sim import MarketplaceRejected, MarketplaceUnavailable
 from mcp_servers.marketplace.adapters.upwork_live import (
     CAPABILITIES,
@@ -186,6 +187,11 @@ async def test_live_adapter_only_calls_verified_action_and_org(account_app, live
         account_app.state.engine, settings, user["id"], session_factory=factory
     )
     assert (await adapter.get_connects_balance()).data["connects"] == 7
+    with Session(account_app.state.engine) as db:
+        receipt = db.scalar(select(MCPReadAudit))
+        assert receipt.user_id == user["id"] and receipt.server == "upwork"
+        assert receipt.status == "completed"
+        assert "fake-freelancer-account" not in repr(receipt.arguments)
     assert calls == [
         (
             "upwork__get_freelancer_financials",

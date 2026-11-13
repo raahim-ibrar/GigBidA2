@@ -8,6 +8,7 @@ from mcp.server.fastmcp import FastMCP
 from mcp.types import ToolAnnotations
 
 from agent.handoffs import EvidenceItem
+from agent.mcp_audit import audit_read
 from apps.api.database import make_engine
 from apps.api.settings import Settings
 from mcp_servers.portfolio import resources
@@ -18,7 +19,9 @@ from rag.runtime import build_portfolio
 from rag.service import MissingEvidence
 
 
-def create_portfolio_server(service=None, tenant_id: str | None = None, **transport_options):
+def create_portfolio_server(
+    service=None, tenant_id: str | None = None, run_id=None, **transport_options
+):
     mcp = FastMCP("GigBid Portfolio", **transport_options)
     read = ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True)
 
@@ -34,6 +37,7 @@ def create_portfolio_server(service=None, tenant_id: str | None = None, **transp
         return service
 
     @mcp.tool(annotations=read)
+    @audit_read(owner, tenant_id, "portfolio", run_id)
     async def search_evidence(request: SearchEvidence) -> EvidenceResult:
         """Retrieve only this account's indexed evidence, with immutable source chunk IDs."""
         import asyncio
@@ -51,6 +55,7 @@ def create_portfolio_server(service=None, tenant_id: str | None = None, **transp
         return EvidenceResult(items=[hit.evidence for hit in result.items])
 
     @mcp.tool(annotations=read)
+    @audit_read(owner, tenant_id, "portfolio", run_id)
     async def get_case_study(id: str) -> EvidenceItem:
         """Read a full indexed source by document ID, or an individual evidence chunk by ID."""
         try:
@@ -59,15 +64,18 @@ def create_portfolio_server(service=None, tenant_id: str | None = None, **transp
             return owner().evidence(tenant_id, id)
 
     @mcp.tool(annotations=read)
+    @audit_read(owner, tenant_id, "portfolio", run_id)
     async def list_skills() -> SkillList:
         """List skills declared in this account's indexed portfolio metadata."""
         return SkillList(skills=owner().skills(tenant_id))
 
     @mcp.resource("portfolio://case/{id}")
+    @audit_read(owner, tenant_id, "portfolio", run_id)
     async def case_resource(id: str) -> str:
         return resources.case_resource(owner(), tenant_id, id)
 
     @mcp.resource("portfolio://proposal/{id}")
+    @audit_read(owner, tenant_id, "portfolio", run_id)
     async def proposal_resource(id: str) -> str:
         return resources.proposal_resource(owner(), tenant_id, id)
 

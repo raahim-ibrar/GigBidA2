@@ -18,8 +18,14 @@ router = APIRouter(tags=["portfolio"])
 
 @router.post("/portfolio/import/github", response_model=DocumentView, status_code=201)
 async def import_github(body: GitHubImport, user: CurrentUser, request: Request):
+    from agent.mcp_audit import ReadAuditor
+
     try:
-        filename, content, metadata = await fetch_readme(body, request.app.state.settings)
+        filename, content, metadata = await fetch_readme(
+            body,
+            request.app.state.settings,
+            auditor=ReadAuditor(request.app.state.engine, user.id),
+        )
         document = await run_in_threadpool(
             request.app.state.portfolio.ingest, user.id, filename, content, metadata
         )

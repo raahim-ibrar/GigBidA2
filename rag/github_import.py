@@ -86,7 +86,7 @@ class GitHubImportUnavailable(RuntimeError):
     pass
 
 
-async def fetch_readme(body, settings):
+async def fetch_readme(body, settings, *, auditor):
     key = settings.github_token.get_secret_value()
     if not key:
         raise GitHubImportUnavailable("GitHub import needs a read-only GITHUB_TOKEN on the server")
@@ -106,7 +106,9 @@ async def fetch_readme(body, settings):
     )
 
     async def call(session, name, arguments):
-        result = await session.call_tool(name, arguments)
+        result = await auditor.invoke(
+            "github", name, arguments, lambda: session.call_tool(name, arguments)
+        )
         if result.isError:
             raise GitHubImportUnavailable(
                 "GitHub MCP could not read this public repository; check token scope and reference"
