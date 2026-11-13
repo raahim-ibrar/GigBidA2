@@ -1,0 +1,62 @@
+{
+  "job_ids": [
+    "student-4016-ai_ml-000",
+    "student-4016-ai_ml-001",
+    "student-4016-ai_ml-002",
+    "student-4016-full_stack-000",
+    "student-4016-full_stack-001",
+    "student-4016-full_stack-002",
+    "student-4016-data_analyst-000",
+    "student-4016-data_analyst-001",
+    "student-4016-data_analyst-002"
+  ],
+  "relevance_topics": {
+    "ai_ml": [
+      [
+        "Ticket classification"
+      ],
+      [
+        "Document search"
+      ],
+      [
+        "Forecast monitoring"
+      ]
+    ],
+    "full_stack": [
+      [
+        "Booking portal"
+      ],
+      [
+        "Commerce dashboard",
+        "Booking portal"
+      ],
+      [
+        "Team workspace"
+      ]
+    ],
+    "data_analyst": [
+      [
+        "Revenue reporting"
+      ],
+      [
+        "Revenue reporting",
+        "Data quality"
+      ],
+      [
+        "Data quality"
+      ]
+    ]
+  },
+  "gold_author": "Codex synthetic project-topic annotations, not human gold",
+  "gold_rule": "All case-study/README chunks for the named topic, across all industries; CV and prior proposal chunks are distractors. No industry is specified by these jobs.",
+  "query": "Original matcher query: title + newline + description, truncated to 4000",
+  "depth": "Recall@5 from k=5; nDCG@10 from k=10. Original generation used k=5.",
+  "variants": [
+    "v0",
+    "v3"
+  ],
+  "data_origin": "synthetic",
+  "cohort_sha256": "e46301719dcc7272dd397877f53cf2be3308bd90c27adf7f4bb74c23eca6c40f",
+  "corpus_generator_sha256": "fefa05a40c97261707b99edabc00f7409d47c0fa7e634256eddcd9ab25b4f857",
+  "limits": "Retrospective retrieval replay on the same jobs and source corpus; not a new generation experiment. Topic-family gold can contain more than five relevant source chunks, so Recall@5 need not approach one."
+}

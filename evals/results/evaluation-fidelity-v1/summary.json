@@ -1,0 +1,787 @@
+{
+  "data_origin": "Synthetic jobs and portfolios, real LLM-driven client decisions",
+  "generator_runs_repeated": 0,
+  "client_mode": "llm with fixed budget/eligibility guards",
+  "rag": {
+    "v0": {
+      "jobs": 9,
+      "statuses": {
+        "skip": 3,
+        "awaiting_approval": 2,
+        "needs_attention": 3,
+        "watch": 1
+      },
+      "decisions": {
+        "overall": {
+          "bid": {
+            "n": 9,
+            "tp": 5,
+            "fp": 0,
+            "fn": 1,
+            "tn": 3,
+            "accuracy": 0.8888888888888888,
+            "precision": 1.0,
+            "recall": 0.8333333333333334,
+            "f1": 0.9090909090909091
+          },
+          "scam": {
+            "n": 9,
+            "tp": 3,
+            "fp": 0,
+            "fn": 0,
+            "tn": 6,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          "price_band_n": 9,
+          "price_in_band_rate": 0.5555555555555556,
+          "claim_annotated_jobs": 0,
+          "claim_annotations_complete": false,
+          "labelled_claims": 0,
+          "unsupported_claim_rate": null
+        },
+        "by_persona": {
+          "ai_ml": {
+            "bid": {
+              "n": 3,
+              "tp": 2,
+              "fp": 0,
+              "fn": 0,
+              "tn": 1,
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            },
+            "scam": {
+              "n": 3,
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "tn": 2,
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            },
+            "price_band_n": 3,
+            "price_in_band_rate": 0.6666666666666666,
+            "claim_annotated_jobs": 0,
+            "claim_annotations_complete": false,
+            "labelled_claims": 0,
+            "unsupported_claim_rate": null
+          },
+          "data_analyst": {
+            "bid": {
+              "n": 3,
+              "tp": 1,
+              "fp": 0,
+              "fn": 1,
+              "tn": 1,
+              "accuracy": 0.6666666666666666,
+              "precision": 1.0,
+              "recall": 0.5,
+              "f1": 0.6666666666666666
+            },
+            "scam": {
+              "n": 3,
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "tn": 2,
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            },
+            "price_band_n": 3,
+            "price_in_band_rate": 0.3333333333333333,
+            "claim_annotated_jobs": 0,
+            "claim_annotations_complete": false,
+            "labelled_claims": 0,
+            "unsupported_claim_rate": null
+          },
+          "full_stack": {
+            "bid": {
+              "n": 3,
+              "tp": 2,
+              "fp": 0,
+              "fn": 0,
+              "tn": 1,
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            },
+            "scam": {
+              "n": 3,
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "tn": 2,
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            },
+            "price_band_n": 3,
+            "price_in_band_rate": 0.6666666666666666,
+            "claim_annotated_jobs": 0,
+            "claim_annotations_complete": false,
+            "labelled_claims": 0,
+            "unsupported_claim_rate": null
+          }
+        }
+      },
+      "available_drafts": 5,
+      "mean_judge_quality": 3.8,
+      "claim_counts": {
+        "supported": 16,
+        "not_factual": 18
+      },
+      "unsupported_claims_per_available_proposal": 0.0,
+      "submissions": 2,
+      "replies": 2,
+      "reply_rate_per_assigned_job": 0.2222222222222222,
+      "reply_rate_per_submission": 1.0,
+      "p50_job_seconds": 178.7739500000007,
+      "p95_job_seconds": 368.15581009999914,
+      "known_tokens": 112773,
+      "usd_per_proposal": null,
+      "by_persona": {
+        "ai_ml": {
+          "jobs": 3,
+          "statuses": {
+            "skip": 1,
+            "awaiting_approval": 1,
+            "needs_attention": 1
+          },
+          "p50_job_seconds": 178.7739500000007,
+          "p95_job_seconds": 181.32740840000042,
+          "known_tokens": 30932,
+          "replies": 1,
+          "hires": 1
+        },
+        "data_analyst": {
+          "jobs": 3,
+          "statuses": {
+            "skip": 1,
+            "awaiting_approval": 1,
+            "watch": 1
+          },
+          "p50_job_seconds": 4.157882800000152,
+          "p95_job_seconds": 183.28529849999904,
+          "known_tokens": 23005,
+          "replies": 1,
+          "hires": 0
+        },
+        "full_stack": {
+          "jobs": 3,
+          "statuses": {
+            "skip": 1,
+            "needs_attention": 2
+          },
+          "p50_job_seconds": 306.9644255000003,
+          "p95_job_seconds": 368.15581009999914,
+          "known_tokens": 58836,
+          "replies": 0,
+          "hires": 0
+        }
+      },
+      "positive_jobs": 6,
+      "positive_jobs_priced_in_band": 5,
+      "same_cohort_retrieval": {
+        "jobs": 9,
+        "recall_at_5": 0.35813492063492064,
+        "mrr_at_5": 0.6666666666666666,
+        "ndcg_at_10": 0.6229582737660557,
+        "by_persona": {
+          "ai_ml": {
+            "at_5": {
+              "n": 3,
+              "answerable": 3,
+              "unanswerable": 0,
+              "macro_recall_at_k": 0.5714285714285715,
+              "macro_mrr_at_k": 1.0,
+              "macro_ndcg_at_k": 0.8997382732836167,
+              "macro_precision_at_k": 0.8666666666666667,
+              "unanswerable_with_retrieval": 0
+            },
+            "at_10": {
+              "n": 3,
+              "answerable": 3,
+              "unanswerable": 0,
+              "macro_recall_at_k": 0.8333333333333334,
+              "macro_mrr_at_k": 1.0,
+              "macro_ndcg_at_k": 0.8648617036514065,
+              "macro_precision_at_k": 0.6333333333333333,
+              "unanswerable_with_retrieval": 0
+            }
+          },
+          "data_analyst": {
+            "at_5": {
+              "n": 3,
+              "answerable": 3,
+              "unanswerable": 0,
+              "macro_recall_at_k": 0.19047619047619047,
+              "macro_mrr_at_k": 0.3333333333333333,
+              "macro_ndcg_at_k": 0.28959830749588605,
+              "macro_precision_at_k": 0.26666666666666666,
+              "unanswerable_with_retrieval": 0
+            },
+            "at_10": {
+              "n": 3,
+              "answerable": 3,
+              "unanswerable": 0,
+              "macro_recall_at_k": 0.3079365079365079,
+              "macro_mrr_at_k": 0.3703703703703704,
+              "macro_ndcg_at_k": 0.3108607578358384,
+              "macro_precision_at_k": 0.2333333333333333,
+              "unanswerable_with_retrieval": 0
+            }
+          },
+          "full_stack": {
+            "at_5": {
+              "n": 3,
+              "answerable": 3,
+              "unanswerable": 0,
+              "macro_recall_at_k": 0.3125,
+              "macro_mrr_at_k": 0.6666666666666666,
+              "macro_ndcg_at_k": 0.6666666666666666,
+              "macro_precision_at_k": 0.6666666666666666,
+              "unanswerable_with_retrieval": 0
+            },
+            "at_10": {
+              "n": 3,
+              "answerable": 3,
+              "unanswerable": 0,
+              "macro_recall_at_k": 0.5892857142857143,
+              "macro_mrr_at_k": 0.7000000000000001,
+              "macro_ndcg_at_k": 0.6931523598109225,
+              "macro_precision_at_k": 0.6333333333333334,
+              "unanswerable_with_retrieval": 0
+            }
+          }
+        }
+      },
+      "hires": 1,
+      "hire_rate_per_submission": 0.5
+    },
+    "v3": {
+      "jobs": 9,
+      "statuses": {
+        "skip": 3,
+        "awaiting_approval": 1,
+        "needs_attention": 5
+      },
+      "decisions": {
+        "overall": {
+          "bid": {
+            "n": 9,
+            "tp": 6,
+            "fp": 0,
+            "fn": 0,
+            "tn": 3,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          "scam": {
+            "n": 9,
+            "tp": 3,
+            "fp": 0,
+            "fn": 0,
+            "tn": 6,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          "price_band_n": 9,
+          "price_in_band_rate": 0.6666666666666666,
+          "claim_annotated_jobs": 0,
+          "claim_annotations_complete": false,
+          "labelled_claims": 0,
+          "unsupported_claim_rate": null
+        },
+        "by_persona": {
+          "ai_ml": {
+            "bid": {
+              "n": 3,
+              "tp": 2,
+              "fp": 0,
+              "fn": 0,
+              "tn": 1,
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            },
+            "scam": {
+              "n": 3,
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "tn": 2,
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            },
+            "price_band_n": 3,
+            "price_in_band_rate": 0.6666666666666666,
+            "claim_annotated_jobs": 0,
+            "claim_annotations_complete": false,
+            "labelled_claims": 0,
+            "unsupported_claim_rate": null
+          },
+          "data_analyst": {
+            "bid": {
+              "n": 3,
+              "tp": 2,
+              "fp": 0,
+              "fn": 0,
+              "tn": 1,
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            },
+            "scam": {
+              "n": 3,
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "tn": 2,
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            },
+            "price_band_n": 3,
+            "price_in_band_rate": 0.6666666666666666,
+            "claim_annotated_jobs": 0,
+            "claim_annotations_complete": false,
+            "labelled_claims": 0,
+            "unsupported_claim_rate": null
+          },
+          "full_stack": {
+            "bid": {
+              "n": 3,
+              "tp": 2,
+              "fp": 0,
+              "fn": 0,
+              "tn": 1,
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            },
+            "scam": {
+              "n": 3,
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "tn": 2,
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            },
+            "price_band_n": 3,
+            "price_in_band_rate": 0.6666666666666666,
+            "claim_annotated_jobs": 0,
+            "claim_annotations_complete": false,
+            "labelled_claims": 0,
+            "unsupported_claim_rate": null
+          }
+        }
+      },
+      "available_drafts": 2,
+      "mean_judge_quality": 4.0,
+      "claim_counts": {
+        "supported": 3,
+        "not_factual": 6
+      },
+      "unsupported_claims_per_available_proposal": 0.0,
+      "submissions": 1,
+      "replies": 1,
+      "reply_rate_per_assigned_job": 0.1111111111111111,
+      "reply_rate_per_submission": 1.0,
+      "p50_job_seconds": 60.675156600000264,
+      "p95_job_seconds": 124.43478750000031,
+      "known_tokens": 56249,
+      "usd_per_proposal": null,
+      "by_persona": {
+        "ai_ml": {
+          "jobs": 3,
+          "statuses": {
+            "skip": 1,
+            "awaiting_approval": 1,
+            "needs_attention": 1
+          },
+          "p50_job_seconds": 124.15301519999957,
+          "p95_job_seconds": 124.43478750000031,
+          "known_tokens": 30355,
+          "replies": 1,
+          "hires": 0
+        },
+        "data_analyst": {
+          "jobs": 3,
+          "statuses": {
+            "skip": 1,
+            "needs_attention": 2
+          },
+          "p50_job_seconds": 58.59987089999959,
+          "p95_job_seconds": 61.274012000001676,
+          "known_tokens": 13014,
+          "replies": 0,
+          "hires": 0
+        },
+        "full_stack": {
+          "jobs": 3,
+          "statuses": {
+            "skip": 1,
+            "needs_attention": 2
+          },
+          "p50_job_seconds": 60.675156600000264,
+          "p95_job_seconds": 61.00462460000017,
+          "known_tokens": 12880,
+          "replies": 0,
+          "hires": 0
+        }
+      },
+      "positive_jobs": 6,
+      "positive_jobs_priced_in_band": 6,
+      "same_cohort_retrieval": {
+        "jobs": 9,
+        "recall_at_5": 0.4884259259259259,
+        "mrr_at_5": 0.8888888888888888,
+        "ndcg_at_10": 0.8912461382459208,
+        "by_persona": {
+          "ai_ml": {
+            "at_5": {
+              "n": 3,
+              "answerable": 3,
+              "unanswerable": 0,
+              "macro_recall_at_k": 0.6130952380952381,
+              "macro_mrr_at_k": 1.0,
+              "macro_ndcg_at_k": 0.9562649741625527,
+              "macro_precision_at_k": 0.9333333333333332,
+              "unanswerable_with_retrieval": 0
+            },
+            "at_10": {
+              "n": 3,
+              "answerable": 3,
+              "unanswerable": 0,
+              "macro_recall_at_k": 1.0,
+              "macro_mrr_at_k": 1.0,
+              "macro_ndcg_at_k": 0.992763915360741,
+              "macro_precision_at_k": 0.7666666666666666,
+              "unanswerable_with_retrieval": 0
+            }
+          },
+          "data_analyst": {
+            "at_5": {
+              "n": 3,
+              "answerable": 3,
+              "unanswerable": 0,
+              "macro_recall_at_k": 0.34920634920634924,
+              "macro_mrr_at_k": 0.6666666666666666,
+              "macro_ndcg_at_k": 0.6666666666666666,
+              "macro_precision_at_k": 0.6666666666666666,
+              "unanswerable_with_retrieval": 0
+            },
+            "at_10": {
+              "n": 3,
+              "answerable": 3,
+              "unanswerable": 0,
+              "macro_recall_at_k": 0.6388888888888888,
+              "macro_mrr_at_k": 0.7037037037037037,
+              "macro_ndcg_at_k": 0.7164200597204311,
+              "macro_precision_at_k": 0.6333333333333333,
+              "unanswerable_with_retrieval": 0
+            }
+          },
+          "full_stack": {
+            "at_5": {
+              "n": 3,
+              "answerable": 3,
+              "unanswerable": 0,
+              "macro_recall_at_k": 0.5029761904761905,
+              "macro_mrr_at_k": 1.0,
+              "macro_ndcg_at_k": 0.9562649741625527,
+              "macro_precision_at_k": 0.9333333333333332,
+              "unanswerable_with_retrieval": 0
+            },
+            "at_10": {
+              "n": 3,
+              "answerable": 3,
+              "unanswerable": 0,
+              "macro_recall_at_k": 0.8273809523809524,
+              "macro_mrr_at_k": 1.0,
+              "macro_ndcg_at_k": 0.96455443965659,
+              "macro_precision_at_k": 0.7999999999999999,
+              "unanswerable_with_retrieval": 0
+            }
+          }
+        }
+      },
+      "hires": 0,
+      "hire_rate_per_submission": 0.0
+    }
+  },
+  "architecture": {
+    "react": {
+      "n": 50,
+      "error_free": 41,
+      "errors": 9,
+      "error_categories": {
+        "token_or_step_budget": 7,
+        "provider_or_structured_output": 2
+      },
+      "decision_observed_n": 41,
+      "decision_stage_correct_n": 36,
+      "decision_stage_accuracy_all_assigned": 0.72,
+      "error_free_correct_decision_n": 36,
+      "error_free_correct_decision_rate_all_assigned": 0.72,
+      "submissions": 40,
+      "replies": 25,
+      "drafts_available": 40,
+      "measured_tokens_total": 418848,
+      "measured_tokens_mean": 8376.96,
+      "unknown_usage_calls": 22,
+      "wall_seconds_median": 32.599749600001815,
+      "wall_seconds_p95_nearest_rank": 138.55266409999967,
+      "draft_policy_flags": 0,
+      "scam_controls_n": 6,
+      "scam_controls_rejected": 1,
+      "scam_control_submissions": 5,
+      "hires": 1,
+      "reply_rate_all_assigned": 0.5,
+      "hire_rate_all_assigned": 0.02
+    },
+    "supervisor": {
+      "n": 50,
+      "error_free": 24,
+      "errors": 26,
+      "error_categories": {
+        "token_or_step_budget": 22,
+        "provider_timeout": 4
+      },
+      "decision_observed_n": 25,
+      "decision_stage_correct_n": 24,
+      "decision_stage_accuracy_all_assigned": 0.48,
+      "error_free_correct_decision_n": 23,
+      "error_free_correct_decision_rate_all_assigned": 0.46,
+      "submissions": 19,
+      "replies": 12,
+      "drafts_available": 20,
+      "measured_tokens_total": 516502,
+      "measured_tokens_mean": 10330.04,
+      "unknown_usage_calls": 36,
+      "wall_seconds_median": 60.35194215000047,
+      "wall_seconds_p95_nearest_rank": 186.1275046999981,
+      "draft_policy_flags": 0,
+      "scam_controls_n": 6,
+      "scam_controls_rejected": 5,
+      "scam_control_submissions": 1,
+      "hires": 2,
+      "reply_rate_all_assigned": 0.24,
+      "hire_rate_all_assigned": 0.04
+    },
+    "hand_graph": {
+      "n": 50,
+      "error_free": 37,
+      "errors": 13,
+      "error_categories": {
+        "token_or_step_budget": 10,
+        "other_observed_stop": 2,
+        "provider_or_structured_output": 1
+      },
+      "decision_observed_n": 50,
+      "decision_stage_correct_n": 49,
+      "decision_stage_accuracy_all_assigned": 0.98,
+      "error_free_correct_decision_n": 36,
+      "error_free_correct_decision_rate_all_assigned": 0.72,
+      "submissions": 30,
+      "replies": 26,
+      "drafts_available": 43,
+      "measured_tokens_total": 433114,
+      "measured_tokens_mean": 8662.28,
+      "unknown_usage_calls": 0,
+      "wall_seconds_median": 49.29862460000004,
+      "wall_seconds_p95_nearest_rank": 178.69293079999989,
+      "draft_policy_flags": 0,
+      "scam_controls_n": 6,
+      "scam_controls_rejected": 6,
+      "scam_control_submissions": 0,
+      "hires": 4,
+      "reply_rate_all_assigned": 0.52,
+      "hire_rate_all_assigned": 0.08
+    }
+  },
+  "x2_intention_to_treat": {
+    "arms": {
+      "evidence_first": {
+        "replies": 12,
+        "n": 25,
+        "reply_rate": 0.48
+      },
+      "problem_first": {
+        "replies": 14,
+        "n": 25,
+        "reply_rate": 0.56
+      }
+    },
+    "difference_evidence_minus_problem": -0.08000000000000007,
+    "fisher_two_sided_p": 0.7775119850607676,
+    "alpha": 0.05,
+    "difference_interval": [
+      -0.6720828749203194,
+      0.5120828749203192
+    ],
+    "interval_method": "Hoeffding union-bound; conservative independent-observation interval",
+    "randomization_warning": "Pooled Fisher test is unadjusted for strata; inspect per-stratum effects. Repeated clients or interacting jobs violate independence assumptions."
+  },
+  "x2_by_persona": {
+    "ai_ml": {
+      "arms": {
+        "evidence_first": {
+          "replies": 3,
+          "n": 9,
+          "reply_rate": 0.3333333333333333
+        },
+        "problem_first": {
+          "replies": 4,
+          "n": 8,
+          "reply_rate": 0.5
+        }
+      },
+      "difference_evidence_minus_problem": -0.16666666666666669,
+      "fisher_two_sided_p": 0.637186343068696,
+      "alpha": 0.05,
+      "difference_interval": [
+        -1,
+        0.8500679989509963
+      ],
+      "interval_method": "Hoeffding union-bound; conservative independent-observation interval",
+      "randomization_warning": "Pooled Fisher test is unadjusted for strata; inspect per-stratum effects. Repeated clients or interacting jobs violate independence assumptions."
+    },
+    "data_analyst": {
+      "arms": {
+        "evidence_first": {
+          "replies": 2,
+          "n": 8,
+          "reply_rate": 0.25
+        },
+        "problem_first": {
+          "replies": 3,
+          "n": 8,
+          "reply_rate": 0.375
+        }
+      },
+      "difference_evidence_minus_problem": -0.125,
+      "fisher_two_sided_p": 1.0,
+      "alpha": 0.05,
+      "difference_interval": [
+        -1,
+        0.9216645397014605
+      ],
+      "interval_method": "Hoeffding union-bound; conservative independent-observation interval",
+      "randomization_warning": "Pooled Fisher test is unadjusted for strata; inspect per-stratum effects. Repeated clients or interacting jobs violate independence assumptions."
+    },
+    "full_stack": {
+      "arms": {
+        "evidence_first": {
+          "replies": 7,
+          "n": 8,
+          "reply_rate": 0.875
+        },
+        "problem_first": {
+          "replies": 7,
+          "n": 9,
+          "reply_rate": 0.7777777777777778
+        }
+      },
+      "difference_evidence_minus_problem": 0.09722222222222221,
+      "fisher_two_sided_p": 1.0,
+      "alpha": 0.05,
+      "difference_interval": [
+        -0.9195124433954408,
+        1
+      ],
+      "interval_method": "Hoeffding union-bound; conservative independent-observation interval",
+      "randomization_warning": "Pooled Fisher test is unadjusted for strata; inspect per-stratum effects. Repeated clients or interacting jobs violate independence assumptions."
+    }
+  },
+  "architecture_by_persona": {
+    "ai_ml": {
+      "react": {
+        "jobs": 17,
+        "submissions": 11,
+        "replies": 9,
+        "hires": 0
+      },
+      "supervisor": {
+        "jobs": 17,
+        "submissions": 6,
+        "replies": 4,
+        "hires": 0
+      },
+      "hand_graph": {
+        "jobs": 17,
+        "submissions": 8,
+        "replies": 7,
+        "hires": 1
+      }
+    },
+    "data_analyst": {
+      "react": {
+        "jobs": 16,
+        "submissions": 13,
+        "replies": 7,
+        "hires": 0
+      },
+      "supervisor": {
+        "jobs": 16,
+        "submissions": 6,
+        "replies": 2,
+        "hires": 1
+      },
+      "hand_graph": {
+        "jobs": 16,
+        "submissions": 7,
+        "replies": 5,
+        "hires": 0
+      }
+    },
+    "full_stack": {
+      "react": {
+        "jobs": 17,
+        "submissions": 16,
+        "replies": 9,
+        "hires": 1
+      },
+      "supervisor": {
+        "jobs": 17,
+        "submissions": 7,
+        "replies": 6,
+        "hires": 1
+      },
+      "hand_graph": {
+        "jobs": 17,
+        "submissions": 15,
+        "replies": 14,
+        "hires": 3
+      }
+    }
+  },
+  "client_requests": 12,
+  "client_decisions": 92,
+  "client_model": "nvidia/nemotron-3.5-lightning:free",
+  "limits": "Outcomes are one-pass LLM decisions plus fixed eligibility/budget guards; not real clients or longitudinal negotiations. Batch context can couple decisions. V0/V3 retrieval uses the same nine proposal jobs and original portfolio generator, replayed at k=5 and k=10; it is retrospective synthetic topic-family gold, not human annotation. Draft quality uses all available drafts (5 vs 2); failures remain in assigned-job denominators. Generator timings/tokens are reused, client usage is separate."
+}

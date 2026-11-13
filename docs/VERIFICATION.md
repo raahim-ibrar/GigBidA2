@@ -163,3 +163,20 @@ Run the local Analyst smoke with `GIGBID_REAL_AGENTS=1 uv run pytest tests/integ
 - A genuine three-minute browser recording and 30-second excerpt GIF cover real hosted-model demo runs with fictional evidence/clients. The recording API was actually killed and restarted while approval was pending. One UI approval produced one application receipt and exactly one simulator proposal; a simulator client reply was reviewed and sent. Evidence: `demo-recording.json`, `crash-resume-verification.json`, and `public-traces.json` under `evals/results/`.
 - Trace exports now use immutable snapshots per audit cursor, retaining the application correlation ID in metadata. This avoids closed-span repeat-update conflicts; SDK mutation cannot corrupt the JSON audit commit. New public snapshots cover the approved proposal/crash recovery and an existing real-model two-pass Critic loop. No private source text or credentials are shared.
 - The technical article is publicly accessible through GitHub Pages. Recording and Inspector services were stopped after use; the public app/tunnel remains off. The instructor policy-update details and hidden-test outcomes remain unavailable.
+
+
+## Evaluation fidelity correction, November 13
+
+Only the evaluation-fidelity item was changed. The frozen 150 architecture runs and
+18 V0/V3 runs were preserved. Ninety-two previously submitted synthetic proposals
+received actual LLM-client decisions in 12 requests; no agent or GPU inference was rerun.
+The actual simulator LLM-mode outbox and existing eligibility/budget guards produced
+new effective outcomes. Public-source provenance was checked before external calls;
+no personal CV/evidence bodies or credentials were included in the payload.
+
+The primary B5 table now joins retrieval, draft and outcome metrics on the same nine
+jobs per variant and original source corpus. Retrieval was replayed on CPU with declared
+synthetic relevance annotations, not substituted from the earlier 60-task cohort.
+Three focused integrity/privacy tests passed; Ruff passed. New primary tables and X2
+analysis are in `evals/results/evaluation-fidelity-v1/summary.json`. Historical controls
+remain labelled and available, rather than overwritten.

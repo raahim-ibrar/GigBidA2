@@ -5,6 +5,13 @@ from reportlab.lib.units import mm
 
 def append_research(body, sub, section, table, source, read):
     analysis = read("evals/results/gemini-orchestration-v1/analysis.json")
+    fidelity = read("evals/results/evaluation-fidelity-v1/summary.json")
+    if fidelity:
+        analysis = {
+            **analysis,
+            "conditions": fidelity["architecture"],
+            "x2_intention_to_treat": fidelity["x2_intention_to_treat"],
+        }
     tools = read("evals/results/student-tool-study-v3/results.json")
     quality = read("evals/results/judge-proposals-final/results.json")
     calibration = read("evals/results/judge-calibration-v4/agreement.json")
@@ -20,6 +27,13 @@ def append_research(body, sub, section, table, source, read):
         "native graphs had 30 steps and the hand graph 40, with two Critic revisions. "
         "The frozen plan, as-run source snapshot and all failed observations are retained."
     )
+    if fidelity:
+        body(
+            "Reply/hire columns use an LLM-client replay of all 89 frozen submissions: "
+            "Nvidia Nemotron free route, 12 batched requests including the separate RAG "
+            "study's three submissions. Fixed eligibility/budget guards remain; no rule "
+            "fallback or repeated agent execution. Client usage is recorded separately."
+        )
     rows = []
     for name, result in analysis["conditions"].items():
         rows.append(
@@ -84,7 +98,8 @@ def append_research(body, sub, section, table, source, read):
     )
     source(
         "gemini-orchestration-v1/{plan,analysis,progress}.json and runs.jsonl; "
-        "student-tool-study-v3/{plan,results}.json under evals/results/."
+        "student-tool-study-v3/{plan,results}.json; evaluation-fidelity-v1/summary.json "
+        "under evals/results/."
     )
 
     section(9, "Grounding, human review and X2")
@@ -152,15 +167,21 @@ def append_research(body, sub, section, table, source, read):
     sub(
         "X2: randomized proposal opening",
         "The hand-graph cohort was assigned before execution to evidence-first or "
-        "problem-first openings, 25 jobs each. Intention-to-treat replies were 12/25 (48%) "
-        "and 17/25 (68%). Evidence-minus-problem difference: -20 percentage points; "
-        "two-sided Fisher p=0.252, conservative 95% Hoeffding interval [-79.2, +39.2] points. "
+        "problem-first openings, 25 jobs each. LLM-client intention-to-treat replies were "
+        f"{analysis['x2_intention_to_treat']['arms']['evidence_first']['replies']}/25 and "
+        f"{analysis['x2_intention_to_treat']['arms']['problem_first']['replies']}/25. "
+        "Difference: "
+        f"{analysis['x2_intention_to_treat']['difference_evidence_minus_problem']:.1%}; "
+        f"two-sided Fisher p={analysis['x2_intention_to_treat']['fisher_two_sided_p']:.3f}. "
+        "Conservative 95% interval: "
+        f"[{analysis['x2_intention_to_treat']['difference_interval'][0]:.1%}, "
+        f"{analysis['x2_intention_to_treat']['difference_interval'][1]:.1%}]. "
         "The observed difference is inconclusive. The pooled test ignores assignment "
-        "strata; per-persona counts are saved. Rule-client outcomes are not real demand.",
+        "strata; per-persona counts are saved. Simulated outcomes are not real demand.",
     )
     source(
         "evals/results/judge-calibration-v4/agreement.json; judge-proposals-final/results.json; "
-        "human-panel-v1/results.json; gemini-orchestration-v1/analysis.json."
+        "human-panel-v1/results.json; evaluation-fidelity-v1/summary.json."
     )
 
     section(10, "Delivery, limitations and reproduction")

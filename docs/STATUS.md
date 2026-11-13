@@ -74,3 +74,9 @@ article, video/GIF, and approved-proposal / Critic / actual API-crash public tra
 See `SUBMISSION.md` and `evals/results/engineering-verification.json`. E6 uptime is explicitly
 excluded by the student, not claimed complete. Real Upwork write verification, unseen GigSim
 compatibility, the instructor-specific policy change and hidden-test results remain unverified.
+
+
+Evaluation fidelity was corrected on November 13: primary response tables use 92
+LLM-client decisions for frozen submissions, and B5 uses the same nine proposal jobs
+for retrieval and outcomes. Original generation runs and rule controls are preserved.
+No other incomplete assignment areas were changed in this update.

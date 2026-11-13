@@ -2,11 +2,13 @@
 
 Implemented and measured on the independent student simulator. The frozen 50-job
 custom-graph cohort assigned 25 jobs to each opening before execution. Evidence-first
-received 12 replies (48%); problem-first received 17 (68%). Evidence-minus-problem was
--20 percentage points, Fisher p=0.251590 and conservative 95% CI [-0.792, 0.392].
+received 12 replies (48%); problem-first received 14 (56%). Evidence-minus-problem was
+-8 percentage points, Fisher p=0.777512 and conservative 95% CI [-0.672, 0.512].
 No strategy benefit was established. All assigned jobs, including failures, remain in
-the intention-to-treat denominator. These are rule-client outcomes, not real clients.
-Evidence: `evals/results/gemini-orchestration-v1/{plan,analysis}.json` and `runs.jsonl`.
+the intention-to-treat denominator. These primary outcomes use LLM clients plus fixed eligibility/budget guards, not real clients.
+Evidence: the frozen architecture plan/runs in `evals/results/gemini-orchestration-v1/`
+and the LLM-client replay in `evals/results/evaluation-fidelity-v1/summary.json`.
+The original rule-client outcome analysis is retained as a separate historical control.
 The native architectures are not extra independent X2 observations.
 
 ## Reproducing the design on a new cohort

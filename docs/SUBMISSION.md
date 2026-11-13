@@ -29,3 +29,8 @@ snapshots omit private content and retain the original application correlation I
   no real proposals/messages were sent. Final submission/direct messages remain disabled.
 - Reviewer credentials and all keys stay in ignored local files. Share reviewer details
   privately only when a demo session is running; do not publish the credentials.
+
+
+The primary evaluation now uses LLM-driven simulator outcomes and a matched nine-job
+V0/V3 retrieval/proposal cohort. See `evals/results/evaluation-fidelity-v1/README.md`.
+This does not change the separate deployment, pricing, cost or live-mode limitations.

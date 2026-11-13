@@ -154,7 +154,7 @@ def analyse(rows, items):
     (ROOT / "results-table.md").write_text(rendered + "\n", encoding="utf-8")
     readme = Path("README.md")
     content = readme.read_text(encoding="utf-8")
-    start, end = "<!-- rag-e2e-table:start -->", "<!-- rag-e2e-table:end -->"
+    start, end = "<!-- legacy-rag-e2e-table:start -->", "<!-- legacy-rag-e2e-table:end -->"
     if content.count(start) == content.count(end) == 1:
         prefix, rest = content.split(start)
         _, suffix = rest.split(end)

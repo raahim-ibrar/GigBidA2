@@ -1,0 +1,186 @@
+{
+  "v0": {
+    "at_5": {
+      "k": 5,
+      "overall": {
+        "n": 9,
+        "answerable": 9,
+        "unanswerable": 0,
+        "macro_recall_at_k": 0.35813492063492064,
+        "macro_mrr_at_k": 0.6666666666666666,
+        "macro_ndcg_at_k": 0.6186677491487231,
+        "macro_precision_at_k": 0.6000000000000001,
+        "unanswerable_with_retrieval": 0
+      },
+      "by_persona": {
+        "ai_ml": {
+          "n": 3,
+          "answerable": 3,
+          "unanswerable": 0,
+          "macro_recall_at_k": 0.5714285714285715,
+          "macro_mrr_at_k": 1.0,
+          "macro_ndcg_at_k": 0.8997382732836167,
+          "macro_precision_at_k": 0.8666666666666667,
+          "unanswerable_with_retrieval": 0
+        },
+        "data_analyst": {
+          "n": 3,
+          "answerable": 3,
+          "unanswerable": 0,
+          "macro_recall_at_k": 0.19047619047619047,
+          "macro_mrr_at_k": 0.3333333333333333,
+          "macro_ndcg_at_k": 0.28959830749588605,
+          "macro_precision_at_k": 0.26666666666666666,
+          "unanswerable_with_retrieval": 0
+        },
+        "full_stack": {
+          "n": 3,
+          "answerable": 3,
+          "unanswerable": 0,
+          "macro_recall_at_k": 0.3125,
+          "macro_mrr_at_k": 0.6666666666666666,
+          "macro_ndcg_at_k": 0.6666666666666666,
+          "macro_precision_at_k": 0.6666666666666666,
+          "unanswerable_with_retrieval": 0
+        }
+      }
+    },
+    "at_10": {
+      "k": 10,
+      "overall": {
+        "n": 9,
+        "answerable": 9,
+        "unanswerable": 0,
+        "macro_recall_at_k": 0.5768518518518518,
+        "macro_mrr_at_k": 0.6901234567901234,
+        "macro_ndcg_at_k": 0.6229582737660557,
+        "macro_precision_at_k": 0.5,
+        "unanswerable_with_retrieval": 0
+      },
+      "by_persona": {
+        "ai_ml": {
+          "n": 3,
+          "answerable": 3,
+          "unanswerable": 0,
+          "macro_recall_at_k": 0.8333333333333334,
+          "macro_mrr_at_k": 1.0,
+          "macro_ndcg_at_k": 0.8648617036514065,
+          "macro_precision_at_k": 0.6333333333333333,
+          "unanswerable_with_retrieval": 0
+        },
+        "data_analyst": {
+          "n": 3,
+          "answerable": 3,
+          "unanswerable": 0,
+          "macro_recall_at_k": 0.3079365079365079,
+          "macro_mrr_at_k": 0.3703703703703704,
+          "macro_ndcg_at_k": 0.3108607578358384,
+          "macro_precision_at_k": 0.2333333333333333,
+          "unanswerable_with_retrieval": 0
+        },
+        "full_stack": {
+          "n": 3,
+          "answerable": 3,
+          "unanswerable": 0,
+          "macro_recall_at_k": 0.5892857142857143,
+          "macro_mrr_at_k": 0.7000000000000001,
+          "macro_ndcg_at_k": 0.6931523598109225,
+          "macro_precision_at_k": 0.6333333333333334,
+          "unanswerable_with_retrieval": 0
+        }
+      }
+    }
+  },
+  "v3": {
+    "at_5": {
+      "k": 5,
+      "overall": {
+        "n": 9,
+        "answerable": 9,
+        "unanswerable": 0,
+        "macro_recall_at_k": 0.4884259259259259,
+        "macro_mrr_at_k": 0.8888888888888888,
+        "macro_ndcg_at_k": 0.8597322049972573,
+        "macro_precision_at_k": 0.8444444444444444,
+        "unanswerable_with_retrieval": 0
+      },
+      "by_persona": {
+        "ai_ml": {
+          "n": 3,
+          "answerable": 3,
+          "unanswerable": 0,
+          "macro_recall_at_k": 0.6130952380952381,
+          "macro_mrr_at_k": 1.0,
+          "macro_ndcg_at_k": 0.9562649741625527,
+          "macro_precision_at_k": 0.9333333333333332,
+          "unanswerable_with_retrieval": 0
+        },
+        "data_analyst": {
+          "n": 3,
+          "answerable": 3,
+          "unanswerable": 0,
+          "macro_recall_at_k": 0.34920634920634924,
+          "macro_mrr_at_k": 0.6666666666666666,
+          "macro_ndcg_at_k": 0.6666666666666666,
+          "macro_precision_at_k": 0.6666666666666666,
+          "unanswerable_with_retrieval": 0
+        },
+        "full_stack": {
+          "n": 3,
+          "answerable": 3,
+          "unanswerable": 0,
+          "macro_recall_at_k": 0.5029761904761905,
+          "macro_mrr_at_k": 1.0,
+          "macro_ndcg_at_k": 0.9562649741625527,
+          "macro_precision_at_k": 0.9333333333333332,
+          "unanswerable_with_retrieval": 0
+        }
+      }
+    },
+    "at_10": {
+      "k": 10,
+      "overall": {
+        "n": 9,
+        "answerable": 9,
+        "unanswerable": 0,
+        "macro_recall_at_k": 0.8220899470899471,
+        "macro_mrr_at_k": 0.9012345679012346,
+        "macro_ndcg_at_k": 0.8912461382459208,
+        "macro_precision_at_k": 0.7333333333333333,
+        "unanswerable_with_retrieval": 0
+      },
+      "by_persona": {
+        "ai_ml": {
+          "n": 3,
+          "answerable": 3,
+          "unanswerable": 0,
+          "macro_recall_at_k": 1.0,
+          "macro_mrr_at_k": 1.0,
+          "macro_ndcg_at_k": 0.992763915360741,
+          "macro_precision_at_k": 0.7666666666666666,
+          "unanswerable_with_retrieval": 0
+        },
+        "data_analyst": {
+          "n": 3,
+          "answerable": 3,
+          "unanswerable": 0,
+          "macro_recall_at_k": 0.6388888888888888,
+          "macro_mrr_at_k": 0.7037037037037037,
+          "macro_ndcg_at_k": 0.7164200597204311,
+          "macro_precision_at_k": 0.6333333333333333,
+          "unanswerable_with_retrieval": 0
+        },
+        "full_stack": {
+          "n": 3,
+          "answerable": 3,
+          "unanswerable": 0,
+          "macro_recall_at_k": 0.8273809523809524,
+          "macro_mrr_at_k": 1.0,
+          "macro_ndcg_at_k": 0.96455443965659,
+          "macro_precision_at_k": 0.7999999999999999,
+          "unanswerable_with_retrieval": 0
+        }
+      }
+    }
+  }
+}

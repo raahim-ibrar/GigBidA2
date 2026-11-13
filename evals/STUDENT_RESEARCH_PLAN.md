@@ -60,3 +60,17 @@ checkpoint jobs per persona. All nine pairs happened to have unchanged text; jud
 variation is reported as such. `results/verification-changed-v1` separately includes
 all four completed passes that removed text, selected by filter activity before judging.
 No causal population claim or successful-verification claim for failed/unpaired cases is made.
+
+
+## Evaluation fidelity correction (November 13)
+
+`results/evaluation-fidelity-v1/` retains a new pre-call client plan: fixed free LLM,
+one-pass blinded batches of ten, maximum twelve requests, no paid or rule fallback.
+It replays only the 89 previously submitted architecture proposals and three RAG
+submissions; all original generation runs and rule-client controls remain unchanged.
+Primary outcome and X2 tables now use these LLM decisions plus existing eligibility guards.
+
+Before retrieval replay, the nine actual V0/V3 job IDs, exact raw-post query recipe,
+corpus-generator hash, k=5/10 depths, and synthetic topic-family relevance annotations
+were frozen. Retrieval and proposal columns now share job IDs and corpus; retrieval is
+retrospective, not a claim of newly regenerated proposals or independent human gold.

@@ -1,0 +1,7 @@
+{
+  "sources_match_public_git": true,
+  "synthetic_jobs_only": true,
+  "evidence_records_checked": 540,
+  "payload": "Job and frozen proposal only; no evidence bodies, CV or credentials",
+  "destination": "https://openrouter.ai/api/v1/chat/completions"
+}

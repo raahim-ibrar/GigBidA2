@@ -1,5 +1,46 @@
 # Measured student studies
 
+
+## Primary outcome update: LLM clients and matched proposal jobs
+
+The primary reply/hire tables now use real LLM-client decisions through the simulator's
+LLM-mode outbox. All 89 submitted architecture proposals and three V0/V3 submissions were
+replayed unchanged in 12 bounded free-model requests, with no agent or GPU reruns. Fixed
+eligibility/budget guards remain; no rule-only fallback was used. All 168 assigned cases
+remain in denominators, including non-submissions. The original rule-client records below
+are historical controls and have not been overwritten.
+
+The same nine V0/V3 proposal jobs, raw-post queries and original persona corpus now supply
+retrieval metrics too. This is a retrospective CPU replay with declared synthetic topic-family
+gold at k=5 and k=10, not a human-labelled held-out corpus. Gold topics were saved before
+retrieval and include all relevant case/README items across industries. Thus recall differs
+from the separate 60-task industry-specific study; the cohorts are no longer mixed in B5.
+
+| Variant | Recall@5 | nDCG@10 | Unsupported / available proposal | Judge / 5 | LLM-client reply / submitted | p95 agent/job seconds | USD/proposal |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| V0 | 0.358 | 0.623 | 0.00 (n=5) | 3.80 | 2/2 | 368.16 | unknown |
+| V3 | 0.488 | 0.891 | 0.00 (n=2) | 4.00 | 1/1 | 124.43 | unknown |
+
+All columns use the same nine matched jobs per variant and portfolio corpus. Retrieval is a retrospective CPU replay (k=5/10, synthetic topic-family gold); Generation observations are frozen. Quality is conditional on available drafts; failures remain in assigned-job totals. LLM clients assess the three submissions. Non-submissions cannot receive replies. Billing is unknown.
+
+Intention-to-treat LLM replies: V0 2/9; V3 1/9. This small cohort establishes no reliable winner.
+
+
+| Architecture | LLM replies / 50 | LLM hires / 50 |
+|---|---:|---:|
+| react | 25 | 1 |
+| supervisor | 12 | 2 |
+| hand_graph | 26 | 4 |
+
+X2 on the same preassigned 25/25 hand-graph arms: 12 versus 14 replies, Fisher p=0.778,
+difference -8 percentage points, conservative interval [-67.2, +51.2] points. No benefit
+is established. These are one-pass model decisions, not longitudinal negotiations or real
+market demand. Batch context can couple decisions; all missing/invalid attempts were
+retained, and accepted decisions were never replaced. Client usage is separate from frozen
+generator timings/tokens. See `evals/results/evaluation-fidelity-v1/{summary,client-plan}.json`,
+`llm-outcomes.jsonl`, `client-decisions.jsonl`, raw responses and per-persona breakdowns.
+Regenerate without inference: `python -m evals.fidelity_analysis`.
+
 ## Controlled retrieval
 
 Real BGE-small embeddings and MiniLM reranking; 60 answerable synthetic tasks and six unrelated tasks. Project-identity gold is not human-labelled real-job relevance.
@@ -55,7 +96,7 @@ Diagnostic fixes before frozen v3: exclude exact trusted source UUIDs from numer
 
 Forty known-call tasks were run with fine, coarse and rewritten tools using GPT-OSS 120B. Each condition scored 100% tool-selection and argument accuracy. Mean tokens/task were 617.675, 988.750 and 690.575 respectively. This easy synthetic cohort has a ceiling effect. Evidence: `evals/results/student-tool-study-v3/results.json`.
 
-## Completed 150-run architecture comparison
+## Archived rule-client architecture outcomes (generation metrics retained)
 
 Fifty identical fully fictional jobs, matched model assignment per job (Gemini 3.1/3.5 Flash-Lite), 20,000-token caps. This optional closed-model experiment does not replace the open-weight configurations above. All 150 observations remain, including 48 failures. Frozen source snapshots were hash-verified.
 
@@ -94,7 +135,7 @@ The hand-graph jobs were preassigned 25 per arm: evidence-first had 12 replies (
 Hidden-test performance, real-client response and instructor-policy-change implementation timing remain unmeasured. A separate 56-call component-level injection-boundary comparison completed: before 3/18 and after 4/18 evaluable attacks disclosed fake markers/nonces, with six model errors per arm. Sixteen fully observed pairs had no discordant outcomes; no improvement was established. This does not measure end-to-end approval bypass. Temporary laptop-backed public hosting, an authenticated Portfolio MCP endpoint, GitHub README ingestion and three public metadata-only traces are verified. Real Upwork OAuth and live reads are now verified separately in upwork-live-verification.json; no live writes were tested, and final submissions/direct messages remain disabled. Always-on hosting remains a gap. The local hardware inventory was captured after the study, not as an as-run trace: see `evals/results/local-hardware-inventory.json`. Local output throughput was 79.324 tokens/s for Qwen4B and 64.396 for Qwen8B; API cost was zero for local inference but hardware/electricity was not priced.
 
 
-## Supplemental V0/V3 end-to-end diagnostic
+## Archived mixed-cohort / rule-client diagnostic
 
 Eighteen real routed hosted-open runs completed on nine matched synthetic development jobs
 per retrieval variant, with the same three persona portfolios, 32,000-token caps and no

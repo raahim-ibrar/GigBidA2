@@ -94,8 +94,28 @@ from these controlled retrieval queries. See `evals/STUDENT_RESEARCH_PLAN.md`.
 
 ## Client model limits
 
-The current deterministic client model uses whether the scenario is eligible, bid within
+The historical deterministic control client uses whether the scenario is eligible, bid within
 budget, proposal length, and required-skill coverage to generate replies and hires. It is
 transparent and repeatable, but rewards keyword coverage and cannot measure persuasive
 writing, realistic competition or real hiring. It also differs from the document's proposed
 LLM client. All outcome tables must state this limitation.
+
+
+Primary research outcome tables now use the LLM-mode simulator outbox and the fixed free
+Nvidia Nemotron client in `evals/results/evaluation-fidelity-v1/client-plan.json`. All 92
+frozen submissions across 168 assigned cases received actual model decisions; no agent
+execution was repeated. The model sees synthetic jobs/proposals and private preferences,
+not gold labels, architecture names or portfolio bodies. Source records were verified as
+unchanged public Git data with exclusively synthetic provenance before export.
+
+Fixed budget/eligibility guards may override a raw model reply/hire. Raw decisions and
+effective outcomes are both retained. No provider failure becomes an invented rejection.
+One-pass batched clients lack real competition and longitudinal interaction, and shared
+batch context may couple responses. The demo recording and deterministic CI smoke remain
+rule-client control demonstrations, clearly separate from these LLM research outcomes.
+
+For the primary B5 table, retrieval is replayed on the exact same nine V0/V3 proposal jobs
+and source corpus. Relevance is a declared synthetic project-topic family, authored by
+Codex rather than the student or independent annotators. Multiple industries can be
+relevant because these posts omit industry. This gold differs from the separate 60-task
+study; all relevant source-item IDs and rankings are committed for inspection.

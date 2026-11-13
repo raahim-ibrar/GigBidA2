@@ -1,0 +1,9 @@
+{
+  "client_requests": 12,
+  "valid_unique_decisions": 92,
+  "generator_reruns": 0,
+  "gpu_runs": 0,
+  "corpus_matches_original_generator": true,
+  "focused_tests_passed": 3,
+  "limits": "Focused evaluator checks, not a new full application test run"
+}

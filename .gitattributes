@@ -5,3 +5,4 @@ evals/results/rag-end-to-end-v1/** -text
 evals/results/verification-before-after-v1/** -text
 evals/results/verification-changed-v1/** -text
 evals/results/ci-control-30/** -text
+evals/results/evaluation-fidelity-v1/** -text

@@ -82,20 +82,20 @@ selection rule chooses V3. This does not establish better client reply rates.
 
 <!-- rag-e2e-table:start -->
 
-| Variant | Recall@5* | nDCG@10* | Unsupported / available proposal | Judge / 5 | Reply / submitted | p95/job seconds | USD/proposal |
+| Variant | Recall@5 | nDCG@10 | Unsupported / available proposal | Judge / 5 | LLM-client reply / submitted | p95 agent/job seconds | USD/proposal |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| V0 | 1.000 | 0.990 | 0.00 (n=5) | 3.80 | 2/2 | 368.16 | unknown |
-| V3 | 1.000 | 1.000 | 0.00 (n=2) | 4.00 | 1/1 | 124.43 | unknown |
+| V0 | 0.358 | 0.623 | 0.00 (n=5) | 3.80 | 2/2 | 368.16 | unknown |
+| V3 | 0.488 | 0.891 | 0.00 (n=2) | 4.00 | 1/1 | 124.43 | unknown |
 
-*Retrieval: separate 60-answerable-task cohort. Proposal columns: nine matched jobs per variant; every available draft judged, including later-failing runs. The columns do not establish a causal retrieval-to-reply relationship.
+All columns use the same nine matched jobs per variant and portfolio corpus. Retrieval is a retrospective CPU replay (k=5/10, synthetic topic-family gold); Generation observations are frozen. Quality is conditional on available drafts; failures remain in assigned-job totals. LLM clients assess the three submissions. Non-submissions cannot receive replies. Billing is unknown.
 
-Intention-to-treat replies were 2/9 (V0) versus 1/9 (V3). V3's shorter latency includes more early failures, not a demonstrated speed improvement. The sample is small; API billing remains unknown.
+Intention-to-treat LLM replies: V0 2/9; V3 1/9. This small cohort establishes no reliable winner.
 
 <!-- rag-e2e-table:end -->
 
 The supplemental end-to-end table is derived by
-`python -m evals.analyse_rag_end_to_end` without inference from
-[frozen observations and analysis](evals/results/rag-end-to-end-v1/analysis.json).
+`python -m evals.fidelity_analysis` without inference from
+[matched-cohort retrieval and LLM-client outcomes](evals/results/evaluation-fidelity-v1/summary.json).
 It does not replace the larger retrieval or architecture studies.
 
 The two open-model cohorts are complete (30 jobs each); grounding failures are retained.
@@ -103,21 +103,23 @@ The 150-run optional Gemini architecture comparison is complete: ReAct had 41/50
 error-free runs, supervisor 24/50, and the custom graph 37/50. Intermediate decision
 accuracy must not be confused with full-run success. The 40-task tool study, 30-item
 human calibration and twelve-pair classmate panel are also recorded. X2 reply rates
-were 48% versus 68%, Fisher p=0.252: no significant strategy benefit established.
+were 48% versus 56% with LLM clients, Fisher p=0.778: no significant benefit established.
 See [measured results](docs/RESULTS.md), [technical narrative](docs/TECHNICAL_WRITEUP.md),
 [study plan](evals/STUDENT_RESEARCH_PLAN.md), and [evaluation guide](docs/EVALUATION.md).
 Hidden-test results are unavailable before grading.
 
-| Architecture, 50 matched jobs each | Error-free | Correct intermediate decisions | Simulator submissions | Replies | p95 seconds |
+| Architecture, 50 matched jobs each | Error-free | Correct intermediate decisions | Simulator submissions | LLM-client replies | p95 seconds |
 |---|---:|---:|---:|---:|---:|
-| ReAct | 41 | 36 | 40 | 35 | 138.55 |
-| Supervisor | 24 | 24 | 19 | 18 | 186.13 |
-| Custom graph | 37 | 49 | 30 | 29 | 178.69 |
+| ReAct | 41 | 36 | 40 | 25 | 138.55 |
+| Supervisor | 24 | 24 | 19 | 12 | 186.13 |
+| Custom graph | 37 | 49 | 30 | 26 | 178.69 |
 
 These are optional Gemini architecture runs, separate from the two open-weight cohorts.
 ReAct submitted five scam controls to the isolated simulator; the supervisor submitted
 one and the custom graph none. Higher completion alone is not a safe selection rule.
-Source: [frozen analysis](evals/results/gemini-orchestration-v1/analysis.json).
+Source: [LLM-client replay and frozen generation metrics](evals/results/evaluation-fidelity-v1/summary.json).
+All 89 frozen architecture submissions were replayed with the LLM client. Agent runs,
+failures and timings are unchanged; earlier rule-client observations remain archived.
 
 ## Verification
 

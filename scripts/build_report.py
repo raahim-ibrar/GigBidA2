@@ -286,10 +286,10 @@ def build(output="output/pdf/GigBid_RnD_Report.pdf"):
     )
     sub(
         "Client model",
-        "The baseline studies use a transparent rule client: eligibility, "
-        "budget, length and skill coverage determine outcomes. Optional local LLM client mode "
-        "has a durable outbox and bounded retries. Its outcomes are a different experimental "
-        "condition and are not mixed into the rule-client results.",
+        "Historical controls use a transparent rule client. Primary outcome tables now "
+        "use an LLM-client replay of frozen submissions through the actual simulator "
+        "outbox, with fixed budget/eligibility guards. The original rule outcomes remain "
+        "separate. One-pass simulated decisions are not real demand or longitudinal hiring.",
     )
     source(
         "docs/DATA_CARD.md; scripts/prepare_student_data.py; scripts/student_personas.py; "
@@ -335,8 +335,17 @@ def build(output="output/pdf/GigBid_RnD_Report.pdf"):
         "receive a source check. Source UUIDs are identifiers, not achievement numbers. "
         "Future plans have a non-factual verdict. Human calibration/panel appear on page 9.",
     )
-    paired = read("evals/results/rag-end-to-end-v1/analysis.json")
+    fidelity = read("evals/results/evaluation-fidelity-v1/summary.json")
+    paired = (
+        {"variants": fidelity["rag"]}
+        if fidelity
+        else read("evals/results/rag-end-to-end-v1/analysis.json")
+    )
     if paired:
+
+        def retrieval_for(row):
+            return row.get("same_cohort_retrieval") or row["separate_retrieval_cohort"]
+
         table(
             [
                 "V",
@@ -351,8 +360,8 @@ def build(output="output/pdf/GigBid_RnD_Report.pdf"):
             [
                 [
                     name.upper(),
-                    f"{r['separate_retrieval_cohort']['recall_at_5']:.3f}",
-                    f"{r['separate_retrieval_cohort']['ndcg_at_10']:.3f}",
+                    f"{retrieval_for(r)['recall_at_5']:.3f}",
+                    f"{retrieval_for(r)['ndcg_at_10']:.3f}",
                     f"{r['unsupported_claims_per_available_proposal']:.2f} "
                     f"(n={r['available_drafts']})",
                     f"{r['mean_judge_quality']:.2f}",
@@ -365,11 +374,12 @@ def build(output="output/pdf/GigBid_RnD_Report.pdf"):
             [12 * mm, 23 * mm, 24 * mm, 27 * mm, 21 * mm, 24 * mm, 20 * mm, 20 * mm],
         )
         body(
-            "*Retrieval uses the separate 60-answerable-task cohort. Proposal columns use "
-            "nine matched jobs per variant with the same routed hosted open profile and "
-            "32,000-token caps. Every available draft is judged, including later failures. "
-            "Intention-to-treat replies: V0 2/9, V3 1/9. V3's lower p95 includes more early "
-            "failures, not a proven speed benefit. Small dev sample; billing unknown."
+            "*All columns use the same nine matched jobs and portfolio corpus. Retrieval "
+            "is a retrospective CPU replay at k=5/10 with declared synthetic topic-family "
+            "gold. Generation is frozen (32,000-token caps); clients assess the three "
+            "submitted proposals with an LLM. Every available draft is judged, including "
+            "later failures. ITT replies: V0 2/9, V3 1/9. Lower p95 includes early failures; "
+            "no reliable winner follows. Billing unknown."
         )
     body(
         "Before/after verification: all four changed checkpoint pairs were independently "
@@ -381,7 +391,8 @@ def build(output="output/pdf/GigBid_RnD_Report.pdf"):
     )
     source(
         "evals/STUDENT_RESEARCH_PLAN.md; evals/results/student-retrieval/*.jsonl and "
-        "results.json; rag-end-to-end-v1/analysis.json; verification-{changed,before-after}-v1/ "
+        "results.json; evaluation-fidelity-v1/summary.json; "
+        "verification-{changed,before-after}-v1/ "
         "under evals/results/; agent/proposal_nodes.py."
     )
 
